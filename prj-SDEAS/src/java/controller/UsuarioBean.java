@@ -5,18 +5,19 @@
  */
 package controller;
 
-import java.util.Date;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.SessionScoped;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
  * @author Fabi
  */
 @Named(value = "usuarioBean")
-@Dependent
-public class UsuarioBean {
-    String cedula;
+@SessionScoped
+public class UsuarioBean implements Serializable {
+ String cedula;
     String TipoIden;
     Date fechaNacimiento;
     String correo;
@@ -120,3 +121,4 @@ public class UsuarioBean {
     }
     
 }
+
