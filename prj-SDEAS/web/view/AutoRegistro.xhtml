@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <head>
         <meta charset="utf-8"/>
         <title>SDEAS - Sistema de información de la infraestructura de la Dirección de Extensión y Acción Social</title>
@@ -115,70 +116,78 @@
                 <h2 class="col-md-12 text-center">Registrarte</h2>
                 <h:form role="form" class=" form-group" >   
                     <div class="col-md-3 col-lg-offset-3">
-                    <div class="form-group">Tipo de Identificación:
-                        <h:selectOneMenu id="country" style="width:150px" onchange="submit()" value="#">
+                    <tr class="form-group">
+                        <td>Tipo de Identificación:</td>
+                        <td>
+                            <h:selectOneMenu  id="country" style="width:150px; float: right" onchange="submit()" value="#">
                             <f:selectItem itemValue="Nacional"></f:selectItem>
                             <f:selectItem itemValue="Extranjera"></f:selectItem>
                         </h:selectOneMenu>
-                    </div>
-                    <div class="form-group">Cédula:
-                        <input type="text" class="form-inline text-center" id="name" placeholder="Ej. 201230456"/>
-                    </div> 
-                    <div class="form-group">Nombre:
-                        <input type="text" class="form-inline text-center" id="nombre"/>
-                    </div> 
-                    <div class="form-group">Primer Apellido:
-                        <input type="text" class="form-inline text-center" id="Apellido1"/>
-                    </div>
-                    <div class="form-group">Segundo Apellido:
-                        <input type="text" class="form-inline text-center" id="Apellido2"/>
-                    </div>
-                    <div class="form-group">Fecha Nacimiento:
-                        <input type="date" id="datepicker" width="276" />
-                        
-                    </div>
-                    <div class="form-group">Télefono:
-                        <input type="text" class="form-inline text-center" id="Telefono"/>
-                    </div>
-                    <div class="form-group">Correo:
-                        <input type="email" class="form-inline text-center" id="email"/>                        
-                    </div>                    
+                        </td>
+                    </tr><br></br> <br></br> 
+                    <tr class="form-group">
+                        <td> Cédula:</td>
+                        <td><input style="float: right"  type="text" class="form-inline" id="name" placeholder="Ej. 201230456"/></td>
+                    </tr><br></br><br></br>  
+                    <tr class="form-group" >
+                        <td>Nombre:</td>
+                        <td> <input style="float: right" type="text" class="form-inline" id="nombre"/></td>
+                    </tr> <br></br><br></br> 
+                        <tr class="form-group"><td>Primer Apellido:</td>
+                      <td>  <input style="float: right" type="text" class="form-inline text-center" id="Apellido1"/></td>
+                    </tr><br></br><br></br> 
+                        <tr class="form-group"><td>Segundo Apellido:</td>
+                            <td><input style="float: right" type="text" class="form-inline text-center" id="Apellido2"/></td>
+                    </tr><br></br><br></br> 
+                        <tr class="form-group"><td>Fecha Nacimiento:</td>
+                            <td> <input style="float: right" type="date" id="datepicker" width="276" /></td>                        
+                    </tr><br></br><br></br> 
+                    <tr class="form-group"><td>Télefono:</td>
+                        <td> <input style="float: right" type="text" class="form-inline text-center" id="Telefono"/></td>
+                    </tr><br></br><br></br>
+                    <tr class="form-group"><td>Correo:</td>
+                      <td>  <input style="float: right" type="email" class="form-inline text-center" id="email"/> </td>                       
+                    </tr>  <br></br> <br></br>                  
                     </div>              
                     <div class="col-md-3">
-                         <div class="form-group">Programa al que pertenece:
-                        <h:selectOneMenu  style="width:150px" onchange="submit()" value="#">
+                        <tr class="form-group"><td>Programa DEAS:</td>
+                       <td> <h:selectOneMenu  style="width:150px; float: right" onchange="submit()" value="#">
                             <f:selectItem itemValue="PIT"></f:selectItem>
                             <f:selectItem itemValue="HS"></f:selectItem>
-                        </h:selectOneMenu>
-                    </div>                        
-                        Dirección:<br></br><br></br>
-                         <div class="form-group">Provincia:
-                        <h:selectOneMenu  style="width:150px" onchange="submit()" value="#">
+                           </h:selectOneMenu></td>
+                    </tr>   <br></br><br></br>    
+                     <tr class="form-group"><td>Tipo funcionario:</td>
+                       <td> <h:selectOneMenu  style="width:150px; float: right" onchange="submit()" value="#">
+                            <f:selectItem itemValue="Docente"></f:selectItem>
+                            <f:selectItem itemValue="Administrativo"></f:selectItem>
+                           </h:selectOneMenu></td>
+                    </tr>   <br></br><br></br> 
+                        Dirección:<br></br>
+                        <tr class="form-group"><td>Provincia:</td>
+                       <td> <h:selectOneMenu  style="width:150px; float: right" onchange="submit()" value="#">
                             <f:selectItem itemValue="PIT"></f:selectItem>
                             <f:selectItem itemValue="HS"></f:selectItem>
-                        </h:selectOneMenu>
+                           </h:selectOneMenu></td>
                              
-                    </div>
-                        <div class="form-group">Cantón:
-                        <h:selectOneMenu  style="width:150px" onchange="submit()" value="#">
+                    </tr><br></br><br></br> 
+                        <tr class="form-group"><td>Cantón:</td>
+                     <td>   <h:selectOneMenu  style="width:150px; float: right" onchange="submit()" value="#">
                             <f:selectItem itemValue="PIT"></f:selectItem>
                             <f:selectItem itemValue="HS"></f:selectItem>
-                        </h:selectOneMenu>
+                        </h:selectOneMenu></td>
                              
-                    </div>
-                        <div class="form-group">Distrito:
-                        <h:selectOneMenu  style="width:150px" onchange="submit()" value="#">
+                    </tr><br></br><br></br> 
+                        <tr class="form-group"><td>Distrito:</td>
+                     <td>   <h:selectOneMenu  style="width:150px; float: right" onchange="submit()" value="#">
                             <f:selectItem itemValue="PIT"></f:selectItem>
                             <f:selectItem itemValue="HS"></f:selectItem>
-                        </h:selectOneMenu>                             
-                    </div>
-                        <div class="form-group">Dirección exacta: <br></br>
-                            <h:inputTextarea class="col-md-12"> </h:inputTextarea>
-                             
-                    </div>
-                        
-                    </div>
-                   
+                        </h:selectOneMenu>     </td>                        
+                    </tr><br></br><br></br> 
+                        <tr class="form-group"><td>Dirección exacta:</td> <br></br>
+                           <td> <h:inputTextarea class="col-md-12"> </h:inputTextarea></td>                             
+                    </tr> <br></br> <br></br>                       
+                    </div>  
+                    <br></br>    
                    <button style="background-color:#fccc0c;border-color: #fccc0c; align-content: center" type="submit"  class="btn btn-primary btn-lg col-lg-offset-5">Registrarse</button>
                 </h:form>    
               
