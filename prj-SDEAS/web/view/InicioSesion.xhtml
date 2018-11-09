@@ -115,20 +115,22 @@
                 <h2>Iniciar Sesión</h2>
                 <h:form role="form" class="form-control-static  text-center col-md-4 col-lg-offset-4" >       
                     <div class="form-group">Usuario:
-                        <input type="text" class="form-control text-center" id="name" placeholder="Ej. 201230456"/>
+                        <h:inputText  value="#{usuarioBean.cedula}"  class="form-control text-center" ></h:inputText>
                     </div> 
                     <div class="form-group">Contraseña:
-                        <input type="email" class="form-control text-center" id="email" placeholder="******"/>
+                        <h:inputText value="#{usuarioBean.contrasenna}" class="form-control "></h:inputText>
                     </div>    
-                    <div class="form-group">Tipo de Perfil:<br></br>
-                        <h:selectOneMenu id="country" style="width:150px" onchange="submit()" value="#">
+                    <div  class="form-group">Tipo de Perfil:<br></br>
+                        <h:selectOneMenu  value="#{usuarioBean.tipoPerfil}" id="country" style="width:150px" onchange="submit()">
                             <f:selectItem itemValue="Funcionario DEAS"></f:selectItem>
                             <f:selectItem itemValue=" Coordinador DEAS"></f:selectItem>
                         </h:selectOneMenu>
                     </div>
-                    <button style="background-color:#fccc0c;border-color: #fccc0c" type="submit"  class="btn btn-primary btn-lg">Ingresar</button>
+                    <h:commandButton actionListener="#{usuarioBean.validaIngresar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
+                                     class="btn btn-primary btn-lg" value="Agregar"></h:commandButton>
                     <br></br> <br></br>
                     <a href="Registro.xhtml" style="color: black;" class="link">No tienes cuenta? Registrate aquí</a>
+                    <h:outputText style="color: red" value="#{usuarioBean.mensaje}"></h:outputText>
                 </h:form> 
             </center>               
         </section>
