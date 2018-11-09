@@ -142,7 +142,14 @@
                     <tr class="form-group"><td>Fecha Nacimiento:</td>
                         <td> <input style="float: right" type="date" id="datepicker" width="276" /></td>                        
                     </tr><br></br><br></br> 
-                    <tr class="form-group"><td>Télefono:</td>
+                    Teléfono:<br></br> 
+                      <tr class="form-group"><td>Tipo de número:</td>
+                        <td>   <h:selectOneMenu  style="width:150px; float: right" onchange="submit()" value="#">
+                                <f:selectItem itemValue="Habitación"></f:selectItem>
+                                <f:selectItem itemValue="Célular"></f:selectItem>
+                            </h:selectOneMenu>     </td>                        
+                    </tr><br></br><br></br> 
+                    <tr class="form-group"><td>Número:</td>                        
                         <td> <input style="float: right" type="text" class="form-inline text-center" id="Telefono" placeholder="Ej. 84123221"/></td>
                     </tr><br></br><br></br>
                     <tr class="form-group"><td>Correo:</td>
@@ -162,7 +169,7 @@
                                 <f:selectItem itemValue="Administrativo"></f:selectItem>
                             </h:selectOneMenu></td>
                     </tr>   <br></br><br></br> 
-                    Dirección:<br></br>
+                    Dirección:<br></br><br></br>
                     <tr class="form-group"><td>Provincia:</td>
                         <td> <h:selectOneMenu  style="width:150px; float: right" onchange="submit()" value="#">
                                 <f:selectItem itemValue="PIT"></f:selectItem>
@@ -183,7 +190,13 @@
                                 <f:selectItem itemValue="HS"></f:selectItem>
                             </h:selectOneMenu>     </td>                        
                     </tr><br></br><br></br> 
-                    <tr class="form-group"><td>Dirección exacta:</td> <br></br>
+                      <tr class="form-group"><td>Barrio:</td>
+                        <td>   <h:selectOneMenu  style="width:150px; float: right" onchange="submit()" value="#">
+                                <f:selectItem itemValue="PIT"></f:selectItem>
+                                <f:selectItem itemValue="HS"></f:selectItem>
+                            </h:selectOneMenu>     </td>                        
+                    </tr><br></br><br></br> 
+                    <tr class="form-group"><td>Otras Señas:</td> <br></br>
                         <td> <h:inputTextarea class="col-md-12"> </h:inputTextarea></td>                             
                     </tr> <br></br> <br></br>                       
                 </div>  
