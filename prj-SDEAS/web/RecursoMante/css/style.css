@@ -398,7 +398,6 @@ ul.sidebar-menu li a.active i {
 /* MAIN CONTENT CONFIGURATION */
 #main-content {
     margin-left: 210px;
-    height: 600px;
 }
 
 .header, .footer {
@@ -2221,7 +2220,7 @@ label {
     color: #fff;
     padding: 10px 0;
     bottom: 0px;
-    margin-top: 100px;
+    margin-top: 200px;
 }
 
 
@@ -2246,4 +2245,18 @@ label {
 .salir:hover:focus{
     background-color: red;
     color:white;
+}
+
+.divBotones{
+    width: 100%;
+}
+
+.botones{
+    margin-right: 30px;
+    display: inline-block;
+}
+
+.imgBuscar{
+    width: 25px;
+    height: 25px;
 }

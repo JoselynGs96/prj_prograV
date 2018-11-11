@@ -134,47 +134,73 @@
             
                 <div class="row mtbox" style="margin-top: 0px">
                     <div class="col-lg-9 main-chart" style="margin-left: 100px">
-                        <div>
+                        <div class="showback">
+                            <h4><i class="fa fa-angle-right">&nbsp; Datos: </i></h4>
                             <h:outputLabel>Identificador:</h:outputLabel><h:inputText readonly="true" style="width: 200px"  class="form-control "></h:inputText>
                             <br></br>
-                            <h:outputLabel>Nombre del programa:</h:outputLabel><h:inputText  class="form-control"  style="width: 400px" ></h:inputText>
+                            <h:outputLabel>Nombre del programa:</h:outputLabel><h:inputText  class="form-control"  style="width: 400px" value="#{programaBean.nombre}" ></h:inputText>
                             <br></br>
                             <h:outputLabel>Descripción:</h:outputLabel>
                             <br></br>
-                            <h:inputTextarea  class="form-control "  style="width: 400px" ></h:inputTextarea>
+                            <h:inputTextarea  class="form-control "  style="width: 400px" value="#{programaBean.descripcion}"></h:inputTextarea>
                             <br></br>
                             <h:outputLabel>Activo:</h:outputLabel>
-                            <h:selectOneRadio layout="pageDirection" value="" >
-                                <f:selectItem itemValue="1" itemLabel=" Sí" ></f:selectItem>
-                                <f:selectItem itemValue="0" itemLabel=" No"></f:selectItem>
+                            <h:selectOneRadio layout="pageDirection" value="#{programaBean.estado}" >
+                                <f:selectItem itemValue="1" itemLabel=" &nbsp;Sí&nbsp;&#10004;" ></f:selectItem>
+                                <f:selectItem itemValue="0" itemLabel=" &nbsp;No&nbsp;&#10008;"></f:selectItem>
                             </h:selectOneRadio>
+                            <br></br>
+                            <div class="">
+                                <h:commandButton class="btn btn-primary fa fa-floppy-o" actionListener="#{programaBean.insertarPrograma()}" value="Guardar"></h:commandButton>
+                            </div>
                         </div>
-                         
-                        <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
-                  	<div class="box1">
-				<span><img src="RecursoMante/img/Nuevo.png" alt=""/></span>
-                                <h5>Nuevo</h5>
-                  	</div>
-				<p>Agrega nuevos programas</p>
-                  	</div>
-                        <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
-                  	<div class="box1">
-				<span><img src="RecursoMante/img/guardar.png" alt=""/></span>
-                                <h5>Guardar</h5>
-                  	</div>
-				<p>Guarda los datos ingresados</p>
-                  	</div>
-                        <div class="col-md-2 col-sm-2 col-md-offset-1 box0">
-                  	<div class="box1">
-				<span><img src="RecursoMante/img/ayuda.png" alt=""/></span>
-                                <h5>Ayuda</h5>
-                  	</div>
-				<p>Clic para ayudarte</p>
-                  	</div>
-                        
-                        
-                        
-                    </div>
+                     
+                        <!--Tabla-->
+                  <div class="row mt">
+                  <div class="col-md-12">
+                      <div class="content-panel">
+                      <h4><i class="fa fa-angle-right"></i> Registros </h4>
+                                <div style="margin-left: 20px">
+                                <h:inputText class="form-control" style="width: 100px; float: left;"></h:inputText>
+                                <button class="btn btn-default" style="margin-right: 10px; display: inline-block;"><i class="fa fa-search"></i></button>
+                                </div>
+                                <hr></hr>   
+                                <h:dataTable class="table table-striped table-advance table-hover" value="#{programaBean.listaTablaPrograma}" var="pro">
+                          <h:column>
+                              <f:facet name="header">
+                                  <h:outputText value="Identificador"/>
+                              </f:facet>
+                              <h:outputText value="#{pro.id}"/>
+                          </h:column>
+                          <h:column>
+                              <f:facet name="header">
+                                  <h:outputText value="Nombre del Programa"/>
+                              </f:facet>
+                              <h:outputText value="#{pro.nombre}"/>
+                          </h:column>
+                          <h:column>
+                              <f:facet name="header">
+                                  <h:outputText value="Descripción"/>
+                              </f:facet>
+                              <h:outputText value="#{pro.descripcion}"/>
+                          </h:column>
+                          <h:column>
+                              <f:facet name="header">
+                                  <h:outputText value="Estado"/>
+                              </f:facet>
+                              <h:outputText value="#{pro.estado}"/>
+                          </h:column>
+                          <h:column>
+                              <f:facet name="header">
+                                  <h:outputText value=""/>
+                              </f:facet>
+                              <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+                          </h:column>
+                      </h:dataTable>
+                      </div><!-- /content-panel -->
+                  </div><!-- /col-md-12 -->
+              </div><!-- /row -->
+                </div>
                     
                     
                     <!--<div class="col-lg-3 ds">-->
