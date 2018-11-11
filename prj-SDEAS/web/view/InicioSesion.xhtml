@@ -118,7 +118,7 @@
                         <h:inputText  value="#{usuarioBean.cedula}"  class="form-control text-center" ></h:inputText>
                     </div> 
                     <div class="form-group">Contraseña:
-                        <h:inputText value="#{usuarioBean.contrasenna}" class="form-control "></h:inputText>
+                        <h:inputText value="#{usuarioBean.contrasenna}" class="form-control text-center  "></h:inputText>
                     </div>    
                     <div  class="form-group">Tipo de Perfil:<br></br>
                         <h:selectOneMenu  value="#{usuarioBean.tipoPerfil}" id="country" style="width:150px" onchange="submit()">
@@ -127,7 +127,7 @@
                         </h:selectOneMenu>
                     </div>
                     <h:commandButton actionListener="#{usuarioBean.validaIngresar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
-                                     class="btn btn-primary btn-lg" value="Agregar"></h:commandButton>
+                                     class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
                     <br></br> <br></br>
                     <h:outputText style="color: red" value="#{usuarioBean.mensaje}"></h:outputText>
                     <br></br> <br></br>
