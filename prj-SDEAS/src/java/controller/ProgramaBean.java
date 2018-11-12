@@ -6,10 +6,11 @@
 package controller;
 
 import dao.SNMPExceptions;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import model.Programa;
 import model.ProgramaDB;
 
@@ -18,31 +19,27 @@ import model.ProgramaDB;
  * @author ujose
  */
 @Named(value = "programaBean")
-@Dependent
-public class ProgramaBean {
+@SessionScoped
+public class ProgramaBean implements Serializable {
     int id;
     String nombre;
     String descripcion;
     int estado;
-    LinkedList<Programa> listaTablaPrograma = new 
-        LinkedList<Programa>();
+    LinkedList<Programa> listaTablaPrograma = new LinkedList<Programa>();
     /**
      * Creates a new instance of ProgramaBean
      */
     public ProgramaBean() throws SNMPExceptions, SQLException {
-        if(!listaTablaPrograma.isEmpty()){
-            seleccionarTodos();
-        }
-    }
-    
-    public void seleccionarTodos() throws SNMPExceptions, 
-            SQLException{
-        ProgramaDB pro = new ProgramaDB();
-        listaTablaPrograma = pro.SeleccionarTodos();
+        seleccionarTodos();
         
     }
+
+    public void seleccionarTodos() throws SNMPExceptions, SQLException{
+        ProgramaDB pro = new ProgramaDB();
+        listaTablaPrograma = pro.SeleccionarTodos();
+    }
     
-    public void insertarPrograma() throws SNMPExceptions, SQLException{
+     public void insertarPrograma() throws SNMPExceptions, SQLException{
         Programa pro = new Programa();
         pro.setNombre(nombre);
         pro.setDescripcion(descripcion);

@@ -133,7 +133,7 @@
               <div class="row" style="margin-top: 0px">
             
                 <div class="row mtbox" style="margin-top: 0px">
-                    <div class="col-lg-9 main-chart" style="margin-left: 100px">
+                    <div class="col-lg-8 main-chart" style="margin-left: 100px">
                         <div class="showback">
                             <h4><i class="fa fa-angle-right">&nbsp; Datos: </i></h4>
                             <h:outputLabel>Identificador:</h:outputLabel><h:inputText readonly="true" style="width: 200px"  class="form-control "></h:inputText>
@@ -150,9 +150,17 @@
                                 <f:selectItem itemValue="0" itemLabel=" &nbsp;No&nbsp;&#10008;"></f:selectItem>
                             </h:selectOneRadio>
                             <br></br>
-                            <div class="">
-                                <h:commandButton class="btn btn-primary fa fa-floppy-o" actionListener="#{programaBean.insertarPrograma()}" value="Guardar"></h:commandButton>
-                            </div>
+                            <div class="btn-group btn-group-justified">
+				<div class="btn-group">
+				<h:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" value="Nuevo"></h:commandButton>
+				</div>
+				<div class="btn-group">
+				<h:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" value="Guardar"></h:commandButton>
+				</div>
+				<div class="btn-group">
+				<h:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" value="Ayuda"></h:commandButton>
+				</div>
+                            </div>     
                         </div>
                      
                         <!--Tabla-->
@@ -161,7 +169,7 @@
                       <div class="content-panel">
                       <h4><i class="fa fa-angle-right"></i> Registros </h4>
                                 <div style="margin-left: 20px">
-                                <h:inputText class="form-control" style="width: 100px; float: left;"></h:inputText>
+                                <h:inputText class="form-control" style="width: 200px; float: left;"></h:inputText>
                                 <button class="btn btn-default" style="margin-right: 10px; display: inline-block;"><i class="fa fa-search"></i></button>
                                 </div>
                                 <hr></hr>   
@@ -194,7 +202,7 @@
                               <f:facet name="header">
                                   <h:outputText value=""/>
                               </f:facet>
-                              <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+                              <h:commandButton class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"></h:commandButton>
                           </h:column>
                       </h:dataTable>
                       </div><!-- /content-panel -->
@@ -203,7 +211,7 @@
                 </div>
                     
                     
-                    <!--<div class="col-lg-3 ds">-->
+                    <!--<div class="col-lg-4 ds">-->
                     <!--Panel derecho de ayuda-->
 			<!--><h3>AYUDA</h3>-->
                     <!--</div>-->

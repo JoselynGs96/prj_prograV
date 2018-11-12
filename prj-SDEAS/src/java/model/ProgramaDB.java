@@ -17,7 +17,7 @@ import java.util.LinkedList;
  * @author ujose
  */
 public class ProgramaDB {
-    private AccesoDatos accesoDatos = new AccesoDatos();
+   private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;  
 
     private LinkedList<Programa> listaD = new LinkedList<Programa>();
@@ -37,11 +37,11 @@ public class ProgramaDB {
             Programa programa = new Programa(); 
             programa = pro;             
             
-            strSQL = "INSERT INTO Programa (Nombre, Dsc_Programa, Log_Activo) "
-                    + "VALUES ('" 	+	programa.getNombre() 	+"'," 
-            + programa.getDescripcion() + ",'" +  programa.getEstado() +"')";
+             strSQL = "INSERT INTO Programa (Nombre, Dsc_Programa, Log_Activo) "
+                    + "VALUES ('" 	+	programa.getNombre()	+"', '" 
+            + programa.getDescripcion() + "', '" +  programa.getEstado() +"')"; 
             
-            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/); 
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
                                     e.getMessage(), e.getErrorCode());         

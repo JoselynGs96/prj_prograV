@@ -1,3 +1,4 @@
+
 package dao;
 
 /**
@@ -151,4 +152,3 @@ public class SNMPExceptions extends Exception {
         super();
     }
 }
-
