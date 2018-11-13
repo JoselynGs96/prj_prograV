@@ -9,24 +9,24 @@ package model;
  *
  * @author ujose
  */
-public class Programa {
+public class Curso {
     int id;
     String nombre;
     String descripcion;
+    Programa programa;
     String estado;
 
-    public Programa(int id, String nombre, String descripcion, String estado) {
+    
+    public Curso() {
+    }
+
+    public Curso(int id, String nombre, String descripcion, Programa programa, String estado) {
         this.setId(id);
         this.setNombre(nombre);
         this.setDescripcion(descripcion);
+        this.setPrograma(programa);
         this.setEstado(estado);
     }
-
-    public Programa() {
-    }
-
-    
-    
     
     public int getId() {
         return id;
@@ -52,6 +52,14 @@ public class Programa {
         this.descripcion = descripcion;
     }
 
+    public Programa getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(Programa programa) {
+        this.programa = programa;
+    }
+
     public String getEstado() {
         return estado;
     }
@@ -59,5 +67,9 @@ public class Programa {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
+
+    public void actulizar(Curso cur) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

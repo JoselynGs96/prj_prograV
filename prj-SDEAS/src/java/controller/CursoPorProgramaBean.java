@@ -6,15 +6,14 @@
 package controller;
 
 import dao.SNMPExceptions;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.inject.Named;
+import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIData;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
+import model.Curso;
+import model.CursoDB;
 import model.Programa;
 import model.ProgramaDB;
 
@@ -22,20 +21,23 @@ import model.ProgramaDB;
  *
  * @author ujose
  */
-@Named(value = "programaBean")
+@Named(value = "cursoPorProgramaBean")
 @SessionScoped
-public class ProgramaBean implements Serializable {
+public class CursoPorProgramaBean implements Serializable {
     int id;
     String nombre;
     String descripcion;
     String estado;
-    LinkedList<Programa> listaTablaPrograma = new LinkedList<Programa>();
+    int programa;
+    LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
+    LinkedList<Curso> listaTablaCurso = new LinkedList<Curso>();
     String buscarFiltro;
     String mensajeFiltro;
     String mensajeNombre;
     String mensajeDescripcion;
     String mensajeEstado;
     String mensajeGuardar;
+    String mensajePrograma;
 
     
    
@@ -43,35 +45,46 @@ public class ProgramaBean implements Serializable {
     /**
      * Creates a new instance of ProgramaBean
      */
-    public ProgramaBean() throws SNMPExceptions, SQLException {
+    public CursoPorProgramaBean() throws SNMPExceptions, SQLException {
         seleccionarTodos();
+        ProgramaDB proDb = new ProgramaDB();
+        if(!proDb.SeleccionarTodos().isEmpty()){
+            listaPrograma = proDb.SeleccionarTodos();
+        }else{
+            
+        }
     }
     
     
     /*Selecciona todos los programas*/
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
-        ProgramaDB pro = new ProgramaDB();
-        if(!pro.SeleccionarTodos().isEmpty()){
-            listaTablaPrograma.clear();
-            listaTablaPrograma = pro.SeleccionarTodos();
+        CursoDB cur = new CursoDB();
+        if(!cur.SeleccionarTodos().isEmpty()){
+            listaTablaCurso.clear();
+            listaTablaCurso = cur.SeleccionarTodos();
+            setMensajePrograma("");
+        }else{
+            setMensajePrograma("No existen programas*");
         }
     }
     
     /*Botón guardar; inserta uno nuevo o modifica*/
-     public void insertarPrograma() throws SNMPExceptions, SQLException{
+     public void insertarCurso() throws SNMPExceptions, SQLException{
         if(Validaciones() == true){
-            Programa pro = new Programa();
-            pro.setId(id);
-            pro.setNombre(nombre);
-            pro.setDescripcion(descripcion);
-            pro.setEstado(estado);
+            Curso cur = new Curso();
+            cur.setId(id);
+            cur.setNombre(nombre);
+            cur.setDescripcion(descripcion);
+            cur.setEstado(estado);
             ProgramaDB prog = new ProgramaDB();
+            cur.setPrograma(prog.SeleccionarPorId(programa));
+            CursoDB curs = new CursoDB();
             if(getId() != 0){
-                 prog.actulizar(pro);
-                 setMensajeGuardar("¡Programa actualizado con éxito!");
+                 curs.actulizar(cur);
+                 setMensajeGuardar("¡Curso actualizado con éxito!");
             }else{
-                 prog.registrar(pro);
-                 setMensajeGuardar("¡Programa registrado con éxito!");
+                 curs.registrar(cur);
+                 setMensajeGuardar("¡Curso registrado con éxito!");
             }
             seleccionarTodos();
         }
@@ -79,23 +92,23 @@ public class ProgramaBean implements Serializable {
      
      /*Botón editar*/
      public void editar(int i) throws SNMPExceptions, SQLException{
-        ProgramaDB pro = new ProgramaDB();
-        Programa programa = pro.SeleccionarPorId(i);
-         setId(programa.getId());
-         setNombre(programa.getNombre());
-         setDescripcion(programa.getDescripcion());
-         setEstado(programa.getEstado());
+        CursoDB cur = new CursoDB();
+        Curso Curso = cur.SeleccionarPorId(i);
+         setId(Curso.getId());
+         setNombre(Curso.getNombre());
+         setDescripcion(Curso.getDescripcion());
+         setEstado(Curso.getEstado());
       }
     
      /*Botón de buscar*/
      public void buscar() throws SNMPExceptions, SQLException{
-        ProgramaDB pro = new ProgramaDB();
+        CursoDB cur = new CursoDB();
         if(!getBuscarFiltro().equals("")){
-            if(!pro.FiltrarPrograma(buscarFiltro).isEmpty()){
-                listaTablaPrograma = pro.FiltrarPrograma(buscarFiltro);
+            if(!cur.FiltrarCurso(buscarFiltro).isEmpty()){
+                listaTablaCurso = cur.FiltrarCurso(buscarFiltro);
                  setMensajeFiltro("");
             }else{
-                listaTablaPrograma = pro.SeleccionarTodos();
+                listaTablaCurso = cur.SeleccionarTodos();
                 setMensajeFiltro("No se encontraron registros con el dato proporcionado**");
             }
         }
@@ -120,7 +133,7 @@ public class ProgramaBean implements Serializable {
      public boolean Validaciones(){
          boolean indicador = true;
          if(getNombre().equals("")){
-             setMensajeNombre("Debe ingresar el nombre del Programa*");
+             setMensajeNombre("Debe ingresar el nombre del Curso*");
              return indicador = false;
          }else{
              setMensajeNombre("");
@@ -128,7 +141,7 @@ public class ProgramaBean implements Serializable {
          }
          
          if(getDescripcion().equals("")){
-             setMensajeDescripcion("Debe ingresar una descripción del Programa*");
+             setMensajeDescripcion("Debe ingresar una descripción del Curso*");
              return indicador = false;
          }else{
              setMensajeDescripcion("");
@@ -136,7 +149,7 @@ public class ProgramaBean implements Serializable {
          }
          
          if(getEstado().equals("")){
-             setMensajeEstado("Debe seleccionar el estado del Programa*");
+             setMensajeEstado("Debe seleccionar el estado del Curso*");
              return indicador = false;
          }else{
              setMensajeEstado("");
@@ -178,12 +191,12 @@ public class ProgramaBean implements Serializable {
         this.estado = estado;
     }
 
-    public LinkedList<Programa> getListaTablaPrograma() {
-        return listaTablaPrograma;
+    public LinkedList<Curso> getListaTablaCurso() {
+        return listaTablaCurso;
     }
 
-    public void setListaTablaPrograma(LinkedList<Programa> listaTablaPrograma) {
-        this.listaTablaPrograma = listaTablaPrograma;
+    public void setListaTablaCurso(LinkedList<Curso> listaTablaCurso) {
+        this.listaTablaCurso = listaTablaCurso;
     }
     
      public String getMensajeFiltro() {
@@ -233,5 +246,31 @@ public class ProgramaBean implements Serializable {
     public void setMensajeGuardar(String mensajeGuardar) {
         this.mensajeGuardar = mensajeGuardar;
     }
+    
+    
+    public int getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(int programa) {
+        this.programa = programa;
+    }
+
+    public LinkedList<Programa> getListaPrograma() {
+        return listaPrograma;
+    }
+
+    public void setListaPrograma(LinkedList<Programa> listaPrograma) {
+        this.listaPrograma = listaPrograma;
+    }
+    
+    public String getMensajePrograma() {
+        return mensajePrograma;
+    }
+
+    public void setMensajePrograma(String mensajePrograma) {
+        this.mensajePrograma = mensajePrograma;
+    }
+    
     
 }

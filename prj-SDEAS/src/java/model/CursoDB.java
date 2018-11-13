@@ -16,34 +16,34 @@ import java.util.LinkedList;
  *
  * @author ujose
  */
-public class ProgramaDB {
+public class CursoDB {
     private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;  
 
-    private LinkedList<Programa> listaD = new LinkedList<Programa>();
+    private LinkedList<Curso> listaD = new LinkedList<Curso>();
     
-    public ProgramaDB (Connection conn) {
+    public CursoDB (Connection conn) {
         accesoDatos = new AccesoDatos();    
         accesoDatos.setDbConn(conn);
     }
     
-    public ProgramaDB() {
+    public CursoDB() {
         super();
     }
     
-    public void registrar(Programa pro) throws SNMPExceptions, SQLException { 
+    public void registrar(Curso cur) throws SNMPExceptions, SQLException { 
         String strSQL = "";   
         int estado = 0;
         try {  
-            Programa programa = new Programa(); 
-            programa = pro;             
+            Curso curso = new Curso(); 
+            curso = cur;             
             
-            if(programa.estado.equals("Activo")){
+            if(curso.estado.equals("Activo")){
                 estado = 1;
             }
-             strSQL = "INSERT INTO Programa (Nombre, Dsc_Programa, Log_Activo) "
-                    + "VALUES ('" 	+	programa.getNombre()	+"', '" 
-            + programa.getDescripcion() + "', '" +  estado +"')"; 
+             strSQL = "INSERT INTO Curso (Nombre, Dsc_Curso, Id_Programa, Log_Activo) "
+                    + "VALUES ('" 	+	curso.getNombre()	+"', '" 
+            + curso.getDescripcion() + "', '"  + curso.getPrograma().id+ "', '"+ estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -58,21 +58,22 @@ public class ProgramaDB {
     } 
     
     
-    public void actulizar(Programa pro) throws SNMPExceptions, SQLException { 
+    public void actulizar(Curso cur) throws SNMPExceptions, SQLException { 
         String strSQL = "";   
         int estado = 0;
         try {  
-            Programa programa = new Programa(); 
-            programa = pro;             
+            Curso curso = new Curso(); 
+            curso = cur;             
             
-            if(programa.estado.equals("Activo")){
+            if(curso.estado.equals("Activo")){
                 estado = 1;
             }
-             strSQL = "UPDATE Programa SET "
-                     +"Nombre='" +programa.getNombre() 
-                     +"', Dsc_Programa= '" + programa.getDescripcion()
+             strSQL = "UPDATE Curso SET "
+                     +"Nombre='" +curso.getNombre() 
+                     +"', Dsc_Curso= '" + curso.getDescripcion()
+                     +"', Id_Programa='" + curso.getPrograma().id
                      +"', Log_Activo='" + estado
-                     +"' WHERE Id_Programa='" + programa.getId()+"';";
+                     +"' WHERE Id_Curso='" + curso.getId()+"';";
                     
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -87,27 +88,28 @@ public class ProgramaDB {
     } 
     
     
-    public  Programa SeleccionarPorId(int idPrograma) throws SNMPExceptions, 
+    public  Curso SeleccionarPorId(int idCurso) throws SNMPExceptions, 
             SQLException {
       String select = "";
       ResultSet rsPA = null;
-      Programa pro = null;
-          
+      Curso cur = null;
+      ProgramaDB proDB = new ProgramaDB();
           try {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Programa, Nombre, Dsc_Programa, Log_Activo from Programa WHERE Id_Programa = " +idPrograma;
+                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Log_Activo from Programa WHERE Id_Curso = " +idCurso;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
 
-                        int Id_Programa = rsPA.getInt("Id_Programa");
+                        int Id_Curso = rsPA.getInt("Id_Curso");
                         String Nombre = rsPA.getString("Nombre");
-                        String Dsc_Programa = rsPA.getString("Dsc_Programa");
+                        String Dsc_Curso = rsPA.getString("Dsc_Curso");
+                        Programa Programa = proDB.SeleccionarPorId(rsPA.getInt("Id_Programa"));
                         int Log_Activo = rsPA.getInt("Log_Activo");
-                        pro = new Programa(Id_Programa, Nombre, Dsc_Programa, Log_Activo==0? "Inactivo":"Activo");
+                        cur = new Curso(Id_Curso, Nombre, Dsc_Curso, Programa, Log_Activo==0? "Inactivo":"Activo");
                       }
               
             rsPA.close();
@@ -122,33 +124,34 @@ public class ProgramaDB {
               
           }
          
-          return pro;
+          return cur;
       }
     
     
-    public  LinkedList<Programa> SeleccionarTodos() throws SNMPExceptions, 
+    public  LinkedList<Curso> SeleccionarTodos() throws SNMPExceptions, 
             SQLException {
       String select = "";
       ResultSet rsPA = null;
-      
-      LinkedList<Programa> listaPrograma= new LinkedList<Programa>();
+      ProgramaDB proDB = new ProgramaDB();
+      LinkedList<Curso> listaCurso = new LinkedList<Curso>();
           
           try {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Programa, Nombre, Dsc_Programa, Log_Activo from Programa";
+                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Log_Activo from Curso";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
 
-                        int Id_Programa = rsPA.getInt("Id_Programa");
+                        int Id_Curso = rsPA.getInt("Id_Curso");
                         String Nombre = rsPA.getString("Nombre");
-                        String Dsc_Programa = rsPA.getString("Dsc_Programa");
+                        String Dsc_Curso = rsPA.getString("Dsc_Curso");
+                        Programa Programa = proDB.SeleccionarPorId(rsPA.getInt("Id_Programa"));
                         int Log_Activo = rsPA.getInt("Log_Activo");
-                        Programa pro = new Programa(Id_Programa, Nombre, Dsc_Programa, Log_Activo==0? "Inactivo":"Activo");
-                        listaPrograma.add(pro);
+                        Curso cur = new Curso(Id_Curso, Nombre, Dsc_Curso, Programa, Log_Activo==0? "Inactivo":"Activo");
+                        listaCurso.add(cur);
                       }
               
             rsPA.close();
@@ -163,16 +166,17 @@ public class ProgramaDB {
               
           }
          
-          return listaPrograma;
+          return listaCurso;
       }
     
     
-    public  LinkedList<Programa> FiltrarPrograma(String fil) throws SNMPExceptions, 
+    public  LinkedList<Curso> FiltrarCurso(String fil) throws SNMPExceptions, 
             SQLException {
       String select = "";
       ResultSet rsPA = null;
       String filtro = fil;
       String valor = "-1";
+      ProgramaDB proDB = new ProgramaDB();
       if(filtro.equalsIgnoreCase("Activo")||filtro.equalsIgnoreCase("A")||filtro.equalsIgnoreCase("Ac")||filtro.equalsIgnoreCase("Act")||filtro.equalsIgnoreCase("Acti")||filtro.equalsIgnoreCase("Activ")){
           valor = "1";
       }else{
@@ -180,28 +184,29 @@ public class ProgramaDB {
               valor = "0";
           }
       }
-      LinkedList<Programa> listaPrograma= new LinkedList<Programa>();
+      LinkedList<Curso> listaCurso = new LinkedList<Curso>();
           
           try {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Programa, Nombre, Dsc_Programa, Log_Activo from Programa WHERE"
-                           + "   ( Cast(Id_Programa as nvarchar(5)) LIKE '%' + '" + filtro + "' + '%')"
+                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Log_Activo from Curso WHERE"
+                           + "   ( Cast(Id_Curso as nvarchar(5)) LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Nombre LIKE '%' + '" + filtro + "' + '%')"
-                           + "OR ( Dsc_Programa LIKE '%' + '" + filtro + "' + '%')"
+                           + "OR ( Dsc_Curso LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Cast(Log_Activo as nvarchar(5)) LIKE '%' + '" + valor + "' + '%')";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
 
-                        int Id_Programa = rsPA.getInt("Id_Programa");
+                        int Id_Curso = rsPA.getInt("Id_Curso");
                         String Nombre = rsPA.getString("Nombre");
-                        String Dsc_Programa = rsPA.getString("Dsc_Programa");
+                        String Dsc_Curso = rsPA.getString("Dsc_Curso");
+                        Programa Programa = proDB.SeleccionarPorId(rsPA.getInt("Id_Programa"));
                         int Log_Activo = rsPA.getInt("Log_Activo");
-                        Programa pro = new Programa(Id_Programa, Nombre, Dsc_Programa, Log_Activo==0? "Inactivo":"Activo");
-                        listaPrograma.add(pro);
+                        Curso cur = new Curso(Id_Curso, Nombre, Dsc_Curso, Programa, Log_Activo==0? "Inactivo":"Activo");
+                        listaCurso.add(cur);
                       }
               
             rsPA.close();
@@ -216,8 +221,6 @@ public class ProgramaDB {
               
           }
          
-          return listaPrograma;
+          return listaCurso;
       }
-    
-    
 }
