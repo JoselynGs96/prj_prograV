@@ -48,9 +48,9 @@ public class ProvinciaDB {
 
             while (rsPA.next()) {
 
-                int Id_Provincia = rsPA.getInt("Id_Curso");
-                String Dsc_Corta_Provincia = rsPA.getString("Nombre");
-                String Dsc_Provincia = rsPA.getString("Dsc_Curso");
+                int Id_Provincia = rsPA.getInt("Id_Provincia");
+                String Dsc_Corta_Provincia = rsPA.getString("Dsc_Corta_Provincia");
+                String Dsc_Provincia = rsPA.getString("Dsc_Provincia");
                 Provincia pro = new Provincia(Id_Provincia, Dsc_Corta_Provincia, Dsc_Provincia);
                 listaProvincias.add(pro);
             }
@@ -86,9 +86,9 @@ public class ProvinciaDB {
 
             while (rsPA.next()) {
 
-                int Id_Provincia = rsPA.getInt("Id_Curso");
-                String Dsc_Corta_Provincia = rsPA.getString("Nombre");
-                String Dsc_Provincia = rsPA.getString("Dsc_Curso");
+                  int Id_Provincia = rsPA.getInt("Id_Provincia");
+                String Dsc_Corta_Provincia = rsPA.getString("Dsc_Corta_Provincia");
+                String Dsc_Provincia = rsPA.getString("Dsc_Provincia");
                 pro = new Provincia(Id_Provincia, Dsc_Corta_Provincia, Dsc_Provincia);
             }
 

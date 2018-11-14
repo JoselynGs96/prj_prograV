@@ -14,7 +14,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import javax.mail.Part;
 import model.Canton;
+import model.CantonDB;
 import model.Distrito;
+import model.DistritoDB;
 import model.Provincia;
 import model.ProvinciaDB;
 
@@ -342,6 +344,7 @@ public class UsuarioBean implements Serializable {
             }
         }
     }
+    
 
     public UsuarioBean() throws SNMPExceptions, SQLException {
         ProvinciaDB proDb = new ProvinciaDB();
@@ -350,6 +353,7 @@ public class UsuarioBean implements Serializable {
         } else {
 
         }
+       
     }
 
 }
