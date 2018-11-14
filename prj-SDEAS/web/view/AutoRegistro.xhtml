@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
     <head>
         <meta charset="utf-8"/>
         <title>SDEAS - Sistema de información de la infraestructura de la Dirección de Extensión y Acción Social</title>
@@ -141,7 +142,9 @@
                         <td>  <h:inputText style="float: right" value="#{usuarioBean.apellido2}"  class="form-inline" ></h:inputText> </td>
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Fecha Nacimiento:</td>                         
-                        <td> <input style="float: right" type="date" value="#{usuarioBean.fechaNacimiento}" id="datepicker" width="276" /></td>                        
+                        <td> 
+                            <p:calendar style="float: right" type="date" value="#{usuarioBean.fechaNacimiento}"/>
+                        </td>
                     </tr><br></br><br></br> 
                     Teléfono:<br></br> 
                     <tr class="form-group"><td>Tipo de número:</td>
@@ -181,30 +184,27 @@
                     Dirección:<br></br><br></br>
                     <tr class="form-group"><td>Provincia:</td>
                         <td> 
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.provincia}" id="pro">
+                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="pro">
                                  <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
-                                <f:selectItem itemValue="11"></f:selectItem>
-                                <f:selectItem itemValue="12"></f:selectItem>              
+                                <f:selectItems var="pro" value="#{usuarioBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>                                          
                             </h:selectOneMenu>
                         </td>
 
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Cantón:</td>
                         <td>   
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.canton}" id="can">
+                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="can">
                                  <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
-                                <f:selectItem itemValue="11"></f:selectItem>
-                                <f:selectItem itemValue="12"></f:selectItem>              
+                                 <f:selectItems var="can" value="#{usuarioBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>                                          
                             </h:selectOneMenu>
                         </td>
 
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Distrito:</td>
                         <td> 
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.distrito}" id="dis">
+                           <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="dis">
                                  <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
-                                <f:selectItem itemValue="11"></f:selectItem>
-                                <f:selectItem itemValue="12"></f:selectItem>              
+                                 <f:selectItems var="dis" value="#{usuarioBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>                                          
                             </h:selectOneMenu>
                         </td>                        
                     </tr><br></br><br></br> 
@@ -219,14 +219,16 @@
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Otras Señas:</td> <br></br>
                         <td> <h:inputTextarea value="#{usuarioBean.otrasSenas}" class="col-md-12"> </h:inputTextarea></td>                             
-                    </tr> <br></br> <br></br>                       
-                        <br></br>  <br></br> <br></br>   
+                    </tr> <br></br> <br></br>    7
+                    <tr>
+                        <h:inputFile value="#{usuarioBean.file}"></h:inputFile>
+                     </tr>   <br></br>  <br></br> <br></br>   
                     
                 <center class="w3-padding w3-display-bottommiddle">
                 <h:commandButton actionListener="#{usuarioBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
                                  class="btn btn-primary btn-lg" value="Registrarse"></h:commandButton>
-                <br></br> <br></br>
-             
+                <br></br> <br></br>               
+                
                 <h:outputText style="color: red;" value="#{usuarioBean.mensaje}"></h:outputText>
                 </center>
                 <br></br> <br></br>
@@ -361,9 +363,7 @@
 
         <script src="../Recursos/js/jquery.scrollUp.min.js" type="text/javascript"></script>
         <script src="../Recursos/js/main.js" type="text/javascript"></script>
-
-
-
+        
     </body>	
 </html>
 
