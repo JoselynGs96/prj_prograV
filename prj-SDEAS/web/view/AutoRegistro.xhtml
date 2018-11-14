@@ -184,9 +184,9 @@
                     Dirección:<br></br><br></br>
                     <tr class="form-group"><td>Provincia:</td>
                         <td> 
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="pro">
-                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
+                            <h:selectOneMenu valueChangeListener="#{usuarioBean.cargarCantones()}" style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="pro">                                
                                  <f:selectItems var="pro" value="#{usuarioBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>                                          
+                          
                             </h:selectOneMenu>
                         </td>
 
@@ -194,8 +194,9 @@
                     <tr class="form-group"><td>Cantón:</td>
                         <td>   
                             <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="can">
-                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
-                              <!--  <f:selectItems var="can" value="#{usuarioBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems> -->                                   
+                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>7
+                                 
+                             <f:selectItems var="can" value="#{usuarioBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>                                  
                             </h:selectOneMenu>
                         </td>
 
@@ -210,7 +211,7 @@
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Barrio:</td>
                         <td>  
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.barrio}" id="barr">
+                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idBarrio}" id="barr">
                                  <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="11"></f:selectItem>
                                 <f:selectItem itemValue="12"></f:selectItem>              

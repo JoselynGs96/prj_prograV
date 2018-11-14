@@ -36,7 +36,7 @@ public class CantonDB {
     public CantonDB() {
         super();
     }
-     public LinkedList<Canton> SeleccionarTodos() throws SNMPExceptions,
+     public LinkedList<Canton> SeleccionarTodos(int Id_Provincia) throws SNMPExceptions,
             SQLException {
         String select = "";
         ProvinciaDB proDB = new ProvinciaDB();
@@ -47,7 +47,7 @@ public class CantonDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Canton,Dsc_Canton, Id_Provincia from Canton";
+                    = "SELECT Id_Canton,Dsc_Canton, Id_Provincia from Canton where Id_Provincia="+Id_Provincia;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

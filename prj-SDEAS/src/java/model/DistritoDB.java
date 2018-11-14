@@ -37,7 +37,7 @@ public class DistritoDB {
         super();
     }
 
-    public LinkedList<Distrito> SeleccionarTodos() throws SNMPExceptions,
+    public LinkedList<Distrito> SeleccionarTodos(int Id_Provincia ,int Id_Canton) throws SNMPExceptions,
             SQLException {
         String select = "";
         ProvinciaDB proDB = new ProvinciaDB();
@@ -50,7 +50,7 @@ public class DistritoDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Distrito,Dsc_Distrito, Id_Provincia,Id_Canton from Distrito";
+                    = "SELECT Id_Distrito,Dsc_Distrito, Id_Provincia,Id_Canton from Distrito where Id_Provincia="+Id_Provincia+"and"+Id_Canton;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedList;
+import javax.faces.event.ValueChangeEvent;
 import javax.mail.Part;
 import model.Canton;
 import model.CantonDB;
@@ -42,18 +43,18 @@ public class UsuarioBean implements Serializable {
     String apellido2;
     String tipoTelefono;
     String NumeroTelefono;
-    String Programa;   
+    String Programa;
     String OtrasSenas;
     String TipoFuncionario;
     int edad;
     Part file;
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
-    LinkedList<Distrito> listaDis = new LinkedList<Distrito>(); 
-     int IdProvincia = 0;
+    LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
+    int IdProvincia=0;
     int IdCanton = 0;
-    int IdDistrito=0;
-    int idBarrio=0;
+    int IdDistrito = 0;
+    int idBarrio = 0;
 
     public int getIdDistrito() {
         return IdDistrito;
@@ -78,7 +79,7 @@ public class UsuarioBean implements Serializable {
     public void setListaDis(LinkedList<Distrito> listaDis) {
         this.listaDis = listaDis;
     }
-    
+
     public LinkedList<Canton> getListaCan() {
         return listaCan;
     }
@@ -86,7 +87,7 @@ public class UsuarioBean implements Serializable {
     public void setListaCan(LinkedList<Canton> listaCan) {
         this.listaCan = listaCan;
     }
-    
+
     public int getIdCanton() {
         return IdCanton;
     }
@@ -102,6 +103,7 @@ public class UsuarioBean implements Serializable {
     public void setIdProvincia(int IdProvincia) {
         this.IdProvincia = IdProvincia;
     }
+
     public LinkedList<Provincia> getListaPro() {
         return listaPro;
     }
@@ -181,6 +183,7 @@ public class UsuarioBean implements Serializable {
     public void setPrograma(String Programa) {
         this.Programa = Programa;
     }
+
     public String getOtrasSenas() {
         return OtrasSenas;
     }
@@ -260,6 +263,11 @@ public class UsuarioBean implements Serializable {
     public void setTipoPerfil(String tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
+    public void cargarCantones() throws SNMPExceptions, SQLException {        
+        CantonDB canDB = new CantonDB();       
+            listaCan = canDB.SeleccionarTodos(this.getIdProvincia());
+     
+    }
 
     public void validaIngresar() {
         if (this.getCedula().equals("")) {
@@ -312,13 +320,13 @@ public class UsuarioBean implements Serializable {
                                                     if (this.getIdProvincia() == 0) {
                                                         this.setMensaje("*Debe colocar la provincia");
                                                     } else {
-                                                        if (this.getIdCanton()==0) {
+                                                        if (this.getIdCanton() == 0) {
                                                             this.setMensaje("*Debe colocar el Cantón");
                                                         } else {
-                                                            if (this.getIdDistrito()==0) {
+                                                            if (this.getIdDistrito() == 0) {
                                                                 this.setMensaje("*Debe colocar el Distrito");
                                                             } else {
-                                                                if (this.getIdBarrio()==0) {
+                                                                if (this.getIdBarrio() == 0) {
                                                                     this.setMensaje("*Debe colocar el Barrio");
                                                                 } else {
                                                                     if (this.getOtrasSenas().equals("")) {
@@ -344,7 +352,6 @@ public class UsuarioBean implements Serializable {
             }
         }
     }
-    
 
     public UsuarioBean() throws SNMPExceptions, SQLException {
         ProvinciaDB proDb = new ProvinciaDB();
@@ -353,7 +360,8 @@ public class UsuarioBean implements Serializable {
         } else {
 
         }
-       
+
     }
 
+    
 }
