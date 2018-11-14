@@ -12,6 +12,14 @@ package model;
 public class TipoIden {
     int id;
     String nombre;
+    
+    public TipoIden(){
+        
+    }
+    public TipoIden(int id,String nombre){
+        this.setId(id);
+        this.setNombre(nombre);
+    }
 
     public int getId() {
         return id;
