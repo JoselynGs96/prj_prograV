@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
     <title>Panel de Administración</title>
     <meta charset="utf-8"/>
@@ -92,7 +93,7 @@
                           <span>Recursos de Infraestructura</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="faces/RecursoInfraestructura.xhtml">Catálogo</a></li>
+                          <li><a  href="#">Catálogo</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -129,7 +130,7 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-              <h3><i class="fa fa-angle-right"></i> Catálogo de Programa</h3>
+              <h3><i class="fa fa-angle-right"></i> Recursos de Infraestructura</h3>
               <div class="row" style="margin-top: 0px">
             
                 <div class="row mtbox" style="margin-top: 0px">
@@ -137,36 +138,53 @@
                         <div class="showback">
                             <h4><i class="fa fa-angle-right">&nbsp; Datos: </i></h4>
                             <div style="margin-left: 15px">
-                            <h:inputHidden value="#{programaBean.id}"></h:inputHidden>
-                            <h:outputLabel>Nombre del programa:</h:outputLabel><h:inputText  class="form-control"  style="width: 400px" value="#{programaBean.nombre}" ></h:inputText>
-                            <h:outputText style="color: red;" value="#{programaBean.mensajeNombre}"></h:outputText>
+                                <h:inputHidden value="#{recursoInfraestructuraBean.id}"></h:inputHidden>
+                            <h:outputLabel>Nombre del Recurso</h:outputLabel><h:inputText  class="form-control"  style="width: 400px" value="#{recursoInfraestructuraBean.nombre}" ></h:inputText>
+                            <h:outputText style="color: red;" value="#{recursoInfraestructuraBean.mensajeNombre}"></h:outputText>
+                            <br></br>
+                            <h:outputLabel>Tipo de Recurso:</h:outputLabel>
+                            <h:selectOneMenu class="form-control"   style="width: 400px" value="#{recursoInfraestructuraBean.listaTipoRecurso}" >
+                                <f:selectItems var="tip" value="#{recursoInfraestructuraBean.listaTipoRecurso}" itemLabel="#{tip.nombre}" itemValue="#{tip.id}"></f:selectItems>
+                            </h:selectOneMenu>
+                            <br></br>
+                            <h:outputLabel>Cantidad:</h:outputLabel>
+                            <br></br>
+                            <p:spinner  value="#{recursoInfraestructuraBean.cantidad}" min="0" />
+                            <br></br>
+                            <br></br>
+                            <h:outputLabel>Capacidad:</h:outputLabel>
+                            <br></br>
+                            <p:spinner  value="#{recursoInfraestructuraBean.capacidad}" min="0" />
+                            <br></br>
                             <br></br>
                             <h:outputLabel>Descripción:</h:outputLabel>
                             <br></br>
-                            <h:inputTextarea  class="form-control "  style="width: 400px" value="#{programaBean.descripcion}"></h:inputTextarea>
-                            <h:outputText style="color: red;" value="#{programaBean.mensajeDescripcion}"></h:outputText>
+                            <h:inputTextarea  class="form-control "  style="width: 400px" value="#{recursoInfraestructuraBean.descripcion}"></h:inputTextarea>
+                            <h:outputText style="color: red;" value="#{recursoInfraestructuraBean.mensajeDescripcion}"></h:outputText>
+                            
                             <br></br>
                             <h:outputLabel>Estado:</h:outputLabel>
-                            <h:selectOneRadio layout="pageDirection" value="#{programaBean.estado}" >
+                            <h:selectOneRadio layout="pageDirection" value="#{recursoInfraestructuraBean.estado}" >
                                 <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;&#10004;" ></f:selectItem>
                                 <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;&#10008;"></f:selectItem>
                             </h:selectOneRadio>
-                            <h:outputText style="color: red;" value="#{programaBean.mensajeEstado}"></h:outputText>
+                            <br></br>
+                            <h:outputText style="color: red;" value="#{recursoInfraestructuraBean.mensajeEstado}"></h:outputText>
                             </div>
                             <br></br>
                             <center>
-                                <h:outputText style="color: green;" value="#{programaBean.mensajeGuardar}"></h:outputText>
+                                <h:outputText style="color: green;" value="#{recursoInfraestructuraBean.mensajeGuardar}"></h:outputText>
                             </center>
                             <br></br>
                             <div class="btn-group btn-group-justified">
 				<div class="btn-group">
-                                    <h:commandButton class="btn btn-success" actionListener="#{programaBean.nuevo()}" value="&#9998; Nuevo"></h:commandButton>
+                                    <h:commandButton class="btn btn-success" actionListener="#{recursoInfraestructuraBean.nuevo()}" value="&#9998; Nuevo"></h:commandButton>
 				</div>
 				<div class="btn-group">
-                               	    <h:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" value="&#9989; Guardar"></h:commandButton>
+                               	    <h:commandButton class="btn btn-success" actionListener="#{recursoInfraestructuraBean.insertarCurso()}" value="&#9989; Guardar"></h:commandButton>
 				</div>
 				<div class="btn-group">
-				    <h:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" value="&#10067; Ayuda"></h:commandButton>
+                                    <h:commandButton class="btn btn-success" actionListener="#{recursoInfraestructuraBean.insertarCurso()}" value="&#10067; Ayuda"></h:commandButton>
 				</div>
                             </div>     
                         </div>
@@ -177,12 +195,12 @@
                       <div class="content-panel">
                       <h4><i class="fa fa-angle-right"></i> Registros </h4>
                                 <div style="margin-left: 20px">
-                                <h:inputText class="form-control" value="#{programaBean.buscarFiltro}" style="width: 200px; float: left;"></h:inputText>
-                                <h:commandButton actionListener="#{programaBean.buscar()}" class="btn btn-default"  image="RecursoMante/img/buscar.png"  style="height:34px;  margin-right: 10px; display: inline-block;"></h:commandButton>
-                                <h:outputText style="color: red; margin-left: 20px;" value="#{programaBean.mensajeFiltro}"></h:outputText>
+                                <h:inputText class="form-control" value="#{recursoInfraestructuraBean.buscarFiltro}" style="width: 200px; float: left;"></h:inputText>
+                                <h:commandButton actionListener="#{recursoInfraestructuraBean.buscar()}" class="btn btn-default"  image="RecursoMante/img/buscar.png"  style="height:34px;  margin-right: 10px; display: inline-block;"></h:commandButton>
+                                <h:outputText style="color: red; margin-left: 20px;" value="#{recursoInfraestructuraBean.mensajeFiltro}"></h:outputText>
                                 </div>
                                 <hr></hr>   
-                                <h:dataTable id="dataPro" class="table table-striped table-advance table-hover" value="#{programaBean.listaTablaPrograma}" var="pro">
+                                <h:dataTable class="table table-striped table-advance table-hover" value="#{recursoInfraestructuraBean.listaTablaCurso}" var="pro">
                           <h:column>
                               <f:facet name="header">
                                   <h:outputText value="Identificador"/>
@@ -191,9 +209,15 @@
                           </h:column>
                           <h:column>
                               <f:facet name="header">
-                                  <h:outputText value="Nombre del Programa"/>
+                                  <h:outputText value="Nombre del Curso"/>
                               </f:facet>
                               <h:outputText value="#{pro.nombre}"/>
+                          </h:column>
+                          <h:column>
+                              <f:facet name="header">
+                                  <h:outputText value="Programa"/>
+                              </f:facet>
+                              <h:outputText value="#{pro.programa.nombre}"/>
                           </h:column>
                           <h:column>
                               <f:facet name="header">
@@ -211,7 +235,7 @@
                               <f:facet name="header">
                                   <h:outputText value=""/>
                               </f:facet>
-                              <h:commandButton  actionListener="#{programaBean.editar(pro.id)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                              <h:commandButton actionListener="#{recursoInfraestructuraBean.editar(pro.id)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
                           </h:column>
                       </h:dataTable>
                       </div><!-- /content-panel -->
@@ -238,7 +262,7 @@
       <footer class="site-footer">
           <div class="text-center">
               &copy;2018 UTN Todos los Derechos Reservados.
-              <a href="CatalogoPrograma.xhtml#" class="go-top">
+              <a href="RecursoInfraestructura.xhtml#" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>
           </div>
@@ -304,5 +328,9 @@
     </script>
     </h:body>
 </html>
+
+
+
+
 
 
