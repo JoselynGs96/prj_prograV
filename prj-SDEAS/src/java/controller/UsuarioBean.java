@@ -11,8 +11,10 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.mail.Part;
 import model.Canton;
 import model.CantonDB;
@@ -48,13 +50,13 @@ public class UsuarioBean implements Serializable {
     String TipoFuncionario;
     int edad;
     Part file;
-    LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
-    LinkedList<Canton> listaCan = new LinkedList<Canton>();
-    LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
-    int IdProvincia=0;
-    int IdCanton = 0;
-    int IdDistrito = 0;
-    int idBarrio = 0;
+    LinkedList listaPro = new LinkedList();
+    LinkedList listaCan = new LinkedList();
+    LinkedList listaDis = new LinkedList();
+    static int IdProvincia;
+    static int IdCanton;
+   static int IdDistrito;
+    static int idBarrio;
 
     public int getIdDistrito() {
         return IdDistrito;
@@ -72,19 +74,37 @@ public class UsuarioBean implements Serializable {
         this.idBarrio = idBarrio;
     }
 
-    public LinkedList<Distrito> getListaDis() {
+    public LinkedList getListaDis() {
         return listaDis;
     }
 
-    public void setListaDis(LinkedList<Distrito> listaDis) {
+    public void setListaDis(LinkedList listaDis) {
         this.listaDis = listaDis;
     }
 
-    public LinkedList<Canton> getListaCan() {
-        return listaCan;
+    public LinkedList<SelectItem> getListaCan() throws SNMPExceptions, SQLException {
+         String dscCanton="";
+        float codigoCanton=0;
+        CantonDB canDB = new CantonDB();
+        
+        
+         LinkedList<Canton> lista = new LinkedList<Canton>();
+         lista= canDB.SeleccionarTodos(this.getIdProvincia());
+         
+          LinkedList listares = new LinkedList();
+         for(Iterator iter = lista.iterator(); iter.hasNext();){
+             Canton can=(Canton) iter.next();
+             dscCanton = can.getDsc_Canton();
+             codigoCanton= can.getId_Canton();
+             listares.add(new SelectItem(codigoCanton,dscCanton));
+             
+         }
+        
+        return listares;
+        
     }
 
-    public void setListaCan(LinkedList<Canton> listaCan) {
+    public void setListaCan(LinkedList listaCan) {
         this.listaCan = listaCan;
     }
 
@@ -104,11 +124,28 @@ public class UsuarioBean implements Serializable {
         this.IdProvincia = IdProvincia;
     }
 
-    public LinkedList<Provincia> getListaPro() {
-        return listaPro;
+    public LinkedList<SelectItem> getListaPro() throws SNMPExceptions, SQLException {
+        String dscProvincia="";
+        float codigoProvincia=0;
+        ProvinciaDB proDB = new ProvinciaDB();
+        
+        
+         LinkedList<Provincia> lista = new LinkedList<Provincia>();
+         lista= proDB.SeleccionarTodos();
+         
+          LinkedList listares = new LinkedList();
+         for(Iterator iter = lista.iterator(); iter.hasNext();){
+             Provincia pro=(Provincia) iter.next();
+             dscProvincia = pro.getDsc_Provincia();
+             codigoProvincia= pro.getId_Provincia();
+             listares.add(new SelectItem(codigoProvincia,dscProvincia));
+             
+         }
+        
+        return listares;
     }
 
-    public void setListaPro(LinkedList<Provincia> listaPro) {
+    public void setListaPro(LinkedList listaPro) {
         this.listaPro = listaPro;
     }
 
@@ -263,11 +300,7 @@ public class UsuarioBean implements Serializable {
     public void setTipoPerfil(String tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
-    public void cargarCantones() throws SNMPExceptions, SQLException {        
-        CantonDB canDB = new CantonDB();       
-            listaCan = canDB.SeleccionarTodos(this.getIdProvincia());
-     
-    }
+  
 
     public void validaIngresar() {
         if (this.getCedula().equals("")) {
@@ -354,13 +387,7 @@ public class UsuarioBean implements Serializable {
     }
 
     public UsuarioBean() throws SNMPExceptions, SQLException {
-        ProvinciaDB proDb = new ProvinciaDB();
-        if (!proDb.SeleccionarTodos().isEmpty()) {
-            listaPro = proDb.SeleccionarTodos();
-        } else {
-
-        }
-
+        
     }
 
     
