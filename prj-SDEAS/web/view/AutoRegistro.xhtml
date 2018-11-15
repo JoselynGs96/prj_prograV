@@ -184,7 +184,7 @@
                     Dirección:<br></br><br></br>
                     <tr class="form-group"><td>Provincia:</td>
                         <td> 
-                            <h:selectOneMenu onchange="submit()" style="width:150px;float: right" value="#{usuarioBean.apellido2}" >                                
+                            <h:selectOneMenu onchange="submit()" style="width:150px;float: right" value="#{usuarioBean.id_Provincia}"  >                                
                                 <f:selectItems  value="#{usuarioBean.listaPro}"></f:selectItems>                                          
                             </h:selectOneMenu>
                         </td>
@@ -192,7 +192,7 @@
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Cantón:</td>
                         <td>   
-                            <h:selectOneMenu  style="width:150px;float: right" value="#{usuarioBean.id_Canton1}" id="can">
+                            <h:selectOneMenu  style="width:150px;float: right" value="#{usuarioBean.id_Canton}" id="can">
                                 <f:selectItems value="#{usuarioBean.listaCan}"></f:selectItems>                                  
                             </h:selectOneMenu>
                         </td>
@@ -200,7 +200,7 @@
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Distrito:</td>
                         <td> 
-                            <h:selectOneMenu onchange="submit()" style="width:150px;float: right" value="#{usuarioBean.idDistrito}">
+                            <h:selectOneMenu onchange="submit()" style="width:150px;float: right" value="#{usuarioBean.id_Distrito}">
                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                               <!--  <f:selectItems var="dis" value="#{usuarioBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>        -->                                  
                             </h:selectOneMenu>
@@ -208,7 +208,7 @@
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Barrio:</td>
                         <td>  
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idBarrio}" id="barr">
+                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.id_Barrio}" id="barr">
                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="11"></f:selectItem>
                                 <f:selectItem itemValue="12"></f:selectItem>              

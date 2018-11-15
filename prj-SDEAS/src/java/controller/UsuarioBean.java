@@ -53,43 +53,45 @@ public class UsuarioBean implements Serializable {
     LinkedList listaPro = new LinkedList();
     LinkedList listaCan = new LinkedList();
     LinkedList listaDis = new LinkedList();
-    static int Id_Provincia;
-    static int Id_Canton;
-    static int Id_Distrito;
-    static int id_Barrio;  
+     int Id_Provincia;
+     int Id_Canton;
+     int Id_Distrito;
+     int id_Barrio;  
 
-
-    public static int getId_Provincia() {
+    public int getId_Provincia() {
         return Id_Provincia;
     }
 
-    public static void setId_Provincia(int Id_Provincia) {
-        UsuarioBean.Id_Provincia = Id_Provincia;
+    public void setId_Provincia(int Id_Provincia) {
+        this.Id_Provincia = Id_Provincia;
     }
 
-    public static int getId_Canton() {
+    public int getId_Canton() {
         return Id_Canton;
     }
 
-    public static void setId_Canton(int Id_Canton) {
-        UsuarioBean.Id_Canton = Id_Canton;
+    public void setId_Canton(int Id_Canton) {
+        this.Id_Canton = Id_Canton;
     }
 
-    public static int getId_Distrito() {
+    public int getId_Distrito() {
         return Id_Distrito;
     }
 
-    public static void setId_Distrito(int Id_Distrito) {
-        UsuarioBean.Id_Distrito = Id_Distrito;
+    public void setId_Distrito(int Id_Distrito) {
+        this.Id_Distrito = Id_Distrito;
     }
 
-    public static int getId_Barrio() {
+    public int getId_Barrio() {
         return id_Barrio;
     }
 
-    public static void setId_Barrio(int id_Barrio) {
-        UsuarioBean.id_Barrio = id_Barrio;
+    public void setId_Barrio(int id_Barrio) {
+        this.id_Barrio = id_Barrio;
     }
+
+
+   
 
  
 
