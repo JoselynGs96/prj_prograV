@@ -24,6 +24,23 @@ public class LoginControlador implements Serializable {
     int Id_Usuario;
     String Contrasenna;
     Usuario Usuario1;
+    String TipoUsuario;
+
+    public Usuario getUsuario1() {
+        return Usuario1;
+    }
+
+    public void setUsuario1(Usuario Usuario1) {
+        this.Usuario1 = Usuario1;
+    }
+
+    public String getTipoUsuario() {
+        return TipoUsuario;
+    }
+
+    public void setTipoUsuario(String TipoUsuario) {
+        this.TipoUsuario = TipoUsuario;
+    }
 
      /**
      * Creates a new instance of LoginControlador

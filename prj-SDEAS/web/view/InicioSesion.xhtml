@@ -115,13 +115,13 @@
                 <h2>Iniciar Sesión</h2>
                 <h:form role="form" class="form-control-static  text-center col-md-4 col-lg-offset-4" >       
                     <div class="form-group">Usuario:
-                        <h:inputText  value="#{usuarioBean.cedula}"  class="form-control text-center" ></h:inputText>
+                        <h:inputText  value="#{loginControlador.id_Usuario}"  class="form-control text-center" ></h:inputText>
                     </div> 
                     <div class="form-group">Contraseña:
-                        <h:inputText value="#{usuarioBean.contrasenna}" class="form-control text-center  "></h:inputText>
+                        <h:inputText value="#{loginControlador.contrasenna}" class="form-control text-center  "></h:inputText>
                     </div>    
                     <div  class="form-group">Tipo de Perfil:<br></br>
-                        <h:selectOneMenu  value="#{usuarioBean.tipoPerfil}" id="country" style="width:150px" onchange="submit()">
+                        <h:selectOneMenu  value="#{loginControlador.tipoUsuario}" id="country" style="width:150px" onchange="submit()">
                             <f:selectItem itemValue="Funcionario DEAS"></f:selectItem>
                             <f:selectItem itemValue=" Coordinador DEAS"></f:selectItem>
                         </h:selectOneMenu>
