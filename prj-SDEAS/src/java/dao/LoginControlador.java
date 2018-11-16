@@ -11,6 +11,7 @@ import java.io.Serializable;
 import model.Usuario;
 
 import javax.faces.context.FacesContext;
+import model.TipoIden;
 import model.UsuarioDB;
 
 /**
@@ -24,7 +25,7 @@ public class LoginControlador implements Serializable {
     int Id_Usuario;
     String Contrasenna;
     Usuario Usuario1;
-    String TipoUsuario;
+    String TpoUsuario;
 
     public Usuario getUsuario1() {
         return Usuario1;
@@ -34,12 +35,12 @@ public class LoginControlador implements Serializable {
         this.Usuario1 = Usuario1;
     }
 
-    public String getTipoUsuario() {
-        return TipoUsuario;
+    public String getTpoUsuario() {
+        return TpoUsuario;
     }
 
-    public void setTipoUsuario(String TipoUsuario) {
-        this.TipoUsuario = TipoUsuario;
+    public void setTpoUsuario(String TpoUsuario) {
+        this.TpoUsuario = TpoUsuario;
     }
 
      /**
@@ -69,8 +70,13 @@ public class LoginControlador implements Serializable {
            Usuario1=UsuarioDB.InicioSeccion(this.getId_Usuario(), this.getContrasenna());
            
            if (Usuario1 != null){
-               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario",Id_Usuario);               
+               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario",Id_Usuario);   
+               if(this.getTpoUsuario().equals("Funcionario DEAS")){
                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+               }else{
+               FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+               }
+              
            }
        }catch (Exception e){
        

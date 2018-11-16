@@ -115,13 +115,13 @@
 
             <br></br>
             <h2 class="col-md-12 text-center">Registrarte</h2>
-            <h:form role="form" class=" form-group" >   
+            <h:form role="form" prependId="false" enctype="multipart/form-data" class="form-group" >   
                 <div class="col-lg-offset-4 col-lg-4">              
                     <tr class="form-group">                   
                         <td>Tipo de Identificación:</td>
                         <td>
                             <h:selectOneMenu style="width:150px;float: right" label="dep" value="#{usuarioBean.tipoIden}" id="ident">
-                                   <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
+                                <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="Nacional"></f:selectItem>
                                 <f:selectItem itemValue="Extranjero"></f:selectItem>              
                             </h:selectOneMenu>
@@ -150,7 +150,7 @@
                     <tr class="form-group"><td>Tipo de número:</td>
                         <td>   
                             <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.tipoTelefono}" id="tel">
-                                   <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
+                                <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="Habitacion"></f:selectItem>
                                 <f:selectItem itemValue="Célular"></f:selectItem>              
                             </h:selectOneMenu>
@@ -162,11 +162,11 @@
                     <tr class="form-group"><td>Correo:</td>
                         <td>  <h:inputText style="float: right" value="#{usuarioBean.correo}"  class="form-inline" ></h:inputText> </td>
                     </tr>  <br></br><br></br>   <br></br> 
-               
+
                     <tr class="form-group"><td>Programa DEAS:</td>
                         <td> 
                             <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.programa}" id="Progra">
-                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
+                                <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="11"></f:selectItem>
                                 <f:selectItem itemValue="12"></f:selectItem>              
                             </h:selectOneMenu>
@@ -175,7 +175,7 @@
                     <tr class="form-group"><td>Tipo funcionario:</td>
                         <td> 
                             <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.tipoFuncionario}" id="fun">
-                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
+                                <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="Docente"></f:selectItem>
                                 <f:selectItem itemValue="Administrativo"></f:selectItem>              
                             </h:selectOneMenu>
@@ -184,35 +184,32 @@
                     Dirección:<br></br><br></br>
                     <tr class="form-group"><td>Provincia:</td>
                         <td> 
-                            <h:selectOneMenu valueChangeListener="#{usuarioBean.cargarCantones()}" style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="pro">                                
-                                 <f:selectItems var="pro" value="#{usuarioBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>                                          
-                          
+                            <h:selectOneMenu onchange="submit()" style="width:150px;float: right" value="#{usuarioBean.apellido2}" >                                
+                                <f:selectItems  value="#{usuarioBean.listaPro}"></f:selectItems>                                          
                             </h:selectOneMenu>
                         </td>
 
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Cantón:</td>
                         <td>   
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="can">
-                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>7
-                                 
-                             <f:selectItems var="can" value="#{usuarioBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>                                  
+                            <h:selectOneMenu  style="width:150px;float: right" value="#{usuarioBean.id_Canton1}" id="can">
+                                <f:selectItems value="#{usuarioBean.listaCan}"></f:selectItems>                                  
                             </h:selectOneMenu>
                         </td>
 
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Distrito:</td>
                         <td> 
-                           <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idProvincia}" id="dis">
-                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
-                               <!--  <f:selectItems var="dis" value="#{usuarioBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>        -->                                  
+                            <h:selectOneMenu onchange="submit()" style="width:150px;float: right" value="#{usuarioBean.idDistrito}">
+                                <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
+                              <!--  <f:selectItems var="dis" value="#{usuarioBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>        -->                                  
                             </h:selectOneMenu>
                         </td>                        
                     </tr><br></br><br></br> 
                     <tr class="form-group"><td>Barrio:</td>
                         <td>  
                             <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.idBarrio}" id="barr">
-                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
+                                <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="11"></f:selectItem>
                                 <f:selectItem itemValue="12"></f:selectItem>              
                             </h:selectOneMenu>
@@ -221,18 +218,16 @@
                     <tr class="form-group"><td>Otras Señas:</td> <br></br>
                         <td> <h:inputTextarea value="#{usuarioBean.otrasSenas}" class="col-md-12"> </h:inputTextarea></td>                             
                     </tr> <br></br> <br></br>    7
-                    <tr>
-                        <h:inputFile value="#{usuarioBean.file}"></h:inputFile>
-                     </tr>   <br></br>  <br></br> <br></br>   
                     
-                <center class="w3-padding w3-display-bottommiddle">
-                <h:commandButton actionListener="#{usuarioBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
-                                 class="btn btn-primary btn-lg" value="Registrarse"></h:commandButton>
-                <br></br> <br></br>               
-                
-                <h:outputText style="color: red;" value="#{usuarioBean.mensaje}"></h:outputText>
-                </center>
-                <br></br> <br></br>
+
+                    <center class="w3-padding w3-display-bottommiddle">
+                        <h:commandButton action="#{usuarioBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                                         class="btn btn-primary btn-lg" value="Registrarse"></h:commandButton>
+                        <br></br> <br></br>               
+
+                        <h:outputText style="color: red;" value="#{usuarioBean.mensaje}"></h:outputText>
+                    </center>
+                    <br></br> <br></br>
                 </div>
             </h:form>    
 
@@ -364,7 +359,7 @@
 
         <script src="../Recursos/js/jquery.scrollUp.min.js" type="text/javascript"></script>
         <script src="../Recursos/js/main.js" type="text/javascript"></script>
-        
+
     </body>	
 </html>
 

@@ -11,8 +11,10 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.mail.Part;
 import model.Canton;
 import model.CantonDB;
@@ -48,67 +50,107 @@ public class UsuarioBean implements Serializable {
     String TipoFuncionario;
     int edad;
     Part file;
-    LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
-    LinkedList<Canton> listaCan = new LinkedList<Canton>();
-    LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
-    int IdProvincia=0;
-    int IdCanton = 0;
-    int IdDistrito = 0;
-    int idBarrio = 0;
+    LinkedList listaPro = new LinkedList();
+    LinkedList listaCan = new LinkedList();
+    LinkedList listaDis = new LinkedList();
+    static int Id_Provincia;
+    static int Id_Canton;
+    static int Id_Distrito;
+    static int id_Barrio;  
 
-    public int getIdDistrito() {
-        return IdDistrito;
+
+    public static int getId_Provincia() {
+        return Id_Provincia;
     }
 
-    public void setIdDistrito(int IdDistrito) {
-        this.IdDistrito = IdDistrito;
+    public static void setId_Provincia(int Id_Provincia) {
+        UsuarioBean.Id_Provincia = Id_Provincia;
     }
 
-    public int getIdBarrio() {
-        return idBarrio;
+    public static int getId_Canton() {
+        return Id_Canton;
     }
 
-    public void setIdBarrio(int idBarrio) {
-        this.idBarrio = idBarrio;
+    public static void setId_Canton(int Id_Canton) {
+        UsuarioBean.Id_Canton = Id_Canton;
     }
 
-    public LinkedList<Distrito> getListaDis() {
+    public static int getId_Distrito() {
+        return Id_Distrito;
+    }
+
+    public static void setId_Distrito(int Id_Distrito) {
+        UsuarioBean.Id_Distrito = Id_Distrito;
+    }
+
+    public static int getId_Barrio() {
+        return id_Barrio;
+    }
+
+    public static void setId_Barrio(int id_Barrio) {
+        UsuarioBean.id_Barrio = id_Barrio;
+    }
+
+ 
+
+    public LinkedList getListaDis() {
         return listaDis;
     }
 
-    public void setListaDis(LinkedList<Distrito> listaDis) {
+    public void setListaDis(LinkedList listaDis) {
         this.listaDis = listaDis;
     }
 
-    public LinkedList<Canton> getListaCan() {
-        return listaCan;
+    public LinkedList<SelectItem> getListaCan() throws SNMPExceptions, SQLException {
+         String dscCanton="";
+        float IdCanton=0;
+        CantonDB canDB = new CantonDB();
+        
+        
+         LinkedList<Canton> lista = new LinkedList<Canton>();
+         lista= canDB.SeleccionarTodos(this.getId_Provincia());
+         
+          LinkedList listares = new LinkedList();
+         for(Iterator iter = lista.iterator(); iter.hasNext();){
+             Canton can=(Canton) iter.next();
+             dscCanton = can.getDsc_Canton();
+             IdCanton= can.getId_Canton();
+             listares.add(new SelectItem(IdCanton,dscCanton));
+             
+         }
+        
+        return listares;
+        
     }
 
-    public void setListaCan(LinkedList<Canton> listaCan) {
+    public void setListaCan(LinkedList listaCan) {
         this.listaCan = listaCan;
     }
+   
 
-    public int getIdCanton() {
-        return IdCanton;
+    public LinkedList<SelectItem> getListaPro() throws SNMPExceptions, SQLException {
+        String dscProvincia="";
+        float Id_Provincia=0;
+        ProvinciaDB proDB = new ProvinciaDB();
+        
+        
+         LinkedList<Provincia> lista = new LinkedList<Provincia>();
+         lista= proDB.SeleccionarTodos();
+         
+          LinkedList listares = new LinkedList();
+         for(Iterator iter = lista.iterator(); iter.hasNext();){
+             Provincia pro=(Provincia) iter.next();
+             dscProvincia = pro.getDsc_Provincia();
+             Id_Provincia= pro.getId_Provincia();
+             
+             listares.add(new SelectItem(Id_Provincia, dscProvincia));
+             
+         }
+        
+        return listares;
     }
 
-    public void setIdCanton(int IdCanton) {
-        this.IdCanton = IdCanton;
-    }
-
-    public int getIdProvincia() {
-        return IdProvincia;
-    }
-
-    public void setIdProvincia(int IdProvincia) {
-        this.IdProvincia = IdProvincia;
-    }
-
-    public LinkedList<Provincia> getListaPro() {
-        return listaPro;
-    }
-
-    public void setListaPro(LinkedList<Provincia> listaPro) {
+    public void setListaPro(LinkedList listaPro) {
         this.listaPro = listaPro;
     }
 
@@ -263,11 +305,7 @@ public class UsuarioBean implements Serializable {
     public void setTipoPerfil(String tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
-    public void cargarCantones() throws SNMPExceptions, SQLException {        
-        CantonDB canDB = new CantonDB();       
-            listaCan = canDB.SeleccionarTodos(this.getIdProvincia());
-     
-    }
+  
 
     public void validaIngresar() {
         if (this.getCedula().equals("")) {
@@ -317,16 +355,16 @@ public class UsuarioBean implements Serializable {
                                                 if (this.getTipoFuncionario().equals("-Seleccionar-")) {
                                                     this.setMensaje("*Debe colocar el tipo de funcionario");
                                                 } else {
-                                                    if (this.getIdProvincia() == 0) {
+                                                    if (this.getId_Provincia() == 0) {
                                                         this.setMensaje("*Debe colocar la provincia");
                                                     } else {
-                                                        if (this.getIdCanton() == 0) {
+                                                        if (this.getId_Canton() == 0) {
                                                             this.setMensaje("*Debe colocar el Cantón");
                                                         } else {
-                                                            if (this.getIdDistrito() == 0) {
+                                                            if (this.getId_Distrito() == 0) {
                                                                 this.setMensaje("*Debe colocar el Distrito");
                                                             } else {
-                                                                if (this.getIdBarrio() == 0) {
+                                                                if (this.getId_Barrio() == 0) {
                                                                     this.setMensaje("*Debe colocar el Barrio");
                                                                 } else {
                                                                     if (this.getOtrasSenas().equals("")) {
@@ -354,13 +392,7 @@ public class UsuarioBean implements Serializable {
     }
 
     public UsuarioBean() throws SNMPExceptions, SQLException {
-        ProvinciaDB proDb = new ProvinciaDB();
-        if (!proDb.SeleccionarTodos().isEmpty()) {
-            listaPro = proDb.SeleccionarTodos();
-        } else {
-
-        }
-
+        
     }
 
     
