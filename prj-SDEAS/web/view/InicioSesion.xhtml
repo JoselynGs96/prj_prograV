@@ -126,7 +126,7 @@
                             <f:selectItem itemValue=" Coordinador DEAS"></f:selectItem>
                         </h:selectOneMenu>
                     </div>
-                    <h:commandButton actionListener="#{usuarioBean.validaIngresar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
+                    <h:commandButton actionListener="#{loginControlador.autenticar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
                                      class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
                     <br></br> <br></br>
                     <h:outputText style="color: red" value="#{usuarioBean.mensaje}"></h:outputText>
