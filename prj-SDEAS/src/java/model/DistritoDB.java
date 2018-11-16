@@ -50,7 +50,7 @@ public class DistritoDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Distrito,Dsc_Distrito, Id_Provincia,Id_Canton from Distrito where Id_Provincia="+Id_Provincia+"and Id_Canton="+Id_Canton;
+                    = "SELECT Id_Distrito,Dsc_Distrito, Id_Provincia,Id_Canton from Distrito where Id_Provincia="+Id_Provincia+"and"+Id_Canton;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

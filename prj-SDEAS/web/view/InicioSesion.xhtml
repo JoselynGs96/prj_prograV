@@ -115,18 +115,18 @@
                 <h2>Iniciar Sesión</h2>
                 <h:form role="form" class="form-control-static  text-center col-md-4 col-lg-offset-4" >       
                     <div class="form-group">Usuario:
-                        <h:inputText  value="#{loginControlador.id_Usuario}"  class="form-control text-center" ></h:inputText>
+                        <h:inputText  value="#{usuarioBean.cedula}"  class="form-control text-center" ></h:inputText>
                     </div> 
                     <div class="form-group">Contraseña:
-                        <h:inputText value="#{loginControlador.contrasenna}" class="form-control text-center  "></h:inputText>
+                        <h:inputText value="#{usuarioBean.contrasenna}" class="form-control text-center  "></h:inputText>
                     </div>    
                     <div  class="form-group">Tipo de Perfil:<br></br>
-                        <h:selectOneMenu  value="#{loginControlador.tipoUsuario}" id="country" style="width:150px" onchange="submit()">
+                        <h:selectOneMenu  value="#{usuarioBean.tipoPerfil}" id="country" style="width:150px" onchange="submit()">
                             <f:selectItem itemValue="Funcionario DEAS"></f:selectItem>
                             <f:selectItem itemValue=" Coordinador DEAS"></f:selectItem>
                         </h:selectOneMenu>
                     </div>
-                    <h:commandButton actionListener="#{loginControlador.autenticar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
+                    <h:commandButton actionListener="#{usuarioBean.validaIngresar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
                                      class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
                     <br></br> <br></br>
                     <h:outputText style="color: red" value="#{usuarioBean.mensaje}"></h:outputText>

@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Fabi
  */
 public class Usuario {
-    int cedula;
+    String cedula;
     String TipoIden;
     Date fechaNacimiento;
     String correo;
@@ -39,11 +39,11 @@ public class Usuario {
     }   
    
 
-    public int getCedula() {
+    public String getCedula() {
         return cedula;
     }
 
-    public void setCedula(int cedula) {
+    public void setCedula(String cedula) {
         this.cedula = cedula;
     }
 

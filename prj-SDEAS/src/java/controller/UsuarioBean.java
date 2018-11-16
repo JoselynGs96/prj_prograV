@@ -5,10 +5,21 @@
  */
 package controller;
 
+import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.LinkedList;
+import javax.faces.event.ValueChangeEvent;
+import javax.mail.Part;
+import model.Canton;
+import model.CantonDB;
+import model.Distrito;
+import model.DistritoDB;
+import model.Provincia;
+import model.ProvinciaDB;
 
 /**
  *
@@ -33,13 +44,81 @@ public class UsuarioBean implements Serializable {
     String tipoTelefono;
     String NumeroTelefono;
     String Programa;
-    String Provincia;
-    String Canton;
-    String Distrito;
-    String Barrio;
     String OtrasSenas;
     String TipoFuncionario;
     int edad;
+    Part file;
+    LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
+    LinkedList<Canton> listaCan = new LinkedList<Canton>();
+    LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
+    int IdProvincia=0;
+    int IdCanton = 0;
+    int IdDistrito = 0;
+    int idBarrio = 0;
+
+    public int getIdDistrito() {
+        return IdDistrito;
+    }
+
+    public void setIdDistrito(int IdDistrito) {
+        this.IdDistrito = IdDistrito;
+    }
+
+    public int getIdBarrio() {
+        return idBarrio;
+    }
+
+    public void setIdBarrio(int idBarrio) {
+        this.idBarrio = idBarrio;
+    }
+
+    public LinkedList<Distrito> getListaDis() {
+        return listaDis;
+    }
+
+    public void setListaDis(LinkedList<Distrito> listaDis) {
+        this.listaDis = listaDis;
+    }
+
+    public LinkedList<Canton> getListaCan() {
+        return listaCan;
+    }
+
+    public void setListaCan(LinkedList<Canton> listaCan) {
+        this.listaCan = listaCan;
+    }
+
+    public int getIdCanton() {
+        return IdCanton;
+    }
+
+    public void setIdCanton(int IdCanton) {
+        this.IdCanton = IdCanton;
+    }
+
+    public int getIdProvincia() {
+        return IdProvincia;
+    }
+
+    public void setIdProvincia(int IdProvincia) {
+        this.IdProvincia = IdProvincia;
+    }
+
+    public LinkedList<Provincia> getListaPro() {
+        return listaPro;
+    }
+
+    public void setListaPro(LinkedList<Provincia> listaPro) {
+        this.listaPro = listaPro;
+    }
+
+    public Part getFile() {
+        return file;
+    }
+
+    public void setFile(Part file) {
+        this.file = file;
+    }
 
     public int getEdad() {
         return edad;
@@ -103,38 +182,6 @@ public class UsuarioBean implements Serializable {
 
     public void setPrograma(String Programa) {
         this.Programa = Programa;
-    }
-
-    public String getProvincia() {
-        return Provincia;
-    }
-
-    public void setProvincia(String Provincia) {
-        this.Provincia = Provincia;
-    }
-
-    public String getCanton() {
-        return Canton;
-    }
-
-    public void setCanton(String Canton) {
-        this.Canton = Canton;
-    }
-
-    public String getDistrito() {
-        return Distrito;
-    }
-
-    public void setDistrito(String Distrito) {
-        this.Distrito = Distrito;
-    }
-
-    public String getBarrio() {
-        return Barrio;
-    }
-
-    public void setBarrio(String Barrio) {
-        this.Barrio = Barrio;
     }
 
     public String getOtrasSenas() {
@@ -216,6 +263,11 @@ public class UsuarioBean implements Serializable {
     public void setTipoPerfil(String tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
+    public void cargarCantones() throws SNMPExceptions, SQLException {        
+        CantonDB canDB = new CantonDB();       
+            listaCan = canDB.SeleccionarTodos(this.getIdProvincia());
+     
+    }
 
     public void validaIngresar() {
         if (this.getCedula().equals("")) {
@@ -232,53 +284,57 @@ public class UsuarioBean implements Serializable {
     }
 
     public void validaAutoRegistro() {
-        if (this.getTipoIden().equals("-Seleccionar-")) {
-            this.setMensaje("*Debe colocar el tipo de identificación.");
+        if (this.getFile() == null) {
+            this.setMensaje("*Debe subir una foto de perfil");
         } else {
-            if (this.getCedula().equals("")) {
-                this.setMensaje("*Debe colocar el usuario.");
+            if (this.getTipoIden().equals("-Seleccionar-")) {
+                this.setMensaje("*Debe colocar el tipo de identificación.");
             } else {
-                if (this.getNombre().equals("")) {
-                    this.setMensaje("*Debe colocar el Nombre");
+                if (this.getCedula().equals("")) {
+                    this.setMensaje("*Debe colocar el usuario.");
                 } else {
-                    if (this.getApellido1().equals("")) {
-                        this.setMensaje("*Debe colocar el Primer Apellido");
+                    if (this.getNombre().equals("")) {
+                        this.setMensaje("*Debe colocar el Nombre");
                     } else {
-                        if (this.getApellido2().equals("")) {
-                            this.setMensaje("*Debe colocar el Segundo Apellido");
+                        if (this.getApellido1().equals("")) {
+                            this.setMensaje("*Debe colocar el Primer Apellido");
                         } else {
-                            if (this.getFechaNacimiento().equals("")) {
-                                this.setMensaje("*Debe colocar la fecha de nacimiento");
+                            if (this.getApellido2().equals("")) {
+                                this.setMensaje("*Debe colocar el Segundo Apellido");
                             } else {
-                                if (this.getTipoTelefono().equals("-Seleccionar-")) {
-                                    this.setMensaje("*Debe colocar el tipo de telefono");
+                                if (this.getFechaNacimiento() == null) {
+                                    this.setMensaje("*Debe colocar la fecha de nacimiento");
                                 } else {
-                                    if (this.getCorreo().equals("")) {
-                                        this.setMensaje("*Debe colocar un correo electrónico");
+                                    if (this.getTipoTelefono().equals("-Seleccionar-")) {
+                                        this.setMensaje("*Debe colocar el tipo de telefono");
                                     } else {
-                                        if (this.getPrograma().equals("-Seleccionar-")) {
-                                            this.setMensaje("*Debe colocar el programa al que pertenece");
+                                        if (this.getCorreo().equals("")) {
+                                            this.setMensaje("*Debe colocar un correo electrónico");
                                         } else {
-                                            if (this.getTipoFuncionario().equals("-Seleccionar-")) {
-                                                this.setMensaje("*Debe colocar el tipo de funcionario");
+                                            if (this.getPrograma().equals("-Seleccionar-")) {
+                                                this.setMensaje("*Debe colocar el programa al que pertenece");
                                             } else {
-                                                if (this.getProvincia().equals("-Seleccionar-")) {
-                                                    this.setMensaje("*Debe colocar la provincia");
+                                                if (this.getTipoFuncionario().equals("-Seleccionar-")) {
+                                                    this.setMensaje("*Debe colocar el tipo de funcionario");
                                                 } else {
-                                                    if (this.getCanton().equals("-Seleccionar-")) {
-                                                        this.setMensaje("*Debe colocar el Cantón");
+                                                    if (this.getIdProvincia() == 0) {
+                                                        this.setMensaje("*Debe colocar la provincia");
                                                     } else {
-                                                        if (this.getDistrito().equals("-Seleccionar-")) {
-                                                            this.setMensaje("*Debe colocar el Distrito");
+                                                        if (this.getIdCanton() == 0) {
+                                                            this.setMensaje("*Debe colocar el Cantón");
                                                         } else {
-                                                            if (this.getBarrio().equals("-Seleccionar-")) {
-                                                                this.setMensaje("*Debe colocar el Barrio");
+                                                            if (this.getIdDistrito() == 0) {
+                                                                this.setMensaje("*Debe colocar el Distrito");
                                                             } else {
-                                                                if (this.getOtrasSenas().equals("")) {
-                                                                    this.setMensaje("*Debe colocar Otras señas de su direccion ");
+                                                                if (this.getIdBarrio() == 0) {
+                                                                    this.setMensaje("*Debe colocar el Barrio");
                                                                 } else {
-                                                                    this.setMensaje("Datos completos se le enviará la solicitud a un coordinador y posterior mente le estará llegando un correo con el código de acceso");
+                                                                    if (this.getOtrasSenas().equals("")) {
+                                                                        this.setMensaje("*Debe colocar Otras señas de su direccion ");
+                                                                    } else {
+                                                                        this.setMensaje("Datos completos se le enviará la solicitud a un coordinador y posterior mente le estará llegando un correo con el código de acceso");
 
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -297,10 +353,15 @@ public class UsuarioBean implements Serializable {
         }
     }
 
-    /**
-     * Creates a new instance of UsuarioBean
-     */
-    public UsuarioBean() {
+    public UsuarioBean() throws SNMPExceptions, SQLException {
+        ProvinciaDB proDb = new ProvinciaDB();
+        if (!proDb.SeleccionarTodos().isEmpty()) {
+            listaPro = proDb.SeleccionarTodos();
+        } else {
+
+        }
+
     }
 
+    
 }
