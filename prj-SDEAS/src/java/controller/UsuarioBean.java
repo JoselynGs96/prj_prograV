@@ -5,23 +5,10 @@
  */
 package controller;
 
-import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
-import javax.mail.Part;
-import model.Canton;
-import model.CantonDB;
-import model.Distrito;
-import model.DistritoDB;
-import model.Provincia;
-import model.ProvinciaDB;
 
 /**
  *
@@ -46,116 +33,13 @@ public class UsuarioBean implements Serializable {
     String tipoTelefono;
     String NumeroTelefono;
     String Programa;
+    String Provincia;
+    String Canton;
+    String Distrito;
+    String Barrio;
     String OtrasSenas;
     String TipoFuncionario;
     int edad;
-    Part file;
-    LinkedList listaPro = new LinkedList();
-    LinkedList listaCan = new LinkedList();
-    LinkedList listaDis = new LinkedList();
-    static int IdProvincia;
-    static int IdCanton;
-   static int IdDistrito;
-    static int idBarrio;
-
-    public int getIdDistrito() {
-        return IdDistrito;
-    }
-
-    public void setIdDistrito(int IdDistrito) {
-        this.IdDistrito = IdDistrito;
-    }
-
-    public int getIdBarrio() {
-        return idBarrio;
-    }
-
-    public void setIdBarrio(int idBarrio) {
-        this.idBarrio = idBarrio;
-    }
-
-    public LinkedList getListaDis() {
-        return listaDis;
-    }
-
-    public void setListaDis(LinkedList listaDis) {
-        this.listaDis = listaDis;
-    }
-
-    public LinkedList<SelectItem> getListaCan() throws SNMPExceptions, SQLException {
-         String dscCanton="";
-        float codigoCanton=0;
-        CantonDB canDB = new CantonDB();
-        
-        
-         LinkedList<Canton> lista = new LinkedList<Canton>();
-         lista= canDB.SeleccionarTodos(this.getIdProvincia());
-         
-          LinkedList listares = new LinkedList();
-         for(Iterator iter = lista.iterator(); iter.hasNext();){
-             Canton can=(Canton) iter.next();
-             dscCanton = can.getDsc_Canton();
-             codigoCanton= can.getId_Canton();
-             listares.add(new SelectItem(codigoCanton,dscCanton));
-             
-         }
-        
-        return listares;
-        
-    }
-
-    public void setListaCan(LinkedList listaCan) {
-        this.listaCan = listaCan;
-    }
-
-    public int getIdCanton() {
-        return IdCanton;
-    }
-
-    public void setIdCanton(int IdCanton) {
-        this.IdCanton = IdCanton;
-    }
-
-    public int getIdProvincia() {
-        return IdProvincia;
-    }
-
-    public void setIdProvincia(int IdProvincia) {
-        this.IdProvincia = IdProvincia;
-    }
-
-    public LinkedList<SelectItem> getListaPro() throws SNMPExceptions, SQLException {
-        String dscProvincia="";
-        float codigoProvincia=0;
-        ProvinciaDB proDB = new ProvinciaDB();
-        
-        
-         LinkedList<Provincia> lista = new LinkedList<Provincia>();
-         lista= proDB.SeleccionarTodos();
-         
-          LinkedList listares = new LinkedList();
-         for(Iterator iter = lista.iterator(); iter.hasNext();){
-             Provincia pro=(Provincia) iter.next();
-             dscProvincia = pro.getDsc_Provincia();
-             codigoProvincia= pro.getId_Provincia();
-             listares.add(new SelectItem(codigoProvincia,dscProvincia));
-             
-         }
-        
-        return listares;
-    }
-
-    public void setListaPro(LinkedList listaPro) {
-        this.listaPro = listaPro;
-    }
-
-    public Part getFile() {
-        return file;
-    }
-
-    public void setFile(Part file) {
-        this.file = file;
-    }
 
     public int getEdad() {
         return edad;
@@ -219,6 +103,38 @@ public class UsuarioBean implements Serializable {
 
     public void setPrograma(String Programa) {
         this.Programa = Programa;
+    }
+
+    public String getProvincia() {
+        return Provincia;
+    }
+
+    public void setProvincia(String Provincia) {
+        this.Provincia = Provincia;
+    }
+
+    public String getCanton() {
+        return Canton;
+    }
+
+    public void setCanton(String Canton) {
+        this.Canton = Canton;
+    }
+
+    public String getDistrito() {
+        return Distrito;
+    }
+
+    public void setDistrito(String Distrito) {
+        this.Distrito = Distrito;
+    }
+
+    public String getBarrio() {
+        return Barrio;
+    }
+
+    public void setBarrio(String Barrio) {
+        this.Barrio = Barrio;
     }
 
     public String getOtrasSenas() {
@@ -300,7 +216,6 @@ public class UsuarioBean implements Serializable {
     public void setTipoPerfil(String tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
-  
 
     public void validaIngresar() {
         if (this.getCedula().equals("")) {
@@ -317,57 +232,53 @@ public class UsuarioBean implements Serializable {
     }
 
     public void validaAutoRegistro() {
-        if (this.getFile() == null) {
-            this.setMensaje("*Debe subir una foto de perfil");
+        if (this.getTipoIden().equals("-Seleccionar-")) {
+            this.setMensaje("*Debe colocar el tipo de identificación.");
         } else {
-            if (this.getTipoIden().equals("-Seleccionar-")) {
-                this.setMensaje("*Debe colocar el tipo de identificación.");
+            if (this.getCedula().equals("")) {
+                this.setMensaje("*Debe colocar el usuario.");
             } else {
-                if (this.getCedula().equals("")) {
-                    this.setMensaje("*Debe colocar el usuario.");
+                if (this.getNombre().equals("")) {
+                    this.setMensaje("*Debe colocar el Nombre");
                 } else {
-                    if (this.getNombre().equals("")) {
-                        this.setMensaje("*Debe colocar el Nombre");
+                    if (this.getApellido1().equals("")) {
+                        this.setMensaje("*Debe colocar el Primer Apellido");
                     } else {
-                        if (this.getApellido1().equals("")) {
-                            this.setMensaje("*Debe colocar el Primer Apellido");
+                        if (this.getApellido2().equals("")) {
+                            this.setMensaje("*Debe colocar el Segundo Apellido");
                         } else {
-                            if (this.getApellido2().equals("")) {
-                                this.setMensaje("*Debe colocar el Segundo Apellido");
+                            if (this.getFechaNacimiento().equals("")) {
+                                this.setMensaje("*Debe colocar la fecha de nacimiento");
                             } else {
-                                if (this.getFechaNacimiento() == null) {
-                                    this.setMensaje("*Debe colocar la fecha de nacimiento");
+                                if (this.getTipoTelefono().equals("-Seleccionar-")) {
+                                    this.setMensaje("*Debe colocar el tipo de telefono");
                                 } else {
-                                    if (this.getTipoTelefono().equals("-Seleccionar-")) {
-                                        this.setMensaje("*Debe colocar el tipo de telefono");
+                                    if (this.getCorreo().equals("")) {
+                                        this.setMensaje("*Debe colocar un correo electrónico");
                                     } else {
-                                        if (this.getCorreo().equals("")) {
-                                            this.setMensaje("*Debe colocar un correo electrónico");
+                                        if (this.getPrograma().equals("-Seleccionar-")) {
+                                            this.setMensaje("*Debe colocar el programa al que pertenece");
                                         } else {
-                                            if (this.getPrograma().equals("-Seleccionar-")) {
-                                                this.setMensaje("*Debe colocar el programa al que pertenece");
+                                            if (this.getTipoFuncionario().equals("-Seleccionar-")) {
+                                                this.setMensaje("*Debe colocar el tipo de funcionario");
                                             } else {
-                                                if (this.getTipoFuncionario().equals("-Seleccionar-")) {
-                                                    this.setMensaje("*Debe colocar el tipo de funcionario");
+                                                if (this.getProvincia().equals("-Seleccionar-")) {
+                                                    this.setMensaje("*Debe colocar la provincia");
                                                 } else {
-                                                    if (this.getIdProvincia() == 0) {
-                                                        this.setMensaje("*Debe colocar la provincia");
+                                                    if (this.getCanton().equals("-Seleccionar-")) {
+                                                        this.setMensaje("*Debe colocar el Cantón");
                                                     } else {
-                                                        if (this.getIdCanton() == 0) {
-                                                            this.setMensaje("*Debe colocar el Cantón");
+                                                        if (this.getDistrito().equals("-Seleccionar-")) {
+                                                            this.setMensaje("*Debe colocar el Distrito");
                                                         } else {
-                                                            if (this.getIdDistrito() == 0) {
-                                                                this.setMensaje("*Debe colocar el Distrito");
+                                                            if (this.getBarrio().equals("-Seleccionar-")) {
+                                                                this.setMensaje("*Debe colocar el Barrio");
                                                             } else {
-                                                                if (this.getIdBarrio() == 0) {
-                                                                    this.setMensaje("*Debe colocar el Barrio");
+                                                                if (this.getOtrasSenas().equals("")) {
+                                                                    this.setMensaje("*Debe colocar Otras señas de su direccion ");
                                                                 } else {
-                                                                    if (this.getOtrasSenas().equals("")) {
-                                                                        this.setMensaje("*Debe colocar Otras señas de su direccion ");
-                                                                    } else {
-                                                                        this.setMensaje("Datos completos se le enviará la solicitud a un coordinador y posterior mente le estará llegando un correo con el código de acceso");
+                                                                    this.setMensaje("Datos completos se le enviará la solicitud a un coordinador y posterior mente le estará llegando un correo con el código de acceso");
 
-                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -386,9 +297,10 @@ public class UsuarioBean implements Serializable {
         }
     }
 
-    public UsuarioBean() throws SNMPExceptions, SQLException {
-        
+    /**
+     * Creates a new instance of UsuarioBean
+     */
+    public UsuarioBean() {
     }
 
-    
 }

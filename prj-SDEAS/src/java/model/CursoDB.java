@@ -98,7 +98,7 @@ public class CursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Log_Activo from Curso WHERE Id_Curso = " +idCurso;
+                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Log_Activo from Programa WHERE Id_Curso = " +idCurso;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
