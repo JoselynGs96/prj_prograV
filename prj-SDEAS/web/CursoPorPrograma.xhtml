@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
     <title>Panel de Administración</title>
     <meta charset="utf-8"/>
@@ -28,7 +29,7 @@
     </h:head>
     <h:body>
   <section id="container">
-      <h:form>
+      <h:form role="">
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
       *********************************************************************************************************************************************************** -->
@@ -131,9 +132,10 @@
           <section class="wrapper">
               <h3><i class="fa fa-angle-right"></i> Cursos por Programa</h3>
               <div class="row" style="margin-top: 0px">
-            
+                 
                 <div class="row mtbox" style="margin-top: 0px">
                     <div class="col-lg-8 main-chart" style="margin-left: 100px">
+                        <p:growl id="growl" showDetail="true" sticky="true"  />  
                         <div class="showback">
                             <h4><i class="fa fa-angle-right">&nbsp; Datos: </i></h4>
                             <div style="margin-left: 15px">
@@ -142,10 +144,9 @@
                             <h:outputText style="color: red;" value="#{cursoPorProgramaBean.mensajeNombre}"></h:outputText>
                             <br></br>
                             <h:outputLabel>Programa al que pertenece</h:outputLabel>
-                            <h:selectOneMenu class="form-control"   style="width: 400px" value="#{cursoPorProgramaBean.programa}" >
+                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{cursoPorProgramaBean.programa}" >
                                 <f:selectItems var="cur" value="#{cursoPorProgramaBean.listaPrograma}" itemLabel="#{cur.nombre}" itemValue="#{cur.id}"></f:selectItems>
                             </h:selectOneMenu>
-                            <br></br>
                             <h:outputLabel>Descripción:</h:outputLabel>
                             <br></br>
                             <h:inputTextarea  class="form-control "  style="width: 400px" value="#{cursoPorProgramaBean.descripcion}"></h:inputTextarea>
@@ -160,23 +161,31 @@
                             <h:outputText style="color: red;" value="#{cursoPorProgramaBean.mensajeEstado}"></h:outputText>
                             </div>
                             <br></br>
-                            <center>
-                                <h:outputText style="color: green;" value="#{cursoPorProgramaBean.mensajeGuardar}"></h:outputText>
-                            </center>
                             <br></br>
                             <div class="btn-group btn-group-justified">
 				<div class="btn-group">
-                                    <h:commandButton class="btn btn-success" actionListener="#{cursoPorProgramaBean.nuevo()}" value="&#9998; Nuevo"></h:commandButton>
+                                    <p:commandButton class="btn btn-success" actionListener="#{cursoPorProgramaBean.nuevo()}" value="&#9998; Nuevo"></p:commandButton>
 				</div>
 				<div class="btn-group">
-                               	    <h:commandButton class="btn btn-success" actionListener="#{cursoPorProgramaBean.insertarCurso()}" value="&#9989; Guardar"></h:commandButton>
+                               	    <p:commandButton class="btn btn-success" actionListener="#{cursoPorProgramaBean.insertarCurso()}" update="@form" value="&#9989; Guardar"></p:commandButton>
 				</div>
 				<div class="btn-group">
-                                    <h:commandButton class="btn btn-success" actionListener="#{cursoPorProgramaBean.insertarCurso()}" value="&#10067; Ayuda"></h:commandButton>
+                                     <p:commandButton class="btn btn-success" oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
 				</div>
-                            </div>     
+                            </div>  
                         </div>
-                     
+                                <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000">
+                                    <h1 style="font-weight:normal">Ayuda</h1>
+                                    <p>
+                                        <br></br>
+                                        <br></br>
+                                         
+                                        Viejo baboso el programa está facil de usar
+                                         <br></br>
+                                         <img src="RecursoMante/img/baboso.gif" width="200px" alt=""/>
+                                    </p>
+                                    <p:commandButton value="Cerrar" oncomplete="PF('sidebar2').hide()"/>
+                                </p:sidebar>
                         <!--Tabla-->
                   <div class="row mt">
                   <div class="col-md-12">
@@ -184,8 +193,7 @@
                       <h4><i class="fa fa-angle-right"></i> Registros </h4>
                                 <div style="margin-left: 20px">
                                 <h:inputText class="form-control" value="#{cursoPorProgramaBean.buscarFiltro}" style="width: 200px; float: left;"></h:inputText>
-                                <h:commandButton actionListener="#{cursoPorProgramaBean.buscar()}" class="btn btn-default"  image="RecursoMante/img/buscar.png"  style="height:34px;  margin-right: 10px; display: inline-block;"></h:commandButton>
-                                <h:outputText style="color: red; margin-left: 20px;" value="#{cursoPorProgramaBean.mensajeFiltro}"></h:outputText>
+                                <p:commandButton actionListener="#{cursoPorProgramaBean.buscar()}" class="btn btn-default"  image="RecursoMante/img/buscar.png" update="@form"  style="height:34px;  margin-right: 10px; display: inline-block;"></p:commandButton>
                                 </div>
                                 <hr></hr>   
                                 <h:dataTable class="table table-striped table-advance table-hover" value="#{cursoPorProgramaBean.listaTablaCurso}" var="pro">

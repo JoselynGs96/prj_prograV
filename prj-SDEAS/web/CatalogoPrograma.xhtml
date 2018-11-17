@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
     <title>Panel de Administración</title>
     <meta charset="utf-8"/>
@@ -131,9 +132,10 @@
           <section class="wrapper">
               <h3><i class="fa fa-angle-right"></i> Catálogo de Programa</h3>
               <div class="row" style="margin-top: 0px">
-            
+               
                 <div class="row mtbox" style="margin-top: 0px">
                     <div class="col-lg-8 main-chart" style="margin-left: 100px">
+                        <p:growl id="growl" showDetail="true" sticky="true" /> 
                         <div class="showback">
                             <h4><i class="fa fa-angle-right">&nbsp; Datos: </i></h4>
                             <div style="margin-left: 15px">
@@ -154,23 +156,24 @@
                             <h:outputText style="color: red;" value="#{programaBean.mensajeEstado}"></h:outputText>
                             </div>
                             <br></br>
-                            <center>
-                                <h:outputText style="color: green;" value="#{programaBean.mensajeGuardar}"></h:outputText>
-                            </center>
                             <br></br>
                             <div class="btn-group btn-group-justified">
 				<div class="btn-group">
-                                    <h:commandButton class="btn btn-success" actionListener="#{programaBean.nuevo()}" value="&#9998; Nuevo"></h:commandButton>
+                                    <p:commandButton class="btn btn-success" actionListener="#{programaBean.nuevo()}" value="&#9998; Nuevo"></p:commandButton>
 				</div>
 				<div class="btn-group">
-                               	    <h:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" value="&#9989; Guardar"></h:commandButton>
+                               	    <p:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" update="@form" value="&#9989; Guardar"></p:commandButton>
 				</div>
 				<div class="btn-group">
-				    <h:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" value="&#10067; Ayuda"></h:commandButton>
-				</div>
+				    <p:commandButton class="btn btn-success" oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
+                                </div>
                             </div>     
                         </div>
-                     
+                        
+                                <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000">
+                                    <h1 style="font-weight:normal">Ayuda</h1>
+                                    <p:commandButton value="Cerrar" oncomplete="PF('sidebar2').hide()"/>
+                                </p:sidebar>
                         <!--Tabla-->
                   <div class="row mt">
                   <div class="col-md-12">

@@ -11,7 +11,8 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import javax.faces.component.UIData;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import model.Curso;
 import model.CursoDB;
 import model.Programa;
@@ -39,21 +40,20 @@ public class CursoPorProgramaBean implements Serializable {
     String mensajeGuardar;
     String mensajePrograma;
 
-    
    
-    
     /**
      * Creates a new instance of ProgramaBean
      */
     public CursoPorProgramaBean() throws SNMPExceptions, SQLException {
-        seleccionarTodos();
         ProgramaDB proDb = new ProgramaDB();
         if(!proDb.SeleccionarTodos().isEmpty()){
             listaPrograma = proDb.SeleccionarTodos();
-        }else{
             
         }
+        
+        
     }
+
     
     
     /*Selecciona todos los programas*/
@@ -82,9 +82,13 @@ public class CursoPorProgramaBean implements Serializable {
             if(getId() != 0){
                  curs.actulizar(cur);
                  setMensajeGuardar("¡Curso actualizado con éxito!");
+                 FacesContext context = FacesContext.getCurrentInstance();
+                 context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
             }else{
                  curs.registrar(cur);
                  setMensajeGuardar("¡Curso registrado con éxito!");
+                 FacesContext context = FacesContext.getCurrentInstance();
+                 context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
             }
             seleccionarTodos();
         }
@@ -109,7 +113,9 @@ public class CursoPorProgramaBean implements Serializable {
                  setMensajeFiltro("");
             }else{
                 listaTablaCurso = cur.SeleccionarTodos();
-                setMensajeFiltro("No se encontraron registros con el dato proporcionado**");
+                setMensajeFiltro("No se encontraron registros con el dato proporcionado");
+                 FacesContext context = FacesContext.getCurrentInstance();
+                  context.addMessage(null, new FacesMessage("Lo sentimos,",  mensajeFiltro) );
             }
         }
      }
