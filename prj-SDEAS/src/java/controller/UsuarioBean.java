@@ -53,10 +53,64 @@ public class UsuarioBean implements Serializable {
     LinkedList listaPro = new LinkedList();
     LinkedList listaCan = new LinkedList();
     LinkedList listaDis = new LinkedList();
-     int Id_Provincia;
-     int Id_Canton;
-     int Id_Distrito;
-     int id_Barrio;  
+    int Id_Provincia;
+    int Id_Canton;
+    int Id_Distrito;
+    int id_Barrio;
+
+    public LinkedList getListaDis() {
+        return listaDis;
+    }
+
+    public void setListaDis(LinkedList listaDis) {
+        this.listaDis = listaDis;
+    }
+
+    public LinkedList<SelectItem> getListaCan() throws SNMPExceptions, SQLException {
+        String dscCanton = "";
+        float IdCanton = 0;
+        CantonDB canDB = new CantonDB();
+
+        LinkedList<Canton> lista = new LinkedList<Canton>();
+        lista = canDB.SeleccionarTodos(this.getId_Provincia());
+
+        LinkedList listares = new LinkedList();
+        for (Iterator iter = lista.iterator(); iter.hasNext();) {
+            Canton can = (Canton) iter.next();
+            dscCanton = can.getDsc_Canton();
+            IdCanton = can.getId_Canton();
+            listares.add(new SelectItem(IdCanton, dscCanton));
+
+        }
+
+        return listares;
+
+    }
+
+    public void setListaCan(LinkedList listaCan) {
+        this.listaCan = listaCan;
+    }
+
+    public LinkedList<SelectItem> getListaPro() throws SNMPExceptions, SQLException {
+        String dscProvincia = "";
+        float Id_Provincia = 0;
+        ProvinciaDB proDB = new ProvinciaDB();
+
+        LinkedList<Provincia> lista = new LinkedList<Provincia>();
+        lista = proDB.SeleccionarTodos();
+
+        LinkedList listares = new LinkedList();
+        for (Iterator iter = lista.iterator(); iter.hasNext();) {
+            Provincia pro = (Provincia) iter.next();
+            dscProvincia = pro.getDsc_Provincia();
+            Id_Provincia = pro.getId_Provincia();
+
+            listares.add(new SelectItem(Id_Provincia, dscProvincia));
+
+        }
+
+        return listares;
+    }
 
     public int getId_Provincia() {
         return Id_Provincia;
@@ -88,68 +142,6 @@ public class UsuarioBean implements Serializable {
 
     public void setId_Barrio(int id_Barrio) {
         this.id_Barrio = id_Barrio;
-    }
-
-
-   
-
- 
-
-    public LinkedList getListaDis() {
-        return listaDis;
-    }
-
-    public void setListaDis(LinkedList listaDis) {
-        this.listaDis = listaDis;
-    }
-
-    public LinkedList<SelectItem> getListaCan() throws SNMPExceptions, SQLException {
-         String dscCanton="";
-        float IdCanton=0;
-        CantonDB canDB = new CantonDB();
-        
-        
-         LinkedList<Canton> lista = new LinkedList<Canton>();
-         lista= canDB.SeleccionarTodos(this.getId_Provincia());
-         
-          LinkedList listares = new LinkedList();
-         for(Iterator iter = lista.iterator(); iter.hasNext();){
-             Canton can=(Canton) iter.next();
-             dscCanton = can.getDsc_Canton();
-             IdCanton= can.getId_Canton();
-             listares.add(new SelectItem(IdCanton,dscCanton));
-             
-         }
-        
-        return listares;
-        
-    }
-
-    public void setListaCan(LinkedList listaCan) {
-        this.listaCan = listaCan;
-    }
-   
-
-    public LinkedList<SelectItem> getListaPro() throws SNMPExceptions, SQLException {
-        String dscProvincia="";
-        float Id_Provincia=0;
-        ProvinciaDB proDB = new ProvinciaDB();
-        
-        
-         LinkedList<Provincia> lista = new LinkedList<Provincia>();
-         lista= proDB.SeleccionarTodos();
-         
-          LinkedList listares = new LinkedList();
-         for(Iterator iter = lista.iterator(); iter.hasNext();){
-             Provincia pro=(Provincia) iter.next();
-             dscProvincia = pro.getDsc_Provincia();
-             Id_Provincia= pro.getId_Provincia();
-             
-             listares.add(new SelectItem(Id_Provincia, dscProvincia));
-             
-         }
-        
-        return listares;
     }
 
     public void setListaPro(LinkedList listaPro) {
@@ -307,7 +299,6 @@ public class UsuarioBean implements Serializable {
     public void setTipoPerfil(String tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
-  
 
     public void validaIngresar() {
         if (this.getCedula().equals("")) {
@@ -394,8 +385,7 @@ public class UsuarioBean implements Serializable {
     }
 
     public UsuarioBean() throws SNMPExceptions, SQLException {
-        
+
     }
 
-    
 }
