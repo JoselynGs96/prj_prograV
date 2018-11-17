@@ -12,11 +12,16 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
+import javax.faces.render.ResponseStateManager;
 import javax.inject.Named;
+import javax.naming.Context;
 import model.Programa;
 import model.ProgramaDB;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.ToggleEvent;
 
 /**
  *
@@ -37,13 +42,14 @@ public class ProgramaBean implements Serializable {
     String mensajeEstado;
     String mensajeGuardar;
 
-    
+   
    
     
     /**
      * Creates a new instance of ProgramaBean
      */
     public ProgramaBean() throws SNMPExceptions, SQLException {
+        
         seleccionarTodos();
     }
     
@@ -69,14 +75,21 @@ public class ProgramaBean implements Serializable {
             if(getId() != 0){
                  prog.actulizar(pro);
                  setMensajeGuardar("¡Programa actualizado con éxito!");
+                  FacesContext context = FacesContext.getCurrentInstance();
+                  context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
+                 
             }else{
                  prog.registrar(pro);
                  setMensajeGuardar("¡Programa registrado con éxito!");
+                 FacesContext context = FacesContext.getCurrentInstance();
+                 context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
+                 
             }
             seleccionarTodos();
         }
     }
      
+ 
      /*Botón editar*/
      public void editar(int i) throws SNMPExceptions, SQLException{
         ProgramaDB pro = new ProgramaDB();
@@ -96,7 +109,9 @@ public class ProgramaBean implements Serializable {
                  setMensajeFiltro("");
             }else{
                 listaTablaPrograma = pro.SeleccionarTodos();
-                setMensajeFiltro("No se encontraron registros con el dato proporcionado**");
+                setMensajeFiltro("No se encontraron registros con el dato proporcionado");
+                FacesContext context = FacesContext.getCurrentInstance();
+                  context.addMessage(null, new FacesMessage("Lo sentimos,",  mensajeFiltro) );
             }
         }
      }
@@ -144,6 +159,7 @@ public class ProgramaBean implements Serializable {
          }
          return indicador;
      }
+     
      
     /*Todos los set y get*/
     public int getId() {
@@ -233,5 +249,7 @@ public class ProgramaBean implements Serializable {
     public void setMensajeGuardar(String mensajeGuardar) {
         this.mensajeGuardar = mensajeGuardar;
     }
+    
+    
     
 }
