@@ -6,22 +6,15 @@
 package controller;
 
 import dao.SNMPExceptions;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-import javax.faces.render.ResponseStateManager;
 import javax.inject.Named;
-import javax.naming.Context;
 import model.Programa;
 import model.ProgramaDB;
-import org.primefaces.event.CloseEvent;
-import org.primefaces.event.ToggleEvent;
 
 /**
  *
