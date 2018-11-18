@@ -45,26 +45,20 @@ public class UsuariosBean implements Serializable {
     String OtrasSenas;
     TipoFuncionario TipoFuncionario;
     int edad;   
-    LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
-    LinkedList<Canton> listaCan = new LinkedList<Canton>();
-    LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
-      LinkedList<Barrio> listaBarrio = new LinkedList<Barrio>();
     int Id_Provincia;
     int Id_Canton;
     int Id_Distrito;
     int id_Barrio;
-   private boolean siguiente=false;
+    LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
+    LinkedList<Canton> listaCan = new LinkedList<Canton>();
+    LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
+    LinkedList<Barrio> listaBarrio = new LinkedList<Barrio>();
    
-    public String onFlowProcess(FlowEvent event) {
-    
-            return event.getNewStep();
-        
+    /**
+     * Creates a new instance of UsuariosBean
+     */
+    public UsuariosBean() {
     }
-     public void save() {        
-        FacesMessage msg = new FacesMessage("Successful", "Welcome :" + this.getNombre());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-   
    
     public void validaIngresar() {
         if (this.getCedula().equals("")) {
@@ -309,17 +303,7 @@ public class UsuariosBean implements Serializable {
         this.id_Barrio = id_Barrio;
     }
 
-    public boolean isSiguiente() {
-        return siguiente;
-    }
-
-    public void setSiguiente(boolean siguiente) {
-        this.siguiente = siguiente;
-    }
-    /**
-     * Creates a new instance of UsuariosBean
-     */
-    public UsuariosBean() {
-    }
+    
+   
     
 }

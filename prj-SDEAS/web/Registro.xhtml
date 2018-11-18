@@ -27,6 +27,7 @@
 
     </h:head>
     <h:body>
+        <h:form style="background: #fccc0c;">
         <!-- Header -->
         <header>
             <!-- Top Navbar -->
@@ -90,95 +91,14 @@
         </header><!-- Header end -->
 
 
-        <style type="text/css">
-            .label {
-                width:20%;
-                padding:4px;
-            }
+      
 
-            .value {
-                width:80%;
-                padding:4px;
-            }
-
-            .grid {
-                width:100%;
-            }
-
-            .error {
-                color: red;
-            }
-
-            .outputLabel {
-                font-weight: bold;
-            }
-
-            .grid {
-                width:33%;
-                padding:4px;
-            }
-        </style>
-
-
-        <h:form style="background: #fccc0c;">
-            <p:growl id="growl" sticky="true" showDetail="true"/>
-            <p:wizard flowListener="#{usuariosBean.onFlowProcess}">
-                <p:tab id="personal" title="Personal">
-                    <p:panel   header="Personal Details">
-                        <p:messages />
-                        <h:panelGrid columns="2" columnClasses="label, value">
-                           <h:outputText style="color: black" value="Tipo de cédula *" />
-                                <h:selectOneMenu style="width:150px" label="TipoIdentificacion" value="#{usuariosBean.tipoIden.nombre}" id="ident">
-                                    <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
-                                    <f:selectItem itemValue="Nacional"></f:selectItem>
-                                    <f:selectItem itemValue="Extranjero"></f:selectItem>              
-                                </h:selectOneMenu> 
-                          
-
-                                <h:outputText style="color: black" value="Cédula *" />
-                                <p:inputText value="#{usuariosBean.cedula}" required="true" label="cedula" id="cedula"/>
-                      
-
-                                <h:outputText style="color: black" value="Nombre *" />
-                                <p:inputText value="#{usuariosBean.nombre}" required="true" label="nombre" id="nombre"/>
-                                
-
-                                <h:outputText style="color: black" value="Primer Apellido *" />                                
-                                <p:inputText value="#{usuariosBean.apellido1}" required="true" label="apellido1" id="apellido1"/>
-                             
-
-                                <h:outputText style="color: black" value="Segundo Apellido *" />                                
-                                <p:inputText style="color: black" value="#{usuariosBean.apellido2}" required="true" label="apellido2" id="apellido2"/>
-                       
-
-                                <h:outputText style="color: black" value="Fecha de nacimiento: " />
-                                <p:calendar  value="#{usuariosBean.fechaNacimiento}" pattern="dd-MM-yyyy" mask="true" required="true" label="calendario" id="calendario"/>
-                             
-
-                        </h:panelGrid>
-                    </p:panel>
-                </p:tab>
-            </p:wizard>
+        
+           
 
 
 
         </h:form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </h:body>
 </html>
 
