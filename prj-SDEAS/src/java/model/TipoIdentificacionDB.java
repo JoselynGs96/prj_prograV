@@ -42,17 +42,16 @@ public class TipoIdentificacionDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "select Id_TipoIdentificacion,Id_Usuario,Dsc_TipoTelefono from TipoIdentificacion ";
+                      "select Id_TipoIdentificacion,Dsc_TipoIdentificacion from TipoIdentificacion ";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
 
-                        int Id_TipoIdentificacion = rsPA.getInt("Id_TipoIdentificacion");
-                        Usuario usurio = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
-                        String Dsc_TipoTelefono = rsPA.getString("Dsc_TipoTelefono");
+                        int Id_TipoIdentificacion = rsPA.getInt("Id_TipoIdentificacion");                
+                        String Dsc_TipoIdentificacion= rsPA.getString("Dsc_TipoIdentificacion");
                        
-                        TipoIdentificacion tip = new TipoIdentificacion(Id_TipoIdentificacion, usurio, Dsc_TipoTelefono);
+                        TipoIdentificacion tip = new TipoIdentificacion(Id_TipoIdentificacion, Dsc_TipoIdentificacion);
                         listaTipo.add(tip);
                       }
               

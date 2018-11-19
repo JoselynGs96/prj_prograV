@@ -10,17 +10,16 @@ package model;
  * @author Fabi
  */
 public class TipoIdentificacion {
-    int Id_TipoIdentificacion;
-    Usuario Usuario;
+    int Id_TipoIdentificacion; 
     String Dsc_TipoTelefono;
     
     public TipoIdentificacion(){
         
     }
-    public  TipoIdentificacion(  int Id_TipoIdentificacion, Usuario Usuario,String Dsc_TipoTelefono){
+    public  TipoIdentificacion(  int Id_TipoIdentificacion,String Dsc_TipoTelefono){
         this.setDsc_TipoTelefono(Dsc_TipoTelefono);
         this.setId_TipoIdentificacion(Id_TipoIdentificacion);
-        this.setUsuario(Usuario);
+      
     } 
     
     
@@ -43,14 +42,7 @@ public class TipoIdentificacion {
         this.Id_TipoIdentificacion = Id_TipoIdentificacion;
     }
 
-    public Usuario getUsuario() {
-        return Usuario;
-    }
-
-    public void setUsuario(Usuario Usuario) {
-        this.Usuario = Usuario;
-    }
-
+ 
     public String getDsc_TipoTelefono() {
         return Dsc_TipoTelefono;
     }

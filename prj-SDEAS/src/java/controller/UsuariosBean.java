@@ -63,7 +63,7 @@ public class UsuariosBean implements Serializable {
     int id_Barrio;
     int id_TipoTelefono;
     int id_Rol;
-    int id_TipoCedula;   
+    int id_TipoCedula;
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
     LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
@@ -71,9 +71,7 @@ public class UsuariosBean implements Serializable {
     LinkedList<TipoTelefono> listaTipoTelefono = new LinkedList<TipoTelefono>();
     LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
     LinkedList<RolUsuario> listarol = new LinkedList<RolUsuario>();
-      LinkedList<TipoIdentificacion> listaIden = new LinkedList<TipoIdentificacion>();
-
-   
+    LinkedList<TipoIdentificacion> listaIden = new LinkedList<TipoIdentificacion>();
 
     /**
      * Creates a new instance of UsuariosBean
@@ -116,11 +114,11 @@ public class UsuariosBean implements Serializable {
             listarol = rol.SeleccionarTodos();
             id_Rol = rol.SeleccionarTodos().element().getId_RolUsuario();
         }
-         if (!tipoIden.SeleccionarTodos().isEmpty()) {
+        if (!tipoIden.SeleccionarTodos().isEmpty()) {
             listaIden = tipoIden.SeleccionarTodos();
             id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
         }
-        
+
     }
 
     public void validaIngresar() {
@@ -138,7 +136,7 @@ public class UsuariosBean implements Serializable {
     }
 
     public void validaAutoRegistro() {
-        if (this.getId_TipoCedula()==0) {
+        if (this.getId_TipoCedula() == 0) {
             this.setMensaje("*Debe colocar el tipo de identificación.");
         } else {
             if (this.getCedula().equals("")) {
@@ -156,44 +154,54 @@ public class UsuariosBean implements Serializable {
                             if (this.getFechaNacimiento() == null) {
                                 this.setMensaje("*Debe colocar la fecha de nacimiento");
                             } else {
-                                if (this.getTipoTelefono().equals("-Seleccionar-")) {
-                                    this.setMensaje("*Debe colocar el tipo de telefono");
+                                if (this.getId_Provincia() == 0) {
+                                    this.setMensaje("*Debe colocar la Provincia.");
                                 } else {
-                                    if (this.getCorreo().equals("")) {
-                                        this.setMensaje("*Debe colocar un correo electrónico");
+                                    if (this.getId_Canton() == 0) {
+                                        this.setMensaje("*Debe colocar la Cantón.");
                                     } else {
-                                        if (this.getId_Provincia() == 0) {
-                                            this.setMensaje("*Debe colocar la provincia");
+                                        if (this.getId_Distrito() == 0) {
+                                            this.setMensaje("*Debe colocar la Distrito.");
                                         } else {
-                                            if (this.getId_Canton() == 0) {
-                                                this.setMensaje("*Debe colocar el Cantón");
+                                            if (this.getId_Barrio() == 0) {
+                                                this.setMensaje("*Debe colocar la Barrio.");
                                             } else {
-                                                if (this.getId_Distrito() == 0) {
-                                                    this.setMensaje("*Debe colocar el Distrito");
+                                                if (this.getOtrasSenas().equals("")) {
+                                                    this.setMensaje("*Debe colocar las otras señas.");
                                                 } else {
-                                                    if (this.getId_Barrio() == 0) {
-                                                        this.setMensaje("*Debe colocar el Barrio");
+                                                    if (this.getId_TipoTelefono() == 0) {
+                                                        this.setMensaje("*Debe colocar el tipo de Teléfono.");
                                                     } else {
-                                                        if (this.getOtrasSenas().equals("")) {
-                                                            this.setMensaje("*Debe colocar Otras señas de su direccion ");
+                                                        if (this.getNumeroTelefono().equals("")) {
+                                                            this.setMensaje("*Debe colocar el número de teléfono.");
                                                         } else {
-                                                            this.setMensaje("Datos completos se le enviará la solicitud a un coordinador y posterior mente le estará llegando un correo con el código de acceso");
+                                                            if (this.getCorreo().equals("")) {
+                                                                this.setMensaje("*Debe colocar el correo electrónico.");
+                                                            } else {
+                                                                if (this.getPrograma() == 0) {
+                                                                    this.setMensaje("*Debe colocar el porgrama al que pertenece");
+                                                                } else {
+                                                                    if (this.getId_Rol() == 0) {
+                                                                        this.setMensaje("*Debe colocar el tipo de Funcionario.");
+                                                                    }else{
+                                                                        this.setMensaje("");
+                                                                    }
 
+                                                                }
+                                                            }
                                                         }
+
                                                     }
 
                                                 }
                                             }
-
                                         }
                                     }
                                 }
                             }
                         }
                     }
-
                 }
-
             }
         }
     }
@@ -434,14 +442,16 @@ public class UsuariosBean implements Serializable {
     public void setListarol(LinkedList<RolUsuario> listarol) {
         this.listarol = listarol;
     }
-     public int getId_TipoCedula() {
+
+    public int getId_TipoCedula() {
         return id_TipoCedula;
     }
 
     public void setId_TipoCedula(int id_TipoCedula) {
         this.id_TipoCedula = id_TipoCedula;
     }
-     public LinkedList<TipoIdentificacion> getListaIden() {
+
+    public LinkedList<TipoIdentificacion> getListaIden() {
         return listaIden;
     }
 
