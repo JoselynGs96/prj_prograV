@@ -7,7 +7,7 @@ package model;
  */
 public class Barrio {
      int Id_Barrio;
-    String Dsc_Distrito;
+    String Dsc_Barrio;
     Provincia Id_Provincia;
     Canton Id_Canton;
     Distrito Id_Distrito;
@@ -16,7 +16,7 @@ public class Barrio {
     }
      public Barrio(int Id_Barrio,String Dsc_Distrito,Provincia Id_Provincia, Canton Id_Canton,Distrito Id_Distrito) {
          this.setId_Barrio(Id_Barrio);
-         this.setDsc_Distrito(Dsc_Distrito);
+         this.setDsc_Barrio(Dsc_Distrito);
          this.setId_Provincia(Id_Provincia);
          this.setId_Canton(Id_Canton);
           this.setId_Distrito(Id_Distrito);
@@ -39,12 +39,12 @@ public class Barrio {
         this.Id_Barrio = Id_Barrio;
     }
 
-    public String getDsc_Distrito() {
-        return Dsc_Distrito;
+    public String getDsc_Barrio() {
+        return Dsc_Barrio;
     }
 
-    public void setDsc_Distrito(String Dsc_Distrito) {
-        this.Dsc_Distrito = Dsc_Distrito;
+    public void setDsc_Barrio(String Dsc_Barrio) {
+        this.Dsc_Barrio = Dsc_Barrio;
     }
 
     public Provincia getId_Provincia() {
