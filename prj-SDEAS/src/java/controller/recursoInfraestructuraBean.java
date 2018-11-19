@@ -8,6 +8,7 @@ package controller;
 
 
 
+
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -20,6 +21,7 @@ import model.Recurso;
 import model.RecursoDB;
 import model.TipoRecurso;
 import model.TipoRecursoDB;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -29,14 +31,12 @@ import model.TipoRecursoDB;
 @SessionScoped
 public class recursoInfraestructuraBean implements Serializable {
     int id;
-    int cantidad;
-    int capacidad;
+    int cantidad = 0;
+    int capacidad = 0;
+    int tipoRecurso;
     String nombre;
     String descripcion;
     String estado;
-    int tipoRecurso;
-    LinkedList<Recurso> listaTablaRecurso = new LinkedList<Recurso>();
-    LinkedList<TipoRecurso> listaTipoRecurso = new LinkedList<TipoRecurso>();
     String buscarFiltro;
     String mensajeFiltro;
     String mensajeNombre;
@@ -44,14 +44,16 @@ public class recursoInfraestructuraBean implements Serializable {
     String mensajeEstado;
     String mensajeGuardar;
     String mensajeTipoRecurso;
-    
-    
-
-   
+    LinkedList<Recurso> listaTablaRecursoInfra = new LinkedList<Recurso>();
+    LinkedList<Recurso> listaTablaRecursoCom = new LinkedList<Recurso>();
+    LinkedList<Recurso> listaTablaRecursoAud = new LinkedList<Recurso>();
+    LinkedList<Recurso> listaTablaRecurso = new LinkedList<Recurso>();
+    LinkedList<TipoRecurso> listaTipoRecurso = new LinkedList<TipoRecurso>();
     /**
      * Creates a new instance of recursoInfraestructuraBean
      */
-    public recursoInfraestructuraBean() {
+    public recursoInfraestructuraBean() throws SNMPExceptions, SQLException {
+        llenarListas();
     }
     
      /*Selecciona todos los programas*/
@@ -83,15 +85,17 @@ public class recursoInfraestructuraBean implements Serializable {
                  setMensajeGuardar("¡Recurso actualizado con éxito!");
                   FacesContext context = FacesContext.getCurrentInstance();
                   context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
+                  tipoRecurso = rec.getTipoRecurso().getId();
                  
             }else{
                  recd.registrar(rec);
                  setMensajeGuardar("¡Recurso registrado con éxito!");
                  FacesContext context = FacesContext.getCurrentInstance();
                  context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
-                 
+                 tipoRecurso = rec.getTipoRecurso().getId();
             }
-            seleccionarTodos();
+            llenarListas();
+            PrimeFaces.current().executeScript("tipoRecurso();");
         }
     }
 
@@ -114,15 +118,28 @@ public class recursoInfraestructuraBean implements Serializable {
      /*Botón de buscar*/
      public void buscar() throws SNMPExceptions, SQLException{
         RecursoDB recd = new RecursoDB();
+        listaTablaRecursoAud.clear();
+        listaTablaRecursoCom.clear();
+        listaTablaRecursoInfra.clear();
         if(!getBuscarFiltro().equals("")){
             if(!recd.FiltrarRecurso(buscarFiltro).isEmpty()){
-                listaTablaRecurso = recd.FiltrarRecurso(buscarFiltro);
+                for (int i = 0; i < recd.SeleccionarTodos().size(); i++) {
+                Recurso get = recd.SeleccionarTodos().get(i);
+                if(get.getTipoRecurso().getId()==1){
+                    listaTablaRecursoInfra.add(get);
+                }else{
+                    if(get.getTipoRecurso().getId()==2){
+                        listaTablaRecursoCom.add(get);
+                    }else{
+                        listaTablaRecursoAud.add(get);
+                    }
+                }
+            }
                  setMensajeFiltro("");
             }else{
-                listaTablaRecurso = recd.SeleccionarTodos();
+                llenarListas();
                 setMensajeFiltro("No se encontraron registros con el dato proporcionado");
-                FacesContext context = FacesContext.getCurrentInstance();
-                  context.addMessage(null, new FacesMessage("Lo sentimos,",  mensajeFiltro) );
+                
             }
         }
      }
@@ -137,13 +154,33 @@ public class recursoInfraestructuraBean implements Serializable {
          setMensajeEstado("");
          setMensajeDescripcion("");
          setMensajeNombre("");
-         setTipoRecurso(0);
+         setTipoRecurso(1);
          setCantidad(0);
          setCapacidad(0);
+         PrimeFaces.current().executeScript("tipoRecurso();");
      }
      
-     /*Botón de ayuda*/
-     
+     /*Listas*/
+     public void llenarListas() throws SNMPExceptions, SQLException{
+          RecursoDB d = new RecursoDB();
+          listaTablaRecursoAud.clear();
+          listaTablaRecursoCom.clear();
+          listaTablaRecursoInfra.clear();
+            for (int i = 0; i < d.SeleccionarTodos().size(); i++) {
+                Recurso get = d.SeleccionarTodos().get(i);
+                if(get.getTipoRecurso().getId()==1){
+                    listaTablaRecursoInfra.add(get);
+                }else{
+                    if(get.getTipoRecurso().getId()==2){
+                        listaTablaRecursoCom.add(get);
+                    }else{
+                        listaTablaRecursoAud.add(get);
+                    }
+                }
+            }
+        
+           
+     }
      
      /*Validaciones*/
      public boolean Validaciones(){
@@ -318,7 +355,29 @@ public class recursoInfraestructuraBean implements Serializable {
         return tdb.SeleccionarTodos();
     }
 
-    public void setListaTipoRecurso(LinkedList<TipoRecurso> listaTipoRecurso) {
-        this.listaTipoRecurso = listaTipoRecurso;
+    public LinkedList<Recurso> getListaTablaRecursoInfra() {
+        return listaTablaRecursoInfra;
     }
+
+    public void setListaTablaRecursoInfra(LinkedList<Recurso> listaTablaRecursoInfra) {
+        this.listaTablaRecursoInfra = listaTablaRecursoInfra;
+    }
+
+    public LinkedList<Recurso> getListaTablaRecursoCom() {
+        return listaTablaRecursoCom;
+    }
+
+    public void setListaTablaRecursoCom(LinkedList<Recurso> listaTablaRecursoCom) {
+        this.listaTablaRecursoCom = listaTablaRecursoCom;
+    }
+
+    public LinkedList<Recurso> getListaTablaRecursoAud() {
+        return listaTablaRecursoAud;
+    }
+
+    public void setListaTablaRecursoAud(LinkedList<Recurso> listaTablaRecursoAud) {
+        this.listaTablaRecursoAud = listaTablaRecursoAud;
+    }
+
+    
 }

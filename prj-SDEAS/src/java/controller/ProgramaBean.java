@@ -102,8 +102,7 @@ public class ProgramaBean implements Serializable {
             }else{
                 listaTablaPrograma = pro.SeleccionarTodos();
                 setMensajeFiltro("No se encontraron registros con el dato proporcionado");
-                FacesContext context = FacesContext.getCurrentInstance();
-                  context.addMessage(null, new FacesMessage("Lo sentimos,",  mensajeFiltro) );
+               
             }
         }
      }
