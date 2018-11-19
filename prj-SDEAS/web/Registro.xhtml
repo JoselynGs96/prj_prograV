@@ -96,7 +96,7 @@
                 <h3 style="margin-top:0; background:#fccc0c; " >Registrarte</h3>
                 <p:tabView>
                     <p:tab title="Personal">
-                        <h:panelGrid columns="3" cellpadding="10">
+                        <h:panelGrid columns="2" cellpadding="10">
                             <h:outputText value="Tipo de cédula *" />
                             <h:selectOneMenu style="width:150px;float: right" label="TipoIdentificacion" id="ident">
                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
@@ -128,7 +128,7 @@
                         </h:panelGrid>
                     </p:tab>
                     <p:tab id="direcc" title="Dirección">
-                        <h:panelGrid columns="3" cellpadding="10">
+                        <h:panelGrid columns="2" cellpadding="10">
                             <h:outputText value="Provincia *" />
                             <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Provincia}" id="Provincia" >
                                 <f:selectItems var="pro" value="#{usuariosBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
@@ -158,8 +158,7 @@
                         </h:panelGrid>
                     </p:tab>
                     <p:tab title="Contacto">
-                        <h:panelGrid columns="3" cellpadding="10">
-                            <h:outputText value="Tipo Telefono: *" />
+                        <h:panelGrid columns="2" cellpadding="10">                           
                              <h:outputText value="Tipo Telefono: *" />
                             <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_TipoTelefono}" id="tel" >
                                 <f:selectItems var="tel" value="#{usuariosBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
@@ -167,23 +166,21 @@
                            
 
                             <h:outputText value="Número: *" />
-                            <h:inputText style="float: right" id="numero" value="#{usuarioBean.numeroTelefono}"  class="form-inline" ></h:inputText>  
+                            <h:inputText  style="width:100%;" id="numero" value="#{usuarioBean.numeroTelefono}"  class="form-inline" ></h:inputText>  
                             
 
                             <h:outputText value="Correo *" />
-                            <h:inputText style="float: right" id="correo" value="#{usuarioBean.correo}"  class="form-inline" ></h:inputText>  
+                            <h:inputText style="width:100%"  id="correo" value="#{usuarioBean.correo}"  class="form-inline" ></h:inputText>  
                             
 
                             <h:outputText value="Programa DEAS: *" />
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.programa}" id="Progra">
-                                <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
-                                <f:selectItem itemValue="11"></f:selectItem>
-                                <f:selectItem itemValue="12"></f:selectItem>              
+                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.programa}" id="tel" >
+                                <f:selectItems var="pro" value="#{usuariosBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
                             </h:selectOneMenu>
                            
 
                             <h:outputText value="Tipo de Funcionario: *" />
-                            <h:selectOneMenu style="width:150px;float: right" value="#{usuarioBean.tipoFuncionario}" id="fun">
+                            <h:selectOneMenu style="width:150px;" value="#{usuarioBean.tipoFuncionario}" id="fun">
                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="Docente"></f:selectItem>
                                 <f:selectItem itemValue="Administrativo"></f:selectItem>              

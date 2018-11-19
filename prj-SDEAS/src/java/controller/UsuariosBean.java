@@ -20,6 +20,8 @@ import model.Canton;
 import model.CantonDB;
 import model.Distrito;
 import model.DistritoDB;
+import model.Programa;
+import model.ProgramaDB;
 import model.Provincia;
 import model.ProvinciaDB;
 import model.TipoFuncionario;
@@ -49,7 +51,7 @@ public class UsuariosBean implements Serializable {
     String apellido2;
     TipoTelefono tipoTelefono;
     String NumeroTelefono;
-    String Programa;
+    int Programa;
     String OtrasSenas;
     TipoFuncionario TipoFuncionario;
     int edad;
@@ -62,10 +64,8 @@ public class UsuariosBean implements Serializable {
     LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
     LinkedList<Barrio> listaBarrio = new LinkedList<Barrio>();
     int id_TipoTelefono;
-     LinkedList<TipoTelefono> listaTipoTelefono = new LinkedList<TipoTelefono>();
-
-   
-   
+    LinkedList<TipoTelefono> listaTipoTelefono = new LinkedList<TipoTelefono>();
+    LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
 
     /**
      * Creates a new instance of UsuariosBean
@@ -75,7 +75,8 @@ public class UsuariosBean implements Serializable {
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();
         BarrioDB barr = new BarrioDB();
-        TipoTelefonoDB  tel = new TipoTelefonoDB();
+        TipoTelefonoDB tel = new TipoTelefonoDB();
+        ProgramaDB progra = new ProgramaDB();
 
         if (!pro.SeleccionarTodos().isEmpty()) {
             listaPro = pro.SeleccionarTodos();
@@ -93,9 +94,13 @@ public class UsuariosBean implements Serializable {
             listaBarrio = barr.SeleccionarTodos(Id_Provincia, Id_Canton, Id_Distrito);
             id_Barrio = barr.SeleccionarTodos(Id_Provincia, Id_Canton, Id_Distrito).element().getId_Barrio();
         }
-         if (!tel.SeleccionarTodos().isEmpty()) {
+        if (!tel.SeleccionarTodos().isEmpty()) {
             listaTipoTelefono = tel.SeleccionarTodos();
             id_TipoTelefono = tel.SeleccionarTodos().element().getId_Telefono();
+        }
+        if (!progra.SeleccionarTodos().isEmpty()) {
+            listaPrograma = progra.SeleccionarTodos();
+            Programa = progra.SeleccionarTodos().element().getId();
         }
     }
 
@@ -138,56 +143,53 @@ public class UsuariosBean implements Serializable {
                                     if (this.getCorreo().equals("")) {
                                         this.setMensaje("*Debe colocar un correo electrónico");
                                     } else {
-                                        if (this.getPrograma().equals("-Seleccionar-")) {
-                                            this.setMensaje("*Debe colocar el programa al que pertenece");
+                                        if (this.getTipoFuncionario().equals("-Seleccionar-")) {
+                                            this.setMensaje("*Debe colocar el tipo de funcionario");
                                         } else {
-                                            if (this.getTipoFuncionario().equals("-Seleccionar-")) {
-                                                this.setMensaje("*Debe colocar el tipo de funcionario");
+                                            if (this.getId_Provincia() == 0) {
+                                                this.setMensaje("*Debe colocar la provincia");
                                             } else {
-                                                if (this.getId_Provincia() == 0) {
-                                                    this.setMensaje("*Debe colocar la provincia");
+                                                if (this.getId_Canton() == 0) {
+                                                    this.setMensaje("*Debe colocar el Cantón");
                                                 } else {
-                                                    if (this.getId_Canton() == 0) {
-                                                        this.setMensaje("*Debe colocar el Cantón");
+                                                    if (this.getId_Distrito() == 0) {
+                                                        this.setMensaje("*Debe colocar el Distrito");
                                                     } else {
-                                                        if (this.getId_Distrito() == 0) {
-                                                            this.setMensaje("*Debe colocar el Distrito");
+                                                        if (this.getId_Barrio() == 0) {
+                                                            this.setMensaje("*Debe colocar el Barrio");
                                                         } else {
-                                                            if (this.getId_Barrio() == 0) {
-                                                                this.setMensaje("*Debe colocar el Barrio");
+                                                            if (this.getOtrasSenas().equals("")) {
+                                                                this.setMensaje("*Debe colocar Otras señas de su direccion ");
                                                             } else {
-                                                                if (this.getOtrasSenas().equals("")) {
-                                                                    this.setMensaje("*Debe colocar Otras señas de su direccion ");
-                                                                } else {
-                                                                    this.setMensaje("Datos completos se le enviará la solicitud a un coordinador y posterior mente le estará llegando un correo con el código de acceso");
+                                                                this.setMensaje("Datos completos se le enviará la solicitud a un coordinador y posterior mente le estará llegando un correo con el código de acceso");
 
-                                                                }
                                                             }
                                                         }
                                                     }
-
                                                 }
                                             }
+
                                         }
                                     }
                                 }
                             }
                         }
                     }
+
                 }
 
             }
         }
     }
-     public LinkedList<TipoTelefono> getListaTipoTelefono() {
-         
+
+    public LinkedList<TipoTelefono> getListaTipoTelefono() {
+
         return listaTipoTelefono;
     }
 
     public void setListaTipoTelefono(LinkedList<TipoTelefono> listaTipoTelefono) {
         this.listaTipoTelefono = listaTipoTelefono;
     }
-
 
     public String getCedula() {
         return cedula;
@@ -252,7 +254,8 @@ public class UsuariosBean implements Serializable {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-     public int getId_TipoTelefono() {
+
+    public int getId_TipoTelefono() {
         return id_TipoTelefono;
     }
 
@@ -300,11 +303,11 @@ public class UsuariosBean implements Serializable {
         this.NumeroTelefono = NumeroTelefono;
     }
 
-    public String getPrograma() {
+    public int getPrograma() {
         return Programa;
     }
 
-    public void setPrograma(String Programa) {
+    public void setPrograma(int Programa) {
         this.Programa = Programa;
     }
 
@@ -398,6 +401,14 @@ public class UsuariosBean implements Serializable {
 
     public void setId_Barrio(int id_Barrio) {
         this.id_Barrio = id_Barrio;
+    }
+
+    public LinkedList<Programa> getListaPrograma() {
+        return listaPrograma;
+    }
+
+    public void setListaPrograma(LinkedList<Programa> listaPrograma) {
+        this.listaPrograma = listaPrograma;
     }
 
 }
