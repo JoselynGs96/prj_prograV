@@ -42,7 +42,6 @@ public class ProgramaBean implements Serializable {
      * Creates a new instance of ProgramaBean
      */
     public ProgramaBean() throws SNMPExceptions, SQLException {
-        
         seleccionarTodos();
     }
     
@@ -121,7 +120,7 @@ public class ProgramaBean implements Serializable {
          setMensajeNombre("");
      }
      
-     /*Botón de ayuda*/
+     
      
      
      /*Validaciones*/

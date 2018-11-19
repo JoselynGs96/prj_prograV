@@ -48,9 +48,8 @@ public class CursoPorProgramaBean implements Serializable {
         ProgramaDB proDb = new ProgramaDB();
         if(!proDb.SeleccionarTodos().isEmpty()){
             listaPrograma = proDb.SeleccionarTodos();
-            
         }
-        
+        seleccionarTodos();
         
     }
 

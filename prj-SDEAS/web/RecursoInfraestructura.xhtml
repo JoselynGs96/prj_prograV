@@ -26,10 +26,25 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <script type="application/javascript">
+                                 $(document).ready(function () {
+                                   var cod = document.getElementById("myForm:ti").value;
+                                   
+                                   if(cod==1){
+                                       $("#ct").hide();
+                                       $("#cp").show();
+                                   }else{
+                                       $("#cp").hide();
+                                       $("#ct").show();
+                                   }
+                                  });
+    </script>
+    
     </h:head>
     <h:body>
   <section id="container">
-      <h:form>
+      <h:form id="myForm">
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
       *********************************************************************************************************************************************************** -->
@@ -139,43 +154,48 @@
                             <h4><i class="fa fa-angle-right">&nbsp; Datos: </i></h4>
                             <div style="margin-left: 15px">
                             <h:inputHidden value="#{recursoInfraestructuraBean.id}"></h:inputHidden>
-                            <h:outputLabel>Nombre del Recurso</h:outputLabel><h:inputText  class="form-control"  style="width: 400px" value="#{recursoInfraestructuraBean.nombre}" ></h:inputText>
-                            <h:outputText style="color: red;" value="#{recursoInfraestructuraBean.mensajeNombre}"></h:outputText>
+                            <p:outputLabel>Nombre del Recurso</p:outputLabel><p:inputText  class="form-control"  style="width: 400px" value="#{recursoInfraestructuraBean.nombre}" ></p:inputText>
+                            <p:outputLabel style="color: red;" value="#{recursoInfraestructuraBean.mensajeNombre}"></p:outputLabel>
                             <br></br>
-                            <h:outputLabel>Tipo de Recurso:</h:outputLabel>
-                            <h:selectOneMenu class="form-control"   style="width: 400px" value="#{recursoInfraestructuraBean.listaTipoRecurso}" >
-                                <f:selectItems var="tip" value="#{recursoInfraestructuraBean.listaTipoRecurso}" itemLabel="#{tip.nombre}" itemValue="#{tip.id}"></f:selectItems>
+                            <p:outputLabel>Tipo de Recurso:</p:outputLabel>
+                            <h:selectOneMenu  onchange="submit()" id="ti" class="form-control"  style="width: 400px" value="#{recursoInfraestructuraBean.listaTipoRecurso}" >
+                                <f:selectItems   var="tip" value="#{recursoInfraestructuraBean.listaTipoRecurso}" itemLabel="#{tip.nombre}" itemValue="#{tip.id}"></f:selectItems>
                             </h:selectOneMenu>
                             <br></br>
-                            <h:outputLabel>Cantidad:</h:outputLabel>
+                            <div id="cp">
+                                <p:outputLabel>Capacidad:</p:outputLabel>
+                                <br></br>
+                                <p:spinner  value="#{recursoInfraestructuraBean.capacidad}" min="0" />
+                                <br></br>
+                            </div>
+                            <div id="ct">
+                                <p:outputLabel>Cantidad:</p:outputLabel>
+                                <br></br>
+                                <p:spinner  value="#{recursoInfraestructuraBean.cantidad}" min="0" />
+                                <br></br>
+                            </div>
+                            
+                            <p:outputLabel style="color: red;" value="#{recursoInfraestructuraBean.mensajeTipoRecurso}"></p:outputLabel>
                             <br></br>
-                            <p:spinner  value="#{recursoInfraestructuraBean.cantidad}" min="0" />
+                            <p:outputLabel>Descripción:</p:outputLabel>
                             <br></br>
-                            <h:outputLabel>Capacidad:</h:outputLabel>
-                            <br></br>
-                            <p:spinner  value="#{recursoInfraestructuraBean.capacidad}" min="0" />
-                            <br></br>
-                            <h:outputText style="color: red;" value="#{recursoInfraestructuraBean.mensajeTipoRecurso}"></h:outputText>
-                            <br></br>
-                            <h:outputLabel>Descripción:</h:outputLabel>
-                            <br></br>
-                            <h:inputTextarea  class="form-control "  style="width: 400px" value="#{recursoInfraestructuraBean.descripcion}"></h:inputTextarea>
-                            <h:outputText style="color: red;" value="#{recursoInfraestructuraBean.mensajeDescripcion}"></h:outputText>
+                            <p:inputTextarea  class="form-control "  style="width: 400px" value="#{recursoInfraestructuraBean.descripcion}"></p:inputTextarea>
+                            <p:outputLabel style="color: red;" value="#{recursoInfraestructuraBean.mensajeDescripcion}"></p:outputLabel>
                             
                             <br></br>
-                            <h:outputLabel>Estado:</h:outputLabel>
-                            <h:selectOneRadio layout="pageDirection" value="#{recursoInfraestructuraBean.estado}" >
+                            <p:outputLabel>Estado:</p:outputLabel>
+                            <p:selectOneRadio layout="pageDirection" value="#{recursoInfraestructuraBean.estado}" >
                                 <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;&#10004;" ></f:selectItem>
                                 <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;&#10008;"></f:selectItem>
-                            </h:selectOneRadio>
+                            </p:selectOneRadio>
                             <br></br>
-                            <h:outputText style="color: red;" value="#{recursoInfraestructuraBean.mensajeEstado}"></h:outputText>
+                            <p:outputLabel style="color: red;" value="#{recursoInfraestructuraBean.mensajeEstado}"></p:outputLabel>
                             </div>
                             <br></br>
                             <br></br>
                             <div class="btn-group btn-group-justified">
 				<div class="btn-group">
-                                    <p:commandButton class="btn btn-success" actionListener="#{recursoInfraestructuraBean.nuevo()}" value="&#9998; Nuevo"></p:commandButton>
+                                    <p:commandButton class="btn btn-success" actionListener="#{recursoInfraestructuraBean.nuevo()}" update="@form" value="&#9998; Nuevo"></p:commandButton>
 				</div>
 				<div class="btn-group">
                                	    <p:commandButton class="btn btn-success" actionListener="#{recursoInfraestructuraBean.insertarRecurso()}" update="@form" value="&#9989; Guardar"></p:commandButton>
