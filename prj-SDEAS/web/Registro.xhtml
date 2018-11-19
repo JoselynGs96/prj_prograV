@@ -175,16 +175,14 @@
 
 
                             <h:outputText value="Programa DEAS: *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.programa}" id="tel" >
+                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.programa}" id="programa" >
                                 <f:selectItems var="pro" value="#{usuariosBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
                             </h:selectOneMenu>
 
 
                             <h:outputText value="Tipo de Funcionario: *" />
-                            <h:selectOneMenu style="width:150px;" value="#{usuarioBean.tipoFuncionario}" id="fun">
-                                <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
-                                <f:selectItem itemValue="Docente"></f:selectItem>
-                                <f:selectItem itemValue="Administrativo"></f:selectItem>              
+                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Rol}" id="rol" >
+                                <f:selectItems var="rol" value="#{usuariosBean.listarol}" itemLabel="#{rol.dsc_RolUsuario}" itemValue="#{rol.id_RolUsuario}"></f:selectItems>
                             </h:selectOneMenu>
 
 
