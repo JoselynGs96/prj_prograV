@@ -138,11 +138,11 @@ public class UsuariosBean implements Serializable {
     }
 
     public void validaAutoRegistro() {
-        if (this.getTipoIden().equals("-Seleccionar-")) {
+        if (this.getId_TipoCedula()==0) {
             this.setMensaje("*Debe colocar el tipo de identificación.");
         } else {
             if (this.getCedula().equals("")) {
-                this.setMensaje("*Debe colocar el usuario.");
+                this.setMensaje("*Debe colocar la cédula de identificación.");
             } else {
                 if (this.getNombre().equals("")) {
                     this.setMensaje("*Debe colocar el Nombre");
