@@ -50,18 +50,18 @@ public class BarrioDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Barrio,Dsc_Barrio, Id_Provincia,Id_Canton,Id_Distrito from Barrio where Id_Provincia="+Id_Provincia+"and Id_Canton="+Id_Canton+"and id_Distrito="+id_Distrito;
+                    = "SELECT Id_Barrio,Dsc_Barrio, Id_Provincia,Id_Canton,Id_Distrito from Barrio where Id_Provincia="+Id_Provincia+" and Id_Canton="+Id_Canton+"and id_Distrito="+id_Distrito;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
 
-                int IdBarrio  = rsPA.getInt("IdBarrio");
+                int Id_Barrio  = rsPA.getInt("Id_Barrio");
                 String Dsc_Barrio = rsPA.getString("Dsc_Barrio");
                 Provincia provincia = proDB.SeleccionarPorId(rsPA.getInt("Id_Provincia"));
-                Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"));
-                Distrito dis= disDB.SeleccionarPorId(rsPA.getInt("Id_Distrito"));
-                barr = new Barrio(IdBarrio,Dsc_Barrio, provincia,can,dis);
+                Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"),rsPA.getInt("Id_Provincia"));
+                Distrito dis= disDB.SeleccionarPorId(rsPA.getInt("Id_Distrito"),rsPA.getInt("Id_Canton"),rsPA.getInt("Id_Provincia"));
+                barr = new Barrio(Id_Barrio,Dsc_Barrio, provincia,can,dis);
                 listaBarrio.add(barr);
             }
 

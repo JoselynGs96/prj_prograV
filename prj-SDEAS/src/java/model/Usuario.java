@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class Usuario {
     int cedula;
-    String TipoIden;
+    int TipoIden;
     Date fechaNacimiento;
     String correo;
     String contrasenna;
@@ -35,8 +35,18 @@ public class Usuario {
     String TipoFuncionario;
     int edad;
     
-    public Usuario() {
+    public Usuario(int Id_Usuario, int TipoIdentificacion,String Nombre,String Apellido1,String Apellido2,String Correo) {
+        this.setCedula(Id_Usuario);
+        this.setTipoIden(TipoIdentificacion);
+        this.setNombre(Nombre);
+        this.setApellido1(Apellido1);
+        this.setApellido2(Apellido2);
+        this.setCorreo(Correo);
     }   
+
+    public Usuario() {
+    }
+    
    
 
     public int getCedula() {
@@ -47,11 +57,11 @@ public class Usuario {
         this.cedula = cedula;
     }
 
-    public String getTipoIden() {
+    public int getTipoIden() {
         return TipoIden;
     }
 
-    public void setTipoIden(String TipoIden) {
+    public void setTipoIden(int TipoIden) {
         this.TipoIden = TipoIden;
     }
 

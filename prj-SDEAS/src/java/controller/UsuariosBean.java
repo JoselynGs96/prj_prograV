@@ -27,6 +27,8 @@ import model.ProvinciaDB;
 import model.RolUsuario;
 import model.RolUsuarioDB;
 import model.TipoIden;
+import model.TipoIdentificacion;
+import model.TipoIdentificacionDB;
 import model.TipoTelefono;
 import model.TipoTelefonoDB;
 import org.primefaces.event.FlowEvent;
@@ -59,15 +61,19 @@ public class UsuariosBean implements Serializable {
     int Id_Canton;
     int Id_Distrito;
     int id_Barrio;
+    int id_TipoTelefono;
+    int id_Rol;
+    int id_TipoCedula;   
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
     LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
     LinkedList<Barrio> listaBarrio = new LinkedList<Barrio>();
-    int id_TipoTelefono;
     LinkedList<TipoTelefono> listaTipoTelefono = new LinkedList<TipoTelefono>();
     LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
-    int id_Rol;
     LinkedList<RolUsuario> listarol = new LinkedList<RolUsuario>();
+      LinkedList<TipoIdentificacion> listaIden = new LinkedList<TipoIdentificacion>();
+
+   
 
     /**
      * Creates a new instance of UsuariosBean
@@ -80,6 +86,7 @@ public class UsuariosBean implements Serializable {
         TipoTelefonoDB tel = new TipoTelefonoDB();
         ProgramaDB progra = new ProgramaDB();
         RolUsuarioDB rol = new RolUsuarioDB();
+        TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
 
         if (!pro.SeleccionarTodos().isEmpty()) {
             listaPro = pro.SeleccionarTodos();
@@ -109,6 +116,11 @@ public class UsuariosBean implements Serializable {
             listarol = rol.SeleccionarTodos();
             id_Rol = rol.SeleccionarTodos().element().getId_RolUsuario();
         }
+         if (!tipoIden.SeleccionarTodos().isEmpty()) {
+            listaIden = tipoIden.SeleccionarTodos();
+            id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
+        }
+        
     }
 
     public void validaIngresar() {
@@ -421,6 +433,20 @@ public class UsuariosBean implements Serializable {
 
     public void setListarol(LinkedList<RolUsuario> listarol) {
         this.listarol = listarol;
+    }
+     public int getId_TipoCedula() {
+        return id_TipoCedula;
+    }
+
+    public void setId_TipoCedula(int id_TipoCedula) {
+        this.id_TipoCedula = id_TipoCedula;
+    }
+     public LinkedList<TipoIdentificacion> getListaIden() {
+        return listaIden;
+    }
+
+    public void setListaIden(LinkedList<TipoIdentificacion> listaIden) {
+        this.listaIden = listaIden;
     }
 
 }

@@ -102,5 +102,44 @@ public class UsuarioDB {
         }
 
     }
+     public Usuario SeleccionarPorId(int idUsuario) throws SNMPExceptions,
+            SQLException {
+        String select = "";        
+        ResultSet rsPA = null;
+        Usuario usu = null;
+
+        try {
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            select
+                    = "select Id_Usuario, TipoIdentificacion,Nombre,Apellido1,Apellido2,Correo from Usuario where Id_Usuario="+idUsuario;
+
+            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+
+            while (rsPA.next()) {
+
+               int Id_Usuario = rsPA.getInt("Id_Usuario");
+               int TipoIdentificacion = rsPA.getInt("TipoIdentificacion");
+                String Nombre = rsPA.getString("Nombre");
+                String Apellido1 = rsPA.getString("Apellido1");
+                String Apellido2 = rsPA.getString("Apellido2");
+                 String Correo = rsPA.getString("Correo");              
+                 usu = new Usuario(Id_Usuario,TipoIdentificacion,Nombre,Apellido1,Apellido2,Correo);          
+            }
+
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return usu;
+    }
 
 }

@@ -59,7 +59,7 @@ public class DistritoDB {
                 int Id_Distrito  = rsPA.getInt("Id_Distrito");
                 String Dsc_Distrito = rsPA.getString("Dsc_Distrito");
                 Provincia provincia = proDB.SeleccionarPorId(rsPA.getInt("Id_Provincia"));
-                Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"));
+                Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"),rsPA.getInt("Id_Provincia"));
                 dis = new Distrito(Id_Distrito,Dsc_Distrito, provincia,can);
                 listaDistritos.add(dis);
             }
@@ -78,7 +78,7 @@ public class DistritoDB {
 
         return listaDistritos;
     }
-    public Distrito SeleccionarPorId(int idDis) throws SNMPExceptions,
+    public Distrito SeleccionarPorId(int idDis, int id_can, int id_provincia) throws SNMPExceptions,
             SQLException {
         String select = "";
         ProvinciaDB proDB = new ProvinciaDB();
@@ -89,7 +89,7 @@ public class DistritoDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Distrito,Dsc_Distrito, Id_Provincia,Id_Canton from Distrito = " + idDis;
+                    = "SELECT Id_Distrito,Dsc_Distrito, Id_Provincia,Id_Canton from Distrito where Id_Distrito = "+idDis+"and Id_Canton="+id_can+"and Id_Provincia="+id_provincia ;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -98,7 +98,7 @@ public class DistritoDB {
                int Id_Distrito  = rsPA.getInt("Id_Distrito");
                 String Dsc_Distrito = rsPA.getString("Dsc_Distrito");
                 Provincia provincia = proDB.SeleccionarPorId(rsPA.getInt("Id_Provincia"));
-                Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"));
+                Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"),rsPA.getInt("Id_Provincia"));
                 dis = new Distrito(Id_Distrito,Dsc_Distrito, provincia,can);              
             }
 

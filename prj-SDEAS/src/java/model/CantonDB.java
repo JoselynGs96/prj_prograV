@@ -74,7 +74,7 @@ public class CantonDB {
 
         return listaCantones;
     }
-      public Canton SeleccionarPorId(int idCanton) throws SNMPExceptions,
+      public Canton SeleccionarPorId(int idCanton,int id_Provincia) throws SNMPExceptions,
             SQLException {
         String select = "";
           ProvinciaDB proDB = new ProvinciaDB();
@@ -85,7 +85,7 @@ public class CantonDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Canton,Dsc_Canton, Id_Provincia from Canton WHERE Id_Canton = " + idCanton;
+                    = "SELECT Id_Canton,Dsc_Canton, Id_Provincia from Canton WHERE Id_Canton = " + idCanton+"and Id_Provincia="+id_Provincia;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
