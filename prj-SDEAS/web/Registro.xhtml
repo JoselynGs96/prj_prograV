@@ -98,32 +98,33 @@
                     <p:tab title="Personal">
                         <h:panelGrid columns="2" cellpadding="10">
                             <h:outputText value="Tipo de cédula *" />
-                            <h:selectOneMenu style="width:150px;float: right" label="TipoIdentificacion" id="ident">
+                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.tipoIden.id}" id="ident" >
+
                                 <f:selectItem itemValue="-Seleccionar-"></f:selectItem>
                                 <f:selectItem itemValue="Nacional"></f:selectItem>
                                 <f:selectItem itemValue="Extranjero"></f:selectItem>              
                             </h:selectOneMenu> 
-                           
+
 
                             <h:outputText value="Cédula *" />
-                            <p:inputText value="#{usuariosBean.cedula}" required="true" label="cedula" id="cedula"/>
-                          
+                            <p:inputText style="float: left " value="#{usuariosBean.cedula}" required="true" label="cedula" id="cedula"/>
+
 
                             <h:outputText value="Nombre *" />
-                            <p:inputText value="#{usuariosBean.nombre}" required="true" label="nombre" id="nombre"/>
-                          
+                            <p:inputText style="float: left " value="#{usuariosBean.nombre}" required="true" label="nombre" id="nombre"/>
+
 
                             <h:outputText value="Primer Apellido *" />                                
-                            <p:inputText value="#{usuariosBean.apellido1}" required="true" label="apellido1" id="apellido1"/>
-                           
+                            <p:inputText style="float: left " value="#{usuariosBean.apellido1}" required="true" label="apellido1" id="apellido1"/>
+
 
                             <h:outputText value="Segundo Apellido *" />                                
-                            <p:inputText value="#{usuariosBean.apellido2}" required="true" label="apellido2" id="apellido2"/>
-                        
+                            <p:inputText style="float: left " value="#{usuariosBean.apellido2}" required="true" label="apellido2" id="apellido2"/>
+
 
                             <h:outputText value="Fecha de nacimiento: " />
-                            <p:calendar  value="#{usuariosBean.fechaNacimiento}" pattern="dd-MM-yyyy" mask="true" required="true" label="calendario" id="calendario"/>
-                           
+                            <p:calendar style="float: left " value="#{usuariosBean.fechaNacimiento}" pattern="dd-MM-yyyy" mask="true" required="true" label="calendario" id="calendario"/>
+
 
                         </h:panelGrid>
                     </p:tab>
@@ -133,51 +134,51 @@
                             <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Provincia}" id="Provincia" >
                                 <f:selectItems var="pro" value="#{usuariosBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
                             </h:selectOneMenu>
-                      
+
 
                             <h:outputText value="Canton *" />
                             <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Canton}" id="Canton" >
                                 <f:selectItems var="can" value="#{usuariosBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
                             </h:selectOneMenu>
-                         
+
                             <h:outputText value="Distrito *" />
                             <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Distrito}" id="Distrito" >
                                 <f:selectItems var="dis" value="#{usuariosBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.dsc_Distrito}"></f:selectItems>
                             </h:selectOneMenu>
-                           
+
 
                             <h:outputText value="Barrio *" />
                             <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Distrito}" id="Barrio" >
                                 <f:selectItems var="bar" value="#{usuariosBean.listaBarrio}" itemLabel="#{bar.dsc_Distrito}" itemValue="#{bar.dsc_Distrito}"></f:selectItems>
                             </h:selectOneMenu>
-                        
+
 
                             <h:outputText value="Otras señas *" />
-                            <h:inputTextarea value="#{usuariosBean.otrasSenas}" class="col-md-12" id="otras"> </h:inputTextarea>
-                           
+                            <p:inputTextarea value="#{usuariosBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
+
                         </h:panelGrid>
                     </p:tab>
                     <p:tab title="Contacto">
                         <h:panelGrid columns="2" cellpadding="10">                           
-                             <h:outputText value="Tipo Telefono: *" />
+                            <h:outputText value="Tipo Telefono: *" />
                             <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_TipoTelefono}" id="tel" >
                                 <f:selectItems var="tel" value="#{usuariosBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
                             </h:selectOneMenu>
-                           
+
 
                             <h:outputText value="Número: *" />
-                            <h:inputText  style="width:100%;" id="numero" value="#{usuarioBean.numeroTelefono}"  class="form-inline" ></h:inputText>  
-                            
+                            <p:inputText  style="float: left " id="numero" value="#{usuarioBean.numeroTelefono}"  class="form-inline" ></p:inputText>  
+
 
                             <h:outputText value="Correo *" />
-                            <h:inputText style="width:100%"  id="correo" value="#{usuarioBean.correo}"  class="form-inline" ></h:inputText>  
-                            
+                            <p:inputText style="float: left " id="correo" value="#{usuarioBean.correo}"  class="form-inline" ></p:inputText>  
+
 
                             <h:outputText value="Programa DEAS: *" />
                             <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.programa}" id="tel" >
                                 <f:selectItems var="pro" value="#{usuariosBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
                             </h:selectOneMenu>
-                           
+
 
                             <h:outputText value="Tipo de Funcionario: *" />
                             <h:selectOneMenu style="width:150px;" value="#{usuarioBean.tipoFuncionario}" id="fun">
@@ -185,17 +186,19 @@
                                 <f:selectItem itemValue="Docente"></f:selectItem>
                                 <f:selectItem itemValue="Administrativo"></f:selectItem>              
                             </h:selectOneMenu>
-                           
-                         
-                                <h:commandButton action="#{usuarioBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
-                                                 class="btn btn-primary btn-lg" value="Registrarse"></h:commandButton>
-                          
+
+
+
+
                         </h:panelGrid>
                     </p:tab>
                 </p:tabView>
-                <h:outputText style="color: red;" value="#{usuarioBean.mensaje}"></h:outputText>
+                <br></br>
+                <h:commandButton action="#{usuariosBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                                 class="btn btn-primary btn-lg" value="Registrarse"></h:commandButton>
+                <h:outputText style="color: red;" value="#{usuariosBean.mensaje}"></h:outputText>
             </div>
-      
+
 
 
 
