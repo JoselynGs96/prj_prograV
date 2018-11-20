@@ -12,43 +12,22 @@ import java.util.Date;
  * @author Fabi
  */
 public class Usuario {
+
     String cedula;
-    int TipoIden;
+    TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
     String contrasenna;
     String codAcceso;
-    String estado;
-    String mensaje;
-    String tipoPerfil;
+    int estado;  
+    RolUsuario rolUsuario;
     String nombre;
     String apellido1;
     String apellido2;
-    String tipoTelefono;
-    String NumeroTelefono;
-    String Programa;
-    String Provincia;
-    String Canton;
-    String Distrito;
-    String Barrio;
-    String OtrasSenas;
-    String TipoFuncionario;
-    int edad;
-    
-    
-    public Usuario(String Id_Usuario, int TipoIdentificacion,String Nombre,String Apellido1,String Apellido2,String Correo) {
-        this.setCedula(Id_Usuario);
-        this.setTipoIden(TipoIdentificacion);
-        this.setNombre(Nombre);
-        this.setApellido1(Apellido1);
-        this.setApellido2(Apellido2);
-        this.setCorreo(Correo);
-    }   
-
-    public Usuario() {
+    Programa Programa;  
+    public Usuario(){
+        
     }
-    
-   
 
     public String getCedula() {
         return cedula;
@@ -58,11 +37,11 @@ public class Usuario {
         this.cedula = cedula;
     }
 
-    public int getTipoIden() {
+    public TipoIdentificacion getTipoIden() {
         return TipoIden;
     }
 
-    public void setTipoIden(int TipoIden) {
+    public void setTipoIden(TipoIdentificacion TipoIden) {
         this.TipoIden = TipoIden;
     }
 
@@ -98,28 +77,20 @@ public class Usuario {
         this.codAcceso = codAcceso;
     }
 
-    public String getEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 
-    public String getMensaje() {
-        return mensaje;
+    public RolUsuario getRolUsuario() {
+        return rolUsuario;
     }
 
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
-
-    public String getTipoPerfil() {
-        return tipoPerfil;
-    }
-
-    public void setTipoPerfil(String tipoPerfil) {
-        this.tipoPerfil = tipoPerfil;
+    public void setRolUsuario(RolUsuario rolUsuario) {
+        this.rolUsuario = rolUsuario;
     }
 
     public String getNombre() {
@@ -146,84 +117,16 @@ public class Usuario {
         this.apellido2 = apellido2;
     }
 
-    public String getTipoTelefono() {
-        return tipoTelefono;
-    }
-
-    public void setTipoTelefono(String tipoTelefono) {
-        this.tipoTelefono = tipoTelefono;
-    }
-
-    public String getNumeroTelefono() {
-        return NumeroTelefono;
-    }
-
-    public void setNumeroTelefono(String NumeroTelefono) {
-        this.NumeroTelefono = NumeroTelefono;
-    }
-
-    public String getPrograma() {
+    public Programa getPrograma() {
         return Programa;
     }
 
-    public void setPrograma(String Programa) {
+    public void setPrograma(Programa Programa) {
         this.Programa = Programa;
     }
 
-    public String getProvincia() {
-        return Provincia;
-    }
+    
 
-    public void setProvincia(String Provincia) {
-        this.Provincia = Provincia;
-    }
 
-    public String getCanton() {
-        return Canton;
-    }
 
-    public void setCanton(String Canton) {
-        this.Canton = Canton;
-    }
-
-    public String getDistrito() {
-        return Distrito;
-    }
-
-    public void setDistrito(String Distrito) {
-        this.Distrito = Distrito;
-    }
-
-    public String getBarrio() {
-        return Barrio;
-    }
-
-    public void setBarrio(String Barrio) {
-        this.Barrio = Barrio;
-    }
-
-    public String getOtrasSenas() {
-        return OtrasSenas;
-    }
-
-    public void setOtrasSenas(String OtrasSenas) {
-        this.OtrasSenas = OtrasSenas;
-    }
-
-    public String getTipoFuncionario() {
-        return TipoFuncionario;
-    }
-
-    public void setTipoFuncionario(String TipoFuncionario) {
-        this.TipoFuncionario = TipoFuncionario;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-   
 }

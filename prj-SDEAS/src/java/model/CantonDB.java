@@ -74,6 +74,7 @@ public class CantonDB {
 
         return listaCantones;
     }
+     
       public Canton SeleccionarPorId(int idCanton,int id_Provincia) throws SNMPExceptions,
             SQLException {
         String select = "";

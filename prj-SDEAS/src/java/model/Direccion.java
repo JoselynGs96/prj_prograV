@@ -10,7 +10,6 @@ package model;
  * @author Fabi
  */
 public class Direccion {
-  int Id_Direccion;
     Provincia Id_Provincia;
     Canton Id_Canton;
     Distrito Id_Distrito;
@@ -22,10 +21,9 @@ public class Direccion {
     public Direccion(){
         
     }
-    public Direccion(int Id_Direccion,Provincia Id_Provincia,Canton Id_Canton,Distrito Id_Distrito,Barrio Id_Barrio,Usuario usuario,String Otras_sennas){
+    public Direccion(Provincia Id_Provincia,Canton Id_Canton,Distrito Id_Distrito,Barrio Id_Barrio,Usuario usuario,String Otras_sennas){
         this.setId_Barrio(Id_Barrio);
         this.setId_Canton(Id_Canton);
-        this.setId_Direccion(Id_Direccion);
         this.setId_Distrito(Id_Distrito);
         this.setId_Provincia(Id_Provincia);
         this.setOtras_sennas(Otras_sennas);
@@ -33,13 +31,7 @@ public class Direccion {
     
     }
 
-    public int getId_Direccion() {
-        return Id_Direccion;
-    }
-
-    public void setId_Direccion(int Id_Direccion) {
-        this.Id_Direccion = Id_Direccion;
-    }
+  
 
     public Provincia getId_Provincia() {
         return Id_Provincia;

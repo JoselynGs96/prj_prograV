@@ -78,6 +78,7 @@ public class DistritoDB {
 
         return listaDistritos;
     }
+    
     public Distrito SeleccionarPorId(int idDis, int id_can, int id_provincia) throws SNMPExceptions,
             SQLException {
         String select = "";

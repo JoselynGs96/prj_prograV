@@ -25,7 +25,34 @@
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-
+        <script>
+            PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo el día'
+            };
+        </script>
     </h:head>
     <h:body>
         <h:form style="background: #fccc0c;" prependId="false" >
@@ -139,7 +166,7 @@
                                     <h:outputText value="Fecha de nacimiento: " />
                                 </td>
                                 <td>
-                                    <p:calendar style="float: left " value="#{usuariosBean.fechaNacimiento}" pattern="dd-MM-yyyy" mask="true" label="calendario" id="calendario"/>
+                                    <p:calendar locale="es" style="float: left " value="#{usuariosBean.fechaNacimiento}"  pattern="dd-MM-yyyy" mask="true" label="calendario" id="calendario"/>
                                 </td>
 
                             </tr>
@@ -187,8 +214,13 @@
                                 <td>  <p:inputTextarea value="#{usuariosBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
                                 </td>
                             </tr>
+                                 <tr>
+                                <td colspan="2">  
+                                    <h:outputText style="color: red;" value="#{usuariosBean.mensaje1}"></h:outputText>
+                                </td>
+                            </tr>
                             <tr>
-                                <td colspan="2">  <h:commandButton action="#{usuariosBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
+                                <td colspan="2">  <h:commandButton action="#{usuariosBean.agregarDireccones()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
                                                                    class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
                                 </td> 
                             </tr>
@@ -198,33 +230,27 @@
                                     <h:dataTable id="dataDirec" class="table table-striped table-advance table-hover" value="#{usuariosBean.listaDirec}" var="direc">
                                         <h:column>
                                             <f:facet name="header">
-                                                <h:outputText value="Identificador"/>
-                                            </f:facet>
-                                            <h:outputText value="#{direc.id_Direccion}"/>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">
                                                 <h:outputText value="Provincia"/>
                                             </f:facet>
-                                            <h:outputText value="#{direc.id_Provincia.id_Provincia}"/>
+                                            <h:outputText value="#{direc.id_Provincia.dsc_Provincia}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="Canton"/>
                                             </f:facet>
-                                            <h:outputText value="#{direc.id_Canton.id_Canton}"/>
+                                            <h:outputText value="#{direc.id_Canton.dsc_Canton}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="Distrito"/>
                                             </f:facet>
-                                            <h:outputText value="#{direc.id_Distrito.id_Distrito}"/>
+                                            <h:outputText value="#{direc.id_Distrito.dsc_Distrito}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="Barrio"/>
                                             </f:facet>
-                                            <h:outputText value="#{direc.id_Barrio.id_Barrio}"/>
+                                            <h:outputText value="#{direc.id_Barrio.dsc_Barrio}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
@@ -236,7 +262,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value=""/>
                                             </f:facet>
-                                            <h:commandButton  actionListener="#" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                            <h:commandButton  action="#{usuariosBean.eliminarDirecciones(direc.otras_sennas)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
                                         </h:column>
                                     </h:dataTable>
                                 </td>
@@ -274,33 +300,38 @@
                             </tr>
                             <tr>
                                 <td colspan="2">  
+                                    <h:outputText style="color: red;" value="#{usuariosBean.mensaje2}"></h:outputText>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">  
 
-                                    <h:commandButton action="#{usuariosBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
-                                                     class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
+                                    <h:commandButton action="#{usuariosBean.agregarTelefonos()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
+                                                     class="btn btn-primary btn-lg" value="Agregar Telefono"></h:commandButton>
 
                                 </td>
                             </tr>
                             <tr>
                                 <td  colspan="2">
 
-                                    <h:dataTable id="dataTel" class="table table-striped table-advance table-hover" value="#{usuariosBean.listaDirec}" var="direc">
+                                    <h:dataTable id="dataTel" class="table table-striped table-advance table-hover" value="#{usuariosBean.listaTel}" var="tell">
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="Tipo Télefono"/>
                                             </f:facet>
-                                            <h:outputText value="#{direc.id_Direccion}"/>
+                                            <h:outputText value="#{tell.id_TipoTelefono.dsc_TipoTelefono}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="Número de Télefono"/>
                                             </f:facet>
-                                            <h:outputText value="#{direc.id_Provincia.id_Provincia}"/>
+                                            <h:outputText value="#{tell.numero}"/>
                                         </h:column>  
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value=""/>
                                             </f:facet>
-                                            <h:commandButton  actionListener="#" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                            <h:commandButton  actionListener="#{usuariosBean.eliminarTelefono(tell.numero)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
                                         </h:column>
                                     </h:dataTable>
 
@@ -311,7 +342,7 @@
                 </p:tabView>
 
                 <br></br>
-                <h:commandButton action="#{usuariosBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                <h:commandButton action="#{usuariosBean.IngresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
                                  class="btn btn-primary btn-lg" value="Registrarse"></h:commandButton><br></br>
                 <h:outputText style="color: red;" value="#{usuariosBean.mensaje}"></h:outputText>
             </div>

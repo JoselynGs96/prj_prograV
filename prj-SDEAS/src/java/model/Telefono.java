@@ -10,25 +10,25 @@ package model;
  * @author Fabi
  */
 public class Telefono {
-    int Numero;
+    String Numero;
     Usuario Id_Usuario;
     TipoTelefono Id_TipoTelefono;
     
     public Telefono(){
         
     }
-     public Telefono( int Numero,Usuario Id_Usuario,TipoTelefono Id_TipoTelefono){
-        this.setId_TipoTelefono(Id_TipoTelefono);
-        this.setId_Usuario(Id_Usuario);
+     public Telefono( String Numero,TipoTelefono Id_TipoTelefono){
+        
+        this.setId_TipoTelefono(Id_TipoTelefono); 
         this.setNumero(Numero);
     }
     
 
-    public int getNumero() {
+    public String getNumero() {
         return Numero;
     }
 
-    public void setNumero(int Numero) {
+    public void setNumero(String Numero) {
         this.Numero = Numero;
     }
 

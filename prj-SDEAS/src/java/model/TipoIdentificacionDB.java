@@ -69,4 +69,41 @@ public class TipoIdentificacionDB {
          
           return listaTipo;
       }
+      
+       public  TipoIdentificacion SeleccionarPorId(int tipoIdentificacion) throws SNMPExceptions, 
+            SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      TipoIdentificacion tip = null;
+   
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_TipoIdentificacion, Dsc_TipoIdentificacion from TipoIdentificacion WHERE Id_TipoIdentificacion = " +tipoIdentificacion;
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+
+                        int id = rsPA.getInt("Id_TipoIdentificacion");
+                        String Nombre = rsPA.getString("Dsc_TipoIdentificacion");                      
+                        tip = new TipoIdentificacion(id,Nombre);
+                      }
+              
+            rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return tip;
+      }
+    
 }

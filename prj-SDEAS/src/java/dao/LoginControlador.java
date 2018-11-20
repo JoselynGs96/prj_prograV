@@ -11,7 +11,6 @@ import java.io.Serializable;
 import model.Usuario;
 
 import javax.faces.context.FacesContext;
-import model.TipoIden;
 import model.UsuarioDB;
 
 /**

@@ -60,6 +60,42 @@ public class TipoTelefonoDB {
         return listaTipo;
     }
 
+    public TipoTelefono SeleccionarPorId(int idtel) throws SNMPExceptions,
+            SQLException {
+        String select = "";
+        ResultSet rsPA = null;
+        TipoTelefono tel = null;
+        try {
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            select
+                    = "SELECT Id_TipoTelefono, Dsc_TipoTelefono from TipoTelefono WHERE Id_TipoTelefono = " + idtel;
+
+            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+
+            while (rsPA.next()) {
+
+                int Id_TipoTelefono = rsPA.getInt("Id_TipoTelefono");
+                String Dsc_TipoTelefono = rsPA.getString("Dsc_TipoTelefono");
+
+                tel = new TipoTelefono(Id_TipoTelefono, Dsc_TipoTelefono);
+            }
+
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return tel;
+    }
+
     public TipoTelefonoDB(Connection conn) {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);

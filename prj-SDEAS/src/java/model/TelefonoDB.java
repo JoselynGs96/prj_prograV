@@ -8,6 +8,7 @@ package model;
 import dao.AccesoDatos;
 import dao.SNMPExceptions;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -53,4 +54,7 @@ public class TelefonoDB {
 
         }
     }
+    
+    
+    
 }

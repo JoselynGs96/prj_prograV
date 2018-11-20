@@ -6,7 +6,9 @@
 package model;
 
 import dao.AccesoDatos;
+import dao.SNMPExceptions;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 /**
@@ -27,4 +29,25 @@ public class DireccionDB {
     public DireccionDB() {
         super();
     }
+    
+      public void registrar(Direccion direc) throws SNMPExceptions, SQLException { 
+        String strSQL = "";       
+        try {  
+            Direccion direccion = new Direccion(); 
+            direc = direccion;             
+            
+            strSQL = "INSERT INTO Programa (Id_Usuario, Id_Provincia,Id_Canton,Id_Distrito,Id_Barrio,Otras_Sennas ,Log_Activo) "
+                    + "VALUES ('"+direccion.getUsuario().cedula+"', '"+ direccion.getId_Provincia().Id_Provincia+ "', '" +  direccion.getId_Canton().Id_Canton+ "', '" +direccion.getId_Distrito().Id_Distrito + "', '" +direccion.getId_Barrio().Id_Barrio + "', '" +direccion.Otras_sennas+1+"')"; 
+            
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
+        } catch (SQLException e) { 
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
+                                    e.getMessage(), e.getErrorCode());         
+        }catch (Exception e) { 
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
+                                    e.getMessage()); 
+        } finally { 
+         
+        } 
+    } 
 }

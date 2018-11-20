@@ -10,7 +10,9 @@ import dao.SNMPExceptions;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import javax.xml.bind.ParseConversionEvent;
+import model.Usuario;
 
 /**
  *
@@ -32,16 +34,12 @@ public class UsuarioDB {
 
     public void registrar(Usuario usu) throws SNMPExceptions, SQLException {
         String strSQL = "";
-        int estado = 0;
+    
         try {
-            Usuario usuario = new Usuario();
-            usuario = usu;
-
-            if (usuario.estado.equals("Activo")) {
-                estado = 1;
-            }
-            strSQL = "INSERT INTO Usuario  ([Id_Usuario],[TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_EstadoAcceso],[Log_Activo]) values(" + usuario.getCedula() + ",'" + usuario.getTipoIden() + "','" + usuario.getApellido1() + "','" + usuario.getApellido2() + "'," + usuario.getFechaNacimiento() + ",'" + usuario.getCorreo() + "'," + 0 + ")";
-
+             Usuario usuario = new Usuario();
+            usuario = usu; 
+           
+            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_RolUsuario],[Id_EstadoAcceso],[Log_Activo]) values("+usuario.cedula+","+usuario.TipoIden.getId_TipoIdentificacion()+",'"+usuario.nombre+"','"+usuario.apellido1+"','"+usuario.apellido2+"','"+ usuario.getFechaNacimiento() +"','" + usuario.getCorreo() +"',"+usuario.rolUsuario.Id_RolUsuario+","+0 +","+ 1+")";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
@@ -71,6 +69,7 @@ public class UsuarioDB {
 
             while (rsPA.next()) {
                 String id =rsPA.getInt("Id_Usuario")+"";
+                
                 String Nombre = rsPA.getString("Nombre");
                 String Apellido1 = rsPA.getString("Apellido1");
                 String Apellido2 = rsPA.getString("Apellido2");
@@ -108,6 +107,8 @@ public class UsuarioDB {
         String select = "";        
         ResultSet rsPA = null;
         Usuario usu = null;
+        TipoIdentificacionDB tipoIdenDB = new TipoIdentificacionDB();
+        
 
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
@@ -120,12 +121,12 @@ public class UsuarioDB {
             while (rsPA.next()) {
 
                String Id_Usuario = rsPA.getInt("Id_Usuario")+"";
-               int TipoIdentificacion = rsPA.getInt("TipoIdentificacion");
+                 TipoIdentificacion tipoide = tipoIdenDB.SeleccionarPorId(rsPA.getInt("TipoIdentificacion"));
                 String Nombre = rsPA.getString("Nombre");
                 String Apellido1 = rsPA.getString("Apellido1");
                 String Apellido2 = rsPA.getString("Apellido2");
-                 String Correo = rsPA.getString("Correo");              
-                 usu = new Usuario(Id_Usuario,TipoIdentificacion,Nombre,Apellido1,Apellido2,Correo);          
+                 String Correo = rsPA.getString("Correo"); 
+                 usu = new Usuario();        
             }
 
             rsPA.close();

@@ -69,4 +69,39 @@ public class RolUsuarioDB {
 
         return listaRol;
     }
+      public  RolUsuario SeleccionarPorId(int rolUsuario) throws SNMPExceptions, 
+            SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      RolUsuario rol = null;
+   
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_RolUsuario, Dsc_RolUsuario from RolUsuario WHERE Id_RolUsuario = " +rolUsuario;
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+
+                        int id = rsPA.getInt("Id_RolUsuario");
+                        String Nombre = rsPA.getString("Dsc_RolUsuario");                      
+                        rol = new RolUsuario(id,Nombre);
+                      }
+              
+            rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return rol;
+      }
 }
