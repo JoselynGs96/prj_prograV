@@ -96,97 +96,217 @@
                 <h3 style="margin-top:0; background:#fccc0c; " >Registrarte</h3>
                 <p:tabView>
                     <p:tab id="Personal" title="Personal">
-                        <h:panelGrid columns="2" cellpadding="10">
-                            <h:outputText value="Tipo de cédula *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_TipoCedula}" id="ident" >
-                                <f:selectItems var="iden" value="#{usuariosBean.listaIden}" itemLabel="#{iden.dsc_TipoTelefono}" itemValue="#{iden.id_TipoIdentificacion}"></f:selectItems>  
-                            </h:selectOneMenu> 
+                        <table>
+                            <tr>
+                                <td>    <h:outputText value="Tipo de cédula *" /></td>
+                                <td>      <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_TipoCedula}" id="ident" >
+                                        <f:selectItems var="iden" value="#{usuariosBean.listaIden}" itemLabel="#{iden.dsc_TipoTelefono}" itemValue="#{iden.id_TipoIdentificacion}"></f:selectItems>  
+                                    </h:selectOneMenu> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> 
+                                    <h:outputText value="Cédula *" />
+                                </td>
+                                <td>   
+                                    <p:inputText style="float: left " value="#{usuariosBean.cedula}" label="cedula" id="cedula"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> 
+                                    <h:outputText value="Nombre *" /></td>
+                                <td>   
+                                    <p:inputText style="float: left " value="#{usuariosBean.nombre}" label="nombre" id="nombre"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>    <h:outputText value="Primer Apellido *" />   </td>                             
+                                <td>    <p:inputText style="float: left " value="#{usuariosBean.apellido1}" label="apellido1" id="apellido1"/>
+                                </td>
+                            </tr>
+                            <tr>
 
+                                <td>     
+                                    <h:outputText value="Segundo Apellido *" />            
+                                </td>                  
+                                <td>     
+                                    <p:inputText style="float: left " value="#{usuariosBean.apellido2}" label="apellido2" id="apellido2"/>
+                                </td>
+                            </tr>
+                            <tr>
 
-                            <h:outputText value="Cédula *" />
-                            <p:inputText style="float: left " value="#{usuariosBean.cedula}" label="cedula" id="cedula"/>
+                                <td>
+                                    <h:outputText value="Fecha de nacimiento: " />
+                                </td>
+                                <td>
+                                    <p:calendar style="float: left " value="#{usuariosBean.fechaNacimiento}" pattern="dd-MM-yyyy" mask="true" label="calendario" id="calendario"/>
+                                </td>
 
-
-                            <h:outputText value="Nombre *" />
-                            <p:inputText style="float: left " value="#{usuariosBean.nombre}" label="nombre" id="nombre"/>
-
-
-                            <h:outputText value="Primer Apellido *" />                                
-                            <p:inputText style="float: left " value="#{usuariosBean.apellido1}" label="apellido1" id="apellido1"/>
-
-
-                            <h:outputText value="Segundo Apellido *" />                                
-                            <p:inputText style="float: left " value="#{usuariosBean.apellido2}" label="apellido2" id="apellido2"/>
-
-
-                            <h:outputText value="Fecha de nacimiento: " />
-                            <p:calendar style="float: left " value="#{usuariosBean.fechaNacimiento}" pattern="dd-MM-yyyy" mask="true" label="calendario" id="calendario"/>
-                            <a href="#direcc" style="float: right">Siguiente</a>
-
-                        </h:panelGrid>
+                            </tr>
+                        </table>
                     </p:tab>
                     <p:tab id="direcc" title="Dirección">
-                        <h:panelGrid columns="2" cellpadding="10">
-                            <h:outputText value="Provincia *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Provincia}" id="Provincia" >
-                                <f:selectItems var="pro" value="#{usuariosBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
-                            </h:selectOneMenu>
+                        <table>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Provincia" />  </td>
+                                <td>
+                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Provincia}" id="Provincia" >
+                                        <f:selectItems var="pro" value="#{usuariosBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Canton" />  </td>
+                                <td>
+                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Canton}" id="Canton" >
+                                        <f:selectItems var="can" value="#{usuariosBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Distrito" />  </td>
+                                <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Distrito}" >
+                                        <f:selectItems var="dis" value="#{usuariosBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Barrio" />  </td>
+                                <td>
+                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Barrio}" >
+                                        <f:selectItems var="bar" value="#{usuariosBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>  <h:outputText value="Otras señas" />  </td>
+                                <td>  <p:inputTextarea value="#{usuariosBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">  <h:commandButton action="#{usuariosBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
+                                                                   class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
+                                </td> 
+                            </tr>
 
+                            <tr>   
+                                <td colspan="2"> 
+                                    <h:dataTable id="dataDirec" class="table table-striped table-advance table-hover" value="#{usuariosBean.listaDirec}" var="direc">
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Identificador"/>
+                                            </f:facet>
+                                            <h:outputText value="#{direc.id_Direccion}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Provincia"/>
+                                            </f:facet>
+                                            <h:outputText value="#{direc.id_Provincia.id_Provincia}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Canton"/>
+                                            </f:facet>
+                                            <h:outputText value="#{direc.id_Canton.id_Canton}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Distrito"/>
+                                            </f:facet>
+                                            <h:outputText value="#{direc.id_Distrito.id_Distrito}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Barrio"/>
+                                            </f:facet>
+                                            <h:outputText value="#{direc.id_Barrio.id_Barrio}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Otras Señas"/>
+                                            </f:facet>
+                                            <h:outputText value="#{direc.otras_sennas}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value=""/>
+                                            </f:facet>
+                                            <h:commandButton  actionListener="#" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                        </h:column>
+                                    </h:dataTable>
+                                </td>
+                            </tr>
+                        </table>
 
-                            <h:outputText value="Canton *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Canton}" id="Canton" >
-                                <f:selectItems var="can" value="#{usuariosBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
-                            </h:selectOneMenu>
-
-                            <h:outputText value="Distrito *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Distrito}" >
-                                <f:selectItems var="dis" value="#{usuariosBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
-                            </h:selectOneMenu>
-                                
-                            <h:outputText value="Barrio: *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Barrio}" >
-                                <f:selectItems var="bar" value="#{usuariosBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
-                            </h:selectOneMenu>
-
-                            
-
-
-                            <h:outputText value="Otras señas *" />
-                            <p:inputTextarea value="#{usuariosBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
-
-                        </h:panelGrid>
                     </p:tab>
                     <p:tab id="contacto" title="Contacto">
-                        <h:panelGrid columns="2" cellpadding="10">                           
-                            <h:outputText value="Tipo Teléfono: *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_TipoTelefono}" id="tel" >
-                                <f:selectItems var="tel" value="#{usuariosBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
-                            </h:selectOneMenu>
+                        <table> 
+                            <tr>
+                                <td>  <h:outputText value="Correo *" /> </td>
+                                <td>  <p:inputText style="float: left " id="correo" value="#{usuariosBean.correo}"  class="form-inline" ></p:inputText>   </td>
+                            </tr>
+                            <tr>
+                                <td><h:outputText value="Programa DEAS: *" /> </td>
+                                <td>  <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.programa}" id="programa" >
+                                        <f:selectItems var="pro" value="#{usuariosBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
+                                    </h:selectOneMenu> </td>
+                            </tr>
+                            <tr>
+                                <td>   <h:outputText value="Tipo de Funcionario: *" /> </td>
+                                <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Rol}" id="rol" >
+                                        <f:selectItems var="rol" value="#{usuariosBean.listarol}" itemLabel="#{rol.dsc_RolUsuario}" itemValue="#{rol.id_RolUsuario}"></f:selectItems>
+                                    </h:selectOneMenu> </td>
+                            </tr>
+                            <tr>
+                                <td>  <h:outputText value="Tipo Teléfono: *" /> </td>
+                                <td>     <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_TipoTelefono}" id="tel" >
+                                        <f:selectItems var="tel" value="#{usuariosBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
+                                    </h:selectOneMenu> </td>
+                            </tr>
+                            <tr>
+                                <td>   <h:outputText value="Número: *" /> </td>
+                                <td> <p:inputText  style="float: left " id="numero" value="#{usuariosBean.numeroTelefono}"  class="form-inline" ></p:inputText>   </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">  
 
+                                    <h:commandButton action="#{usuariosBean.validaAutoRegistro()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
+                                                     class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
 
-                            <h:outputText value="Número: *" />
-                            <p:inputText  style="float: left " id="numero" value="#{usuariosBean.numeroTelefono}"  class="form-inline" ></p:inputText>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  colspan="2">
 
+                                    <h:dataTable id="dataTel" class="table table-striped table-advance table-hover" value="#{usuariosBean.listaDirec}" var="direc">
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Tipo Télefono"/>
+                                            </f:facet>
+                                            <h:outputText value="#{direc.id_Direccion}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Número de Télefono"/>
+                                            </f:facet>
+                                            <h:outputText value="#{direc.id_Provincia.id_Provincia}"/>
+                                        </h:column>  
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value=""/>
+                                            </f:facet>
+                                            <h:commandButton  actionListener="#" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                        </h:column>
+                                    </h:dataTable>
 
-                            <h:outputText value="Correo *" />
-                            <p:inputText style="float: left " id="correo" value="#{usuariosBean.correo}"  class="form-inline" ></p:inputText>  
-
-
-                            <h:outputText value="Programa DEAS: *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.programa}" id="programa" >
-                                <f:selectItems var="pro" value="#{usuariosBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
-                            </h:selectOneMenu>
-
-
-                            <h:outputText value="Tipo de Funcionario: *" />
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Rol}" id="rol" >
-                                <f:selectItems var="rol" value="#{usuariosBean.listarol}" itemLabel="#{rol.dsc_RolUsuario}" itemValue="#{rol.id_RolUsuario}"></f:selectItems>
-                            </h:selectOneMenu>
-
-
-
-
-                        </h:panelGrid>
+                                </td>
+                            </tr>
+                        </table>
                     </p:tab>
                 </p:tabView>
 

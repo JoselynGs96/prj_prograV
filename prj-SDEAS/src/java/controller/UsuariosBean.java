@@ -18,6 +18,7 @@ import model.Barrio;
 import model.BarrioDB;
 import model.Canton;
 import model.CantonDB;
+import model.Direccion;
 import model.Distrito;
 import model.DistritoDB;
 import model.Programa;
@@ -31,6 +32,7 @@ import model.TipoIdentificacion;
 import model.TipoIdentificacionDB;
 import model.TipoTelefono;
 import model.TipoTelefonoDB;
+import model.Usuario;
 import org.primefaces.event.FlowEvent;
 
 /**
@@ -72,6 +74,9 @@ public class UsuariosBean implements Serializable {
     LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
     LinkedList<RolUsuario> listarol = new LinkedList<RolUsuario>();
     LinkedList<TipoIdentificacion> listaIden = new LinkedList<TipoIdentificacion>();
+    LinkedList<Direccion> listaDirec = new LinkedList<Direccion>();
+
+   
 
     /**
      * Creates a new instance of UsuariosBean
@@ -135,56 +140,74 @@ public class UsuariosBean implements Serializable {
         }
     }
 
-    public void validaAutoRegistro() {
+    public boolean validaAutoRegistro() {
+        boolean respuesta;
         if (this.getId_TipoCedula() == 0) {
             this.setMensaje("*Debe colocar el tipo de identificación.");
+            respuesta = false;
         } else {
             if (this.getCedula().equals("")) {
                 this.setMensaje("*Debe colocar la cédula de identificación.");
+                respuesta = false;
             } else {
                 if (this.getNombre().equals("")) {
                     this.setMensaje("*Debe colocar el Nombre");
+                    respuesta = false;
                 } else {
                     if (this.getApellido1().equals("")) {
                         this.setMensaje("*Debe colocar el Primer Apellido");
+                        respuesta = false;
                     } else {
                         if (this.getApellido2().equals("")) {
                             this.setMensaje("*Debe colocar el Segundo Apellido");
+                            respuesta = false;
                         } else {
                             if (this.getFechaNacimiento() == null) {
                                 this.setMensaje("*Debe colocar la fecha de nacimiento");
+                                respuesta = false;
                             } else {
                                 if (this.getId_Provincia() == 0) {
                                     this.setMensaje("*Debe colocar la Provincia.");
+                                    respuesta = false;
                                 } else {
                                     if (this.getId_Canton() == 0) {
                                         this.setMensaje("*Debe colocar la Cantón.");
+                                        respuesta = false;
                                     } else {
                                         if (this.getId_Distrito() == 0) {
                                             this.setMensaje("*Debe colocar la Distrito.");
+                                            respuesta = false;
                                         } else {
                                             if (this.getId_Barrio() == 0) {
                                                 this.setMensaje("*Debe colocar la Barrio.");
+                                                respuesta = false;
                                             } else {
                                                 if (this.getOtrasSenas().equals("")) {
                                                     this.setMensaje("*Debe colocar las otras señas.");
+                                                    respuesta = false;
                                                 } else {
                                                     if (this.getId_TipoTelefono() == 0) {
                                                         this.setMensaje("*Debe colocar el tipo de Teléfono.");
+                                                        respuesta = false;
                                                     } else {
                                                         if (this.getNumeroTelefono().equals("")) {
                                                             this.setMensaje("*Debe colocar el número de teléfono.");
+                                                            respuesta = false;
                                                         } else {
                                                             if (this.getCorreo().equals("")) {
                                                                 this.setMensaje("*Debe colocar el correo electrónico.");
+                                                                respuesta = false;
                                                             } else {
                                                                 if (this.getPrograma() == 0) {
                                                                     this.setMensaje("*Debe colocar el porgrama al que pertenece");
+                                                                    respuesta = false;
                                                                 } else {
                                                                     if (this.getId_Rol() == 0) {
                                                                         this.setMensaje("*Debe colocar el tipo de Funcionario.");
-                                                                    }else{
+                                                                        respuesta = false;
+                                                                    } else {
                                                                         this.setMensaje("");
+                                                                        respuesta = true;
                                                                     }
 
                                                                 }
@@ -203,6 +226,15 @@ public class UsuariosBean implements Serializable {
                     }
                 }
             }
+        }
+        return respuesta;
+    }
+
+    public void IngresarUsuario() {
+        if (validaAutoRegistro()) {
+            Usuario usu = new Usuario();
+            usu.setCedula(this.getCedula());
+
         }
     }
 
@@ -457,6 +489,13 @@ public class UsuariosBean implements Serializable {
 
     public void setListaIden(LinkedList<TipoIdentificacion> listaIden) {
         this.listaIden = listaIden;
+    }
+     public LinkedList<Direccion> getListaDirec() {
+        return listaDirec;
+    }
+
+    public void setListaDirec(LinkedList<Direccion> listaDirec) {
+        this.listaDirec = listaDirec;
     }
 
 }
