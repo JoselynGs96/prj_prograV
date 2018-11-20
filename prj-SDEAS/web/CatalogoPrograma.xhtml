@@ -102,7 +102,7 @@
                           <span>Usuarios</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="#">Usuarios por Programa</a></li>
+                          <li><a  href="faces/UsuarioPorPrograma.xhtml">Usuarios por Programa</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -159,13 +159,13 @@
                             <br></br>
                             <div class="btn-group btn-group-justified">
 				<div class="btn-group">
-                                    <p:commandButton class="btn btn-success"  actionListener="#{programaBean.nuevo()}" update="@form" value="&#9998; Nuevo"></p:commandButton>
+                                    <p:commandButton class="btn btn-primary"  actionListener="#{programaBean.nuevo()}" update="@form" value="&#9998; Nuevo"></p:commandButton>
 				</div>
 				<div class="btn-group">
-                               	    <p:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" update="@form" value="&#9989; Guardar"></p:commandButton>
+                               	    <p:commandButton class="btn btn-primary" actionListener="#{programaBean.insertarPrograma()}" update="@form" value="&#9989; Guardar"></p:commandButton>
 				</div>
 				<div class="btn-group">
-				    <p:commandButton class="btn btn-success" oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
+				    <p:commandButton class="btn btn-primary" oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
                                 </div>
                             </div>     
                         </div>
@@ -214,7 +214,7 @@
                               <f:facet name="header">
                                   <h:outputText value=""/>
                               </f:facet>
-                              <h:commandButton  actionListener="#{programaBean.editar(pro.id)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                              <h:commandButton  actionListener="#{programaBean.editar(pro.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
                           </h:column>
                       </h:dataTable>
                       </div><!-- /content-panel -->

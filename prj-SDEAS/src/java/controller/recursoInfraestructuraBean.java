@@ -123,8 +123,9 @@ public class recursoInfraestructuraBean implements Serializable {
         listaTablaRecursoInfra.clear();
         if(!getBuscarFiltro().equals("")){
             if(!recd.FiltrarRecurso(buscarFiltro).isEmpty()){
-                for (int i = 0; i < recd.SeleccionarTodos().size(); i++) {
-                Recurso get = recd.SeleccionarTodos().get(i);
+                LinkedList<Recurso> lista = recd.FiltrarRecurso(buscarFiltro);
+                for (int i = 0; i < lista.size(); i++) {
+                Recurso get = lista.get(i);
                 if(get.getTipoRecurso().getId()==1){
                     listaTablaRecursoInfra.add(get);
                 }else{
@@ -141,6 +142,8 @@ public class recursoInfraestructuraBean implements Serializable {
                 setMensajeFiltro("No se encontraron registros con el dato proporcionado");
                 
             }
+        }else{
+            llenarListas();
         }
      }
      

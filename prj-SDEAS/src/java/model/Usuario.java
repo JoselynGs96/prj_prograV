@@ -12,6 +12,7 @@ import java.util.Date;
  * @author Fabi
  */
 public class Usuario {
+    int id;
     int cedula;
     int TipoIden;
     Date fechaNacimiento;
@@ -223,6 +224,14 @@ public class Usuario {
 
     public void setEdad(int edad) {
         this.edad = edad;
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
    
 }

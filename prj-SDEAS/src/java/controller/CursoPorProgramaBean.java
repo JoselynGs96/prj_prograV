@@ -114,6 +114,8 @@ public class CursoPorProgramaBean implements Serializable {
                 listaTablaCurso = cur.SeleccionarTodos();
                 setMensajeFiltro("No se encontraron registros con el dato proporcionado");
             }
+        }else{
+            seleccionarTodos();
         }
      }
      

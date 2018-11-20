@@ -104,6 +104,8 @@ public class ProgramaBean implements Serializable {
                 setMensajeFiltro("No se encontraron registros con el dato proporcionado");
                
             }
+        }else{
+            seleccionarTodos();
         }
      }
      

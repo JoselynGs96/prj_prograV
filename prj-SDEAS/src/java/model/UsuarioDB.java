@@ -24,6 +24,8 @@ public class UsuarioDB {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);
     }
+    
+    
 
     public UsuarioDB() {
         super();
