@@ -34,10 +34,9 @@ public class DireccionDB {
         String strSQL = "";       
         try {  
             Direccion direccion = new Direccion(); 
-            direc = direccion;             
+             direccion=direc;             
             
-            strSQL = "INSERT INTO Programa (Id_Usuario, Id_Provincia,Id_Canton,Id_Distrito,Id_Barrio,Otras_Sennas ,Log_Activo) "
-                    + "VALUES ('"+direccion.getUsuario().cedula+"', '"+ direccion.getId_Provincia().Id_Provincia+ "', '" +  direccion.getId_Canton().Id_Canton+ "', '" +direccion.getId_Distrito().Id_Distrito + "', '" +direccion.getId_Barrio().Id_Barrio + "', '" +direccion.Otras_sennas+1+"')"; 
+            strSQL = "INSERT INTO Direccion (Id_Usuario, Id_Provincia,Id_Canton,Id_Distrito,Id_Barrio,Otras_Sennas ,Log_Activo) VALUES ("+direccion.getUsuario().cedula+","+ direccion.getId_Provincia().Id_Provincia+ "," +  direccion.getId_Canton().Id_Canton+ ", " +direccion.getId_Distrito().Id_Distrito + "," +direccion.getId_Barrio().Id_Barrio + ",'" +direccion.Otras_sennas+"',"+1+")"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 

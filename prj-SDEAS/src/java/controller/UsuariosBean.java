@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -46,7 +47,7 @@ import org.primefaces.event.FlowEvent;
 @Named(value = "usuariosBean")
 @SessionScoped
 public class UsuariosBean implements Serializable {
-    
+
     String cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
@@ -72,7 +73,7 @@ public class UsuariosBean implements Serializable {
     int id_TipoTelefono;
     int id_Rol;
     int id_TipoCedula;
-    
+
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
     LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
@@ -96,7 +97,7 @@ public class UsuariosBean implements Serializable {
         ProgramaDB progra = new ProgramaDB();
         RolUsuarioDB rol = new RolUsuarioDB();
         TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
-        
+
         if (!pro.SeleccionarTodos().isEmpty()) {
             listaPro = pro.SeleccionarTodos();
             Id_Provincia = pro.SeleccionarTodos().element().getId_Provincia();
@@ -129,7 +130,7 @@ public class UsuariosBean implements Serializable {
             listaIden = tipoIden.SeleccionarTodos();
             id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
         }
-        
+
     }
 
     /*valida el login*/
@@ -201,15 +202,15 @@ public class UsuariosBean implements Serializable {
                                         }
                                     }
                                 }
-                                
+
                             }
-                            
+
                         }
                     }
                 }
             }
         }
-        
+
         return respuesta;
     }
 
@@ -269,7 +270,7 @@ public class UsuariosBean implements Serializable {
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();
         BarrioDB barr = new BarrioDB();
-        
+
         if (validarDirecciones()) {
             direc.setId_Provincia(pro.SeleccionarPorId(this.getId_Provincia()));
             direc.setId_Canton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
@@ -279,24 +280,24 @@ public class UsuariosBean implements Serializable {
             listaDirec.add(direc);
             limpiarDireccion();
         }
-        
+
     }
 
     /*Elimina Direcciones*/
     public void eliminarDirecciones(String otras) {
         for (Direccion dir : listaDirec) {
-            
+
             if (dir.getOtras_sennas().equals(otras)) {
-                
+
                 listaDirec.remove(dir);
             }
-            
+
         }
     }
 
     /*Agrega telefonos a la lista */
     public void agregarTelefonos() throws SNMPExceptions, SQLException {
-        
+
         TipoTelefonoDB telefo = new TipoTelefonoDB();
         if (validarNumero()) {
             Telefono tel = new Telefono();
@@ -316,12 +317,12 @@ public class UsuariosBean implements Serializable {
     /*Elimina telefono*/
     public void eliminarTelefono(String numero) {
         for (Telefono tel : listaTel) {
-            
+
             if (tel.getNumero().equals(numero)) {
-                
+
                 listaTel.remove(tel);
             }
-            
+
         }
     }
 
@@ -333,6 +334,8 @@ public class UsuariosBean implements Serializable {
         UsuarioDB usuDB = new UsuarioDB();
         DireccionDB direcDB = new DireccionDB();
         TelefonoDB telDB = new TelefonoDB();
+ 
+
         if (validaAutoRegistro()) {
             Usuario usu = new Usuario();
             usu.setTipoIden(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
@@ -346,17 +349,17 @@ public class UsuariosBean implements Serializable {
             usu.setCorreo(this.getCorreo());
             usuDB.registrar(usu);
             /*agregar telefono*/
-            
-            for (Telefono tel : listaTel) {                
+
+            for (Telefono tel : listaTel) {
                 tel.setId_Usuario(usu);
                 telDB.registrar(tel);
             }
             /*agregar direcciones*/
-            for (Direccion dir : listaDirec) {                
+            for (Direccion dir : listaDirec) {
                 dir.setUsuario(usu);
                 direcDB.registrar(dir);
             }
-            
+            setMensaje("Su solicitud de registro ha sido enviada. Se le enviara un correo con el codigo de acceso y su comtraseña al correo");
         }
     }
 
@@ -368,288 +371,288 @@ public class UsuariosBean implements Serializable {
         this.setId_Distrito(0);
         this.setOtrasSenas("");
     }
-    
+
     public LinkedList<TipoTelefono> getListaTipoTelefono() {
-        
+
         return listaTipoTelefono;
     }
-    
+
     public void setListaTipoTelefono(LinkedList<TipoTelefono> listaTipoTelefono) {
         this.listaTipoTelefono = listaTipoTelefono;
     }
-    
+
     public String getCedula() {
         return cedula;
     }
-    
+
     public void setCedula(String cedula) {
         this.cedula = cedula;
     }
-    
+
     public TipoIdentificacion getTipoIden() {
         return TipoIden;
     }
-    
+
     public void setTipoIden(TipoIdentificacion TipoIden) {
         this.TipoIden = TipoIden;
     }
-    
+
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
-    
+
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
+
     public String getCorreo() {
         return correo;
     }
-    
+
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-    
+
     public String getContrasenna() {
         return contrasenna;
     }
-    
+
     public void setContrasenna(String contrasenna) {
         this.contrasenna = contrasenna;
     }
-    
+
     public String getCodAcceso() {
         return codAcceso;
     }
-    
+
     public void setCodAcceso(String codAcceso) {
         this.codAcceso = codAcceso;
     }
-    
+
     public String getEstado() {
         return estado;
     }
-    
+
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
+
     public String getMensaje() {
         return mensaje;
     }
-    
+
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-    
+
     public int getId_TipoTelefono() {
         return id_TipoTelefono;
     }
-    
+
     public void setId_TipoTelefono(int id_TipoTelefono) {
         this.id_TipoTelefono = id_TipoTelefono;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public String getApellido1() {
         return apellido1;
     }
-    
+
     public void setApellido1(String apellido1) {
         this.apellido1 = apellido1;
     }
-    
+
     public String getApellido2() {
         return apellido2;
     }
-    
+
     public void setApellido2(String apellido2) {
         this.apellido2 = apellido2;
     }
-    
+
     public TipoTelefono getTipoTelefono() {
         return tipoTelefono;
     }
-    
+
     public void setTipoTelefono(TipoTelefono tipoTelefono) {
         this.tipoTelefono = tipoTelefono;
     }
-    
+
     public String getNumeroTelefono() {
         return NumeroTelefono;
     }
-    
+
     public void setNumeroTelefono(String NumeroTelefono) {
         this.NumeroTelefono = NumeroTelefono;
     }
-    
+
     public int getPrograma() {
         return Programa;
     }
-    
+
     public void setPrograma(int Programa) {
         this.Programa = Programa;
     }
-    
+
     public String getOtrasSenas() {
         return OtrasSenas;
     }
-    
+
     public void setOtrasSenas(String OtrasSenas) {
         this.OtrasSenas = OtrasSenas;
     }
-    
+
     public int getEdad() {
         return edad;
     }
-    
+
     public void setEdad(int edad) {
         this.edad = edad;
     }
-    
+
     public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         return pro.SeleccionarTodos();
     }
-    
+
     public void setListaPro(LinkedList<Provincia> listaPro) {
         this.listaPro = listaPro;
     }
-    
+
     public LinkedList<Canton> getListaCan() throws SNMPExceptions, SQLException {
         CantonDB can = new CantonDB();
         return can.SeleccionarTodos(this.getId_Provincia());
     }
-    
+
     public void setListaCan(LinkedList<Canton> listaCan) {
         this.listaCan = listaCan;
     }
-    
+
     public LinkedList<Distrito> getListaDis() throws SNMPExceptions, SQLException {
         DistritoDB dis = new DistritoDB();
         return dis.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton());
     }
-    
+
     public void setListaDis(LinkedList<Distrito> listaDis) {
         this.listaDis = listaDis;
     }
-    
+
     public LinkedList<Barrio> getListaBarrio() throws SNMPExceptions, SQLException {
         BarrioDB barr = new BarrioDB();
         return barr.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito());
     }
-    
+
     public void setListaBarrio(LinkedList<Barrio> listaBarrio) {
         this.listaBarrio = listaBarrio;
     }
-    
+
     public int getId_Provincia() {
         return Id_Provincia;
     }
-    
+
     public void setId_Provincia(int Id_Provincia) {
         this.Id_Provincia = Id_Provincia;
     }
-    
+
     public int getId_Canton() {
         return Id_Canton;
     }
-    
+
     public void setId_Canton(int Id_Canton) {
         this.Id_Canton = Id_Canton;
     }
-    
+
     public int getId_Distrito() {
         return Id_Distrito;
     }
-    
+
     public void setId_Distrito(int Id_Distrito) {
         this.Id_Distrito = Id_Distrito;
     }
-    
+
     public int getId_Barrio() {
         return id_Barrio;
     }
-    
+
     public void setId_Barrio(int id_Barrio) {
         this.id_Barrio = id_Barrio;
     }
-    
+
     public LinkedList<Programa> getListaPrograma() {
         return listaPrograma;
     }
-    
+
     public void setListaPrograma(LinkedList<Programa> listaPrograma) {
         this.listaPrograma = listaPrograma;
     }
-    
+
     public int getId_Rol() {
         return id_Rol;
     }
-    
+
     public void setId_Rol(int id_Rol) {
         this.id_Rol = id_Rol;
     }
-    
+
     public LinkedList<RolUsuario> getListarol() {
         return listarol;
     }
-    
+
     public void setListarol(LinkedList<RolUsuario> listarol) {
         this.listarol = listarol;
     }
-    
+
     public int getId_TipoCedula() {
         return id_TipoCedula;
     }
-    
+
     public void setId_TipoCedula(int id_TipoCedula) {
         this.id_TipoCedula = id_TipoCedula;
     }
-    
+
     public LinkedList<TipoIdentificacion> getListaIden() {
         return listaIden;
     }
-    
+
     public void setListaIden(LinkedList<TipoIdentificacion> listaIden) {
         this.listaIden = listaIden;
     }
-    
+
     public LinkedList<Direccion> getListaDirec() {
         return listaDirec;
     }
-    
+
     public void setListaDirec(LinkedList<Direccion> listaDirec) {
         this.listaDirec = listaDirec;
     }
-    
+
     public LinkedList<Telefono> getListaTel() {
         return listaTel;
     }
-    
+
     public void setListaTel(LinkedList<Telefono> listaTel) {
         this.listaTel = listaTel;
     }
-    
+
     public String getMensaje1() {
         return mensaje1;
     }
-    
+
     public void setMensaje1(String mensaje1) {
         this.mensaje1 = mensaje1;
     }
-    
+
     public String getMensaje2() {
         return mensaje2;
     }
-    
+
     public void setMensaje2(String mensaje2) {
         this.mensaje2 = mensaje2;
     }

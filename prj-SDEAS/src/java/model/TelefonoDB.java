@@ -40,8 +40,8 @@ public class TelefonoDB {
             telefono = tel;
 
             strSQL = "INSERT INTO Telefono (Numero, Id_Usuario,Id_TipoTelefono, Log_Activo) "
-                    + "VALUES ('" + telefono.getNumero() + "', '"
-                    + telefono.getId_Usuario().cedula + telefono.getId_TipoTelefono().id_Telefono + "', '" + 1 + "')";
+                    + "VALUES (" + telefono.getNumero() + ", "
+                    + telefono.getId_Usuario().cedula +","+ telefono.getId_TipoTelefono().id_Telefono + ", " + 1 + ")";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
