@@ -69,12 +69,9 @@ public class LoginControlador implements Serializable {
            Usuario1=UsuarioDB.InicioSeccion(this.getId_Usuario(), this.getContrasenna());
            
            if (Usuario1 != null){
-               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario",Id_Usuario);   
-               if(this.getTpoUsuario().equals("Funcionario DEAS")){
-               FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-               }else{
-               FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-               }
+               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario",Id_Usuario);               
+               FacesContext.getCurrentInstance().getExternalContext().redirect("CodigoVerificacion.xhtml");
+              
               
            }
        }catch (Exception e){
