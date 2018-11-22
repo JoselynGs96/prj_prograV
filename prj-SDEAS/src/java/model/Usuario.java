@@ -25,6 +25,8 @@ public class Usuario {
     String apellido1;
     String apellido2;
     Programa Programa;  
+   
+    
     public Usuario(){
         
     }

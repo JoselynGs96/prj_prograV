@@ -147,4 +147,23 @@ public class UsuarioDB {
         return usu;
     }
 
+    public void IngresarContrasenna(Usuario usu)throws SNMPExceptions, SQLException{
+         String strSQL = "";
+
+        try {
+            Usuario usuario = new Usuario();
+            usuario = usu;
+            
+            strSQL = "UPDATE Usuario SET Contrasenna = PWDENCRYPT('"+usu.getContrasenna()+"') WHERE Id_Usuario = "+usu.getCedula();
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+    }
 }
