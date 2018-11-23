@@ -13,14 +13,24 @@ public class RolUsuario {
 
     int Id_RolUsuario;
     String Dsc_RolUsuario;
+    String estado;
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     public RolUsuario() {
 
     }
 
-    public RolUsuario(int Id_RolUsuario, String Dsc_RolUsuario) {
+    public RolUsuario(int Id_RolUsuario, String Dsc_RolUsuario, String estado) {
         this.setDsc_RolUsuario(Dsc_RolUsuario);
         this.setId_RolUsuario(Id_RolUsuario);
+        this.setEstado(estado);
     }
 
     public int getId_RolUsuario() {

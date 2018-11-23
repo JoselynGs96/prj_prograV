@@ -14,46 +14,42 @@ import java.util.LinkedList;
 
 /**
  *
- * @author Fabi
+ * @author ujose
  */
-public class RolUsuarioDB {    
-    int Id_RolUsuario;
-    String Dsc_RolUsuario;
+public class EstadoSolicitudDB {
     private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;
 
-    private LinkedList<RolUsuario> listaD = new LinkedList<RolUsuario>();
-
-    public RolUsuarioDB(Connection conn) {
+    public EstadoSolicitudDB(Connection conn) {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);
     }
 
-    public RolUsuarioDB() {
+    public EstadoSolicitudDB() {
         super();
     }
     
-     public LinkedList<RolUsuario> SeleccionarTodos() throws SNMPExceptions,
+    public LinkedList<EstadoSolicitud> SeleccionarTodos() throws SNMPExceptions,
             SQLException {
-        String select = "";      
+        String select = "";
         ResultSet rsPA = null;
-        LinkedList<RolUsuario> listaRol = new LinkedList<RolUsuario>();
+        LinkedList<EstadoSolicitud> listaEstadoSolicitud = new LinkedList<EstadoSolicitud>();
 
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "  SELECT  Id_RolUsuario, Dsc_RolUsuario, Log_Activo from RolUsuario ";
+                    = "SELECT Id_EstadoSolicitud,Nombre,Log_Activo from EstadoSolicitud";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
 
-                int Id_RolUsuario = rsPA.getInt("Id_RolUsuario");
-                String Dsc_RolUsuario = rsPA.getString("Dsc_RolUsuario");
-                int Log_Activo = rsPA.getInt("Log_Activo");
-               RolUsuario rol = new RolUsuario(Id_RolUsuario, Dsc_RolUsuario, Log_Activo==0? "Inactivo":"Activo");
-                listaRol.add(rol);
+                int id  = rsPA.getInt("Id_TipoSolicitud");
+                String nombre = rsPA.getString("Nombre");
+                int estado = rsPA.getInt("Log_Activo");
+                EstadoSolicitud ea = new EstadoSolicitud(id, nombre, estado==0? "Inactivo":"Activo");
+                listaEstadoSolicitud.add(ea);
             }
 
             rsPA.close();
@@ -68,29 +64,29 @@ public class RolUsuarioDB {
 
         }
 
-        return listaRol;
+        return listaEstadoSolicitud;
     }
-     
-     public  RolUsuario SeleccionarPorId(int idRolUsuario) throws SNMPExceptions, 
+    
+    public  EstadoSolicitud SeleccionarPorId(int idEstadoSolicitud) throws SNMPExceptions, 
             SQLException {
       String select = "";
       ResultSet rsPA = null;
-      RolUsuario rol = null;
+      EstadoSolicitud ea = null;
           
           try {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_RolUsuario, Dsc_RolUsuario,  Log_Activo from RolUsuario WHERE Id_RolUsuario = " +idRolUsuario;
+                      "SELECT Id_EstadoSolicitud, Nombre, Log_Activo from EstadoSolicitud WHERE Id_EstadoSolicitud = " +idEstadoSolicitud;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
 
-                        int Id_RolUsuario = rsPA.getInt("Id_RolUsuario");
-                        String Dsc_RolUsuario = rsPA.getString("Dsc_RolUsuario");
-                        int Log_Activo = rsPA.getInt("Log_Activo");
-                        rol = new RolUsuario(Id_RolUsuario, Dsc_RolUsuario, Log_Activo==0? "Inactivo":"Activo");
+                        int id  = rsPA.getInt("Id_TipoRecurso");
+                        String nombre = rsPA.getString("Nombre");
+                        int estado = rsPA.getInt("Log_Activo");
+                        ea = new EstadoSolicitud(id, nombre, estado==0? "Inactivo":"Activo");
                       }
               
             rsPA.close();
@@ -105,6 +101,6 @@ public class RolUsuarioDB {
               
           }
          
-          return rol;
+          return ea;
       }
 }

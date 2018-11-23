@@ -42,7 +42,6 @@ public class ProgramaBean implements Serializable {
      * Creates a new instance of ProgramaBean
      */
     public ProgramaBean() throws SNMPExceptions, SQLException {
-        
         seleccionarTodos();
     }
     
@@ -103,9 +102,10 @@ public class ProgramaBean implements Serializable {
             }else{
                 listaTablaPrograma = pro.SeleccionarTodos();
                 setMensajeFiltro("No se encontraron registros con el dato proporcionado");
-                FacesContext context = FacesContext.getCurrentInstance();
-                  context.addMessage(null, new FacesMessage("Lo sentimos,",  mensajeFiltro) );
+               
             }
+        }else{
+            seleccionarTodos();
         }
      }
      
@@ -121,7 +121,7 @@ public class ProgramaBean implements Serializable {
          setMensajeNombre("");
      }
      
-     /*Botón de ayuda*/
+     
      
      
      /*Validaciones*/

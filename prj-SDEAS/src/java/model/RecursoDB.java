@@ -193,12 +193,12 @@ public class RecursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Log_Activo from Recurso WHERE"
-                           + "   ( Cast(Id_Recurso as nvarchar(5)) LIKE '%' + '" + filtro + "' + '%')"
+                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Log_Activo from Recurso WHERE"
+                           + " ( Cast(Id_Recurso as nvarchar(5)) LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Nombre LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Dsc_Recurso LIKE '%' + '" + filtro + "' + '%')"
-                           + "   ( Cast(Cantidad as nvarchar(255)) LIKE '%' + '" + filtro + "' + '%')"
-                           + "   ( Cast(Capacidad as nvarchar(255)) LIKE '%' + '" + filtro + "' + '%')"
+                           + "OR ( Cast(Cantidad as nvarchar(255)) LIKE '%' + '" + filtro + "' + '%')"
+                           + "OR ( Cast(Capacidad as nvarchar(255)) LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Cast(Log_Activo as nvarchar(5)) LIKE '%' + '" + valor + "' + '%')";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);

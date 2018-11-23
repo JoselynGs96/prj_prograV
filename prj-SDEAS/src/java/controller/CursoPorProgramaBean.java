@@ -48,9 +48,8 @@ public class CursoPorProgramaBean implements Serializable {
         ProgramaDB proDb = new ProgramaDB();
         if(!proDb.SeleccionarTodos().isEmpty()){
             listaPrograma = proDb.SeleccionarTodos();
-            
         }
-        
+        seleccionarTodos();
         
     }
 
@@ -114,9 +113,9 @@ public class CursoPorProgramaBean implements Serializable {
             }else{
                 listaTablaCurso = cur.SeleccionarTodos();
                 setMensajeFiltro("No se encontraron registros con el dato proporcionado");
-                 FacesContext context = FacesContext.getCurrentInstance();
-                  context.addMessage(null, new FacesMessage("Lo sentimos,",  mensajeFiltro) );
             }
+        }else{
+            seleccionarTodos();
         }
      }
      

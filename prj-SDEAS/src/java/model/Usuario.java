@@ -12,7 +12,9 @@ import java.util.Date;
  * @author Fabi
  */
 public class Usuario {
-
+    int id;
+    int ced;
+    int TipoId;
     String cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
@@ -127,8 +129,31 @@ public class Usuario {
         this.Programa = Programa;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getCed() {
+        return ced;
+    }
+
+    public void setCed(int ced) {
+        this.ced = ced;
+    }
+
+    public int getTipoId() {
+        return TipoId;
+    }
+
+    public void setTipoId(int TipoId) {
+        this.TipoId = TipoId;
+    }
+
     
-
-
+    
 
 }

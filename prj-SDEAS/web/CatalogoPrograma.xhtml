@@ -93,7 +93,7 @@
                           <span>Recursos de Infraestructura</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="#">Catálogo</a></li>
+                          <li><a  href="faces/RecursoInfraestructura.xhtml">Catálogo</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -102,7 +102,7 @@
                           <span>Usuarios</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="#">Usuarios por Programa</a></li>
+                          <li><a  href="faces/UsuarioPorPrograma.xhtml">Usuarios por Programa</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -140,32 +140,32 @@
                             <h4><i class="fa fa-angle-right">&nbsp; Datos: </i></h4>
                             <div style="margin-left: 15px">
                             <h:inputHidden value="#{programaBean.id}"></h:inputHidden>
-                            <h:outputLabel>Nombre del programa:</h:outputLabel><h:inputText  class="form-control"  style="width: 400px" value="#{programaBean.nombre}" ></h:inputText>
-                            <h:outputText style="color: red;" value="#{programaBean.mensajeNombre}"></h:outputText>
+                            <p:outputLabel>Nombre del programa:</p:outputLabel><p:inputText  class="form-control"  style="width: 400px" value="#{programaBean.nombre}" ></p:inputText>
+                            <p:outputLabel style="color: red;" value="#{programaBean.mensajeNombre}"></p:outputLabel>
                             <br></br>
-                            <h:outputLabel>Descripción:</h:outputLabel>
+                            <p:outputLabel>Descripción:</p:outputLabel>
                             <br></br>
-                            <h:inputTextarea  class="form-control "  style="width: 400px" value="#{programaBean.descripcion}"></h:inputTextarea>
-                            <h:outputText style="color: red;" value="#{programaBean.mensajeDescripcion}"></h:outputText>
+                            <p:inputTextarea  class="form-control "  style="width: 400px" value="#{programaBean.descripcion}"></p:inputTextarea>
+                            <p:outputLabel style="color: red;" value="#{programaBean.mensajeDescripcion}"></p:outputLabel>
                             <br></br>
-                            <h:outputLabel>Estado:</h:outputLabel>
-                            <h:selectOneRadio layout="pageDirection" value="#{programaBean.estado}" >
+                            <p:outputLabel>Estado:</p:outputLabel>
+                            <p:selectOneRadio layout="pageDirection" value="#{programaBean.estado}" >
                                 <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;&#10004;" ></f:selectItem>
                                 <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;&#10008;"></f:selectItem>
-                            </h:selectOneRadio>
-                            <h:outputText style="color: red;" value="#{programaBean.mensajeEstado}"></h:outputText>
+                            </p:selectOneRadio>
+                            <p:outputLabel style="color: red;" value="#{programaBean.mensajeEstado}"></p:outputLabel>
                             </div>
                             <br></br>
                             <br></br>
                             <div class="btn-group btn-group-justified">
 				<div class="btn-group">
-                                    <p:commandButton class="btn btn-success" actionListener="#{programaBean.nuevo()}" value="&#9998; Nuevo"></p:commandButton>
+                                    <p:commandButton class="btn btn-primary"  actionListener="#{programaBean.nuevo()}" update="@form" value="&#9998; Nuevo"></p:commandButton>
 				</div>
 				<div class="btn-group">
-                               	    <p:commandButton class="btn btn-success" actionListener="#{programaBean.insertarPrograma()}" update="@form" value="&#9989; Guardar"></p:commandButton>
+                               	    <p:commandButton class="btn btn-primary" actionListener="#{programaBean.insertarPrograma()}" update="@form" value="&#9989; Guardar"></p:commandButton>
 				</div>
 				<div class="btn-group">
-				    <p:commandButton class="btn btn-success" oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
+				    <p:commandButton class="btn btn-primary" oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
                                 </div>
                             </div>     
                         </div>
@@ -214,7 +214,7 @@
                               <f:facet name="header">
                                   <h:outputText value=""/>
                               </f:facet>
-                              <h:commandButton  actionListener="#{programaBean.editar(pro.id)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                              <h:commandButton  actionListener="#{programaBean.editar(pro.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
                           </h:column>
                       </h:dataTable>
                       </div><!-- /content-panel -->

@@ -22,17 +22,6 @@ public class TipoIdentificacion {
       
     } 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     public int getId_TipoIdentificacion() {
         return Id_TipoIdentificacion;

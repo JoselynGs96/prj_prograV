@@ -14,46 +14,42 @@ import java.util.LinkedList;
 
 /**
  *
- * @author Fabi
+ * @author ujose
  */
-public class RolUsuarioDB {    
-    int Id_RolUsuario;
-    String Dsc_RolUsuario;
+public class EstadoAccesoDB {
     private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;
 
-    private LinkedList<RolUsuario> listaD = new LinkedList<RolUsuario>();
-
-    public RolUsuarioDB(Connection conn) {
+    public EstadoAccesoDB(Connection conn) {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);
     }
 
-    public RolUsuarioDB() {
+    public EstadoAccesoDB() {
         super();
     }
     
-     public LinkedList<RolUsuario> SeleccionarTodos() throws SNMPExceptions,
+    public LinkedList<EstadoAcceso> SeleccionarTodos() throws SNMPExceptions,
             SQLException {
-        String select = "";      
+        String select = "";
         ResultSet rsPA = null;
-        LinkedList<RolUsuario> listaRol = new LinkedList<RolUsuario>();
+        LinkedList<EstadoAcceso> listaEstadoAcceso = new LinkedList<EstadoAcceso>();
 
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "  SELECT  Id_RolUsuario, Dsc_RolUsuario, Log_Activo from RolUsuario ";
+                    = "SELECT Id_EstadoAcceso,Dsc_EstadoAcceso,Log_Activo from EstadoAcceso";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
 
-                int Id_RolUsuario = rsPA.getInt("Id_RolUsuario");
-                String Dsc_RolUsuario = rsPA.getString("Dsc_RolUsuario");
-                int Log_Activo = rsPA.getInt("Log_Activo");
-               RolUsuario rol = new RolUsuario(Id_RolUsuario, Dsc_RolUsuario, Log_Activo==0? "Inactivo":"Activo");
-                listaRol.add(rol);
+                int id  = rsPA.getInt("Id_EstadoAcceso");
+                String nombre = rsPA.getString("Dsc_EstadoAcceso");
+                int estado = rsPA.getInt("Log_Activo");
+                EstadoAcceso ea = new EstadoAcceso(id, nombre, estado==0? "Inactivo":"Activo");
+                listaEstadoAcceso.add(ea);
             }
 
             rsPA.close();
@@ -68,29 +64,29 @@ public class RolUsuarioDB {
 
         }
 
-        return listaRol;
+        return listaEstadoAcceso;
     }
-     
-     public  RolUsuario SeleccionarPorId(int idRolUsuario) throws SNMPExceptions, 
+    
+    public  EstadoAcceso SeleccionarPorId(int idEstadoAcceso) throws SNMPExceptions, 
             SQLException {
       String select = "";
       ResultSet rsPA = null;
-      RolUsuario rol = null;
+      EstadoAcceso ea = null;
           
           try {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_RolUsuario, Dsc_RolUsuario,  Log_Activo from RolUsuario WHERE Id_RolUsuario = " +idRolUsuario;
+                      "SELECT Id_EstadoAcceso, Dsc_EstadoAcceso, Log_Activo from EstadoAcceso WHERE Id_EstadoAcceso = " +idEstadoAcceso;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
 
-                        int Id_RolUsuario = rsPA.getInt("Id_RolUsuario");
-                        String Dsc_RolUsuario = rsPA.getString("Dsc_RolUsuario");
-                        int Log_Activo = rsPA.getInt("Log_Activo");
-                        rol = new RolUsuario(Id_RolUsuario, Dsc_RolUsuario, Log_Activo==0? "Inactivo":"Activo");
+                        int id  = rsPA.getInt("Id_EstadoAcceso");
+                        String nombre = rsPA.getString("Dsc_EstadoAcceso");
+                        int estado = rsPA.getInt("Log_Activo");
+                        ea = new EstadoAcceso(id, nombre, estado==0? "Inactivo":"Activo");
                       }
               
             rsPA.close();
@@ -105,6 +101,6 @@ public class RolUsuarioDB {
               
           }
          
-          return rol;
+          return ea;
       }
 }
