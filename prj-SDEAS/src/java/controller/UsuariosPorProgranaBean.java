@@ -17,6 +17,7 @@ import model.ProgramaUsuario;
 import model.RolUsuario;
 import model.RolUsuarioDB;
 import model.Usuario;
+import model.UsuarioDB;
 
 /**
  *
@@ -26,25 +27,53 @@ import model.Usuario;
 @SessionScoped
 public class UsuariosPorProgranaBean implements Serializable {
 
-    String cedula;
-    String nombre;
-    int idPrograma;
-    int idTipoUsuario;
-    String estado;
-    LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
+    Usuario usuario = null;
+    ProgramaUsuario programaUsu = null;
+    String cedula = "";
+    String nombre = "";
+    String estadoPrograma = "";
+    String estadoAcceso = "";
+    String estadoUsuario = "";
+    String nombrePrograma = "";
     LinkedList<Usuario> listaUsuario = new LinkedList<Usuario>();
-    LinkedList<RolUsuario> listaRolUsuario = new LinkedList<RolUsuario>();
     LinkedList<ProgramaUsuario> listaProusu = new LinkedList<ProgramaUsuario>();
-    LinkedList<ProgramaUsuario> temporal = new LinkedList<ProgramaUsuario>();
 
     
     
-    /**
-     * Creates a new instance of UsuariosPorProgranaBean
-     */
-    public UsuariosPorProgranaBean() {
+    
+    public UsuariosPorProgranaBean() throws SNMPExceptions, SQLException{
+       
+    }
+
+    
+    
+    public void llenarTabla() throws SNMPExceptions, SQLException{
+       UsuarioDB u = new UsuarioDB();
+       if(!u.SeleccionarTodos2().isEmpty()){
+            listaUsuario = u.SeleccionarTodos2();
+       }
+      
     }
     
+   
+    
+    
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public ProgramaUsuario getProgramaUsu() {
+        return programaUsu;
+    }
+
+    public void setProgramaUsu(ProgramaUsuario programaUsu) {
+        this.programaUsu = programaUsu;
+    }
+
     public String getCedula() {
         return cedula;
     }
@@ -61,18 +90,44 @@ public class UsuariosPorProgranaBean implements Serializable {
         this.nombre = nombre;
     }
 
-    public LinkedList<Programa> getListaPrograma() throws SNMPExceptions, SQLException {
-        ProgramaDB pro = new ProgramaDB();
-        return pro.SeleccionarTodos();
+    public String getEstadoPrograma() {
+        return estadoPrograma;
     }
 
-    public void setListaPrograma(LinkedList<Programa> listaPrograma) {
-        this.listaPrograma = listaPrograma;
+    public void setEstadoPrograma(String estadoPrograma) {
+        this.estadoPrograma = estadoPrograma;
     }
+
+    public String getEstadoAcceso() {
+        return estadoAcceso;
+    }
+
+    public void setEstadoAcceso(String estadoAcceso) {
+        this.estadoAcceso = estadoAcceso;
+    }
+
+    public String getEstadoUsuario() {
+        return estadoUsuario;
+    }
+
+    public void setEstadoUsuario(String estadoUsuario) {
+        this.estadoUsuario = estadoUsuario;
+    }
+
+    public String getNombrePrograma() {
+        return nombrePrograma;
+    }
+
+    public void setNombrePrograma(String nombrePrograma) {
+        this.nombrePrograma = nombrePrograma;
+    }
+
+    
 
     public LinkedList<Usuario> getListaUsuario() {
         return listaUsuario;
     }
+
 
     public void setListaUsuario(LinkedList<Usuario> listaUsuario) {
         this.listaUsuario = listaUsuario;
@@ -85,47 +140,7 @@ public class UsuariosPorProgranaBean implements Serializable {
     public void setListaProusu(LinkedList<ProgramaUsuario> listaProusu) {
         this.listaProusu = listaProusu;
     }
-
-    public LinkedList<ProgramaUsuario> getTemporal() {
-        return temporal;
-    }
-
-    public void setTemporal(LinkedList<ProgramaUsuario> temporal) {
-        this.temporal = temporal;
-    }
-
-    public int getIdPrograma() {
-        return idPrograma;
-    }
-
-    public void setIdPrograma(int idPrograma) {
-        this.idPrograma = idPrograma;
-    }
-
-    public int getIdTipoUsuario() {
-        return idTipoUsuario;
-    }
-
-    public void setIdTipoUsuario(int idTipoUsuario) {
-        this.idTipoUsuario = idTipoUsuario;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public LinkedList<RolUsuario> getListaRolUsuario() throws SNMPExceptions, SQLException {
-        RolUsuarioDB d = new RolUsuarioDB();
-        return d.SeleccionarTodos();
-    }
-
-    public void setListaRolUsuario(LinkedList<RolUsuario> listaRolUsuario) {
-        this.listaRolUsuario = listaRolUsuario;
-    }
+ 
     
   
 }

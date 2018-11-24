@@ -12,8 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.xml.bind.ParseConversionEvent;
-import model.Usuario;
+import java.util.LinkedList;
 
 /**
  *
@@ -114,24 +113,27 @@ public class UsuarioDB {
         ResultSet rsPA = null;
         Usuario usu = null;
         TipoIdentificacionDB tipoIdenDB = new TipoIdentificacionDB();
-
+        EstadoAccesoDB est = new EstadoAccesoDB();
+        usu = new Usuario();
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "select Id_Usuario, TipoIdentificacion,Nombre,Apellido1,Apellido2,Correo from Usuario where Id_Usuario=" + idUsuario;
+                    = "Select Id_Usuario, TipoIdentificacion,Nombre,Apellido1,Apellido2,Correo,Id_EstadoAcceso, Log_Activo from Usuario where Id_Usuario=" + idUsuario;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
 
-                String Id_Usuario = rsPA.getInt("Id_Usuario") + "";
-                TipoIdentificacion tipoide = tipoIdenDB.SeleccionarPorId(rsPA.getInt("TipoIdentificacion"));
-                String Nombre = rsPA.getString("Nombre");
-                String Apellido1 = rsPA.getString("Apellido1");
-                String Apellido2 = rsPA.getString("Apellido2");
-                String Correo = rsPA.getString("Correo");
-                usu = new Usuario();
+                usu.cedula = rsPA.getInt("Id_Usuario") + "";
+                usu.TipoIden = tipoIdenDB.SeleccionarPorId(rsPA.getInt("TipoIdentificacion"));
+                usu.nombre = rsPA.getString("Nombre");
+                usu.apellido1 = rsPA.getString("Apellido1");
+                usu.apellido2 = rsPA.getString("Apellido2");
+                usu.correo = rsPA.getString("Correo");
+                usu.estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                usu.est = rsPA.getInt("Log_Activo")==1? "Activo":"Inactivo";
+                
             }
 
             rsPA.close();
@@ -147,6 +149,103 @@ public class UsuarioDB {
         }
 
         return usu;
+    }
+    
+    public LinkedList<Usuario> SeleccionarTodos() throws SNMPExceptions,
+            SQLException {
+        String select = "";
+        ResultSet rsPA = null;
+        TipoIdentificacionDB tipoIdenDB = new TipoIdentificacionDB();
+        EstadoAccesoDB est = new EstadoAccesoDB();
+        LinkedList<Usuario> listaUsuario = new LinkedList<Usuario>();
+        ProgramaUsuarioDB pu = new ProgramaUsuarioDB();
+        try {
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            select
+                    = "Select Id_Usuario, TipoIdentificacion,Nombre,Apellido1,Apellido2,Correo,Id_EstadoAcceso, Log_Activo from Usuario";
+
+            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+
+            while (rsPA.next()) {
+                
+                Usuario usu = new Usuario();
+                usu.ced = rsPA.getInt("Id_Usuario");
+                usu.cedula = rsPA.getInt("Id_Usuario") + "";
+                usu.TipoIden = tipoIdenDB.SeleccionarPorId(rsPA.getInt("TipoIdentificacion"));
+                usu.nombre = rsPA.getString("Nombre");
+                usu.apellido1 = rsPA.getString("Apellido1");
+                usu.apellido2 = rsPA.getString("Apellido2");
+                usu.correo = rsPA.getString("Correo");
+                usu.estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                usu.est = rsPA.getInt("Log_Activo")==1? "Activo":"Inactivo";
+                usu.pro = pu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
+                listaUsuario.add(usu);
+            }
+
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return listaUsuario;
+    }
+    
+    
+       public LinkedList<Usuario> SeleccionarTodos2() throws SNMPExceptions,
+            SQLException {
+        String select = "";
+        ResultSet rsPA = null;
+        TipoIdentificacionDB tipoIdenDB = new TipoIdentificacionDB();
+        EstadoAccesoDB est = new EstadoAccesoDB();
+        LinkedList<Usuario> listaUsuario = new LinkedList<Usuario>();
+        ProgramaUsuarioDB pu = new ProgramaUsuarioDB();
+        try {
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            select
+                    = "Select Id_Usuario, TipoIdentificacion, Nombre,Apellido1,Apellido2,FechaNacimiento,Correo,Id_EstadoAcceso, Log_Activo from Usuario";
+
+            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+
+            while (rsPA.next()) {
+                
+                int ced = rsPA.getInt("Id_Usuario");
+                String cedula = rsPA.getInt("Id_Usuario") + "";
+                TipoIdentificacion TipoIden = tipoIdenDB.SeleccionarPorId(rsPA.getInt("TipoIdentificacion"));
+                String nombre = rsPA.getString("Nombre");
+                String apellido1 = rsPA.getString("Apellido1");
+                String apellido2 = rsPA.getString("Apellido2");
+                Date fechaNacimiento = rsPA.getDate("FechaNacimiento");
+                String correo = rsPA.getString("Correo");
+                int estado = rsPA.getInt("Log_Activo");
+                EstadoAcceso estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                String esta = rsPA.getInt("Log_Activo")==1? "Activo":"Inactivo";
+                ProgramaUsuario pro = pu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
+                Usuario usu = new Usuario(ced, cedula,  TipoIden, fechaNacimiento, correo, estado, nombre,  apellido1, apellido2, pro, esta, estAcc);
+                listaUsuario.add(usu);
+            }
+
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return listaUsuario;
     }
 
     public void IngresarContrasenna(Usuario usu)throws SNMPExceptions, SQLException{

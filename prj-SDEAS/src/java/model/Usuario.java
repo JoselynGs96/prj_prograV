@@ -27,11 +27,32 @@ public class Usuario {
     String apellido1;
     String apellido2;
     Programa Programa;  
-   
+    String est;
+    EstadoAcceso estAcc;
+    String nombreCompleto;
+    ProgramaUsuario pro;
     
     public Usuario(){
         
     }
+
+    public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado, String nombre, String apellido1, String apellido2, ProgramaUsuario Programa, String est, EstadoAcceso estAcc) {
+    
+        this.setCed(ced);
+        this.setCedula(cedula);
+        this.setTipoIden(TipoIden);
+        this.setFechaNacimiento(fechaNacimiento);
+        this.setCorreo(correo);
+        this.setEstado(estado);
+        this.setNombre(nombre);
+        this.setApellido1(apellido1);
+        this.setApellido2(apellido2);
+        this.setPro(Programa);
+        this.setEst(est);
+        this.setEstAcc(estAcc);
+    }
+    
+    
 
     public String getCedula() {
         return cedula;
@@ -151,6 +172,38 @@ public class Usuario {
 
     public void setTipoId(int TipoId) {
         this.TipoId = TipoId;
+    }
+
+    public String getEst() {
+        return est;
+    }
+
+    public void setEst(String est) {
+        this.est = est;
+    }
+
+    public EstadoAcceso getEstAcc() {
+        return estAcc;
+    }
+
+    public void setEstAcc(EstadoAcceso estAcc) {
+        this.estAcc = estAcc;
+    }
+
+    public String getNombreCompleto() {
+        return this.nombre +" "+this.apellido1+" "+this.apellido2;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
+    public ProgramaUsuario getPro() {
+        return pro;
+    }
+
+    public void setPro(ProgramaUsuario pro) {
+        this.pro = pro;
     }
 
     

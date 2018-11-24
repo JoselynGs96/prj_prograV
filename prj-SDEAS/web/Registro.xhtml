@@ -120,98 +120,98 @@
             <div class="text-center col-lg-offset-3 col-lg-6" >
                 <p:growl id="msgs" showDetail="true" />
 
-                <h3 style="margin-top:0; background:#fccc0c; " >Registrarte</h3>
+                <h3 style="margin-top:0; background:#fccc0c; " >Registrate</h3>
                 <p:tabView>
                     <p:tab id="Personal" title="Personal">
-                        <table>
+                        <table style="width: 90%; margin-right: 5%; margin-left: 5%">
                             <tr>
                                 <td>    <h:outputText value="Tipo de cédula *" /></td>
-                                <td>      <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_TipoCedula}" id="ident" >
+                                <td>      <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-left: 10px" value="#{usuariosBean.id_TipoCedula}" id="ident" >
                                         <f:selectItems var="iden" value="#{usuariosBean.listaIden}" itemLabel="#{iden.dsc_TipoTelefono}" itemValue="#{iden.id_TipoIdentificacion}"></f:selectItems>  
                                     </h:selectOneMenu> 
                                 </td>
                             </tr>
                             <tr>
                                 <td> 
-                                    <h:outputText value="Cédula *" />
+                                    <h:outputText value="Cédula *" style="margin-top: 5px" />
                                 </td>
                                 <td>   
-                                    <p:inputText style="float: left " value="#{usuariosBean.cedula}" label="cedula" id="cedula"/>
+                                    <p:inputText style="float: left; margin-top: 5px; margin-left: 10px" value="#{usuariosBean.cedula}" label="cedula" id="cedula"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td> 
-                                    <h:outputText value="Nombre *" /></td>
+                                    <h:outputText value="Nombre *" style="margin-top: 5px" /></td>
                                 <td>   
-                                    <p:inputText style="float: left " value="#{usuariosBean.nombre}" label="nombre" id="nombre"/>
+                                    <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{usuariosBean.nombre}" label="nombre" id="nombre"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td>    <h:outputText value="Primer Apellido *" />   </td>                             
-                                <td>    <p:inputText style="float: left " value="#{usuariosBean.apellido1}" label="apellido1" id="apellido1"/>
+                                <td>    <h:outputText value="Primer Apellido *" style="margin-top: 5px; "/>   </td>                             
+                                <td>    <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{usuariosBean.apellido1}" label="apellido1" id="apellido1"/>
                                 </td>
                             </tr>
                             <tr>
 
-                                <td>     
-                                    <h:outputText value="Segundo Apellido *" />            
+                                <td  >     
+                                    <h:outputText value="Segundo Apellido *" style="margin-top: 5px; " />            
                                 </td>                  
                                 <td>     
-                                    <p:inputText style="float: left " value="#{usuariosBean.apellido2}" label="apellido2" id="apellido2"/>
+                                    <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{usuariosBean.apellido2}" label="apellido2" id="apellido2"/>
                                 </td>
                             </tr>
                             <tr>
 
                                 <td>
-                                    <h:outputText value="Fecha de nacimiento: " />
+                                    <h:outputText value="Fecha de nacimiento: " style="margin-top: 5px" />
                                 </td>
                                 <td>
-                                    <p:calendar locale="es" style="float: left " value="#{usuariosBean.fechaNacimiento}"  pattern="dd-MM-yyyy" mask="true" label="calendario" id="calendario"/>
+                                    <p:calendar locale="es" style="float: left; margin-top: 5px; margin-left: 10px " value="#{usuariosBean.fechaNacimiento}"  pattern="dd-MM-yyyy" mask="true" label="ca margin-left: 5pxlendario" id="calendario"/>
                                 </td>
 
                             </tr>
                         </table>
                     </p:tab>
                     <p:tab id="direcc" title="Dirección">
-                        <table>
+                        <table style="width: 90%; margin-right: 5%; margin-left: 5%">
                             <tr>
                                 <td>
-                                    <h:outputText value="Provincia" />  </td>
+                                    <h:outputText value="Provincia" style="margin-top: 5px" />  </td>
                                 <td>
-                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Provincia}" id="Provincia" >
+                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{usuariosBean.id_Provincia}" id="Provincia" >
                                         <f:selectItems var="pro" value="#{usuariosBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <h:outputText value="Canton" />  </td>
+                                    <h:outputText value="Canton" style="margin-top: 5px" />  </td>
                                 <td>
-                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Canton}" id="Canton" >
+                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{usuariosBean.id_Canton}" id="Canton" >
                                         <f:selectItems var="can" value="#{usuariosBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <h:outputText value="Distrito" />  </td>
-                                <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Distrito}" >
+                                    <h:outputText value="Distrito" style="margin-top: 5px" />  </td>
+                                <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{usuariosBean.id_Distrito}" >
                                         <f:selectItems var="dis" value="#{usuariosBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <h:outputText value="Barrio" />  </td>
+                                    <h:outputText value="Barrio" style="margin-top: 5px" />  </td>
                                 <td>
-                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Barrio}" >
+                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{usuariosBean.id_Barrio}" >
                                         <f:selectItems var="bar" value="#{usuariosBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
                                     </h:selectOneMenu>
                                 </td>
                             </tr>
                             <tr>
-                                <td>  <h:outputText value="Otras señas" />  </td>
-                                <td>  <p:inputTextarea value="#{usuariosBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
+                                <td>  <h:outputText value="Otras señas" style="margin-top: 5px" />  </td>
+                                <td>  <p:inputTextarea style="margin-top: 5px; margin-left: 10px; width: 400px "  value="#{usuariosBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
                                 </td>
                             </tr>
                             <tr>
@@ -220,9 +220,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">  <h:commandButton action="#{usuariosBean.agregarDireccones()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
+                                <center>
+                                    <td colspan="2">  <h:commandButton action="#{usuariosBean.agregarDireccones()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
                                                                    class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
                                 </td> 
+                                </center>
+                                
                             </tr>
 
                             <tr>   
@@ -271,32 +274,20 @@
 
                     </p:tab>
                     <p:tab id="contacto" title="Contacto">
-                        <table> 
+                        <table style="width: 90%; margin-right: 5%; margin-left: 5%"> 
                             <tr>
                                 <td>  <h:outputText value="Correo *" /> </td>
-                                <td>  <p:inputText style="float: left " id="correo" value="#{usuariosBean.correo}"  class="form-inline" ></p:inputText>   </td>
+                                <td>  <p:inputText style="float: left; margin-left: 10px " id="correo" value="#{usuariosBean.correo}"  class="form-inline" ></p:inputText>   </td>
                             </tr>
                             <tr>
-                                <td><h:outputText value="Programa DEAS: *" /> </td>
-                                <td>  <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.programa}" id="programa" >
-                                        <f:selectItems var="pro" value="#{usuariosBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
-                                    </h:selectOneMenu> </td>
-                            </tr>
-                            <tr>
-                                <td>   <h:outputText value="Tipo de Funcionario: *" /> </td>
-                                <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_Rol}" id="rol" >
-                                        <f:selectItems var="rol" value="#{usuariosBean.listarol}" itemLabel="#{rol.dsc_RolUsuario}" itemValue="#{rol.id_RolUsuario}"></f:selectItems>
-                                    </h:selectOneMenu> </td>
-                            </tr>
-                            <tr>
-                                <td>  <h:outputText value="Tipo Teléfono: *" /> </td>
-                                <td>     <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px" value="#{usuariosBean.id_TipoTelefono}" id="tel" >
+                                <td>  <h:outputText value="Tipo Teléfono: *" style="margin-top: 5px; margin-top: 5px; margin-left: 10px"/> </td>
+                                <td>     <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{usuariosBean.id_TipoTelefono}" id="tel" >
                                         <f:selectItems var="tel" value="#{usuariosBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
                                     </h:selectOneMenu> </td>
                             </tr>
                             <tr>
-                                <td>   <h:outputText value="Número: *" /> </td>
-                                <td> <p:inputText  style="float: left " id="numero" value="#{usuariosBean.numeroTelefono}"  class="form-inline" ></p:inputText>   </td>
+                                <td>   <h:outputText value="Número: *" style="margin-top: 5px"/> </td>
+                                <td> <p:inputText  style="float: left; margin-top: 5px; margin-left: 10px " id="numero" value="#{usuariosBean.numeroTelefono}"  class="form-inline" ></p:inputText>   </td>
                             </tr>
                             <tr>
                                 <td colspan="2">  
@@ -305,10 +296,10 @@
                             </tr>
                             <tr>
                                 <td colspan="2">  
-
-                                    <h:commandButton action="#{usuariosBean.agregarTelefonos()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
+                                    <center>
+                                         <h:commandButton action="#{usuariosBean.agregarTelefonos()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
                                                      class="btn btn-primary btn-lg" value="Agregar Telefono"></h:commandButton>
-
+                                    </center>
                                 </td>
                             </tr>
                             <tr>
@@ -339,12 +330,36 @@
                             </tr>
                         </table>
                     </p:tab>
+                    <p:tab id="contacto" title="Programa DEAS">
+                        <table style="width: 90%; margin-right: 5%; margin-left: 5%"> 
+                            <tr>
+                                <td><h:outputText value="Programa: *" style="margin-top: 5px"/> </td>
+                                <td>  <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{usuariosBean.programa}" id="programa" >
+                                        <f:selectItems var="pro" value="#{usuariosBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
+                                    </h:selectOneMenu> </td>
+                            </tr>
+                            <tr>
+                                <td>   <h:outputText value="Tipo de Funcionario: *" style="margin-top: 5px"/> </td>
+                                <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{usuariosBean.id_Rol}" id="rol" >
+                                        <f:selectItems var="rol" value="#{usuariosBean.listarol}" itemLabel="#{rol.dsc_RolUsuario}" itemValue="#{rol.id_RolUsuario}"></f:selectItems>
+                                    </h:selectOneMenu> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">  
+                                    <h:outputText style="color: red;" value="#{usuariosBean.mensaje2}"></h:outputText>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:tab>
                 </p:tabView>
 
                 <br></br>
-                <h:commandButton action="#{usuariosBean.IngresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                <center>
+                    <h:commandButton action="#{usuariosBean.IngresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
                                  class="btn btn-primary btn-lg" value="Registrarse"></h:commandButton><br></br>
-                <h:outputText style="color: red;" value="#{usuariosBean.mensaje}"></h:outputText>
+                    <h:outputText style="color: red;" value="#{usuariosBean.mensaje}"></h:outputText>
+                </center>
+                
             </div>
 
 

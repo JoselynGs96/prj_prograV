@@ -195,16 +195,15 @@
                             <p:outputLabel style="color: red;" value="#{recursoInfraestructuraBean.mensajeEstado}"></p:outputLabel>
                             </div>
                             <br></br>
-                            <br></br>
-                            <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
 				<div class="btn-group">
-                                    <p:commandButton class="btn btn-primary" actionListener="#{recursoInfraestructuraBean.nuevo()}" update="@form" value="&#9998; Nuevo"></p:commandButton>
+                                    <p:commandButton  actionListener="#{recursoInfraestructuraBean.nuevo()}" update="@form" value="&#9998; Nuevo"></p:commandButton>
 				</div>
-				<div class="btn-group">
-                               	    <p:commandButton class="btn btn-primary" actionListener="#{recursoInfraestructuraBean.insertarRecurso()}" update="@form" value="&#9989; Guardar"></p:commandButton>
+				<div class="btn-group"  style="margin-left: 5px">
+                               	    <p:commandButton  actionListener="#{recursoInfraestructuraBean.insertarRecurso()}" update="@form" value="&#9989; Guardar"></p:commandButton>
 				</div>
-				<div class="btn-group">
-                                    <p:commandButton class="btn btn-primary" oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
+				<div class="btn-group" style="margin-left: 5px">
+                                    <p:commandButton  oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
 				</div>
                             </div>     
                         </div>

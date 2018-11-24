@@ -27,22 +27,6 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <script type="application/javascript">
-                                
-                                  function tipoRecurso(){
-                                      var cod = document.getElementById("myForm:ti").value;
-                                   
-                                        if(cod==1){
-                                            $("#ct").hide();
-                                            $("#cp").show();
-                                        }else{
-                                            $("#cp").hide();
-                                            $("#ct").show();
-                                        }
-                                  }
-                                  
-                                   $(document).ready(tipoRecurso) ;
-    </script>
     
     </h:head>
     <h:body>
@@ -119,7 +103,7 @@
                           <span>Usuarios</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="#">Usuarios por Programa</a></li>
+                          <li><a  href="faces/UsuarioPorPrograma.xhtml">Usuarios por Programa</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -134,7 +118,6 @@
                           <span>Reportes</span>
                       </a>
                   </li>
-
               </ul>
               <!-- sidebar menu end-->
           </div>
@@ -159,39 +142,43 @@
                                 <table>
                                 <tr>
                                     <td>
-                                        <p:outputLabel>Cédula</p:outputLabel>
-                                        <p:inputText class="form-control" placeholder="&nbsp;" value="#{usuariosPorProgranaBean.cedula}" style="width: 200px" readonly="true"></p:inputText>
+                                        <p:outputLabel>Cédula:</p:outputLabel>
+                                        <p:inputText class="form-control" value="#{usuariosPorProgranaBean.cedula}" style="width: 200px; float: left" readonly="true"></p:inputText>
                                     </td>
                                     <td>
-                                        <p:outputLabel style="margin-left: 20px">Nombre</p:outputLabel><p:inputText   class="form-control"  style="width: 400px; margin-left: 20px" value="#{usuariosPorProgranaBean.nombre}" readonly="true" ></p:inputText>
-                                    </td>
-                                    <td>
-                                        
+                                        <p:outputLabel style="margin-left: 20px">Nombre:</p:outputLabel><p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.nombre}" style="width: 495px; margin-left: 20px"  readonly="true" ></p:inputText>
                                     </td>
                                 </tr>
                                 </table>
                             <br></br>
-                            <p:outputLabel>Programas al que Pertenece:</p:outputLabel>
-                            <br></br>
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <p:dataList value="#{usuariosPorProgranaBean.temporal}" var="lis" emptyMessage="Aún no esta asociado a ningún programa">
-                                    <f:facet name="header" class="right">
-                                        <p:commandButton   value="+" title="Agregar" type="button" onclick="PF('dlg2').show();" />
-                                    </f:facet>
-                                    <p:commandButton value="Modificar"></p:commandButton>
-                                    <h:outputText value="#{lis.programa.nombre},#{lis.rolUsuario.dsc_RolUsuario} " style="display:inline-block"/>
-                                </p:dataList>
-                            </h:panelGrid>
+                            <p:panel id="basic" header="Programa al que Pertenece:"  toggleable="true" toggleSpeed="500" closeSpeed="500" widgetVar="panel">
+                                <p:ajax event="toggle" />
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <p:outputLabel>Programa:</p:outputLabel> <p:inputText class="form-control" value="#{usuariosPorProgranaBean.nombrePrograma}" placeholder="&nbsp;"  style="width: 300px" readonly="true"></p:inputText>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel style="margin-left: 100px; margin-top: 15px" >Estado:</p:outputLabel>
+                                            <p:selectOneRadio style="margin-left: 100px;" value="#{usuariosPorProgranaBean.estadoPrograma}"  layout="pageDirection">
+                                                    <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;" ></f:selectItem>
+                                                    <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;"></f:selectItem>
+                                            </p:selectOneRadio>
+                                        </td>
+                                    </tr>
+                                </table>
+                                 
+                            </p:panel>
                             <br></br>
                             <p:outputLabel>Estado de Acceso:</p:outputLabel>
-                            <p:selectOneRadio layout="pageDirection">
+                            <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoAcceso}" >
                                 <f:selectItem itemValue="Aceptado" itemLabel=" &nbsp;Aceptado&nbsp;" ></f:selectItem>
                                 <f:selectItem itemValue="Denegado" itemLabel=" &nbsp;Denegado&nbsp;"></f:selectItem>
                                 <f:selectItem itemValue="Pendiente" itemLabel=" &nbsp;Pendiente&nbsp;"></f:selectItem>
                             </p:selectOneRadio>
                             <br></br>
                             <p:outputLabel>Estado de Usuario:</p:outputLabel>
-                            <p:selectOneRadio layout="pageDirection">
+                            <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoUsuario}">
                                 <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;" ></f:selectItem>
                                 <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;"></f:selectItem>
                             </p:selectOneRadio>
@@ -199,60 +186,31 @@
                             
                             </div>
                             <br></br>
-                            <br></br>
-                            <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
 				<div class="btn-group">
-                                    <p:commandButton class="btn btn-primary"  update="@form" value="&#9998; Nuevo"></p:commandButton>
+                                    <p:commandButton  update="@form" value="&#9998; Nuevo"></p:commandButton>
 				</div>
-				<div class="btn-group">
-                               	    <p:commandButton class="btn btn-primary"  update="@form" value="&#9989; Guardar"></p:commandButton>
+                                <div class="btn-group" style="margin-left: 5px">
+                                    <p:commandButton   update="@form" value="&#10138; Registrar"></p:commandButton>
 				</div>
-				<div class="btn-group">
-                                    <p:commandButton class="btn btn-primary" oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
+				<div class="btn-group" style="margin-left: 5px">
+                               	    <p:commandButton update="@form" value="&#9989; Guardar"></p:commandButton>
+				</div>
+                                <div class="btn-group" style="margin-left: 5px">
+                                    <p:commandButton  oncomplete="PF('sidebar2').show()"  value="&#10067; Ayuda"></p:commandButton>
 				</div>
                             </div>     
                         </div>
-                        
-                        <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-  
-                        <p:dialog header="Agregar al Programa" widgetVar="dlg2" width="400px" modal="true" resizable="false">
-                            <h:panelGrid columns="1" cellpadding="5" width="100%">
-                                <h:inputHidden></h:inputHidden>
-                                <h:outputLabel value="Usuario:" />
-                                <p:inputText class="form-control" value="#{usuariosPorProgranaBean.nombre}" readonly="true"></p:inputText>
-                                <br></br>
-                                <h:outputLabel value="Programa:" />
-                                <h:selectOneMenu class="form-control" value="#{usuariosPorProgranaBean.idPrograma}">
-                                    <f:selectItems value="#{usuariosPorProgranaBean.listaPrograma}" var="l" itemLabel="#{l.nombre}" itemValue="#{l.id}" ></f:selectItems>
-                                </h:selectOneMenu>
-                                <br></br>
-                                <h:outputLabel  value="Tipo Usuario:" />
-                                <h:selectOneMenu class="form-control" value="#{usuariosPorProgranaBean.idTipoUsuario}">
-                                    <f:selectItems value="#{usuariosPorProgranaBean.listaRolUsuario}" var="r" itemLabel="#{r.dsc_RolUsuario}" itemValue="#{r.id_RolUsuario}"></f:selectItems>
-                                </h:selectOneMenu>
-                                <br></br>
-                                <p:outputLabel value="Estado:"></p:outputLabel>
-                                <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estado}">
-                                        <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;" ></f:selectItem>
-                                        <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;"></f:selectItem>
-                                </p:selectOneRadio>
-                                <br></br>
-                                <f:facet name="footer" class="mt">
-                                    <center>
-                                    <p:commandButton value="Agregar" update="growl" action="#{userLoginView.login}" 
-                                                     oncomplete="PF('dlg2').hide()"></p:commandButton>
-                                    </center>
-                                </f:facet>  
-                            </h:panelGrid>
-                        </p:dialog>    
-                        
-                         <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000">
+                       
+                        <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000">
                                     <h1 style="font-weight:normal">Ayuda</h1>
                                     <p>
                                        
                                     </p>
                                     <p:commandButton value="Cerrar" oncomplete="PF('sidebar2').hide()"/>
-                         </p:sidebar>
+                        </p:sidebar>
+                        
+                        
                         <!--Tabla-->
                   <div class="row mt">
                   <div class="col-md-12">
@@ -264,36 +222,42 @@
                                         <h:outputText style="color: red; margin-left: 20px;" ></h:outputText>
                       </div>
                       <hr></hr>   
-                        <h:dataTable id="dataPro" class="table table-striped table-advance table-hover"  >
+                      <h:dataTable id="datausu" class="table table-striped table-advance table-hover" var="usu" value="#{usuariosPorProgranaBean.listaUsuario}" >
                           <h:column>
                               <f:facet name="header">
                                   <h:outputText value="Cédula"/>
                               </f:facet>
-                              <h:outputText />
+                              <h:outputText value="#{usu.cedula}" />
                           </h:column>
                           <h:column>
                               <f:facet name="header">
                                   <h:outputText value="Nombre"/>
                               </f:facet>
-                              <h:outputText />
+                              <h:outputText value="#{usu.nombreCompleto}" />
                           </h:column>
                           <h:column>
                               <f:facet name="header">
                                   <h:outputText value="Estado de Acceso"/>
                               </f:facet>
-                              <h:outputText />
+                              <h:outputText value="#{usu.estAcc.nombre}"/>
+                          </h:column>
+                           <h:column>
+                              <f:facet name="header">
+                                  <h:outputText value="Estado de Usuario"/>
+                              </f:facet>
+                               <h:outputText value="#{usu.est}"/>
                           </h:column>
                           <h:column>
                               <f:facet name="header">
-                                  <h:outputText value="Programas"/>
+                                  <h:outputText value="Programa"/>
                               </f:facet>
-                              <h:commandButton   alt="Programas" title="Programas" onclick="PF('dlg3').show();" class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                              <h:commandButton   alt="Programas" title="Programas"  class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/editar.png"> </h:commandButton>
                           </h:column>
                           <h:column>
                               <f:facet name="header">
                                   <h:outputText value="Más detalles"/>
                               </f:facet>
-                              <h:commandButton   alt="Detalles" title="Detalles" onclick="PF('dlg4').show();" class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/ver.png"> </h:commandButton>
+                              <h:commandButton   alt="Detalles" title="Detalles"  class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/ver.png"> </h:commandButton>
                           </h:column>
                           <h:column>
                               <f:facet name="header">
@@ -310,29 +274,7 @@
               </div>
           </section>
       </section>
-        
-                        <p:dialog header="Programas" widgetVar="dlg3" width="400px" modal="true" resizable="false">
-                            <h:panelGrid columns="1" cellpadding="5" width="100%">
-                                <p:dataList>
-                                    <h:outputText value="" style="display:inline-block"/>
-                                </p:dataList>
-                                <f:facet name="footer" class="mt">
-                                    <center>
-                                    <p:commandButton value="Cerrar" update="growl" oncomplete="PF('dlg3').hide()"></p:commandButton>
-                                    </center>
-                                </f:facet>  
-                            </h:panelGrid>
-                        </p:dialog>    
-      
-                        <p:dialog header="Detalles" widgetVar="dlg4" width="400px" modal="true" resizable="false">
-                            <h:panelGrid columns="1" cellpadding="5" width="100%">
-                                <f:facet name="footer" class="mt">
-                                    <center>
-                                    <p:commandButton value="Cerrar" update="growl" oncomplete="PF('dlg4').hide()"></p:commandButton>
-                                    </center>
-                                </f:facet>  
-                            </h:panelGrid>
-                        </p:dialog>    
+                        
       
       
       
@@ -349,7 +291,6 @@
       <!--footer end-->
       </h:form>
   </section>
-
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="RecursoMante/js/jquery.js"></script>
     <script src="RecursoMante/js/jquery-1.8.3.min.js"></script>
