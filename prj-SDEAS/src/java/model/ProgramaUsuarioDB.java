@@ -100,17 +100,16 @@ public class ProgramaUsuarioDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Programa, Id_Usuario, Id_RolUsuario, Log_Activo from Programa_Usuario WHERE Id_Usuario = " +id;
+                      "SELECT Id_Programa, Id_RolUsuario, Log_Activo from Programa_Usuario WHERE Id_Usuario = " +id;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
 
                         Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa")) ;
-                        Usuario Id_Usuario = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                         RolUsuario Id_RolUsuario = rol.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
                         int Log_Activo = rsPA.getInt("Log_Activo");
-                        p = new ProgramaUsuario(Id_Usuario, Id_Programa, Id_RolUsuario, Log_Activo==0? "Inactivo":"Activo");
+                        p = new ProgramaUsuario(Id_Programa, Id_RolUsuario, Log_Activo==0? "Inactivo":"Activo");
                       }
               
             rsPA.close();

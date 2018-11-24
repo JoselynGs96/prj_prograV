@@ -37,7 +37,6 @@ public class Usuario {
     }
 
     public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado, String nombre, String apellido1, String apellido2, ProgramaUsuario Programa, String est, EstadoAcceso estAcc) {
-    
         this.setCed(ced);
         this.setCedula(cedula);
         this.setTipoIden(TipoIden);

@@ -210,8 +210,7 @@ public class UsuarioDB {
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
-            select
-                    = "Select Id_Usuario, TipoIdentificacion, Nombre,Apellido1,Apellido2,FechaNacimiento,Correo,Id_EstadoAcceso, Log_Activo from Usuario";
+            select = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo from Usuario";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -219,7 +218,7 @@ public class UsuarioDB {
                 
                 int ced = rsPA.getInt("Id_Usuario");
                 String cedula = rsPA.getInt("Id_Usuario") + "";
-                TipoIdentificacion TipoIden = tipoIdenDB.SeleccionarPorId(rsPA.getInt("TipoIdentificacion"));
+                TipoIdentificacion TipoIden = tipoIdenDB.SeleccionarPorId(rsPA.getInt("Id_TipoIdentificacion"));
                 String nombre = rsPA.getString("Nombre");
                 String apellido1 = rsPA.getString("Apellido1");
                 String apellido2 = rsPA.getString("Apellido2");

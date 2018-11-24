@@ -24,6 +24,12 @@ public class ProgramaUsuario {
         this.setRolUsuario(rolUsuario);
         this.setEstado(estado);
     }
+    
+    public ProgramaUsuario(Programa programa, RolUsuario rolUsuario, String estado) {
+        this.setPrograma(programa);
+        this.setRolUsuario(rolUsuario);
+        this.setEstado(estado);
+    }
 
     public Usuario getUsuario() {
         return usuario;

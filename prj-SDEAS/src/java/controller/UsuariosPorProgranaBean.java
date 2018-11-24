@@ -6,11 +6,13 @@
 package controller;
 
 import dao.SNMPExceptions;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import javax.faces.context.FacesContext;
 import model.Programa;
 import model.ProgramaDB;
 import model.ProgramaUsuario;
@@ -18,6 +20,8 @@ import model.RolUsuario;
 import model.RolUsuarioDB;
 import model.Usuario;
 import model.UsuarioDB;
+import static org.primefaces.PrimeFaces.current;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -42,21 +46,35 @@ public class UsuariosPorProgranaBean implements Serializable {
     
     
     public UsuariosPorProgranaBean() throws SNMPExceptions, SQLException{
-       
+        llenarTabla();
     }
+    
 
+    public void verDetallesBoton(int ced){
+       RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('usuario').show();");
+    }
+    
+    public void nuevoBoton(){
+        
+    }
+    
+    public void guardarBoton(){
+        
+    }
+    
+    public void edtarBoton(){
+        
+    }
     
     
     public void llenarTabla() throws SNMPExceptions, SQLException{
        UsuarioDB u = new UsuarioDB();
-       if(!u.SeleccionarTodos2().isEmpty()){
+        if(!u.SeleccionarTodos2().isEmpty()){
+            listaUsuario.clear();
             listaUsuario = u.SeleccionarTodos2();
-       }
-      
+        }
     }
-    
-   
-    
     
     public Usuario getUsuario() {
         return usuario;
