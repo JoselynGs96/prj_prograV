@@ -24,6 +24,7 @@ import model.Direccion;
 import model.DireccionDB;
 import model.Distrito;
 import model.DistritoDB;
+import model.EnumFuncionario;
 import model.Programa;
 import model.ProgramaDB;
 import model.Provincia;
@@ -84,6 +85,13 @@ public class UsuariosBean implements Serializable {
     LinkedList<TipoIdentificacion> listaIden = new LinkedList<TipoIdentificacion>();
     LinkedList<Direccion> listaDirec = new LinkedList<Direccion>();
     LinkedList<Telefono> listaTel = new LinkedList<Telefono>();
+    EnumFuncionario funcionario;
+
+   
+    
+       public EnumFuncionario[] EnumFuncionario() {
+        return EnumFuncionario.values();
+    }
 
     /**
      * Creates a new instance of UsuariosBean
@@ -655,5 +663,13 @@ public class UsuariosBean implements Serializable {
 
     public void setMensaje2(String mensaje2) {
         this.mensaje2 = mensaje2;
+    }
+    
+     public EnumFuncionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(EnumFuncionario funcionario) {
+        this.funcionario = funcionario;
     }
 }

@@ -31,6 +31,9 @@ public class Usuario {
     EstadoAcceso estAcc;
     String nombreCompleto;
     ProgramaUsuario pro;
+    EnumFuncionario Funcionario;
+
+  
     
     public Usuario(){
         
@@ -205,7 +208,13 @@ public class Usuario {
         this.pro = pro;
     }
 
-    
+      public EnumFuncionario getFuncionario() {
+        return Funcionario;
+    }
+
+    public void setFuncionario(EnumFuncionario Funcionario) {
+        this.Funcionario = Funcionario;
+    }
     
 
 }

@@ -340,8 +340,8 @@
                             </tr>
                             <tr>
                                 <td>   <h:outputText value="Tipo de Funcionario: *" style="margin-top: 5px"/> </td>
-                                <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{usuariosBean.id_Rol}" id="rol" >
-                                        <f:selectItems var="rol" value="#{usuariosBean.listarol}" itemLabel="#{rol.dsc_RolUsuario}" itemValue="#{rol.id_RolUsuario}"></f:selectItems>
+                                <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{usuariosBean.funcionario}" id="rol" >
+                                        <f:selectItems var="rol" value="#{usuariosBean.EnumFuncionario()}"></f:selectItems>
                                     </h:selectOneMenu> </td>
                             </tr>
                             <tr>
