@@ -27,8 +27,6 @@ public class UsuarioDB {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);
     }
-    
-    
 
     public UsuarioDB() {
         super();
@@ -45,7 +43,7 @@ public class UsuarioDB {
             String fecha = formato.format(usuario.getFechaNacimiento());
 //mydate is your date object
 
-            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_RolUsuario],[Id_EstadoAcceso],[TipoFuncionario],[Log_Activo]) values(" + usuario.cedula + "," + usuario.TipoIden.getId_TipoIdentificacion() + ",'" + usuario.nombre + "','" + usuario.apellido1 + "','" + usuario.apellido2 + "','" + fecha+ "','" + usuario.getCorreo() + "'," + 2 + "," + 3 + ",'"+usuario.Funcionario.toString()+"'," + 1 + ")";
+            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_RolUsuario],[Id_EstadoAcceso],[TipoFuncionario],[Log_Activo]) values(" + usuario.cedula + "," + usuario.TipoIden.getId_TipoIdentificacion() + ",'" + usuario.nombre + "','" + usuario.apellido1 + "','" + usuario.apellido2 + "','" + fecha + "','" + usuario.getCorreo() + "'," + 2 + "," + 3 + ",'" + usuario.Funcionario.toString() + "'," + 1 + ")";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
@@ -125,6 +123,7 @@ public class UsuarioDB {
 
             while (rsPA.next()) {
 
+                usu.ced = rsPA.getInt("Id_Usuario");
                 usu.cedula = rsPA.getInt("Id_Usuario") + "";
                 usu.TipoIden = tipoIdenDB.SeleccionarPorId(rsPA.getInt("TipoIdentificacion"));
                 usu.nombre = rsPA.getString("Nombre");
@@ -132,8 +131,8 @@ public class UsuarioDB {
                 usu.apellido2 = rsPA.getString("Apellido2");
                 usu.correo = rsPA.getString("Correo");
                 usu.estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
-                usu.est = rsPA.getInt("Log_Activo")==1? "Activo":"Inactivo";
-                
+                usu.est = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
+
             }
 
             rsPA.close();
@@ -150,7 +149,7 @@ public class UsuarioDB {
 
         return usu;
     }
-    
+
     public LinkedList<Usuario> SeleccionarTodos() throws SNMPExceptions,
             SQLException {
         String select = "";
@@ -168,7 +167,7 @@ public class UsuarioDB {
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
-                
+
                 Usuario usu = new Usuario();
                 usu.ced = rsPA.getInt("Id_Usuario");
                 usu.cedula = rsPA.getInt("Id_Usuario") + "";
@@ -178,7 +177,7 @@ public class UsuarioDB {
                 usu.apellido2 = rsPA.getString("Apellido2");
                 usu.correo = rsPA.getString("Correo");
                 usu.estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
-                usu.est = rsPA.getInt("Log_Activo")==1? "Activo":"Inactivo";
+                usu.est = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
                 usu.pro = pu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                 listaUsuario.add(usu);
             }
@@ -197,9 +196,8 @@ public class UsuarioDB {
 
         return listaUsuario;
     }
-    
-    
-       public LinkedList<Usuario> SeleccionarTodos2() throws SNMPExceptions,
+
+    public LinkedList<Usuario> SeleccionarTodos2() throws SNMPExceptions,
             SQLException {
         String select = "";
         ResultSet rsPA = null;
@@ -215,7 +213,7 @@ public class UsuarioDB {
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
-                
+
                 int ced = rsPA.getInt("Id_Usuario");
                 String cedula = rsPA.getInt("Id_Usuario") + "";
                 TipoIdentificacion TipoIden = tipoIdenDB.SeleccionarPorId(rsPA.getInt("Id_TipoIdentificacion"));
@@ -226,9 +224,9 @@ public class UsuarioDB {
                 String correo = rsPA.getString("Correo");
                 int estado = rsPA.getInt("Log_Activo");
                 EstadoAcceso estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
-                String esta = rsPA.getInt("Log_Activo")==1? "Activo":"Inactivo";
+                String esta = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
                 ProgramaUsuario pro = pu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
-                Usuario usu = new Usuario(ced, cedula,  TipoIden, fechaNacimiento, correo, estado, nombre,  apellido1, apellido2, pro, esta, estAcc);
+                Usuario usu = new Usuario(ced, cedula, TipoIden, fechaNacimiento, correo, estado, nombre, apellido1, apellido2, pro, esta, estAcc);
                 listaUsuario.add(usu);
             }
 
@@ -247,14 +245,14 @@ public class UsuarioDB {
         return listaUsuario;
     }
 
-    public void IngresarContrasenna(Usuario usu)throws SNMPExceptions, SQLException{
-         String strSQL = "";
+    public void IngresarContrasenna(Usuario usu) throws SNMPExceptions, SQLException {
+        String strSQL = "";
 
         try {
             Usuario usuario = new Usuario();
             usuario = usu;
-            
-            strSQL = "UPDATE Usuario SET Contrasenna = PWDENCRYPT('"+usu.getContrasenna()+"') WHERE Id_Usuario = "+usu.getCedula();
+
+            strSQL = "UPDATE Usuario SET Contrasenna = PWDENCRYPT('" + usu.getContrasenna() + "') WHERE Id_Usuario = " + usu.getCedula();
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
@@ -265,5 +263,31 @@ public class UsuarioDB {
         } finally {
 
         }
+    }
+    
+    public void ActualizarContrasenna(Usuario usu)throws SNMPExceptions, SQLException{
+        String strSQL = "";
+
+        try {
+            Usuario usuario = new Usuario();
+            usuario = usu;
+            SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+
+            String fecha = formato.format(usuario.getFechaNacimiento());
+//mydate is your date object
+
+            strSQL = "update Usuario set [Id_TipoIdentificacion]=" + usuario.TipoIden.getId_TipoIdentificacion() +",[Nombre]='" + usuario.nombre + "'" +",[Apellido1]='" + usuario.apellido1 +"'" +",[Apellido2]='" + usuario.apellido2 + "'" +",[FechaNacimiento]='" + fecha + "'" + ",[Correo]='" + usuario.getCorreo() + "'" +",[TipoFuncionario]='" + usuario.Funcionario.toString() + "'where Id_Usuario="+usuario.id;
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+    
     }
 }

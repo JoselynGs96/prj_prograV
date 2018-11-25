@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -72,7 +73,6 @@ public class UsuariosBean implements Serializable {
     int Id_Distrito;
     int id_Barrio;
     int id_TipoTelefono;
-    int id_Rol;
     int id_TipoCedula;
 
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
@@ -81,15 +81,13 @@ public class UsuariosBean implements Serializable {
     LinkedList<Barrio> listaBarrio = new LinkedList<Barrio>();
     LinkedList<TipoTelefono> listaTipoTelefono = new LinkedList<TipoTelefono>();
     LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
-    LinkedList<RolUsuario> listarol = new LinkedList<RolUsuario>();
     LinkedList<TipoIdentificacion> listaIden = new LinkedList<TipoIdentificacion>();
     LinkedList<Direccion> listaDirec = new LinkedList<Direccion>();
     LinkedList<Telefono> listaTel = new LinkedList<Telefono>();
     EnumFuncionario funcionario;
+    Usuario UsuarioMantenimiento = new Usuario();
 
-   
-    
-       public EnumFuncionario[] EnumFuncionario() {
+    public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
     }
 
@@ -97,14 +95,20 @@ public class UsuariosBean implements Serializable {
      * Creates a new instance of UsuariosBean
      */
     public UsuariosBean() throws SNMPExceptions, SQLException {
+
         ProvinciaDB pro = new ProvinciaDB();
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();
         BarrioDB barr = new BarrioDB();
         TipoTelefonoDB tel = new TipoTelefonoDB();
         ProgramaDB progra = new ProgramaDB();
-        RolUsuarioDB rol = new RolUsuarioDB();
+        UsuarioDB usuarioDB = new UsuarioDB();
+        ObtenerDatosSesion obtener = new ObtenerDatosSesion();
         TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
+        DireccionDB direc = new DireccionDB();
+        TelefonoDB teldb = new TelefonoDB();
+        obtener.consultarSesion();
+        this.setUsuarioMantenimiento(usuarioDB.SeleccionarPorId(obtener.getId_Usuario()));
 
         if (!pro.SeleccionarTodos().isEmpty()) {
             listaPro = pro.SeleccionarTodos();
@@ -130,15 +134,40 @@ public class UsuariosBean implements Serializable {
             listaPrograma = progra.SeleccionarTodos();
             Programa = progra.SeleccionarTodos().element().getId();
         }
-        if (!rol.SeleccionarTodos().isEmpty()) {
-            listarol = rol.SeleccionarTodos();
-            id_Rol = rol.SeleccionarTodos().element().getId_RolUsuario();
-        }
         if (!tipoIden.SeleccionarTodos().isEmpty()) {
             listaIden = tipoIden.SeleccionarTodos();
             id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
         }
+        if (this.UsuarioMantenimiento.getCed() != 0) {
+            /*Pantalla personal*/
+            this.setNombre(UsuarioMantenimiento.getNombre());
+            this.setApellido1(UsuarioMantenimiento.getApellido1());
+            this.setApellido2(UsuarioMantenimiento.getApellido2());
+            this.setApellido2(UsuarioMantenimiento.getApellido2());
+            this.setCedula(UsuarioMantenimiento.getCedula());
+            /*Buscar como hacer q este funcione*/
+            this.setFechaNacimiento(UsuarioMantenimiento.getFechaNacimiento());
+            /*Pantalla Direccion*/
 
+            if (!direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula()).isEmpty()) {
+                listaDirec = direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula());
+            }
+            /*Pantalla de telefono*/
+            if (!teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula()).isEmpty()) {
+                listaTel = teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula());
+            }
+            this.setCorreo(UsuarioMantenimiento.getCorreo());
+            /*Pantalla Progrema Deas*/
+            this.setFuncionario(UsuarioMantenimiento.getFuncionario());
+        }
+    }
+
+    public Usuario getUsuarioMantenimiento() {
+        return UsuarioMantenimiento;
+    }
+
+    public void setUsuarioMantenimiento(Usuario UsuarioMantenimiento) {
+        this.UsuarioMantenimiento = UsuarioMantenimiento;
     }
 
     /*valida el login*/
@@ -195,18 +224,14 @@ public class UsuariosBean implements Serializable {
                                             this.setMensaje("*Debe colocar el porgrama al que pertenece");
                                             respuesta = false;
                                         } else {
-                                            if (this.getId_Rol() == 0) {
-                                                this.setMensaje("*Debe colocar el tipo de Funcionario.");
+                                            if (listaTel.isEmpty()) {
+                                                this.setMensaje("*Debe agregar al menos un telefono.");
                                                 respuesta = false;
                                             } else {
-                                                if (listaTel.isEmpty()) {
-                                                    this.setMensaje("*Debe agregar al menos un telefono.");
-                                                    respuesta = false;
-                                                } else {
-                                                    this.setMensaje("");
-                                                    respuesta = true;
-                                                }
+                                                this.setMensaje("");
+                                                respuesta = true;
                                             }
+
                                         }
                                     }
                                 }
@@ -342,7 +367,6 @@ public class UsuariosBean implements Serializable {
         UsuarioDB usuDB = new UsuarioDB();
         DireccionDB direcDB = new DireccionDB();
         TelefonoDB telDB = new TelefonoDB();
- 
 
         if (validaAutoRegistro()) {
             Usuario usu = new Usuario();
@@ -353,7 +377,6 @@ public class UsuariosBean implements Serializable {
             usu.setApellido2(this.getApellido2());
             usu.setFechaNacimiento(this.getFechaNacimiento());
             usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
-            usu.setRolUsuario(rolDB.SeleccionarPorId(this.getId_Rol()));
             usu.setCorreo(this.getCorreo());
             usuDB.registrar(usu);
             /*agregar telefono*/
@@ -601,22 +624,6 @@ public class UsuariosBean implements Serializable {
         this.listaPrograma = listaPrograma;
     }
 
-    public int getId_Rol() {
-        return id_Rol;
-    }
-
-    public void setId_Rol(int id_Rol) {
-        this.id_Rol = id_Rol;
-    }
-
-    public LinkedList<RolUsuario> getListarol() {
-        return listarol;
-    }
-
-    public void setListarol(LinkedList<RolUsuario> listarol) {
-        this.listarol = listarol;
-    }
-
     public int getId_TipoCedula() {
         return id_TipoCedula;
     }
@@ -664,8 +671,8 @@ public class UsuariosBean implements Serializable {
     public void setMensaje2(String mensaje2) {
         this.mensaje2 = mensaje2;
     }
-    
-     public EnumFuncionario getFuncionario() {
+
+    public EnumFuncionario getFuncionario() {
         return funcionario;
     }
 

@@ -55,6 +55,44 @@ public class TelefonoDB {
         }
     }
     
-    
+    public LinkedList<Telefono> SeleccionarTodos(String id_Usuario) throws SNMPExceptions,
+            SQLException {
+        String select = "";
+        TipoTelefonoDB telDB = new TipoTelefonoDB();
+        ResultSet rsPA = null;
+        LinkedList<Telefono> listaTel = new LinkedList<Telefono>();
+
+        try {
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            select
+                    = "select Numero,Id_TipoTelefono from Telefono where Id_Usuario="+id_Usuario;
+
+            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+
+            while (rsPA.next()) {
+
+                int numero = rsPA.getInt("Numero");               
+                TipoTelefono tipoTel = telDB.SeleccionarPorId(rsPA.getInt("Id_TipoTelefono"));
+                Telefono tel = new Telefono();
+                tel.setId_TipoTelefono(tipoTel);
+                tel.setNumero(numero+"");
+                listaTel.add(tel);
+            }
+
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return listaTel;
+    }
     
 }

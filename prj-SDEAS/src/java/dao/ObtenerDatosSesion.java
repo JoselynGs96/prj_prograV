@@ -22,6 +22,15 @@ public class ObtenerDatosSesion implements Serializable {
     
     Usuario UsuarioLogin;
     String datos;
+    int Id_Usuario;
+
+    public int getId_Usuario() {
+        return Id_Usuario;
+    }
+
+    public void setId_Usuario(int Id_Usuario) {
+        this.Id_Usuario = Id_Usuario;
+    }
 
     public Usuario getUsuarioLogin() {
         return UsuarioLogin;
@@ -49,12 +58,13 @@ public class ObtenerDatosSesion implements Serializable {
         
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 	final Map<String, Object> session = context.getSessionMap();
-	final Object user = session.get("Usuario");
+	final Object user = session.get("Id_Usuario");
 
 	if (user != null) {
 		try {
-			String userId = user.toString();
-                        this.setDatos(userId);
+			int userId = (Integer)user;
+                        this.setId_Usuario(userId);
+                   
 			
 		} catch (ClassCastException e) {
 			
