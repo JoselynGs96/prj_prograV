@@ -53,7 +53,7 @@ public class ObtenerDatosSesion implements Serializable {
     public ObtenerDatosSesion() {
     }
     
-    public void consultarSesion(){
+   public void consultarSesion(){
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
         
         final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
@@ -76,6 +76,5 @@ public class ObtenerDatosSesion implements Serializable {
 	}
 	
 	
-    }
-            
+    }            
 }
