@@ -101,7 +101,7 @@
                       </a>
                   </li>
                   <li class="sub-menu">
-                      <a href="#">
+                      <a href="faces/JornadaAcademica.xhtml">
                           <i class="fa fa-th"></i>
                           <span>Jornadas Académicas</span>
                       </a>
@@ -146,8 +146,8 @@
         <br></br>
         <br></br>
         Para modificar el estado del programa al que pertenece usuario, clic sobre el <br></br> el botón &#8594;  
-        <img src="RecursoMante/img/cambiar.png" width="30px" height="30px" alt=""/> 
-        <br></br>
+        <img src="RecursoMante/img/btnCambiar.PNG" width="80px" height="30px" alt=""/> 
+        <br></br><br></br>
         Luego, guarde los cambios 
         <br></br> con el botón &#8594; <img src="RecursoMante/img/btnGuardar.PNG" width="60px" height="30px" alt=""/>
         <br></br>
@@ -180,97 +180,103 @@
              <div class="modal-body">
                      <table width="100%">
                         <tr bgcolor="#F3EC88">
-                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center">Información Personal</th>
+                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black">INFORMACIÓN PERSONAL</th>
                         </tr>
                         <tr>
                             <td>
-                                <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px " value="Tipo de Identificación:"></p:outputLabel>
+                                <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533; " value="Tipo de Identificación:"></p:outputLabel>
                             </td>
                             <td>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuario.tipoIden.dsc_TipoTelefono}"></p:outputLabel>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                               <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px" value="Cédula:"></p:outputLabel>
-                            </td>
-                            <td>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuario.cedula}"></p:outputLabel>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.tipoIdentificacion.dsc_TipoTelefono}"></p:outputLabel>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px" value="Nombre Completo:"></p:outputLabel>
+                               <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Cédula:"></p:outputLabel>
                             </td>
                             <td>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuario.nombreCompleto}"></p:outputLabel>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px" value="Fecha de Nacimiento:"></p:outputLabel>
-                            </td>
-                            <td>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuario.fechaNacimiento.toString()}"></p:outputLabel>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.id}"></p:outputLabel>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px" value="Edad:"></p:outputLabel>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Nombre Completo:"></p:outputLabel>
                             </td>
                             <td>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.edad}"></p:outputLabel>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px" value="Estado Acceso:"></p:outputLabel>
-                            </td>
-                            <td>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuario.estAcc.nombre}"></p:outputLabel>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.nombreCompleto}"></p:outputLabel>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px" value="Estado Usuario:"></p:outputLabel>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Fecha de Nacimiento:"></p:outputLabel>
                             </td>
                             <td>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuario.est}"></p:outputLabel>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.fechaNacimiento.toString()}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Edad:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.edad}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Estado Acceso:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.estadoAcceso.nombre}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Estado Usuario:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.log_Activo}"></p:outputLabel>
                             </td>
                         </tr>
                         <tr bgcolor="#F3EC88">
-                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center" >Dirección</th>
+                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >DIRECCIONES</th>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                 
+                                <center>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.direcciones}"></p:outputLabel>
+                                </center>
                             </td>
                         </tr>
                         <tr bgcolor="#F3EC88">
-                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center" >Contacto</th>
+                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >CONTACTO</th>
                         </tr>
                         <tr>
                             <td>
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px" value="Correo:"></p:outputLabel>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Correo:"></p:outputLabel>
                             </td>
                             <td>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuario.correo}"></p:outputLabel>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.correo}"></p:outputLabel>
                             </td>
                         </tr>
                         <tr>
                             <th colspan="2">
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px;" >Telefonos:</p:outputLabel>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; color:#222533;" >Telefonos:</p:outputLabel>
                             </th>
                         </tr>
+                         <tr>
+                            <td colspan="2">
+                                <p:outputLabel style="margin-top: 3px; width:200px" value="#{usuariosPorProgranaBean.telefonos}"></p:outputLabel>
+                            </td>
+                        </tr>
                         <tr bgcolor="#F3EC88">
-                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center" >Programa DEAS</th>
+                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >PROGRAMA DEAS</th>
                         </tr>
                         <tr>
-                            <td>
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px" value="Programa:"></p:outputLabel>
-                            </td>
-                            <td>
+                            <td colspan="2">
+                                <center>
                                 <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.programas}"></p:outputLabel>
+                                </center>
                             </td>
                         </tr>
                     </table>
@@ -295,22 +301,40 @@
                                     <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px" ><img align="right"  width="20px" height="20px" src="RecursoMante/img/ayuda.png" alt=""/></a>
                             </div>
                             <div class="panel-body">
+                            <br></br>
+                             <p:outputLabel value="#{usuariosPorProgranaBean.mensajeError}" escape="false"></p:outputLabel>
+                             <p:outputLabel value="#{usuariosPorProgranaBean.mensajeGuardar}" escape="false"></p:outputLabel>
                             <p:outputLabel>Cédula:</p:outputLabel>
-                            <p:inputText class="form-control" value="#{usuariosPorProgranaBean.usuario.cedula}" style="width: 100%;" readonly="true"></p:inputText>
+                            <p:inputText class="form-control" value="#{usuariosPorProgranaBean.usuario.id}" style="width: 100%;" readonly="true"></p:inputText>
                             <br></br>
                             <p:outputLabel>Nombre:</p:outputLabel>
                             <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.usuario.nombreCompleto}" style="width: 100%;"  readonly="true" ></p:inputText>
                             <br></br>
                             <br></br>
                             
-                            <p:dataList value="#{usuariosPorProgranaBean.listaProusu}" style="width: 100%; padding-bottom: 5px; padding-top: 10px" var="pu"   type = "unordered" emptyMessage="&nbsp;" itemType = "none" styleClass = "paginated" >
-                                <f:facet name = "header" >
-                                     <p style="font-weight: normal; color: darkslategray">Programas al que Pertenece</p>
-                                 </f:facet>
-                                <h:commandButton title="Cambiar estado" image="RecursoMante/img/cambiar.png" style="width: 25px; height: 20px; float: left; margin-right: 10px;" ></h:commandButton>
-                                <h:outputText  value = "#{pu.programa.nombre},&nbsp;#{pu.estado}"  />
-                            </p:dataList>
-                        
+                            <p:outputLabel>Programas al que Pertenece:</p:outputLabel>
+                            <h:dataTable  class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaProusu}" style="width: 100%;" var="pu" >
+                                <center>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Programa"/>
+                                    </f:facet>
+                                    <h:outputText value="#{pu.programa.nombre}" />
+                                </h:column>
+                                 <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Estado"/>
+                                    </f:facet>
+                                     <h:outputText value="#{pu.estado}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                    <h:commandButton title="Cambiar estado" value="Cambiar" actionListener="#{usuariosPorProgranaBean.cambiarEstado(pu.programa.id,pu.rolUsuario.id_RolUsuario)}" style="width: 90px; height: 25px; font-size: 12px; border-color: #2775e2; color: #2775e2;" class="btn btn-default btn-xs" ></h:commandButton>
+                                </h:column>
+                                </center>
+                             </h:dataTable>
                             <br></br>
                             <p:outputLabel>Estado de Acceso:</p:outputLabel>
                             <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoAcceso}" >
@@ -323,8 +347,6 @@
                                 <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;"></f:selectItem>
                             </p:selectOneRadio>
                             <br></br>
-                             <p:outputLabel value="#{usuariosPorProgranaBean.mensajeError}" escape="false"></p:outputLabel>
-                             <p:outputLabel value="#{usuariosPorProgranaBean.mensajeGuardar}" escape="false"></p:outputLabel>
                             <div>
                                 <h:commandButton class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.nuevoBoton()}"  value="Nuevo" ></h:commandButton>
                                 <h:commandButton style="margin-left: 5px" class="btn btn-primary" onclick="window.open('faces/Registro.xhtml')"  value="Registar"></h:commandButton>
@@ -347,7 +369,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Cédula"/>
                                 </f:facet>
-                                <h:outputText value="#{usu.cedula}" />
+                                <h:outputText value="#{usu.id}" />
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
@@ -359,21 +381,21 @@
                                 <f:facet name="header">
                                     <h:outputText value="Estado de Acceso"/>
                                 </f:facet>
-                                <h:outputText value="#{usu.estAcc.nombre}"/>
+                                <h:outputText value="#{usu.estadoAcceso.nombre}"/>
                             </h:column>
                              <h:column>
                                 <f:facet name="header">
                                     <h:outputText value="Estado de Usuario"/>
                                 </f:facet>
-                                 <h:outputText value="#{usu.est}"/>
+                                 <h:outputText value="#{usu.log_Activo}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText />
                                 </f:facet>
                                 <center>
-                                    <h:commandButton   alt="Ver más" title="Ver más" actionListener="#{usuariosPorProgranaBean.verMas(usu.ced)}"  class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 3px" image="RecursoMante/img/ver.png"> </h:commandButton>
-                                     <h:commandButton actionListener="#{usuariosPorProgranaBean.editarBoton(usu.cedula)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                    <h:commandButton   alt="Ver más" title="Ver más" actionListener="#{usuariosPorProgranaBean.verMas(usu.id)}"  class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 3px" image="RecursoMante/img/ver.png"> </h:commandButton>
+                                     <h:commandButton actionListener="#{usuariosPorProgranaBean.editarBoton(usu.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> </h:commandButton>
                                 </center>
                             </h:column>
                         </h:dataTable> 
