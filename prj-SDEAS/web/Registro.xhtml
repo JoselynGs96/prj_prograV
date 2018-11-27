@@ -107,11 +107,11 @@
                         <!-- Navigation -->
                         <div class="collapse navbar-collapse" id="navbar-menu">
                             <ul class="nav navbar-nav menu">
-                                <li><a href="index.xhtml">Inicio</a></li>                    
-                                <li><a href="#about">Acerca de</a></li>
-                                <li><a href="#services">Servicios</a></li>
-                                <li><a href="Registro.xhtml">Auto Registro</a></li>
-                                <li><a href="InicioSesion.xhtml">Iniciar Sesión</a></li>
+                                <li><p:link href="index.xhtml">Inicio</p:link></li>                    
+                                <li><p:link href="#about">Acerca de</p:link></li>
+                                <li><p:link href="#services">Servicios</p:link></li>
+                                <li><p:link href="Registro.xhtml" value="#{usuariosBean.botonNombre}"></p:link></li>
+                                <li><p:link href="InicioSesion.xhtml">Iniciar Sesión</p:link></li>
                             </ul>
                         </div>
                     </div>    
@@ -119,8 +119,9 @@
             </header><!-- Header end -->
             <div class="text-center col-lg-offset-3 col-lg-6" >
                 <p:growl id="msgs" showDetail="true" />
-
-                <h3 style="margin-top:0; background:#fccc0c; " >Registrate</h3>
+                <div style="background:#fccc0c;width: 100%;">
+                    <h:outputText style=" font-size: 30px; margin:0; line-height: 72px; font-weight: bold;text-transform: uppercase;color: #484848;font-family: 'futura_ltbold', sans-serif; " value="#{usuariosBean.botonNombre}" ></h:outputText>
+                </div>
                 <p:tabView>
                     <p:tab id="Personal" title="Personal">
                         <table style="width: 90%; margin-right: 5%; margin-left: 5%">
@@ -356,7 +357,7 @@
                 <br></br>
                 <center>
                     <h:commandButton action="#{usuariosBean.IngresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
-                                 class="btn btn-primary btn-lg" value="Registrarse"></h:commandButton><br></br>
+                                     class="btn btn-primary btn-lg" value="#{usuariosBean.botonNombre}"></h:commandButton><br></br>
                     <h:outputText style="color: red;" value="#{usuariosBean.mensaje}"></h:outputText>
                 </center>
                 
@@ -374,4 +375,3 @@
         </h:form>
     </h:body>
 </html>
-

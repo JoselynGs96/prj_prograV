@@ -64,7 +64,7 @@ public class LoginControlador implements Serializable {
         this.Contrasenna = Contrasenna;
     }
     
-   public void autenticar(){
+     public void autenticar(){
        try{
            Usuario1=UsuarioDB.InicioSeccion(this.getId_Usuario(), this.getContrasenna());
            

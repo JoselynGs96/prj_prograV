@@ -74,6 +74,7 @@ public class UsuariosBean implements Serializable {
     int id_Barrio;
     int id_TipoTelefono;
     int id_TipoCedula;
+    String botonNombre;
 
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
@@ -95,7 +96,14 @@ public class UsuariosBean implements Serializable {
      * Creates a new instance of UsuariosBean
      */
     public UsuariosBean() throws SNMPExceptions, SQLException {
+        /*Metodo para cargas combos*/
+        cargarPaginaRegistro();
+        /*Metodo para cargar datos del usuario*/
+        PaginaRegistro();
 
+    }
+
+    public void cargarPaginaRegistro() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();
@@ -105,8 +113,7 @@ public class UsuariosBean implements Serializable {
         UsuarioDB usuarioDB = new UsuarioDB();
         ObtenerDatosSesion obtener = new ObtenerDatosSesion();
         TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
-        DireccionDB direc = new DireccionDB();
-        TelefonoDB teldb = new TelefonoDB();
+
         obtener.consultarSesion();
         this.setUsuarioMantenimiento(usuarioDB.SeleccionarPorId(obtener.getId_Usuario()));
 
@@ -138,7 +145,14 @@ public class UsuariosBean implements Serializable {
             listaIden = tipoIden.SeleccionarTodos();
             id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
         }
+    }
+
+    /*Carga todo lo de la pagina de Actualizar Usuario*/
+    public void PaginaRegistro() throws SNMPExceptions, SQLException {
+        DireccionDB direc = new DireccionDB();
+        TelefonoDB teldb = new TelefonoDB();
         if (this.UsuarioMantenimiento.getCed() != 0) {
+            this.setBotonNombre("Actualizar Información");
             /*Pantalla personal*/
             this.setNombre(UsuarioMantenimiento.getNombre());
             this.setApellido1(UsuarioMantenimiento.getApellido1());
@@ -159,16 +173,11 @@ public class UsuariosBean implements Serializable {
             this.setCorreo(UsuarioMantenimiento.getCorreo());
             /*Pantalla Progrema Deas*/
             this.setFuncionario(UsuarioMantenimiento.getFuncionario());
+        } else {
+            this.setBotonNombre("Registrarse");
         }
     }
 
-    public Usuario getUsuarioMantenimiento() {
-        return UsuarioMantenimiento;
-    }
-
-    public void setUsuarioMantenimiento(Usuario UsuarioMantenimiento) {
-        this.UsuarioMantenimiento = UsuarioMantenimiento;
-    }
 
     /*valida el login*/
     public void validaIngresar() {
@@ -678,5 +687,21 @@ public class UsuariosBean implements Serializable {
 
     public void setFuncionario(EnumFuncionario funcionario) {
         this.funcionario = funcionario;
+    }
+
+    public String getBotonNombre() {
+        return botonNombre;
+    }
+
+    public void setBotonNombre(String botonNombre) {
+        this.botonNombre = botonNombre;
+    }
+
+    public Usuario getUsuarioMantenimiento() {
+        return UsuarioMantenimiento;
+    }
+
+    public void setUsuarioMantenimiento(Usuario UsuarioMantenimiento) {
+        this.UsuarioMantenimiento = UsuarioMantenimiento;
     }
 }

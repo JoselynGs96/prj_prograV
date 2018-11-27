@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+       xmlns:p="http://primefaces.org/ui">
     <head>
         <meta charset="utf-8"/>
         <title>SDEAS - Codigo de Verificación</title>
@@ -98,11 +99,11 @@
                     </div>
                    <div class="collapse navbar-collapse" id="navbar-menu">
                         <ul class="nav navbar-nav menu">
-                            <li><a href="index.xhtml">Inicio</a></li>                    
-                            <li><a href="#about">Acerca de</a></li>
-                            <li><a href="#services">Servicios</a></li>
-                            <li><a href="Registro.xhtml">Auto Registro</a></li>
-                            <li><a href="InicioSesion.xhtml">Iniciar Sesión</a></li>
+                             <li><p:link href="index.xhtml">Inicio</p:link></li>                    
+                                <li><p:link href="#about">Acerca de</p:link></li>
+                                <li><p:link href="#services">Servicios</p:link></li>
+                                <li><p:link href="Registro.xhtml" value="#{usuariosBean.botonNombre}"></p:link></li>
+                                <li><p:link href="InicioSesion.xhtml">Iniciar Sesión</p:link></li>
                         </ul>
                     </div>
                 </div>    
