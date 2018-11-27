@@ -59,24 +59,25 @@ public class ProgramaUsuarioDB {
     } 
     
     
+    
     public void actulizar(ProgramaUsuario prousu) throws SNMPExceptions, SQLException { 
         String strSQL = "";   
         int estado = 0;
         try {  
             ProgramaUsuario pu = new ProgramaUsuario(); 
             pu = prousu;           
-            
-            if(pu.estado.equals("Activo")){
+          
+                if(pu.estado.equals("Activo")){
                 estado = 1;
-            }
+                }
+                
              strSQL = "UPDATE Programa_Usuario SET "
-                     +"Id_Programa='" + pu.getPrograma().id
-                     +"', Id_Usuario= '" + pu.getUsuario().id
-                     +"', Id_RolUsuario= '" + pu.getRolUsuario().Id_RolUsuario
-                     +"', Log_Activo='" + estado
-                     +"' WHERE Id_Programa='" + pu.getPrograma().id +"'AND Id_Usuario='"+ pu.getUsuario().id +"'AND Id_RolUsuario='"+pu.getRolUsuario().Id_RolUsuario+"';";
+                     +"Log_Activo='" + estado
+                     +"' WHERE Id_Programa='" + pu.getPrograma().id  +"'AND Id_RolUsuario='"+pu.getRolUsuario().Id_RolUsuario+"';";
                     
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
+           
+            
         } catch (SQLException e) { 
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
                                     e.getMessage(), e.getErrorCode());         
@@ -172,4 +173,6 @@ public class ProgramaUsuarioDB {
          
           return listaProgramaUsuario;
       }
+    
+    
 }
