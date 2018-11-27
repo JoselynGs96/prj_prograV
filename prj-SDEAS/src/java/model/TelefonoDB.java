@@ -94,5 +94,22 @@ public class TelefonoDB {
 
         return listaTel;
     }
+    /*Elimina telefonos de las listas*/
+    public void eliminaTelefono(String id_telefono)throws SNMPExceptions, SQLException {
+    String strSQL = "";
+        try {
+           strSQL = "delete Telefono from Telefono where Id_Telefono ="+id_telefono;
+
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+    }
     
 }

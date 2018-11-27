@@ -16,6 +16,15 @@ public class Direccion {
     Barrio Id_Barrio;
     Usuario usuario;
     String Otras_sennas;
+    String id_direccion;
+
+    public String getId_direccion() {
+        return id_direccion;
+    }
+
+    public void setId_direccion(String id_direccion) {
+        this.id_direccion = id_direccion;
+    }
     
     
     public Direccion(){

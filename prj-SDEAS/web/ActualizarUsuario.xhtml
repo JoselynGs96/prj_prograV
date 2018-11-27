@@ -127,9 +127,9 @@
 
                 <table style="width: 90%; margin-right: 5%; margin-left: 5%">
                     <tr>
-                        <td>    <h:outputText value="Tipo de cédula *"  /></td>
-                        <td>      <h:selectOneMenu class="form-control"  style="width: 400px; margin-left: 10px" value="#{registroBean.id_TipoCedula}" id="ident" >
-                                <f:selectItems var="iden" value="#{registroBean.listaIden}" itemLabel="#{iden.dsc_TipoTelefono}" itemValue="#{iden.id_TipoIdentificacion}"></f:selectItems>  
+                        <td>    <h:outputText value="Tipo de cédula *" /></td>
+                        <td>      <h:selectOneMenu disabled="tue" class="form-control"  style="width: 400px; margin-left: 10px" value="#{actualizarUsuarioBean.id_TipoCedula}" id="ident" >
+                                <f:selectItems var="iden" value="#{actualizarUsuarioBean.listaIden}" itemLabel="#{iden.dsc_TipoTelefono}" itemValue="#{iden.id_TipoIdentificacion}"></f:selectItems>  
                             </h:selectOneMenu> 
                         </td>
                     </tr>
@@ -138,19 +138,19 @@
                             <h:outputText value="Cédula *" style="margin-top: 5px" />
                         </td>
                         <td>   
-                            <p:inputText style="float: left; margin-top: 5px; margin-left: 10px;"  value="#{registroBean.cedula}" label="cedula" id="cedula"/>
+                            <p:inputText style="float: left; margin-top: 5px; margin-left: 10px" disabled="true" value="#{actualizarUsuarioBean.cedula}" label="cedula" id="cedula"/>
                         </td>
                     </tr>
                     <tr>
                         <td> 
                             <h:outputText value="Nombre *" style="margin-top: 5px" /></td>
                         <td>   
-                            <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{registroBean.nombre}" label="nombre" id="nombre"/>
+                            <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{actualizarUsuarioBean.nombre}" label="nombre" id="nombre"/>
                         </td>
                     </tr>
                     <tr>
                         <td>    <h:outputText value="Primer Apellido *" style="margin-top: 5px; "/>   </td>                             
-                        <td>    <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{registroBean.apellido1}" label="apellido1" id="apellido1"/>
+                        <td>    <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{actualizarUsuarioBean.apellido1}" label="apellido1" id="apellido1"/>
                         </td>
                     </tr>
                     <tr>
@@ -159,7 +159,7 @@
                             <h:outputText value="Segundo Apellido *" style="margin-top: 5px; " />            
                         </td>                  
                         <td>     
-                            <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{registroBean.apellido2}" label="apellido2" id="apellido2"/>
+                            <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{actualizarUsuarioBean.apellido2}" label="apellido2" id="apellido2"/>
                         </td>
                     </tr>
                     <tr>
@@ -168,7 +168,7 @@
                             <h:outputText value="Fecha de nacimiento: " style="margin-top: 5px" />
                         </td>
                         <td>
-                            <p:calendar locale="es" style="float: left; margin-top: 5px; margin-left: 10px " value="#{registroBean.fechaNacimiento}"  pattern="dd-MM-yyyy" mask="true" label="ca margin-left: 5pxlendario" id="calendario"/>
+                            <p:calendar locale="es" style="float: left; margin-top: 5px; margin-left: 10px " value="#{actualizarUsuarioBean.fechaNacimiento}"  pattern="dd-MM-yyyy" mask="true" label="ca margin-left: 5pxlendario" id="calendario"/>
                         </td>
 
                     </tr>
@@ -180,8 +180,8 @@
                         <td>
                             <h:outputText value="Provincia" style="margin-top: 5px" />  </td>
                         <td>
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{registroBean.id_Provincia}" id="Provincia" >
-                                <f:selectItems var="pro" value="#{registroBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
+                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{actualizarUsuarioBean.id_Provincia}" id="Provincia" >
+                                <f:selectItems var="pro" value="#{actualizarUsuarioBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
                             </h:selectOneMenu>
                         </td>
                     </tr>
@@ -189,16 +189,16 @@
                         <td>
                             <h:outputText value="Canton" style="margin-top: 5px" />  </td>
                         <td>
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{registroBean.id_Canton}" id="Canton" >
-                                <f:selectItems var="can" value="#{registroBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
+                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{actualizarUsuarioBean.id_Canton}" id="Canton" >
+                                <f:selectItems var="can" value="#{actualizarUsuarioBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
                             </h:selectOneMenu>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <h:outputText value="Distrito" style="margin-top: 5px" />  </td>
-                        <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{registroBean.id_Distrito}" >
-                                <f:selectItems var="dis" value="#{registroBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
+                        <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{actualizarUsuarioBean.id_Distrito}" >
+                                <f:selectItems var="dis" value="#{actualizarUsuarioBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
                             </h:selectOneMenu>
                         </td>
                     </tr>
@@ -206,24 +206,24 @@
                         <td>
                             <h:outputText value="Barrio" style="margin-top: 5px" />  </td>
                         <td>
-                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{registroBean.id_Barrio}" >
-                                <f:selectItems var="bar" value="#{registroBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
+                            <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{actualizarUsuarioBean.id_Barrio}" >
+                                <f:selectItems var="bar" value="#{actualizarUsuarioBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
                             </h:selectOneMenu>
                         </td>
                     </tr>
                     <tr>
                         <td>  <h:outputText value="Otras señas" style="margin-top: 5px" />  </td>
-                        <td>  <p:inputTextarea style="margin-top: 5px; margin-left: 10px; width: 400px "  value="#{registroBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
+                        <td>  <p:inputTextarea style="margin-top: 5px; margin-left: 10px; width: 400px "  value="#{actualizarUsuarioBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2">  
-                            <h:outputText style="color: red;" value="#{registroBean.mensaje1}"></h:outputText>
+                            <h:outputText style="color: red;" value="#{actualizarUsuarioBean.mensaje1}"></h:outputText>
                         </td>
                     </tr>
                     <tr>
                         <center>
-                            <td colspan="2">  <h:commandButton action="#{registroBean.agregarDireccones()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
+                            <td colspan="2">  <h:commandButton action="#{actualizarUsuarioBean.agregarDireccones()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
                                                                class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
                             </td> 
                         </center>
@@ -232,7 +232,7 @@
 
                     <tr>   
                         <td colspan="2"> 
-                            <h:dataTable id="dataDirec" class="table table-striped table-advance table-hover" value="#{registroBean.listaDirec}" var="direc">
+                            <h:dataTable id="dataDirec" class="table table-striped table-advance table-hover" value="#{actualizarUsuarioBean.listaDirec}" var="direc">
                                 <h:column>
                                     <f:facet name="header">
                                         <h:outputText value="Provincia"/>
@@ -267,7 +267,7 @@
                                     <f:facet name="header">
                                         <h:outputText value=""/>
                                     </f:facet>
-                                    <h:commandButton  action="#{registroBean.eliminarDirecciones(direc.otras_sennas)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
+                                    <h:commandButton  action="#{actualizarUsuarioBean.eliminarDirecciones(direc.id_direccion)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
                                 </h:column>
                             </h:dataTable>
                         </td>
@@ -278,27 +278,27 @@
                 <table style="width: 90%; margin-right: 5%; margin-left: 5%"> 
                     <tr>
                         <td>  <h:outputText value="Correo *" /> </td>
-                        <td>  <p:inputText style="float: left; margin-left: 10px " id="correo" value="#{registroBean.correo}"  class="form-inline" ></p:inputText>   </td>
+                        <td>  <p:inputText style="float: left; margin-left: 10px " id="correo" value="#{actualizarUsuarioBean.correo}"  class="form-inline" ></p:inputText>   </td>
                     </tr>
                     <tr>
                         <td>  <h:outputText value="Tipo Teléfono: *" style="margin-top: 5px; margin-top: 5px; margin-left: 10px"/> </td>
-                        <td>     <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{registroBean.id_TipoTelefono}" id="tel" >
-                                <f:selectItems var="tel" value="#{registroBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
+                        <td>     <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{actualizarUsuarioBean.id_TipoTelefono}" id="tel" >
+                                <f:selectItems var="tel" value="#{actualizarUsuarioBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
                             </h:selectOneMenu> </td>
                     </tr>
                     <tr>
                         <td>   <h:outputText value="Número: *" style="margin-top: 5px"/> </td>
-                        <td> <p:inputText  style="float: left; margin-top: 5px; margin-left: 10px " id="numero" value="#{registroBean.numeroTelefono}"  class="form-inline" ></p:inputText>   </td>
+                        <td> <p:inputText  style="float: left; margin-top: 5px; margin-left: 10px " id="numero" value="#{actualizarUsuarioBean.numeroTelefono}"  class="form-inline" ></p:inputText>   </td>
                     </tr>
                     <tr>
                         <td colspan="2">  
-                            <h:outputText style="color: red;" value="#{registroBean.mensaje2}"></h:outputText>
+                            <h:outputText style="color: red;" value="#{actualizarUsuarioBean.mensaje2}"></h:outputText>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2">  
                             <center>
-                                <h:commandButton action="#{registroBean.agregarTelefonos()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
+                                <h:commandButton action="#{actualizarUsuarioBean.agregarTelefonos()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
                                                  class="btn btn-primary btn-lg" value="Agregar Telefono"></h:commandButton>
                             </center>
                         </td>
@@ -306,7 +306,7 @@
                     <tr>
                         <td  colspan="2">
 
-                            <h:dataTable id="dataTel" class="table table-striped table-advance table-hover" value="#{registroBean.listaTel}" var="tell">
+                            <h:dataTable id="dataTel" class="table table-striped table-advance table-hover" value="#{actualizarUsuarioBean.listaTel}" var="tell">
                                 <h:column>
                                     <f:facet name="header">
                                         <h:outputText value="Tipo Télefono"/>
@@ -323,7 +323,7 @@
                                     <f:facet name="header">
                                         <h:outputText value=""/>
                                     </f:facet>
-                                    <h:commandButton  actionListener="#{registroBean.eliminarTelefono(tell.numero)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
+                                    <h:commandButton  actionListener="#{actualizarUsuarioBean.eliminarTelefonos(tell.id_Telefono)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
                                 </h:column>
                             </h:dataTable>
 
@@ -334,19 +334,19 @@
                 <table style="width: 90%; margin-right: 5%; margin-left: 5%"> 
                     <tr>
                         <td><h:outputText value="Programa: *" style="margin-top: 5px"/> </td>
-                        <td>  <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{registroBean.programa}" id="programa" >
-                                <f:selectItems var="pro" value="#{registroBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
+                        <td>  <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{actualizarUsuarioBean.programa}" id="programa" >
+                                <f:selectItems var="pro" value="#{actualizarUsuarioBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
                             </h:selectOneMenu> </td>
                     </tr>
                     <tr>
                         <td>   <h:outputText value="Tipo de Funcionario: *" style="margin-top: 5px"/> </td>
-                        <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{registroBean.funcionario}" id="rol" >
-                                <f:selectItems var="rol" value="#{registroBean.EnumFuncionario()}"></f:selectItems>
+                        <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{actualizarUsuarioBean.funcionario}" id="rol" >
+                                <f:selectItems var="rol" value="#{actualizarUsuarioBean.EnumFuncionario()}"></f:selectItems>
                             </h:selectOneMenu> </td>
                     </tr>
                     <tr>
                         <td colspan="2">  
-                            <h:outputText style="color: red;" value="#{registroBean.mensaje2}"></h:outputText>
+                            <h:outputText style="color: red;" value="#{actualizarUsuarioBean.mensaje2}"></h:outputText>
                         </td>
                     </tr>
                 </table>
@@ -355,23 +355,14 @@
 
                 <br></br>
                 <center>
-                    <h:commandButton action="#{registroBean.IngresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                    <h:commandButton action="#{actualizarUsuarioBean.IngresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
                                      class="btn btn-primary btn-lg" value="Registar" ></h:commandButton><br></br>
-                    <h:outputText style="color: red;" value="#{registroBean.mensaje}"></h:outputText>
+                    <h:outputText style="color: red;" value="#{actualizarUsuarioBean.mensaje}"></h:outputText>
                 </center>
 
             </div>
-
-
-
-
-
-
-
-
-
-
         </h:form>
     </h:body>
 
 </html>
+
