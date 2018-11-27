@@ -30,7 +30,6 @@ public class Usuario {
     String est;
     EstadoAcceso estAcc;
     String nombreCompleto;
-    ProgramaUsuario pro;
     EnumFuncionario Funcionario;
 
   
@@ -39,7 +38,7 @@ public class Usuario {
         
     }
 
-    public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado, String nombre, String apellido1, String apellido2, ProgramaUsuario Programa, String est, EstadoAcceso estAcc) {
+    public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado, String nombre, String apellido1, String apellido2, String est, EstadoAcceso estAcc) {
         this.setCed(ced);
         this.setCedula(cedula);
         this.setTipoIden(TipoIden);
@@ -49,7 +48,6 @@ public class Usuario {
         this.setNombre(nombre);
         this.setApellido1(apellido1);
         this.setApellido2(apellido2);
-        this.setPro(Programa);
         this.setEst(est);
         this.setEstAcc(estAcc);
     }
@@ -200,15 +198,7 @@ public class Usuario {
         this.nombreCompleto = nombreCompleto;
     }
 
-    public ProgramaUsuario getPro() {
-        return pro;
-    }
-
-    public void setPro(ProgramaUsuario pro) {
-        this.pro = pro;
-    }
-
-      public EnumFuncionario getFuncionario() {
+    public EnumFuncionario getFuncionario() {
         return Funcionario;
     }
 

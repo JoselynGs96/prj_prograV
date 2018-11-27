@@ -28,17 +28,14 @@ public class CursoPorProgramaBean implements Serializable {
     int id;
     String nombre;
     String descripcion;
-    String estado;
+    String estado = "Activo";
     int programa;
     LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
     LinkedList<Curso> listaTablaCurso = new LinkedList<Curso>();
     String buscarFiltro;
     String mensajeFiltro;
-    String mensajeNombre;
-    String mensajeDescripcion;
-    String mensajeEstado;
     String mensajeGuardar;
-    String mensajePrograma;
+    String mensajeError;
 
    
     /**
@@ -48,28 +45,29 @@ public class CursoPorProgramaBean implements Serializable {
         ProgramaDB proDb = new ProgramaDB();
         if(!proDb.SeleccionarTodos().isEmpty()){
             listaPrograma = proDb.SeleccionarTodos();
+        }else{
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen programas</div>");         
         }
         seleccionarTodos();
-        
     }
 
     
     
-    /*Selecciona todos los programas*/
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
         CursoDB cur = new CursoDB();
         if(!cur.SeleccionarTodos().isEmpty()){
             listaTablaCurso.clear();
             listaTablaCurso = cur.SeleccionarTodos();
-            setMensajePrograma("");
+            setMensajeError("");
         }else{
-            setMensajePrograma("No existen programas*");
+           
         }
     }
     
     /*Botón guardar; inserta uno nuevo o modifica*/
      public void insertarCurso() throws SNMPExceptions, SQLException{
-        if(Validaciones() == true){
+        try{
+         if(Validaciones() == true){
             Curso cur = new Curso();
             cur.setId(id);
             cur.setNombre(nombre);
@@ -80,16 +78,15 @@ public class CursoPorProgramaBean implements Serializable {
             CursoDB curs = new CursoDB();
             if(getId() != 0){
                  curs.actulizar(cur);
-                 setMensajeGuardar("¡Curso actualizado con éxito!");
-                 FacesContext context = FacesContext.getCurrentInstance();
-                 context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
+                 setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Curso actualizado con éxito!</div> ");
             }else{
                  curs.registrar(cur);
-                 setMensajeGuardar("¡Curso registrado con éxito!");
-                 FacesContext context = FacesContext.getCurrentInstance();
-                 context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
+                 setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Curso registrado con éxito!</div> ");
             }
             seleccionarTodos();
+        }
+        }catch(Exception e){
+            setMensajeError( "<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al guardar el curso...¡Intentelo de nuevo!</div>");
         }
     }
      
@@ -106,16 +103,21 @@ public class CursoPorProgramaBean implements Serializable {
      /*Botón de buscar*/
      public void buscar() throws SNMPExceptions, SQLException{
         CursoDB cur = new CursoDB();
+        try{
         if(!getBuscarFiltro().equals("")){
             if(!cur.FiltrarCurso(buscarFiltro).isEmpty()){
                 listaTablaCurso = cur.FiltrarCurso(buscarFiltro);
                  setMensajeFiltro("");
             }else{
                 listaTablaCurso = cur.SeleccionarTodos();
-                setMensajeFiltro("No se encontraron registros con el dato proporcionado");
+                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
             }
         }else{
             seleccionarTodos();
+            setMensajeFiltro("");
+        }
+        }catch(Exception e){
+            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el curso...¡Intentelo de nuevo!</div>");
         }
      }
      
@@ -124,42 +126,47 @@ public class CursoPorProgramaBean implements Serializable {
          setId(0);
          setNombre("");
          setDescripcion("");
-         setEstado("");
+         setEstado("Activo");
          setMensajeGuardar("");
-         setMensajeEstado("");
-         setMensajeDescripcion("");
-         setMensajeNombre("");
+         setMensajeError("");
+         setMensajeFiltro("");
      }
-     
-     /*Botón de ayuda*/
      
      
      /*Validaciones*/
-     public boolean Validaciones(){
+     public boolean Validaciones() throws SNMPExceptions, SQLException{
          boolean indicador = true;
          if(getNombre().equals("")){
-             setMensajeNombre("Debe ingresar el nombre del Curso*");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe ingresar el nombre del Curso</div>");
              return indicador = false;
          }else{
-             setMensajeNombre("");
+             setMensajeError("");
              indicador = true;
          }
          
          if(getDescripcion().equals("")){
-             setMensajeDescripcion("Debe ingresar una descripción del Curso*");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe ingresar la descripción del Curso</div>");
              return indicador = false;
          }else{
-             setMensajeDescripcion("");
+             setMensajeError("");
              indicador = true;
          }
          
-         if(getEstado().equals("")){
-             setMensajeEstado("Debe seleccionar el estado del Curso*");
-             return indicador = false;
-         }else{
-             setMensajeEstado("");
-             indicador = true;
-         }
+          ProgramaDB proDb = new ProgramaDB();
+            if(proDb.SeleccionarTodos().isEmpty()){
+                setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen programas</div>");         
+                return indicador = false;
+            }else{
+                if(getPrograma() == 0){
+                    setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el programa al que pertenece el Curso</div>");
+                    return indicador = false;
+                }else{
+                    setMensajeError("");
+                    indicador = true;
+                }
+            }
+         
+         
          return indicador;
      }
      
@@ -220,29 +227,6 @@ public class CursoPorProgramaBean implements Serializable {
         this.buscarFiltro = buscar;
     }
     
-    public String getMensajeNombre() {
-        return mensajeNombre;
-    }
-
-    public void setMensajeNombre(String mensajeNombre) {
-        this.mensajeNombre = mensajeNombre;
-    }
-
-    public String getMensajeDescripcion() {
-        return mensajeDescripcion;
-    }
-
-    public void setMensajeDescripcion(String mensajeDescripcion) {
-        this.mensajeDescripcion = mensajeDescripcion;
-    }
-
-    public String getMensajeEstado() {
-        return mensajeEstado;
-    }
-
-    public void setMensajeEstado(String mensajeEstado) {
-        this.mensajeEstado = mensajeEstado;
-    }
     
     public String getMensajeGuardar() {
         return mensajeGuardar;
@@ -268,14 +252,16 @@ public class CursoPorProgramaBean implements Serializable {
     public void setListaPrograma(LinkedList<Programa> listaPrograma) {
         this.listaPrograma = listaPrograma;
     }
-    
-    public String getMensajePrograma() {
-        return mensajePrograma;
+
+    public String getMensajeError() {
+        return mensajeError;
     }
 
-    public void setMensajePrograma(String mensajePrograma) {
-        this.mensajePrograma = mensajePrograma;
+    public void setMensajeError(String mensajeError) {
+        this.mensajeError = mensajeError;
     }
+    
+   
     
     
 }

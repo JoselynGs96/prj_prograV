@@ -88,14 +88,15 @@ public class ProgramaUsuarioDB {
         } 
     } 
     
-    public  ProgramaUsuario SeleccionarPorId(int id) throws SNMPExceptions, 
+    public  LinkedList<ProgramaUsuario> SeleccionarPorId(int id) throws SNMPExceptions, 
             SQLException {
       String select = "";
       ResultSet rsPA = null;
-      ProgramaUsuario p = null;
       ProgramaDB pro = new ProgramaDB();
       UsuarioDB usu = new UsuarioDB();
       RolUsuarioDB rol = new RolUsuarioDB();
+      
+      LinkedList<ProgramaUsuario> listaProgramaUsuario= new LinkedList<ProgramaUsuario>();
           try {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
@@ -109,7 +110,8 @@ public class ProgramaUsuarioDB {
                         Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa")) ;
                         RolUsuario Id_RolUsuario = rol.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
                         int Log_Activo = rsPA.getInt("Log_Activo");
-                        p = new ProgramaUsuario(Id_Programa, Id_RolUsuario, Log_Activo==0? "Inactivo":"Activo");
+                        ProgramaUsuario p = new ProgramaUsuario(Id_Programa, Id_RolUsuario, Log_Activo==0? "Inactivo":"Activo");
+                        listaProgramaUsuario.add(p);
                       }
               
             rsPA.close();
@@ -124,7 +126,7 @@ public class ProgramaUsuarioDB {
               
           }
          
-          return p;
+          return listaProgramaUsuario;
       }
     
     public  LinkedList<ProgramaUsuario> SeleccionarTodos() throws SNMPExceptions, 

@@ -15,8 +15,6 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import model.Recurso;
 import model.RecursoDB;
 import model.TipoRecurso;
@@ -36,27 +34,29 @@ public class recursoInfraestructuraBean implements Serializable {
     int tipoRecurso;
     String nombre;
     String descripcion;
-    String estado;
+    String estado = "Activo";
+    String dscTipo;
+    String dscNum;
+    Recurso recurso;
     String buscarFiltro;
     String mensajeFiltro;
-    String mensajeNombre;
-    String mensajeDescripcion;
-    String mensajeEstado;
     String mensajeGuardar;
-    String mensajeTipoRecurso;
-    LinkedList<Recurso> listaTablaRecursoInfra = new LinkedList<Recurso>();
-    LinkedList<Recurso> listaTablaRecursoCom = new LinkedList<Recurso>();
-    LinkedList<Recurso> listaTablaRecursoAud = new LinkedList<Recurso>();
+    String mensajeError;
     LinkedList<Recurso> listaTablaRecurso = new LinkedList<Recurso>();
     LinkedList<TipoRecurso> listaTipoRecurso = new LinkedList<TipoRecurso>();
+    
     /**
      * Creates a new instance of recursoInfraestructuraBean
      */
+    
     public recursoInfraestructuraBean() throws SNMPExceptions, SQLException {
-        llenarListas();
+        TipoRecursoDB tipDb = new TipoRecursoDB();
+        if(!tipDb.SeleccionarTodos().isEmpty()){
+            listaTipoRecurso = tipDb.SeleccionarTodos();
+        }
+        seleccionarTodos();
     }
     
-     /*Selecciona todos los programas*/
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
         RecursoDB rec = new RecursoDB();
         if(!rec.SeleccionarTodos().isEmpty()){
@@ -69,7 +69,8 @@ public class recursoInfraestructuraBean implements Serializable {
     
     /*Botón guardar; inserta uno nuevo o modifica*/
      public void insertarRecurso() throws SNMPExceptions, SQLException{
-        if(Validaciones() == true){
+       try{
+         if(Validaciones() == true){
             Recurso rec = new Recurso();
             TipoRecursoDB tdb = new TipoRecursoDB();
             rec.setId(id);
@@ -82,21 +83,17 @@ public class recursoInfraestructuraBean implements Serializable {
             RecursoDB recd = new RecursoDB();
             if(getId() != 0){
                  recd.actulizar(rec);
-                 setMensajeGuardar("¡Recurso actualizado con éxito!");
-                  FacesContext context = FacesContext.getCurrentInstance();
-                  context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
-                  tipoRecurso = rec.getTipoRecurso().getId();
+                 setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Recurso actualizado con éxito!</div> ");
                  
             }else{
                  recd.registrar(rec);
-                 setMensajeGuardar("¡Recurso registrado con éxito!");
-                 FacesContext context = FacesContext.getCurrentInstance();
-                 context.addMessage(null, new FacesMessage("Exitoso",  mensajeGuardar) );
-                 tipoRecurso = rec.getTipoRecurso().getId();
+                 setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Recurso registrado con éxito!</div> ");
             }
-            llenarListas();
-            PrimeFaces.current().executeScript("tipoRecurso();");
+           seleccionarTodos();
         }
+       }catch(Exception e){
+           setMensajeError( "<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al guardar el recurso...¡Intentelo de nuevo!</div>");
+       }
     }
 
     
@@ -114,124 +111,108 @@ public class recursoInfraestructuraBean implements Serializable {
          setTipoRecurso(recurso.getTipoRecurso().getId());
          setEstado(recurso.getEstado());
       }
+     
+     /*Botón ver más*/
+     public void verMas(int i) throws SNMPExceptions, SQLException{
+        RecursoDB recd = new RecursoDB();
+        this.recurso = null;
+        this.recurso = recd.SeleccionarPorId(i);
+         if(recurso.getTipoRecurso().getId()==2){
+             setDscTipo("Capacidad: ");
+             setDscNum(recurso.getCapacidad()+"");
+         }else{
+             setDscTipo("Cantidad: ");
+             setDscNum(recurso.getCantidad()+"");
+         }
+        PrimeFaces.current().executeScript("abrirModal();");
+     }
     
      /*Botón de buscar*/
      public void buscar() throws SNMPExceptions, SQLException{
         RecursoDB recd = new RecursoDB();
-        listaTablaRecursoAud.clear();
-        listaTablaRecursoCom.clear();
-        listaTablaRecursoInfra.clear();
+        try{
         if(!getBuscarFiltro().equals("")){
             if(!recd.FiltrarRecurso(buscarFiltro).isEmpty()){
-                LinkedList<Recurso> lista = recd.FiltrarRecurso(buscarFiltro);
-                for (int i = 0; i < lista.size(); i++) {
-                Recurso get = lista.get(i);
-                if(get.getTipoRecurso().getId()==1){
-                    listaTablaRecursoInfra.add(get);
-                }else{
-                    if(get.getTipoRecurso().getId()==2){
-                        listaTablaRecursoCom.add(get);
-                    }else{
-                        listaTablaRecursoAud.add(get);
-                    }
-                }
-            }
+                listaTablaRecurso = recd.FiltrarRecurso(buscarFiltro);
                  setMensajeFiltro("");
             }else{
-                llenarListas();
-                setMensajeFiltro("No se encontraron registros con el dato proporcionado");
-                
+                listaTablaRecurso = recd.SeleccionarTodos();
+                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
             }
         }else{
-            llenarListas();
+            seleccionarTodos();
+            setMensajeFiltro("");
+        }
+        }catch(Exception e){
+            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el recurso...¡Intentelo de nuevo!</div>");
         }
      }
+     
      
      /*Botón de nuevo*/
      public void nuevo(){
          setId(0);
          setNombre("");
          setDescripcion("");
-         setEstado("");
+         setEstado("Activo");
          setMensajeGuardar("");
-         setMensajeEstado("");
-         setMensajeDescripcion("");
-         setMensajeNombre("");
+         setMensajeError("");
+         setMensajeFiltro("");
          setTipoRecurso(1);
          setCantidad(0);
          setCapacidad(0);
-         PrimeFaces.current().executeScript("tipoRecurso();");
      }
      
-     /*Listas*/
-     public void llenarListas() throws SNMPExceptions, SQLException{
-          RecursoDB d = new RecursoDB();
-          listaTablaRecursoAud.clear();
-          listaTablaRecursoCom.clear();
-          listaTablaRecursoInfra.clear();
-            for (int i = 0; i < d.SeleccionarTodos().size(); i++) {
-                Recurso get = d.SeleccionarTodos().get(i);
-                if(get.getTipoRecurso().getId()==1){
-                    listaTablaRecursoInfra.add(get);
-                }else{
-                    if(get.getTipoRecurso().getId()==2){
-                        listaTablaRecursoCom.add(get);
-                    }else{
-                        listaTablaRecursoAud.add(get);
-                    }
-                }
-            }
-        
-           
-     }
+     
      
      /*Validaciones*/
      public boolean Validaciones(){
          boolean indicador = true;
+         
          if(getNombre().equals("")){
-             setMensajeNombre("Debe ingresar el nombre del Recurso*");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe ingresar el nombre del Recurso</div>");
              return indicador = false;
          }else{
-             setMensajeNombre("");
+             setMensajeError("");
              indicador = true;
          }
-         
+            
          if(tipoRecurso == 1){
-             if(getCapacidad() == 0){
-             setMensajeTipoRecurso("Debe seleccionar la capacidad del Recurso*");
-             return indicador = false;
-                }else{
-                    setMensajeTipoRecurso("");
-                    indicador = true;
-                }
+                setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el Tipo de Recurso</div>");
+                return indicador = false;
          }else{
-             if(getCantidad() == 0){
-             setMensajeTipoRecurso("Debe seleccionar la cantidad del Recurso*");
-             return indicador = false;
+                if(tipoRecurso == 2){
+                        if(getCapacidad() == 0){
+                            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar la capacidad del recurso</div>");
+                            return indicador = false;
+                           }else{
+                               setMensajeError("");
+                               indicador = true;
+                           }
                 }else{
-                    setMensajeTipoRecurso("");
-                    indicador = true;
+                        if(getCantidad() == 0){
+                                setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar la cantidad del recurso</div>");
+                                return indicador = false;
+                           }else{
+                               setMensajeError("");
+                               indicador = true;
+                           }
                 }
          }
          
          
+
          if(getDescripcion().equals("")){
-             setMensajeDescripcion("Debe ingresar una descripción del Recurso*");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe ingresar la descripción del Curso</div>");
              return indicador = false;
          }else{
-             setMensajeDescripcion("");
+             setMensajeError("");
              indicador = true;
          }
          
-         if(getEstado().equals("")){
-             setMensajeEstado("Debe seleccionar el estado del Recurso*");
-             return indicador = false;
-         }else{
-             setMensajeEstado("");
-             indicador = true;
-         }
          return indicador;
      }
+
      
      public int getId() {
         return id;
@@ -305,30 +286,6 @@ public class recursoInfraestructuraBean implements Serializable {
         this.mensajeFiltro = mensajeFiltro;
     }
 
-    public String getMensajeNombre() {
-        return mensajeNombre;
-    }
-
-    public void setMensajeNombre(String mensajeNombre) {
-        this.mensajeNombre = mensajeNombre;
-    }
-
-    public String getMensajeDescripcion() {
-        return mensajeDescripcion;
-    }
-
-    public void setMensajeDescripcion(String mensajeDescripcion) {
-        this.mensajeDescripcion = mensajeDescripcion;
-    }
-
-    public String getMensajeEstado() {
-        return mensajeEstado;
-    }
-
-    public void setMensajeEstado(String mensajeEstado) {
-        this.mensajeEstado = mensajeEstado;
-    }
-
     public String getMensajeGuardar() {
         return mensajeGuardar;
     }
@@ -344,42 +301,42 @@ public class recursoInfraestructuraBean implements Serializable {
     public void setTipoRecurso(int tipoRecurso) {
         this.tipoRecurso = tipoRecurso;
     }
-    
-    public String getMensajeTipoRecurso() {
-        return mensajeTipoRecurso;
-    }
-
-    public void setMensajeTipoRecurso(String mensajeTipoRecurso) {
-        this.mensajeTipoRecurso = mensajeTipoRecurso;
-    }
-    
+   
     public LinkedList<TipoRecurso> getListaTipoRecurso() throws SNMPExceptions, SQLException {
         TipoRecursoDB tdb = new TipoRecursoDB();
         return tdb.SeleccionarTodos();
     }
 
-    public LinkedList<Recurso> getListaTablaRecursoInfra() {
-        return listaTablaRecursoInfra;
+    public String getMensajeError() {
+        return mensajeError;
     }
 
-    public void setListaTablaRecursoInfra(LinkedList<Recurso> listaTablaRecursoInfra) {
-        this.listaTablaRecursoInfra = listaTablaRecursoInfra;
+    public void setMensajeError(String mensajeError) {
+        this.mensajeError = mensajeError;
     }
 
-    public LinkedList<Recurso> getListaTablaRecursoCom() {
-        return listaTablaRecursoCom;
+    public Recurso getRecurso() {
+        return recurso;
     }
 
-    public void setListaTablaRecursoCom(LinkedList<Recurso> listaTablaRecursoCom) {
-        this.listaTablaRecursoCom = listaTablaRecursoCom;
+    public void setRecurso(Recurso recurso) {
+        this.recurso = recurso;
     }
 
-    public LinkedList<Recurso> getListaTablaRecursoAud() {
-        return listaTablaRecursoAud;
+    public String getDscNum() {
+        return dscNum;
     }
 
-    public void setListaTablaRecursoAud(LinkedList<Recurso> listaTablaRecursoAud) {
-        this.listaTablaRecursoAud = listaTablaRecursoAud;
+    public void setDscNum(String dscNum) {
+        this.dscNum = dscNum;
+    }
+
+    public String getDscTipo() {
+        return dscTipo;
+    }
+
+    public void setDscTipo(String dscTipo) {
+        this.dscTipo = dscTipo;
     }
 
     
