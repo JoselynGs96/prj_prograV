@@ -10,9 +10,8 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import model.Curso;
 import model.CursoDB;
 import model.Programa;
@@ -36,7 +35,7 @@ public class CursoPorProgramaBean implements Serializable {
     String mensajeFiltro;
     String mensajeGuardar;
     String mensajeError;
-
+    Date fecha = new Date();
    
     /**
      * Creates a new instance of ProgramaBean
@@ -75,11 +74,15 @@ public class CursoPorProgramaBean implements Serializable {
             cur.setEstado(estado);
             ProgramaDB prog = new ProgramaDB();
             cur.setPrograma(prog.SeleccionarPorId(programa));
+            cur.setId_Edita(116390998);
+            cur.setFechaEdita(fecha);
             CursoDB curs = new CursoDB();
             if(getId() != 0){
                  curs.actulizar(cur);
                  setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Curso actualizado con éxito!</div> ");
             }else{
+                 cur.setId_Registra(116390998);
+                 cur.setFechaRegistra(fecha);
                  curs.registrar(cur);
                  setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Curso registrado con éxito!</div> ");
             }

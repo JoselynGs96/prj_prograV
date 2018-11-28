@@ -41,9 +41,9 @@ public class ProgramaDB {
             if(programa.estado.equals("Activo")){
                 estado = 1;
             }
-             strSQL = "INSERT INTO Programa (Nombre, Dsc_Programa, Log_Activo) "
+             strSQL = "INSERT INTO Programa (Nombre, Dsc_Programa, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
                     + "VALUES ('" 	+	programa.getNombre()	+"', '" 
-            + programa.getDescripcion() + "', '" +  estado +"')"; 
+            + programa.getDescripcion() + "', '" +  programa.getId_Registra()  + "', '" + programa.getFechaRegistra() + "', '" + programa.getId_Edita() + "', '" + programa.getFechaEdita()+  "', '" +  estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -71,6 +71,8 @@ public class ProgramaDB {
              strSQL = "UPDATE Programa SET "
                      +"Nombre='" +programa.getNombre() 
                      +"', Dsc_Programa= '" + programa.getDescripcion()
+                     +"', Id_Edita= '" + programa.getId_Edita()
+                     +"', FechaEdita= '" + programa.getFechaEdita()
                      +"', Log_Activo='" + estado
                      +"' WHERE Id_Programa='" + programa.getId()+"';";
                     

@@ -10,25 +10,18 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import model.Direccion;
 import model.DireccionDB;
 import model.EstadoAcceso;
 import model.EstadoAccesoDB;
-import model.Programa;
-import model.ProgramaDB;
 import model.ProgramaUsuario;
 import model.ProgramaUsuarioDB;
-import model.RolUsuario;
-import model.RolUsuarioDB;
 import model.Telefono;
 import model.TelefonoDB;
-import model.Usuario;
-import model.UsuarioDB;
+import model.UsuarioMante;
+import model.UsuarioManteDB;
 import org.primefaces.PrimeFaces;
 
 /**
@@ -39,80 +32,73 @@ import org.primefaces.PrimeFaces;
 @SessionScoped
 public class UsuariosPorProgranaBean implements Serializable {
 
-    Usuario usuario = null;
-    ProgramaUsuario programaUsu = null;
-    String cedula = "";
-    String nombre = "";
-    String estadoPrograma = "";
+    UsuarioMante usuario = null;
+    ProgramaUsuario programaUsuario = null;
+    LinkedList<Direccion> listaDirecciones = new LinkedList<Direccion>();
+    LinkedList<Telefono> listaTelefonos = new LinkedList<Telefono>();
+    LinkedList<ProgramaUsuario> listaProusu = new LinkedList<ProgramaUsuario>();
+    LinkedList<UsuarioMante> listaUsuario = new LinkedList<UsuarioMante>();
+    LinkedList<EstadoAcceso> listaEstadoAcceso = new LinkedList<EstadoAcceso>();
+    
+    UsuarioMante usuarioModal = null;
+    LinkedList<ProgramaUsuario> listaProusuModal = new LinkedList<ProgramaUsuario>();
+    
     int estadoAcceso;
     String estadoUsuario = "";
     String buscarFiltro = "";
-    String nombrePrograma = "";
-    String mensajeGuardar;
-    String mensajeFiltro;
-    String mensajeError;
-    String telefonos;
-    String direcciones;
-    String edad;
-    String programas;
-    LinkedList<Usuario> listaUsuario = new LinkedList<Usuario>();
-    LinkedList<ProgramaUsuario> listaProusu = new LinkedList<ProgramaUsuario>();
-    LinkedList<EstadoAcceso> listaEstadoAcceso = new LinkedList<EstadoAcceso>();
+    String mensajeGuardar = "";
+    String mensajeFiltro = "";
+    String mensajeError = "";
+    String telefonos = "";
+    String direcciones = "";
+    String programas = "";
     
+    Date fecha = new Date();
     
     
     public UsuariosPorProgranaBean() throws SNMPExceptions, SQLException{
         seleccionarTodos();
     }
     
-
-    /*Botón ver más*/
-     public void verMas(int i) throws SNMPExceptions, SQLException{
-        usuario = new UsuarioDB().SeleccionarPorId(i+"");
+   
+    public void verMas(int i) throws SNMPExceptions, SQLException{
+        usuarioModal = new UsuarioManteDB().SeleccionarPorId(i);
         
-        DireccionDB DD = new DireccionDB();
-        LinkedList<Direccion> d = DD.SeleccionarPorUsuario(i+"");
-         for (int j = 0; j < d.size(); j++) {
-             Direccion dir = d.get(j);
-             direcciones +=  dir.getOtras_sennas() +" ("+dir.getId_Provincia()+", "+dir.getId_Canton()+", "+dir.getId_Distrito()+","+dir.getId_Barrio()+") \n";
-             
+        DireccionDB dd = new DireccionDB();
+        listaDirecciones = dd.SeleccionarPorUsuario(i+"");
+         for (int j = 0; j < listaDirecciones.size(); j++) {
+             Direccion dir = listaDirecciones.get(j);
+             direcciones += "Dirección #"+j+1+": "+ dir.getOtras_sennas() +" ("+dir.getId_Provincia()+", "+dir.getId_Canton()+", "+dir.getId_Distrito()+","+dir.getId_Barrio()+") \n";
          }
         
         TelefonoDB tt = new TelefonoDB();
+        listaTelefonos = tt.SeleccionarTodos(i +"");
+        for (int j = 0; j < listaTelefonos.size(); j++) {
+             Telefono tel = listaTelefonos.get(j);
+             telefonos += tel.getId_TipoTelefono().getDsc_TipoTelefono()+": "+ tel.getNumero()+" \n";
+         }
         
         ProgramaUsuarioDB pp = new ProgramaUsuarioDB();
-        LinkedList<ProgramaUsuario> p = pp.SeleccionarPorId(i);
-         for (int j = 0; j < p.size(); j++) {
-             ProgramaUsuario ps = p.get(j);
+        listaProusuModal = pp.SeleccionarPorId(i);
+         for (int j = 0; j < listaProusuModal.size(); j++) {
+             ProgramaUsuario ps = listaProusuModal.get(j);
              programas +=  ps.getPrograma().getNombre() +", "+ps.getRolUsuario().getDsc_RolUsuario() +", "+ps.getEstado()+"\n";
          }
         
-         edad = calculaEdad();
         
         PrimeFaces.current().executeScript("abrirModal();");
      }
     
-    public String calculaEdad(){
-        String f = usuario.getFechaNacimiento().toString();
-       DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate fechaNac = LocalDate.parse(f, fmt);
-            LocalDate ahora = LocalDate.now();
-
-            Period periodo = Period.between(fechaNac, ahora);
-            return  periodo.getYears() + " años , " + periodo.getMonths() + " meses con " + periodo.getDays() +" días";
-    }
-     
-     
-    /*Botón de buscar*/
-     public void buscar() throws SNMPExceptions, SQLException{
-        UsuarioDB recd = new UsuarioDB();
+   
+    public void buscar() throws SNMPExceptions, SQLException{
+        UsuarioManteDB udb = new UsuarioManteDB();
         try{
         if(!getBuscarFiltro().equals("")){
-            if(!recd.FiltrarUsuario(buscarFiltro).isEmpty()){
-                listaUsuario = recd.FiltrarUsuario(buscarFiltro);
+            if(!udb.FiltrarUsuario(buscarFiltro).isEmpty()){
+                listaUsuario = udb.FiltrarUsuario(buscarFiltro);
                  setMensajeFiltro("");
             }else{
-                listaUsuario = recd.SeleccionarTodos2();
+                listaUsuario = udb.SeleccionarTodos();
                 setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
             }
         }else{
@@ -123,27 +109,58 @@ public class UsuariosPorProgranaBean implements Serializable {
             setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el usuario...¡Intentelo de nuevo!</div>");
         }
      }
+     
     
     public void nuevoBoton(){
         usuario = null;
-        programaUsu = null;
+        listaDirecciones.clear();
+        listaProusu.clear();
+        listaTelefonos.clear();
         setMensajeError("");
         setMensajeFiltro("");
         setMensajeGuardar("");
         listaProusu.clear();
         setEstadoAcceso(0);
         setEstadoUsuario("");
+        setBuscarFiltro("");
+        setTelefonos("");
+        setDirecciones("");
+        setProgramas("");
+        usuarioModal = null;
+        listaProusuModal.clear();
+    }
+    
+    
+    public void cambiarEstado(int idPro, int idT) throws SNMPExceptions, SQLException{
+        ProgramaUsuarioDB pdb = new ProgramaUsuarioDB();
+        for (int i = 0; i < listaProusu.size(); i++) {
+            
+            ProgramaUsuario pro = listaProusu.get(i);
+            if(pro.getPrograma().getId() == idPro && pro.getRolUsuario().getId_RolUsuario() == idT){
+                if(pro.getEstado().equals("Activo")){
+                    pro.setEstado("Inactivo");
+                }else{
+                    pro.setEstado("Activo");
+                }
+            }
+        }
     }
     
     public void guardarBoton(){
-        UsuarioDB us = new UsuarioDB();
+        UsuarioManteDB us = new UsuarioManteDB();
         ProgramaUsuarioDB proU = new ProgramaUsuarioDB();
         
         try{
             if(Validaciones()){
-                usuario.setEst(this.estadoUsuario);
-                usuario.setEstAcc(new EstadoAccesoDB().SeleccionarPorId(estadoAcceso));
-               us.actulizar(usuario, listaProusu);
+                usuario.setLog_Activo(this.estadoUsuario);
+                usuario.setEstadoAcceso(new EstadoAccesoDB().SeleccionarPorId(this.estadoAcceso));
+                usuario.setId_Edita(116390998);
+                usuario.setFechaEdita(fecha);
+                us.actulizar(usuario);
+                
+                for (int i = 0; i < listaProusu.size(); i++) {
+                   proU.actulizar(listaProusu.get(i));
+                }
                 setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Usuario actualizado con éxito!</div> ");
             }
             seleccionarTodos();
@@ -152,19 +169,27 @@ public class UsuariosPorProgranaBean implements Serializable {
         }
     }
     
-    public void editarBoton(String id) throws SNMPExceptions, SQLException{
-        UsuarioDB udb = new UsuarioDB();
-        usuario = udb.SeleccionarPorId(id);
-        setEstadoAcceso(usuario.getEstAcc().getId());
-        setEstadoUsuario(usuario.getEst());
-        ProgramaUsuarioDB pdb = new ProgramaUsuarioDB();
-        listaProusu = pdb.SeleccionarPorId(Integer.parseInt(id));
+    
+    public void editarBoton(int id) throws SNMPExceptions, SQLException{
+       try{
+            UsuarioManteDB udb = new UsuarioManteDB();
+            usuario = udb.SeleccionarPorId(id);
+            setEstadoAcceso(usuario.getEstadoAcceso().getId());
+            setEstadoUsuario(usuario.getLog_Activo());
+
+            ProgramaUsuarioDB pdb = new ProgramaUsuarioDB();
+            listaProusu = pdb.SeleccionarPorId(id);
+       }catch(Exception e){
+           setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el usuario...¡Intentelo de nuevo!</div>");
+       }
+        
     }
+    
     
     public boolean Validaciones(){
         boolean indicador = true;
          
-         if(getNombre().equals("")|| getCedula().equals("")){
+         if(usuario == null){
              setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el registro a actualizar</div>");
              return indicador = false;
          }else{
@@ -176,53 +201,54 @@ public class UsuariosPorProgranaBean implements Serializable {
     
     
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
-       UsuarioDB u = new UsuarioDB();
-        if(!u.SeleccionarTodos2().isEmpty()){
+       UsuarioManteDB u = new UsuarioManteDB();
+        if(!u.SeleccionarTodos().isEmpty()){
             listaUsuario.clear();
-            listaUsuario = u.SeleccionarTodos2();
+            listaUsuario = u.SeleccionarTodos();
         }
     }
+
     
-    public Usuario getUsuario() {
+    public UsuarioMante getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioMante usuario) {
         this.usuario = usuario;
     }
 
-    public ProgramaUsuario getProgramaUsu() {
-        return programaUsu;
+    public ProgramaUsuario getProgramaUsuario() {
+        return programaUsuario;
     }
 
-    public void setProgramaUsu(ProgramaUsuario programaUsu) {
-        this.programaUsu = programaUsu;
+    public void setProgramaUsuario(ProgramaUsuario programaUsuario) {
+        this.programaUsuario = programaUsuario;
     }
 
-    public String getCedula() {
-        return cedula;
+    public LinkedList<Direccion> getListaDirecciones() {
+        return listaDirecciones;
     }
 
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
+    public void setListaDirecciones(LinkedList<Direccion> listaDirecciones) {
+        this.listaDirecciones = listaDirecciones;
     }
 
-    public String getNombre() {
-        return nombre;
+    public LinkedList<Telefono> getListaTelefonos() {
+        return listaTelefonos;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setListaTelefonos(LinkedList<Telefono> listaTelefonos) {
+        this.listaTelefonos = listaTelefonos;
     }
 
-    public String getEstadoPrograma() {
-        return estadoPrograma;
+    public LinkedList<UsuarioMante> getListaUsuario() {
+        return listaUsuario;
     }
 
-    public void setEstadoPrograma(String estadoPrograma) {
-        this.estadoPrograma = estadoPrograma;
+    public void setListaUsuario(LinkedList<UsuarioMante> listaUsuario) {
+        this.listaUsuario = listaUsuario;
     }
-
+    
     public int getEstadoAcceso() {
         return estadoAcceso;
     }
@@ -237,24 +263,6 @@ public class UsuariosPorProgranaBean implements Serializable {
 
     public void setEstadoUsuario(String estadoUsuario) {
         this.estadoUsuario = estadoUsuario;
-    }
-
-    public String getNombrePrograma() {
-        return nombrePrograma;
-    }
-
-    public void setNombrePrograma(String nombrePrograma) {
-        this.nombrePrograma = nombrePrograma;
-    }
-
-    
-
-    public LinkedList<Usuario> getListaUsuario() {
-        return listaUsuario;
-    }
-
-    public void setListaUsuario(LinkedList<Usuario> listaUsuario) {
-        this.listaUsuario = listaUsuario;
     }
 
     public LinkedList<ProgramaUsuario> getListaProusu() {
@@ -322,13 +330,6 @@ public class UsuariosPorProgranaBean implements Serializable {
         this.direcciones = direcciones;
     }
 
-    public String getEdad() {
-        return edad;
-    }
-
-    public void setEdad(String edad) {
-        this.edad = edad;
-    }
 
     public String getProgramas() {
         return programas;
@@ -337,7 +338,21 @@ public class UsuariosPorProgranaBean implements Serializable {
     public void setProgramas(String programas) {
         this.programas = programas;
     }
- 
-    
-  
+
+    public UsuarioMante getUsuarioModal() {
+        return usuarioModal;
+    }
+
+    public void setUsuarioModal(UsuarioMante usuarioModal) {
+        this.usuarioModal = usuarioModal;
+    }
+
+    public LinkedList<ProgramaUsuario> getListaProusuModal() {
+        return listaProusuModal;
+    }
+
+    public void setListaProusuModal(LinkedList<ProgramaUsuario> listaProusuModal) {
+        this.listaProusuModal = listaProusuModal;
+    }
+
 }

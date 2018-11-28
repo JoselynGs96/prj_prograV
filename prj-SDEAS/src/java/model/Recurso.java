@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author ujose
@@ -16,10 +18,31 @@ public class Recurso {
     int cantidad;
     int capacidad;
     TipoRecurso tipoRecurso;
+    int Id_Registra;
+    Date FechaRegistra;
+    int Id_Edita;
+    Date FechaEdita;
     String estado;
 
     public Recurso() {
     }
+
+    public Recurso(int id, String nombre, String descripcion, int cantidad, int capacidad, TipoRecurso tipoRecurso, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita, String estado) {
+        this.setId(id);
+        this.setNombre(nombre);
+        this.setDescripcion(descripcion);
+        this.setCantidad(cantidad);
+        this.setCapacidad(capacidad);
+        this.setTipoRecurso(tipoRecurso);
+        this.setEstado(estado);
+        this.setId_Registra(Id_Registra);
+        this.setFechaRegistra(FechaRegistra);
+        this.setId_Edita(Id_Edita);
+        this.setFechaEdita(FechaEdita);
+        this.setEstado(estado);
+    }
+    
+    
 
     public Recurso(int id, String nombre, String descripcion, int cantidad, int capacidad, TipoRecurso tipoRecurso, String estado) {
         this.setId(id);
@@ -85,6 +108,38 @@ public class Recurso {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public int getId_Registra() {
+        return Id_Registra;
+    }
+
+    public void setId_Registra(int Id_Registra) {
+        this.Id_Registra = Id_Registra;
+    }
+
+    public Date getFechaRegistra() {
+        return FechaRegistra;
+    }
+
+    public void setFechaRegistra(Date FechaRegistra) {
+        this.FechaRegistra = FechaRegistra;
+    }
+
+    public int getId_Edita() {
+        return Id_Edita;
+    }
+
+    public void setId_Edita(int Id_Edita) {
+        this.Id_Edita = Id_Edita;
+    }
+
+    public Date getFechaEdita() {
+        return FechaEdita;
+    }
+
+    public void setFechaEdita(Date FechaEdita) {
+        this.FechaEdita = FechaEdita;
     }
     
     

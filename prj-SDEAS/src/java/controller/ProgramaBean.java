@@ -8,6 +8,8 @@ package controller;
 import dao.SNMPExceptions;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.LinkedList;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -30,7 +32,7 @@ public class ProgramaBean implements Serializable {
     String mensajeGuardar = "";
     String mensajeError = "";
     String mensajeFiltro = "";
-   
+    Date fecha = new Date();
     
     /**
      * Creates a new instance of ProgramaBean
@@ -59,12 +61,16 @@ public class ProgramaBean implements Serializable {
                 pro.setNombre(nombre);
                 pro.setDescripcion(descripcion);
                 pro.setEstado(estado);
+                pro.setId_Edita(116390998);
+                pro.setFechaEdita(fecha);
                 ProgramaDB prog = new ProgramaDB();
                 if(getId() != 0){
                      prog.actulizar(pro);
                      setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Programa actualizado con éxito!</div> ");
 
                 }else{
+                     pro.setId_Registra(116390998);
+                     pro.setFechaRegistra(fecha);
                      prog.registrar(pro);
                      setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Programa registrado con éxito!</div>" );
                 }

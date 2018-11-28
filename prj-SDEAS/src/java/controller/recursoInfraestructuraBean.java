@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 import model.Recurso;
 import model.RecursoDB;
@@ -44,6 +45,7 @@ public class recursoInfraestructuraBean implements Serializable {
     String mensajeError;
     LinkedList<Recurso> listaTablaRecurso = new LinkedList<Recurso>();
     LinkedList<TipoRecurso> listaTipoRecurso = new LinkedList<TipoRecurso>();
+    Date fecha = new Date();
     
     /**
      * Creates a new instance of recursoInfraestructuraBean
@@ -79,6 +81,8 @@ public class recursoInfraestructuraBean implements Serializable {
             rec.setCantidad(cantidad);
             rec.setCapacidad(capacidad);
             rec.setTipoRecurso(tdb.SeleccionarPorId(tipoRecurso));
+            rec.setId_Edita(116390998);
+            rec.setFechaEdita(fecha);
             rec.setEstado(estado);
             RecursoDB recd = new RecursoDB();
             if(getId() != 0){
@@ -86,6 +90,8 @@ public class recursoInfraestructuraBean implements Serializable {
                  setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Recurso actualizado con éxito!</div> ");
                  
             }else{
+                 rec.setId_Registra(116390998);
+                 rec.setFechaRegistra(fecha);
                  recd.registrar(rec);
                  setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Recurso registrado con éxito!</div> ");
             }
