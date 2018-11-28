@@ -80,7 +80,7 @@ public class UsuarioDB {
     }
 
     /*Busca usuario por id*/
-    public Usuario SeleccionarPorId(int idUsuario) throws SNMPExceptions,
+    public Usuario SeleccionarPorId(String idUsuario) throws SNMPExceptions,
             SQLException {
         String select = "";
         ResultSet rsPA = null;
@@ -153,6 +153,31 @@ public class UsuarioDB {
         }
 
     }
+    
+   public void ActualizarUsuario(Usuario usu) throws SNMPExceptions, SQLException{
+         String strSQL = "";
+
+        try {
+            Usuario usuario = new Usuario();
+            usuario = usu;
+            SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+
+            String fecha = formato.format(usuario.getFechaNacimiento());
+//mydate is your date object
+
+            strSQL = "UPDATE [dbo].[Usuario] SET [Nombre] ='" +  usuario.nombre + "',[Apellido1]="+usuario.apellido1+"', [Apellido2] ='" +usuario.apellido2+"', [FechaNacimiento] ='" +fecha+"', [Correo] ='"+usuario.correo+"',[TipoFuncionario] ="+usuario.Funcionario.toString()+"'where [Id_Usuario]="+usuario.cedula;
+
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+    }
 
     /*Busca el usuario logeado*/
     public static Usuario InicioSeccion(String Id_Usuario, String contrasena, String tipoUsuario) throws SNMPExceptions, SQLException {
@@ -206,51 +231,6 @@ public class UsuarioDB {
         }
 
     }
-
-    /*Actualiza usuario*/
-    public void actulizar(Usuario usu, LinkedList<ProgramaUsuario> pro) throws SNMPExceptions, SQLException {
-        String strSQL = "";
-
-        int estado = 0;
-        try {
-            Usuario usuario = new Usuario();
-            usuario = usu;
-
-            LinkedList<ProgramaUsuario> programa = new LinkedList<ProgramaUsuario>();
-            programa = pro;
-
-            if (usuario.est.equals("Activo")) {
-                estado = 1;
-            }
-
-            strSQL = "UPDATE Usuario SET "
-                    + "'Id_EstadoAcceso='" + usuario.getEstAcc().id
-                    + "'Log_Activo='" + estado
-                    + "' WHERE Id_Usuario='" + usuario.getCed() + "';";
-
-            for (int i = 0; i < programa.size(); i++) {
-                ProgramaUsuario p = programa.get(i);
-
-                String strSQL2 = "UPDATE Programa_Usuario SET "
-                        + "'Log_Activo='" + (p.getEstado().equals("Activo") ? 1 : 0)
-                        + "' WHERE Id_Programa='" + p.getPrograma().id + "'AND Id_Usuario='" + usuario.ced + "';";
-
-                accesoDatos.ejecutaSQL(strSQL2/*, sqlBitacora*/);
-            }
-
-            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
-
-        } catch (SQLException e) {
-            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
-                    e.getMessage(), e.getErrorCode());
-        } catch (Exception e) {
-            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
-                    e.getMessage());
-        } finally {
-
-        }
-    }
-
     /*Ingresa contraseña por primera vez*/
     public void IngresarContrasenna(Usuario usu) throws SNMPExceptions, SQLException {
         String strSQL = "";
@@ -379,6 +359,10 @@ public class UsuarioDB {
         }
 
         return listaUsuario;
+    }
+
+    public void actulizar(Usuario usuario, LinkedList<ProgramaUsuario> listaProusu) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

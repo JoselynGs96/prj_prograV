@@ -86,10 +86,10 @@ public class RegistroBean implements Serializable {
      * Creates a new instance of RegistroBean
      */
     public RegistroBean() throws SNMPExceptions, SQLException {
-        Registrar();
+        llenarCombos();
     }
 
-    public void Registrar() throws SNMPExceptions, SQLException {
+    public void llenarCombos() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();

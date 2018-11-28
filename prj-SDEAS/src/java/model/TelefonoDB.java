@@ -66,17 +66,19 @@ public class TelefonoDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "select Numero,Id_TipoTelefono from Telefono where Id_Usuario="+id_Usuario;
+                    = "select Id_Telefono, Numero,Id_TipoTelefono from Telefono where Id_Usuario="+id_Usuario;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
-
+                
+                int Id_Telefono = rsPA.getInt("Id_Telefono");
                 int numero = rsPA.getInt("Numero");               
                 TipoTelefono tipoTel = telDB.SeleccionarPorId(rsPA.getInt("Id_TipoTelefono"));
                 Telefono tel = new Telefono();
                 tel.setId_TipoTelefono(tipoTel);
                 tel.setNumero(numero+"");
+                tel.id_Telefono= Id_Telefono+"";
                 listaTel.add(tel);
             }
 

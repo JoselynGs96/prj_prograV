@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -25,6 +26,7 @@ import model.Programa;
 import model.ProgramaDB;
 import model.Provincia;
 import model.ProvinciaDB;
+import model.RolUsuarioDB;
 import model.Telefono;
 import model.TelefonoDB;
 import model.TipoIdentificacion;
@@ -57,10 +59,10 @@ public class ActualizarUsuarioBean implements Serializable {
     int Programa;
     String OtrasSenas;
     int edad;
-    int Id_Provincia;
-    int Id_Canton;
-    int Id_Distrito;
-    int id_Barrio;
+    static int Id_Provincia;
+   static  int Id_Canton;
+   static int Id_Distrito;
+   static int id_Barrio;
     int id_TipoTelefono;
     int id_TipoCedula;
     String botonNombre;
@@ -84,16 +86,21 @@ public class ActualizarUsuarioBean implements Serializable {
      * Creates a new instance of ActualizarUsuarioBean
      */
     public ActualizarUsuarioBean() throws SNMPExceptions, SQLException {
-        Registrar();
+        llenarCombos();
         LlenarDatos();
     }
 
     public void LlenarDatos() throws SNMPExceptions, SQLException {
+        ObtenerDatosSesion datos= new ObtenerDatosSesion();
+        UsuarioDB usuDB = new UsuarioDB();
+        datos.consultarSesion();
+        UsuarioMantenimiento = usuDB.SeleccionarPorId(datos.getId_Usuario());
         DireccionDB direc = new DireccionDB();
         TelefonoDB teldb = new TelefonoDB();
         if (this.UsuarioMantenimiento.getCed() != 0) {
             this.setBotonNombre("Actualizar Información");
             /*Pantalla personal*/
+            this.setId_TipoCedula(UsuarioMantenimiento.getTipoIden().getId_TipoIdentificacion());
             this.setNombre(UsuarioMantenimiento.getNombre());
             this.setApellido1(UsuarioMantenimiento.getApellido1());
             this.setApellido2(UsuarioMantenimiento.getApellido2());
@@ -113,13 +120,14 @@ public class ActualizarUsuarioBean implements Serializable {
             this.setCorreo(UsuarioMantenimiento.getCorreo());
             /*Pantalla Progrema Deas*/
             this.setFuncionario(UsuarioMantenimiento.getFuncionario());
+            this.setFuncionario(UsuarioMantenimiento.getFuncionario());
         } else {
             this.setBotonNombre("Registrarse");
         }
 
     }
 
-    public void Registrar() throws SNMPExceptions, SQLException {
+    public void llenarCombos() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();
@@ -157,6 +165,31 @@ public class ActualizarUsuarioBean implements Serializable {
             listaIden = tipoIden.SeleccionarTodos();
             id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
         }
+    }
+    
+    public void Actualizar()throws SNMPExceptions, SQLException{
+         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
+        ProgramaDB prograDB = new ProgramaDB();
+        RolUsuarioDB rolDB = new RolUsuarioDB();
+        UsuarioDB usuDB = new UsuarioDB();
+        DireccionDB direcDB = new DireccionDB();
+        TelefonoDB telDB = new TelefonoDB();
+
+        if (validaAutoRegistro()) {
+            Usuario usu = new Usuario();
+            usu.setTipoIden(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
+            usu.setCedula(this.getCedula());
+            usu.setNombre(this.getNombre());
+            usu.setApellido1(this.getApellido1());
+            usu.setApellido2(this.getApellido2());
+            usu.setFechaNacimiento(this.getFechaNacimiento());
+            usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
+            usu.setCorreo(this.getCorreo());
+            usuDB.ActualizarUsuario(usu);
+          
+            setMensaje("Actualizado con exito");
+        
+    }
     }
 
     public boolean validaAutoRegistro() {
@@ -285,7 +318,7 @@ public class ActualizarUsuarioBean implements Serializable {
             direc.setId_Distrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
             direc.setId_Barrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
             direc.setOtras_sennas(this.getOtrasSenas());
-            direc.setUsuario(usu.SeleccionarPorId(Integer.parseInt(this.getCedula())));
+            direc.setUsuario(usu.SeleccionarPorId(this.getCedula()));
             dir.registrar(direc);
             limpiarDireccion();
         }
@@ -316,7 +349,7 @@ public class ActualizarUsuarioBean implements Serializable {
             Telefono tel = new Telefono();
             tel.setId_TipoTelefono(telefo.SeleccionarPorId(this.getId_TipoTelefono()));
             tel.setNumero(this.getNumeroTelefono());
-            tel.setId_Usuario(usu.SeleccionarPorId(Integer.parseInt(this.getCedula())));
+            tel.setId_Usuario(usu.SeleccionarPorId(this.getCedula()));
             telDb.registrar(tel);
             limpiarTelefono();
         }
