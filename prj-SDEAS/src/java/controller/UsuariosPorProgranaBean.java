@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 import model.Direccion;
 import model.DireccionDB;
@@ -52,7 +53,7 @@ public class UsuariosPorProgranaBean implements Serializable {
     String direcciones = "";
     String programas = "";
     
-    
+    Date fecha = new Date();
     
     
     public UsuariosPorProgranaBean() throws SNMPExceptions, SQLException{
@@ -153,6 +154,8 @@ public class UsuariosPorProgranaBean implements Serializable {
             if(Validaciones()){
                 usuario.setLog_Activo(this.estadoUsuario);
                 usuario.setEstadoAcceso(new EstadoAccesoDB().SeleccionarPorId(this.estadoAcceso));
+                usuario.setId_Edita(116390998);
+                usuario.setFechaEdita(fecha);
                 us.actulizar(usuario);
                 
                 for (int i = 0; i < listaProusu.size(); i++) {

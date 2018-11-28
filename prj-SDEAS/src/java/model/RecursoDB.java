@@ -41,9 +41,9 @@ public class RecursoDB {
             if(recurso.estado.equals("Activo")){
                 estado = 1;
             }
-             strSQL = "INSERT INTO Recurso (Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Log_Activo) "
+             strSQL = "INSERT INTO Recurso (Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
                     + "VALUES ('" 	+	recurso.getNombre()	+"', '" 
-            + recurso.getDescripcion() + "', '" + recurso.cantidad + "', '" + recurso.capacidad + "', '" + recurso.getTipoRecurso().id + "', '" + estado +"')"; 
+            + recurso.getDescripcion() + "', '" + recurso.cantidad + "', '" + recurso.capacidad + "', '" + recurso.getTipoRecurso().id + "', '" +  recurso.getId_Registra()  + "', '" + recurso.getFechaRegistra() + "', '" + recurso.getId_Edita() + "', '" + recurso.getFechaEdita() + "', '" + estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -73,6 +73,8 @@ public class RecursoDB {
                      +"', Cantidad= '" + recurso.getCantidad()
                      +"', Capacidad= '" + recurso.getCapacidad()
                      +"', Id_TipoRecurso= '" + recurso.getTipoRecurso().id
+                     +"', Id_Edita= '" + recurso.getId_Edita()
+                     +"', FechaEdita= '" + recurso.getFechaEdita()
                      +"', Log_Activo='" + estado
                      +"' WHERE Id_Recurso='" + recurso.getId()+"';";
                     

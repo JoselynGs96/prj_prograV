@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author ujose
@@ -15,17 +17,33 @@ public class Curso {
     String descripcion;
     Programa programa;
     String estado;
-
+    int Id_Registra;
+    Date FechaRegistra;
+    int Id_Edita;
+    Date FechaEdita;
     
     public Curso() {
     }
 
     public Curso(int id, String nombre, String descripcion, Programa programa, String estado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.programa = programa;
+        this.estado = estado;
+    }
+    
+    
+    public Curso(int id, String nombre, String descripcion, Programa programa, String estado,  int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita) {
         this.setId(id);
         this.setNombre(nombre);
         this.setDescripcion(descripcion);
         this.setPrograma(programa);
         this.setEstado(estado);
+        this.setId_Registra(Id_Registra);
+        this.setFechaRegistra(FechaRegistra);
+        this.setId_Edita(Id_Edita);
+        this.setFechaEdita(FechaEdita);
     }
     
     public int getId() {
@@ -68,8 +86,37 @@ public class Curso {
         this.estado = estado;
     }
 
-    public void actulizar(Curso cur) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getId_Registra() {
+        return Id_Registra;
     }
 
+    public void setId_Registra(int Id_Registra) {
+        this.Id_Registra = Id_Registra;
+    }
+
+    public Date getFechaRegistra() {
+        return FechaRegistra;
+    }
+
+    public void setFechaRegistra(Date FechaRegistra) {
+        this.FechaRegistra = FechaRegistra;
+    }
+
+    public int getId_Edita() {
+        return Id_Edita;
+    }
+
+    public void setId_Edita(int Id_Edita) {
+        this.Id_Edita = Id_Edita;
+    }
+
+    public Date getFechaEdita() {
+        return FechaEdita;
+    }
+
+    public void setFechaEdita(Date FechaEdita) {
+        this.FechaEdita = FechaEdita;
+    }
+
+    
 }

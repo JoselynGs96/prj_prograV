@@ -23,10 +23,28 @@ public class UsuarioMante {
     String Log_Activo;
     String NombreCompleto;
     String Edad;
+    int Id_Edita;
+    Date FechaEdita;
 
     public UsuarioMante() {
     }
 
+    public UsuarioMante(int Id, TipoIdentificacion TipoIdentificacion, String Nombre, String Apellido1, String Apellido2, Date FechaNacimiento, String Correo, EstadoAcceso EstadoAcceso, String Log_Activo, String NombreCompleto, String Edad, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita) {
+        this.setId(Id);
+        this.setTipoIdentificacion(TipoIdentificacion);
+        this.setNombre(Nombre);
+        this.setApellido1(Apellido1);
+        this.setApellido2(Apellido2);
+        this.setFechaNacimiento(FechaNacimiento);
+        this.setCorreo(Correo);
+        this.setEstadoAcceso(EstadoAcceso);
+        this.setLog_Activo(Log_Activo);
+        this.setId_Edita(Id_Edita);
+        this.setFechaEdita(FechaEdita);
+    }
+
+    
+    
     public UsuarioMante(int Id, TipoIdentificacion TipoIdentificacion, String Nombre, String Apellido1, String Apellido2, Date FechaNacimiento, String Correo, EstadoAcceso EstadoAcceso, String Log_Activo) {
         this.setId(Id);
         this.setTipoIdentificacion(TipoIdentificacion);
@@ -125,6 +143,23 @@ public class UsuarioMante {
 
     public void setEdad(String Edad) {
         this.Edad = Edad;
+    }
+
+
+    public int getId_Edita() {
+        return Id_Edita;
+    }
+
+    public void setId_Edita(int Id_Edita) {
+        this.Id_Edita = Id_Edita;
+    }
+
+    public Date getFechaEdita() {
+        return FechaEdita;
+    }
+
+    public void setFechaEdita(Date FechaEdita) {
+        this.FechaEdita = FechaEdita;
     }
     
     

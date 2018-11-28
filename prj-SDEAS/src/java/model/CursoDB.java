@@ -41,9 +41,9 @@ public class CursoDB {
             if(curso.estado.equals("Activo")){
                 estado = 1;
             }
-             strSQL = "INSERT INTO Curso (Nombre, Dsc_Curso, Id_Programa, Log_Activo) "
+             strSQL = "INSERT INTO Curso (Nombre, Dsc_Curso, Id_Programa,  Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
                     + "VALUES ('" 	+	curso.getNombre()	+"', '" 
-            + curso.getDescripcion() + "', '"  + curso.getPrograma().id+ "', '"+ estado +"')"; 
+            + curso.getDescripcion() + "', '"  + curso.getPrograma().id+ "', '" +  curso.getId_Registra()  + "', '" + curso.getFechaRegistra() + "', '" + curso.getId_Edita() + "', '" + curso.getFechaEdita() + "', '" + estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -72,6 +72,8 @@ public class CursoDB {
                      +"Nombre='" +curso.getNombre() 
                      +"', Dsc_Curso= '" + curso.getDescripcion()
                      +"', Id_Programa='" + curso.getPrograma().id
+                     +"', Id_Edita= '" + curso.getId_Edita()
+                     +"', FechaEdita= '" + curso.getFechaEdita()
                      +"', Log_Activo='" + estado
                      +"' WHERE Id_Curso='" + curso.getId()+"';";
                     
