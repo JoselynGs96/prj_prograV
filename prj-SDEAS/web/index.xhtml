@@ -3,8 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-       xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui">
     <head>
+        
         <meta charset="utf-8"/>
         <title>SDEAS - Sistema de información de la infraestructura de la Dirección de Extensión y Acción Social</title>
         <!-- Mobile Specific Meta -->
@@ -13,8 +14,8 @@
         <link href="../Recursos/custom-font/fonts.css" rel="stylesheet" type="text/css"/>
         <!-- Bootstrap -->       
         <link href="../Recursos/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-          <!-- Font Awesome -->
-          <link href="../Recursos/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Font Awesome -->
+        <link href="../Recursos/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <!-- Bootsnav -->      
         <link href="../Recursos/css/bootsnav.css" rel="stylesheet" type="text/css"/>
         <!-- Fancybox -->
@@ -24,10 +25,11 @@
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
- 
+
     </head>
     <body>
-
+        <h:form>            
+    
         <!-- Preloader -->
 
         <div id="loading">
@@ -98,13 +100,13 @@
                         <a class="navbar-brand" href=""><img class="logo" src="../Recursos/images/logo.png" alt=""/></a>
                     </div>
                     <!-- Navigation -->
-                 <div class="collapse navbar-collapse" id="navbar-menu">
+                    <div class="collapse navbar-collapse" id="navbar-menu">
                         <ul class="nav navbar-nav menu">
                             <li><p:link href="index.xhtml">Inicio</p:link></li>                    
-                                <li><p:link href="#about">Acerca de</p:link></li>
-                                <li><p:link href="#services">Servicios</p:link></li>
-                                <li><p:link href="Registro.xhtml" value="#{usuariosBean.botonNombre}"></p:link></li>
-                                <li><p:link href="InicioSesion.xhtml">Iniciar Sesión</p:link></li>
+                            <li><p:link href="#about">Acerca de</p:link></li>
+                            <li><p:link href="#services">Servicios</p:link></li>
+                            <li><p:link href="ActualizarUsuario.xhtml" >Actualiza</p:link></li>
+                            <li><p:link href="InicioSesion.xhtml">Iniciar Sesión</p:link></li>
                         </ul>
                     </div>
                 </div>    
@@ -212,8 +214,8 @@
             </div>
         </section><!-- Services end -->
 
-        
-       
+
+
 
         <!-- Contact form -->
         <section id="contact_form">
@@ -291,11 +293,11 @@
         <script src="../Recursos/js/isotope.js" type="text/javascript"></script>
         <script src="../Recursos/js/isotope-active.js" type="text/javascript"></script>
         <script src="../Recursos/js/jquery.fancybox.js" type="text/javascript"></script>
-       
+
         <script src="../Recursos/js/jquery.scrollUp.min.js" type="text/javascript"></script>
         <script src="../Recursos/js/main.js" type="text/javascript"></script>
 
-       
+</h:form>
     </body>	
 </html>
 

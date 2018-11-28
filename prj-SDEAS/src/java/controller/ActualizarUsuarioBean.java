@@ -11,12 +11,8 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import model.Barrio;
 import model.BarrioDB;
 import model.Canton;
@@ -30,7 +26,6 @@ import model.Programa;
 import model.ProgramaDB;
 import model.Provincia;
 import model.ProvinciaDB;
-import model.RolUsuario;
 import model.RolUsuarioDB;
 import model.Telefono;
 import model.TelefonoDB;
@@ -40,23 +35,19 @@ import model.TipoTelefono;
 import model.TipoTelefonoDB;
 import model.Usuario;
 import model.UsuarioDB;
-import org.primefaces.event.FlowEvent;
 
 /**
  *
  * @author Fabi
  */
-@Named(value = "usuariosBean")
+@Named(value = "actualizarUsuarioBean")
 @SessionScoped
-public class UsuariosBean implements Serializable {
+public class ActualizarUsuarioBean implements Serializable {
 
     String cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
-    String contrasenna;
-    String codAcceso;
-    String estado;
     String mensaje;
     String mensaje1;
     String mensaje2;
@@ -68,14 +59,13 @@ public class UsuariosBean implements Serializable {
     int Programa;
     String OtrasSenas;
     int edad;
-    int Id_Provincia;
-    int Id_Canton;
-    int Id_Distrito;
-    int id_Barrio;
+    static int Id_Provincia;
+   static  int Id_Canton;
+   static int Id_Distrito;
+   static int id_Barrio;
     int id_TipoTelefono;
     int id_TipoCedula;
     String botonNombre;
-
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
     LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
@@ -93,17 +83,51 @@ public class UsuariosBean implements Serializable {
     }
 
     /**
-     * Creates a new instance of UsuariosBean
+     * Creates a new instance of ActualizarUsuarioBean
      */
-    public UsuariosBean() throws SNMPExceptions, SQLException {
-        /*Metodo para cargas combos*/
-        cargarPaginaRegistro();
-        /*Metodo para cargar datos del usuario*/
-        PaginaRegistro();
+    public ActualizarUsuarioBean() throws SNMPExceptions, SQLException {
+        llenarCombos();
+        LlenarDatos();
+    }
+
+    public void LlenarDatos() throws SNMPExceptions, SQLException {
+        ObtenerDatosSesion datos= new ObtenerDatosSesion();
+        UsuarioDB usuDB = new UsuarioDB();
+        datos.consultarSesion();
+        UsuarioMantenimiento = usuDB.SeleccionarPorId(datos.getId_Usuario());
+        DireccionDB direc = new DireccionDB();
+        TelefonoDB teldb = new TelefonoDB();
+        if (this.UsuarioMantenimiento.getCed() != 0) {
+            this.setBotonNombre("Actualizar Información");
+            /*Pantalla personal*/
+            this.setId_TipoCedula(UsuarioMantenimiento.getTipoIden().getId_TipoIdentificacion());
+            this.setNombre(UsuarioMantenimiento.getNombre());
+            this.setApellido1(UsuarioMantenimiento.getApellido1());
+            this.setApellido2(UsuarioMantenimiento.getApellido2());
+            this.setApellido2(UsuarioMantenimiento.getApellido2());
+            this.setCedula(UsuarioMantenimiento.getCedula());
+            /*Buscar como hacer q este funcione*/
+            this.setFechaNacimiento(UsuarioMantenimiento.getFechaNacimiento());
+            /*Pantalla Direccion*/
+
+            if (!direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula()).isEmpty()) {
+                listaDirec = direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula());
+            }
+            /*Pantalla de telefono*/
+            if (!teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula()).isEmpty()) {
+                listaTel = teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula());
+            }
+            this.setCorreo(UsuarioMantenimiento.getCorreo());
+            /*Pantalla Progrema Deas*/
+            this.setFuncionario(UsuarioMantenimiento.getFuncionario());
+            this.setFuncionario(UsuarioMantenimiento.getFuncionario());
+        } else {
+            this.setBotonNombre("Registrarse");
+        }
 
     }
 
-    public void cargarPaginaRegistro() throws SNMPExceptions, SQLException {
+    public void llenarCombos() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();
@@ -111,11 +135,7 @@ public class UsuariosBean implements Serializable {
         TipoTelefonoDB tel = new TipoTelefonoDB();
         ProgramaDB progra = new ProgramaDB();
         UsuarioDB usuarioDB = new UsuarioDB();
-        ObtenerDatosSesion obtener = new ObtenerDatosSesion();
         TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
-
-        obtener.consultarSesion();
-        this.setUsuarioMantenimiento(usuarioDB.SeleccionarPorId(obtener.getId_Usuario()));
 
         if (!pro.SeleccionarTodos().isEmpty()) {
             listaPro = pro.SeleccionarTodos();
@@ -146,55 +166,32 @@ public class UsuariosBean implements Serializable {
             id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
         }
     }
+    
+    public void Actualizar()throws SNMPExceptions, SQLException{
+         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
+        ProgramaDB prograDB = new ProgramaDB();
+        RolUsuarioDB rolDB = new RolUsuarioDB();
+        UsuarioDB usuDB = new UsuarioDB();
+        DireccionDB direcDB = new DireccionDB();
+        TelefonoDB telDB = new TelefonoDB();
 
-    /*Carga todo lo de la pagina de Actualizar Usuario*/
-    public void PaginaRegistro() throws SNMPExceptions, SQLException {
-        DireccionDB direc = new DireccionDB();
-        TelefonoDB teldb = new TelefonoDB();
-        if (this.UsuarioMantenimiento.getCed() != 0) {
-            this.setBotonNombre("Actualizar Información");
-            /*Pantalla personal*/
-            this.setNombre(UsuarioMantenimiento.getNombre());
-            this.setApellido1(UsuarioMantenimiento.getApellido1());
-            this.setApellido2(UsuarioMantenimiento.getApellido2());
-            this.setApellido2(UsuarioMantenimiento.getApellido2());
-            this.setCedula(UsuarioMantenimiento.getCedula());
-            /*Buscar como hacer q este funcione*/
-            this.setFechaNacimiento(UsuarioMantenimiento.getFechaNacimiento());
-            /*Pantalla Direccion*/
-
-            if (!direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula()).isEmpty()) {
-                listaDirec = direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula());
-            }
-            /*Pantalla de telefono*/
-            if (!teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula()).isEmpty()) {
-                listaTel = teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula());
-            }
-            this.setCorreo(UsuarioMantenimiento.getCorreo());
-            /*Pantalla Progrema Deas*/
-            this.setFuncionario(UsuarioMantenimiento.getFuncionario());
-        } else {
-            this.setBotonNombre("Registrarse");
-        }
+        if (validaAutoRegistro()) {
+            Usuario usu = new Usuario();
+            usu.setTipoIden(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
+            usu.setCedula(this.getCedula());
+            usu.setNombre(this.getNombre());
+            usu.setApellido1(this.getApellido1());
+            usu.setApellido2(this.getApellido2());
+            usu.setFechaNacimiento(this.getFechaNacimiento());
+            usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
+            usu.setCorreo(this.getCorreo());
+            usuDB.ActualizarUsuario(usu);
+          
+            setMensaje("Actualizado con exito");
+        
+    }
     }
 
-
-    /*valida el login*/
-    public void validaIngresar() {
-        if (this.getCedula().equals("")) {
-            this.setMensaje("*Debe colocar el usuario.");
-        } else {
-            if (this.getContrasenna().equals("")) {
-                this.setMensaje("*Debe colocar la contraseña");
-            } else {
-                if (this.getCedula().equals("207750517") && this.getContrasenna().equals("123")) {
-                    this.setMensaje("Bienvenida Fabiola");
-                }
-            }
-        }
-    }
-
-    /*valida pagina de registro*/
     public boolean validaAutoRegistro() {
         boolean respuesta;
         if (this.getId_TipoCedula() == 0) {
@@ -312,6 +309,8 @@ public class UsuariosBean implements Serializable {
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();
         BarrioDB barr = new BarrioDB();
+        DireccionDB dir = new DireccionDB();
+        UsuarioDB usu = new UsuarioDB();
 
         if (validarDirecciones()) {
             direc.setId_Provincia(pro.SeleccionarPorId(this.getId_Provincia()));
@@ -319,88 +318,17 @@ public class UsuariosBean implements Serializable {
             direc.setId_Distrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
             direc.setId_Barrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
             direc.setOtras_sennas(this.getOtrasSenas());
-            listaDirec.add(direc);
+            direc.setUsuario(usu.SeleccionarPorId(this.getCedula()));
+            dir.registrar(direc);
             limpiarDireccion();
         }
 
     }
 
     /*Elimina Direcciones*/
-    public void eliminarDirecciones(String otras) {
-        for (Direccion dir : listaDirec) {
-
-            if (dir.getOtras_sennas().equals(otras)) {
-
-                listaDirec.remove(dir);
-            }
-
-        }
-    }
-
-    /*Agrega telefonos a la lista */
-    public void agregarTelefonos() throws SNMPExceptions, SQLException {
-
-        TipoTelefonoDB telefo = new TipoTelefonoDB();
-        if (validarNumero()) {
-            Telefono tel = new Telefono();
-            tel.setId_TipoTelefono(telefo.SeleccionarPorId(this.getId_TipoTelefono()));
-            tel.setNumero(this.getNumeroTelefono());
-            listaTel.add(tel);
-            limpiarTelefono();
-        }
-    }
-
-    /*Limpia campos en telefono*/
-    public void limpiarTelefono() {
-        this.setNumeroTelefono("");
-        this.setId_TipoTelefono(0);
-    }
-
-    /*Elimina telefono*/
-    public void eliminarTelefono(String numero) {
-        for (Telefono tel : listaTel) {
-
-            if (tel.getNumero().equals(numero)) {
-
-                listaTel.remove(tel);
-            }
-
-        }
-    }
-
-    /*Ingresa el usuario*/
-    public void IngresarUsuario() throws SNMPExceptions, SQLException {
-        TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
-        ProgramaDB prograDB = new ProgramaDB();
-        RolUsuarioDB rolDB = new RolUsuarioDB();
-        UsuarioDB usuDB = new UsuarioDB();
-        DireccionDB direcDB = new DireccionDB();
-        TelefonoDB telDB = new TelefonoDB();
-
-        if (validaAutoRegistro()) {
-            Usuario usu = new Usuario();
-            usu.setTipoIden(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
-            usu.setCedula(this.getCedula());
-            usu.setNombre(this.getNombre());
-            usu.setApellido1(this.getApellido1());
-            usu.setApellido2(this.getApellido2());
-            usu.setFechaNacimiento(this.getFechaNacimiento());
-            usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
-            usu.setCorreo(this.getCorreo());
-            usuDB.registrar(usu);
-            /*agregar telefono*/
-
-            for (Telefono tel : listaTel) {
-                tel.setId_Usuario(usu);
-                telDB.registrar(tel);
-            }
-            /*agregar direcciones*/
-            for (Direccion dir : listaDirec) {
-                dir.setUsuario(usu);
-                direcDB.registrar(dir);
-            }
-            setMensaje("Su solicitud de registro ha sido enviada. Se le enviara un correo con el codigo de acceso y su comtraseña al correo");
-        }
+    public void eliminarDirecciones(String id_Direc) throws SNMPExceptions, SQLException {
+        DireccionDB direc = new DireccionDB();
+        direc.eliminaDireccion(id_Direc);
     }
 
     /*Limpia los campos de Direccion*/
@@ -412,13 +340,31 @@ public class UsuariosBean implements Serializable {
         this.setOtrasSenas("");
     }
 
-    public LinkedList<TipoTelefono> getListaTipoTelefono() {
-
-        return listaTipoTelefono;
+    /*Agrega telefonos a la lista */
+    public void agregarTelefonos() throws SNMPExceptions, SQLException {
+        UsuarioDB usu = new UsuarioDB();
+        TipoTelefonoDB telefo = new TipoTelefonoDB();
+        if (validarNumero()) {
+            TelefonoDB telDb = new TelefonoDB();
+            Telefono tel = new Telefono();
+            tel.setId_TipoTelefono(telefo.SeleccionarPorId(this.getId_TipoTelefono()));
+            tel.setNumero(this.getNumeroTelefono());
+            tel.setId_Usuario(usu.SeleccionarPorId(this.getCedula()));
+            telDb.registrar(tel);
+            limpiarTelefono();
+        }
     }
 
-    public void setListaTipoTelefono(LinkedList<TipoTelefono> listaTipoTelefono) {
-        this.listaTipoTelefono = listaTipoTelefono;
+    /*Limpia campos en telefono*/
+    public void limpiarTelefono() {
+        this.setNumeroTelefono("");
+        this.setId_TipoTelefono(0);
+    }
+
+    /*Elimina telefono*/
+    public void eliminarTelefonos(String id_Tel) throws SNMPExceptions, SQLException {
+        TelefonoDB tel = new TelefonoDB();
+        tel.eliminaTelefono(id_Tel);
     }
 
     public String getCedula() {
@@ -453,30 +399,6 @@ public class UsuariosBean implements Serializable {
         this.correo = correo;
     }
 
-    public String getContrasenna() {
-        return contrasenna;
-    }
-
-    public void setContrasenna(String contrasenna) {
-        this.contrasenna = contrasenna;
-    }
-
-    public String getCodAcceso() {
-        return codAcceso;
-    }
-
-    public void setCodAcceso(String codAcceso) {
-        this.codAcceso = codAcceso;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public String getMensaje() {
         return mensaje;
     }
@@ -485,12 +407,20 @@ public class UsuariosBean implements Serializable {
         this.mensaje = mensaje;
     }
 
-    public int getId_TipoTelefono() {
-        return id_TipoTelefono;
+    public String getMensaje1() {
+        return mensaje1;
     }
 
-    public void setId_TipoTelefono(int id_TipoTelefono) {
-        this.id_TipoTelefono = id_TipoTelefono;
+    public void setMensaje1(String mensaje1) {
+        this.mensaje1 = mensaje1;
+    }
+
+    public String getMensaje2() {
+        return mensaje2;
+    }
+
+    public void setMensaje2(String mensaje2) {
+        this.mensaje2 = mensaje2;
     }
 
     public String getNombre() {
@@ -557,7 +487,63 @@ public class UsuariosBean implements Serializable {
         this.edad = edad;
     }
 
-    public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
+    public int getId_Provincia() {
+        return Id_Provincia;
+    }
+
+    public void setId_Provincia(int Id_Provincia) {
+        this.Id_Provincia = Id_Provincia;
+    }
+
+    public int getId_Canton() {
+        return Id_Canton;
+    }
+
+    public void setId_Canton(int Id_Canton) {
+        this.Id_Canton = Id_Canton;
+    }
+
+    public int getId_Distrito() {
+        return Id_Distrito;
+    }
+
+    public void setId_Distrito(int Id_Distrito) {
+        this.Id_Distrito = Id_Distrito;
+    }
+
+    public int getId_Barrio() {
+        return id_Barrio;
+    }
+
+    public void setId_Barrio(int id_Barrio) {
+        this.id_Barrio = id_Barrio;
+    }
+
+    public int getId_TipoTelefono() {
+        return id_TipoTelefono;
+    }
+
+    public void setId_TipoTelefono(int id_TipoTelefono) {
+        this.id_TipoTelefono = id_TipoTelefono;
+    }
+
+    public int getId_TipoCedula() {
+        return id_TipoCedula;
+    }
+
+    public void setId_TipoCedula(int id_TipoCedula) {
+        this.id_TipoCedula = id_TipoCedula;
+    }
+
+    public String getBotonNombre() {
+        return botonNombre;
+    }
+
+    public void setBotonNombre(String botonNombre) {
+        this.botonNombre = botonNombre;
+    }
+
+  public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         return pro.SeleccionarTodos();
     }
@@ -593,36 +579,12 @@ public class UsuariosBean implements Serializable {
         this.listaBarrio = listaBarrio;
     }
 
-    public int getId_Provincia() {
-        return Id_Provincia;
+    public LinkedList<TipoTelefono> getListaTipoTelefono() {
+        return listaTipoTelefono;
     }
 
-    public void setId_Provincia(int Id_Provincia) {
-        this.Id_Provincia = Id_Provincia;
-    }
-
-    public int getId_Canton() {
-        return Id_Canton;
-    }
-
-    public void setId_Canton(int Id_Canton) {
-        this.Id_Canton = Id_Canton;
-    }
-
-    public int getId_Distrito() {
-        return Id_Distrito;
-    }
-
-    public void setId_Distrito(int Id_Distrito) {
-        this.Id_Distrito = Id_Distrito;
-    }
-
-    public int getId_Barrio() {
-        return id_Barrio;
-    }
-
-    public void setId_Barrio(int id_Barrio) {
-        this.id_Barrio = id_Barrio;
+    public void setListaTipoTelefono(LinkedList<TipoTelefono> listaTipoTelefono) {
+        this.listaTipoTelefono = listaTipoTelefono;
     }
 
     public LinkedList<Programa> getListaPrograma() {
@@ -633,14 +595,6 @@ public class UsuariosBean implements Serializable {
         this.listaPrograma = listaPrograma;
     }
 
-    public int getId_TipoCedula() {
-        return id_TipoCedula;
-    }
-
-    public void setId_TipoCedula(int id_TipoCedula) {
-        this.id_TipoCedula = id_TipoCedula;
-    }
-
     public LinkedList<TipoIdentificacion> getListaIden() {
         return listaIden;
     }
@@ -649,36 +603,22 @@ public class UsuariosBean implements Serializable {
         this.listaIden = listaIden;
     }
 
-    public LinkedList<Direccion> getListaDirec() {
-        return listaDirec;
+    public LinkedList<Direccion> getListaDirec()throws SNMPExceptions,SQLException{
+        DireccionDB dire = new DireccionDB();
+        return dire.SeleccionarPorUsuario(this.getCedula());
     }
 
     public void setListaDirec(LinkedList<Direccion> listaDirec) {
         this.listaDirec = listaDirec;
     }
 
-    public LinkedList<Telefono> getListaTel() {
-        return listaTel;
+    public LinkedList<Telefono> getListaTel()throws SNMPExceptions,SQLException {
+            TelefonoDB telDB = new TelefonoDB();
+        return telDB.SeleccionarTodos(this.getCedula());
     }
 
     public void setListaTel(LinkedList<Telefono> listaTel) {
         this.listaTel = listaTel;
-    }
-
-    public String getMensaje1() {
-        return mensaje1;
-    }
-
-    public void setMensaje1(String mensaje1) {
-        this.mensaje1 = mensaje1;
-    }
-
-    public String getMensaje2() {
-        return mensaje2;
-    }
-
-    public void setMensaje2(String mensaje2) {
-        this.mensaje2 = mensaje2;
     }
 
     public EnumFuncionario getFuncionario() {
@@ -689,14 +629,6 @@ public class UsuariosBean implements Serializable {
         this.funcionario = funcionario;
     }
 
-    public String getBotonNombre() {
-        return botonNombre;
-    }
-
-    public void setBotonNombre(String botonNombre) {
-        this.botonNombre = botonNombre;
-    }
-
     public Usuario getUsuarioMantenimiento() {
         return UsuarioMantenimiento;
     }
@@ -704,4 +636,5 @@ public class UsuariosBean implements Serializable {
     public void setUsuarioMantenimiento(Usuario UsuarioMantenimiento) {
         this.UsuarioMantenimiento = UsuarioMantenimiento;
     }
+
 }

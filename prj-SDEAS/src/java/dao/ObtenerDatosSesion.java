@@ -22,13 +22,13 @@ public class ObtenerDatosSesion implements Serializable {
     
     Usuario UsuarioLogin;
     String datos;
-    int Id_Usuario;
+    String Id_Usuario;
 
-    public int getId_Usuario() {
+    public String getId_Usuario() {
         return Id_Usuario;
     }
 
-    public void setId_Usuario(int Id_Usuario) {
+    public void setId_Usuario(String Id_Usuario) {
         this.Id_Usuario = Id_Usuario;
     }
 
@@ -62,8 +62,9 @@ public class ObtenerDatosSesion implements Serializable {
 
 	if (user != null) {
 		try {
-			int userId = (Integer)user;
+			String userId = user+"";
                         this.setId_Usuario(userId);
+                        
                    
 			
 		} catch (ClassCastException e) {
@@ -76,5 +77,8 @@ public class ObtenerDatosSesion implements Serializable {
 	}
 	
 	
-    }            
+    }
+            
 }
+         
+

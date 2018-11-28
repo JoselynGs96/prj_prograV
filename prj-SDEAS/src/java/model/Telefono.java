@@ -13,6 +13,9 @@ public class Telefono {
     String Numero;
     Usuario Id_Usuario;
     TipoTelefono Id_TipoTelefono;
+    String id_Telefono;
+
+   
     
     public Telefono(){
         
@@ -46,6 +49,13 @@ public class Telefono {
 
     public void setId_TipoTelefono(TipoTelefono Id_TipoTelefono) {
         this.Id_TipoTelefono = Id_TipoTelefono;
+    }
+     public String getId_Telefono() {
+        return id_Telefono;
+    }
+
+    public void setId_Telefono(String id_Telefono) {
+        this.id_Telefono = id_Telefono;
     }
     
 }

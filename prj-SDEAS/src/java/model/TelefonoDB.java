@@ -66,17 +66,19 @@ public class TelefonoDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "select Numero,Id_TipoTelefono from Telefono where Id_Usuario="+id_Usuario;
+                    = "select Id_Telefono, Numero,Id_TipoTelefono from Telefono where Id_Usuario="+id_Usuario;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
-
+                
+                int Id_Telefono = rsPA.getInt("Id_Telefono");
                 int numero = rsPA.getInt("Numero");               
                 TipoTelefono tipoTel = telDB.SeleccionarPorId(rsPA.getInt("Id_TipoTelefono"));
                 Telefono tel = new Telefono();
                 tel.setId_TipoTelefono(tipoTel);
                 tel.setNumero(numero+"");
+                tel.id_Telefono= Id_Telefono+"";
                 listaTel.add(tel);
             }
 
@@ -93,6 +95,23 @@ public class TelefonoDB {
         }
 
         return listaTel;
+    }
+    /*Elimina telefonos de las listas*/
+    public void eliminaTelefono(String id_telefono)throws SNMPExceptions, SQLException {
+    String strSQL = "";
+        try {
+           strSQL = "delete Telefono from Telefono where Id_Telefono ="+id_telefono;
+
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
     }
     
 }

@@ -68,7 +68,7 @@ public class UsuariosPorProgranaBean implements Serializable {
 
     /*Botón ver más*/
      public void verMas(int i) throws SNMPExceptions, SQLException{
-        usuario = new UsuarioDB().SeleccionarPorId(i);
+        usuario = new UsuarioDB().SeleccionarPorId(i+"");
         
         DireccionDB DD = new DireccionDB();
         LinkedList<Direccion> d = DD.SeleccionarPorUsuario(i+"");
@@ -143,7 +143,7 @@ public class UsuariosPorProgranaBean implements Serializable {
             if(Validaciones()){
                 usuario.setEst(this.estadoUsuario);
                 usuario.setEstAcc(new EstadoAccesoDB().SeleccionarPorId(estadoAcceso));
-                us.actulizar(usuario, listaProusu);
+               us.actulizar(usuario, listaProusu);
                 setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Usuario actualizado con éxito!</div> ");
             }
             seleccionarTodos();
@@ -154,7 +154,7 @@ public class UsuariosPorProgranaBean implements Serializable {
     
     public void editarBoton(String id) throws SNMPExceptions, SQLException{
         UsuarioDB udb = new UsuarioDB();
-        usuario = udb.SeleccionarPorId(Integer.parseInt(id));
+        usuario = udb.SeleccionarPorId(id);
         setEstadoAcceso(usuario.getEstAcc().getId());
         setEstadoUsuario(usuario.getEst());
         ProgramaUsuarioDB pdb = new ProgramaUsuarioDB();

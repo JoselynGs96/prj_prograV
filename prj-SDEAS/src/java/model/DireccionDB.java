@@ -66,18 +66,19 @@ public class DireccionDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "select [Id_Provincia],[Id_Distrito],[Id_Canton], [Id_Barrio],[Otras_Sennas] from Direccion where Id_Usuario=" + id_Usuario;
+                    = "select [Id_Direccion],[Id_Provincia],[Id_Distrito],[Id_Canton], [Id_Barrio],[Otras_Sennas] from Direccion where Id_Usuario=" + id_Usuario;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
 
-           
                 Provincia provincia = proDB.SeleccionarPorId(rsPA.getInt("Id_Provincia"));
                 Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"), rsPA.getInt("Id_Provincia"));
                 Distrito dis = disDB.SeleccionarPorId(rsPA.getInt("Id_Distrito"), rsPA.getInt("Id_Canton"), rsPA.getInt("Id_Provincia"));
                 Barrio bar = barDB.SeleccionarPorId(rsPA.getInt("Id_Provincia"), rsPA.getInt("Id_Canton"), rsPA.getInt("Id_Distrito"), rsPA.getInt("Id_Barrio"));
+                String id_direccion = rsPA.getString("Id_Direccion");
                 dir = new Direccion();
+                dir.setId_direccion(id_direccion);
                 dir.setId_Provincia(provincia);
                 dir.setId_Canton(can);
                 dir.setId_Distrito(dis);
@@ -100,5 +101,21 @@ public class DireccionDB {
         return listaDireccion;
     }
 
-}
+    public void eliminaDireccion(String id_direccion)throws SNMPExceptions, SQLException {
+    String strSQL = "";
+        try {
+           strSQL = "delete Direccion from Direccion where Id_Direccion="+id_direccion;
 
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+    }
+    
+}
