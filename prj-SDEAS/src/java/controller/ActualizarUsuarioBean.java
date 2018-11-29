@@ -60,9 +60,9 @@ public class ActualizarUsuarioBean implements Serializable {
     String OtrasSenas;
     int edad;
     static int Id_Provincia;
-   static  int Id_Canton;
-   static int Id_Distrito;
-   static int id_Barrio;
+    static  int Id_Canton;
+    static int Id_Distrito;
+    static int id_Barrio;
     int id_TipoTelefono;
     int id_TipoCedula;
     String botonNombre;
@@ -81,7 +81,7 @@ public class ActualizarUsuarioBean implements Serializable {
     public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
     }
-
+    
     /**
      * Creates a new instance of ActualizarUsuarioBean
      */
@@ -167,8 +167,8 @@ public class ActualizarUsuarioBean implements Serializable {
         }
     }
     
-    public void Actualizar()throws SNMPExceptions, SQLException{
-         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
+    public void actualizar()throws SNMPExceptions, SQLException{
+        TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
         ProgramaDB prograDB = new ProgramaDB();
         RolUsuarioDB rolDB = new RolUsuarioDB();
         UsuarioDB usuDB = new UsuarioDB();
@@ -189,8 +189,9 @@ public class ActualizarUsuarioBean implements Serializable {
           
             setMensaje("Actualizado con exito");
         
+       }
     }
-    }
+   
 
     public boolean validaAutoRegistro() {
         boolean respuesta;

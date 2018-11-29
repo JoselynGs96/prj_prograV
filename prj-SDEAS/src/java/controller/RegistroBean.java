@@ -312,7 +312,7 @@ public class RegistroBean implements Serializable {
     }
 
     /*Registra el usuario*/
-    public void IngresarUsuario() throws SNMPExceptions, SQLException {
+    public void ingresarUsuario() throws SNMPExceptions, SQLException {
         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
         ProgramaDB prograDB = new ProgramaDB();
         RolUsuarioDB rolDB = new RolUsuarioDB();

@@ -120,6 +120,8 @@
             </header><!-- Header end -->
             <div style="background:white" class="col-lg-offset-3 col-lg-6">      
                 <h:outputText style="color: green;" value="#{actualizarUsuarioBean.mensaje}"></h:outputText>
+                
+                
                 <div style="background:#fccc0c;width: 100%;align-content: center">
                     <center>  <h2>Personal</h2></center>
                 </div>
@@ -128,7 +130,7 @@
                     <table style="width: 90%; margin-right: 5%; margin-left: 5%">
                         <tr>
                             <td>    <h:outputText value="Tipo de cédula *" /></td>
-                            <td>      <h:selectOneMenu disabled="true" class="form-control"  style="width: 400px; margin-left: 10px" value="#{actualizarUsuarioBean.id_TipoCedula}" id="ident" >
+                            <td>      <h:selectOneMenu  class="form-control"  style="width: 400px; margin-left: 10px" value="#{actualizarUsuarioBean.id_TipoCedula}" id="ident" >
                                     <f:selectItems var="iden" value="#{actualizarUsuarioBean.listaIden}" itemLabel="#{iden.dsc_TipoTelefono}" itemValue="#{iden.id_TipoIdentificacion}"></f:selectItems>  
                                 </h:selectOneMenu> 
                             </td>
@@ -138,7 +140,7 @@
                                 <h:outputText value="Cédula *" style="margin-top: 5px" />
                             </td>
                             <td>   
-                                <p:inputText style="float: left; margin-top: 5px; margin-left: 10px" disabled="true" value="#{actualizarUsuarioBean.cedula}" label="cedula" id="cedula"/>
+                                <p:inputText style="float: left; margin-top: 5px; margin-left: 10px"  value="#{actualizarUsuarioBean.cedula}" label="cedula" id="cedula"/>
                             </td>
                         </tr>
                         <tr>
@@ -364,7 +366,7 @@
 
                 <br></br>
                 <center>
-                    <h:commandButton action="#{actualizarUsuarioBean.IngresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                    <h:commandButton action="#{actualizarUsuarioBean.actualizar()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
                                      class="btn btn-primary btn-lg" value="Actualizar" ></h:commandButton><br></br>
                     <h:outputText style="color: red;" value="#{actualizarUsuarioBean.mensaje}"></h:outputText>
                 </center>
