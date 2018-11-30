@@ -32,11 +32,38 @@
                                  }
                                   $(document).ready(tipoRecurso);
     </script>
-    
+    <script>
+            PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo el día'
+            };
+        </script>
     </h:head>
-    <h:body>
+    <h:body> 
   <section id="container">
-      <h:form id="myForm">
+      <h:form id="myForm" prependId="false">
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
       *********************************************************************************************************************************************************** -->
@@ -297,63 +324,88 @@
                     <div class="col-lg-4 main-chart">
                         <div class="panel panel-default">
                             <div class="panel-heading" >
-                                    <span>Información del Usuario</span>
-                                    <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px" ><img align="right"  width="20px" height="20px" src="RecursoMante/img/ayuda.png" alt=""/></a>
+                                <span>Información del Usuario</span>
+                                <a onclick="PF('sidebar2').show()"  href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px" ><img align="right"  width="20px" height="20px" src="RecursoMante/img/ayuda.png" alt=""/></a>
                             </div>
                             <div class="panel-body">
+                             
+                            <ul class="nav nav-tabs nav-justified">
+                                <li class="active"><a data-toggle="tab" href="#personal"  title="Personal"><img width="20px" height="20px" src="RecursoMante/img/usuario.png" alt=""/></a></li>
+                                <li><a title="Dirección" data-toggle="tab" href="#direccion"><img width="20px" height="20px" src="RecursoMante/img/casa.png" alt=""/></a></li>
+                                <li><a title="Contacto" data-toggle="tab" href="#contacto"><img width="20px" height="20px" src="RecursoMante/img/telefono.png" alt=""/></a></li>
+                                <li><a title="Programas DEAS" data-toggle="tab" href="#programas"><img width="20px" height="20px" src="RecursoMante/img/progra.png" alt=""/></a></li>
+                            </ul>
                             <br></br>
-                             <p:outputLabel value="#{usuariosPorProgranaBean.mensajeError}" escape="false"></p:outputLabel>
-                             <p:outputLabel value="#{usuariosPorProgranaBean.mensajeGuardar}" escape="false"></p:outputLabel>
-                            <p:outputLabel>Cédula:</p:outputLabel>
-                            <p:inputText class="form-control" value="#{usuariosPorProgranaBean.usuario.id}" style="width: 100%;" readonly="true"></p:inputText>
-                            <br></br>
-                            <p:outputLabel>Nombre:</p:outputLabel>
-                            <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.usuario.nombreCompleto}" style="width: 100%;"  readonly="true" ></p:inputText>
-                            <br></br>
-                            <br></br>
+                                    <p:outputLabel value="#{usuariosPorProgranaBean.mensajeError}" escape="false"></p:outputLabel>
+                                    <p:outputLabel value="#{usuariosPorProgranaBean.mensajeGuardar}" escape="false"></p:outputLabel>
+                             <div class="tab-content" style="width: 100%">
+                                <div id="personal" class="tab-pane fade in active">
+                                    <p:outputLabel>Cédula:</p:outputLabel>
+                                    <p:inputText class="form-control" value="#{usuariosPorProgranaBean.usuario.id}" style="width: 100%;" readonly="true"></p:inputText>
+                                    <br></br>
+                                    <p:outputLabel>Nombre:</p:outputLabel>
+                                    <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.usuario.nombreCompleto}" style="width: 100%;"  ></p:inputText>
+                                    <br></br>
+                                    <p:outputLabel>Primer Apellido:</p:outputLabel>
+                                    <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.usuario.nombreCompleto}" style="width: 100%;"  ></p:inputText>
+                                    <br></br>
+                                    <p:outputLabel>Segundo Apellido:</p:outputLabel>
+                                    <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.usuario.nombreCompleto}" style="width: 100%;"  ></p:inputText>
+                                    <br></br>
+                                    <p:outputLabel>Fecha de Nacimiento:</p:outputLabel>
+                                    
+                                    <br></br>
+                                    <p:outputLabel>Estado de Acceso:</p:outputLabel>
+                                    <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoAcceso}" >
+                                        <f:selectItems value="#{usuariosPorProgranaBean.listaEstadoAcceso}" var="au" itemValue="#{au.id}" itemLabel="#{au.nombre}"></f:selectItems>
+                                    </p:selectOneRadio>
+                                    <br></br>
+                                    <p:outputLabel>Estado de Usuario:</p:outputLabel>
+                                    <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoUsuario}">
+                                        <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;" ></f:selectItem>
+                                        <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;"></f:selectItem>
+                                    </p:selectOneRadio>
+                                </div>
+                                <div id="direccion" class="tab-pane fade">
+                                </div>
+                                <div id="contacto" class="tab-pane fade">
+                                </div>
+                                <div id="programas" class="tab-pane fade">
+                                    <p:outputLabel>Programas al que Pertenece:</p:outputLabel>
+                                    <h:dataTable  class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaProusu}" style="width: 100%;" var="pu" >
+                                        <center>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Programa"/>
+                                            </f:facet>
+                                            <h:outputText value="#{pu.programa.nombre}" />
+                                        </h:column>
+                                         <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Estado"/>
+                                            </f:facet>
+                                             <h:outputText value="#{pu.estado}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value=""/>
+                                            </f:facet>
+                                            <h:commandButton title="Cambiar estado" value="Cambiar" actionListener="#{usuariosPorProgranaBean.cambiarEstado(pu.programa.id,pu.rolUsuario.id_RolUsuario)}" style="width: 90px; height: 25px; font-size: 12px; border-color: #2775e2; color: #2775e2;" class="btn btn-default btn-xs" ></h:commandButton>
+                                        </h:column>
+                                        </center>
+                                     </h:dataTable>
+                                </div>
+                             </div>
                             
-                            <p:outputLabel>Programas al que Pertenece:</p:outputLabel>
-                            <h:dataTable  class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaProusu}" style="width: 100%;" var="pu" >
-                                <center>
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Programa"/>
-                                    </f:facet>
-                                    <h:outputText value="#{pu.programa.nombre}" />
-                                </h:column>
-                                 <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Estado"/>
-                                    </f:facet>
-                                     <h:outputText value="#{pu.estado}" />
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value=""/>
-                                    </f:facet>
-                                    <h:commandButton title="Cambiar estado" value="Cambiar" actionListener="#{usuariosPorProgranaBean.cambiarEstado(pu.programa.id,pu.rolUsuario.id_RolUsuario)}" style="width: 90px; height: 25px; font-size: 12px; border-color: #2775e2; color: #2775e2;" class="btn btn-default btn-xs" ></h:commandButton>
-                                </h:column>
-                                </center>
-                             </h:dataTable>
-                            <br></br>
-                            <p:outputLabel>Estado de Acceso:</p:outputLabel>
-                            <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoAcceso}" >
-                                <f:selectItems value="#{usuariosPorProgranaBean.listaEstadoAcceso}" var="au" itemValue="#{au.id}" itemLabel="#{au.nombre}"></f:selectItems>
-                            </p:selectOneRadio>
-                            <br></br>
-                            <p:outputLabel>Estado de Usuario:</p:outputLabel>
-                            <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoUsuario}">
-                                <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;" ></f:selectItem>
-                                <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;"></f:selectItem>
-                            </p:selectOneRadio>
-                            <br></br>
-                            <div>
+                             <div>
+                                 <br></br>
                                 <h:commandButton class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.nuevoBoton()}"  value="Nuevo" ></h:commandButton>
-                                <h:commandButton style="margin-left: 5px" class="btn btn-primary" onclick="window.open('faces/Registro.xhtml')"  value="Registar"></h:commandButton>
+                                <h:commandButton style="margin-left: 5px" class="btn btn-primary" onclick="window.open('faces/Registro.xhtml')"  value="Registrar"></h:commandButton>
                                 <h:commandButton style="margin-left: 5px" class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.guardarBoton()}"  value="Guardar"></h:commandButton>
-                            </div> 
+                             </div> 
                             </div>
                         </div>
+                        
                     </div>  
                         
                       
@@ -395,7 +447,7 @@
                                 </f:facet>
                                 <center>
                                     <h:commandButton   alt="Ver más" title="Ver más" actionListener="#{usuariosPorProgranaBean.verMas(usu.id)}"  class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 3px" image="RecursoMante/img/ver.png"> </h:commandButton>
-                                     <h:commandButton actionListener="#{usuariosPorProgranaBean.editarBoton(usu.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                    <h:commandButton actionListener="#{usuariosPorProgranaBean.editarBoton(usu.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> </h:commandButton>
                                 </center>
                             </h:column>
                         </h:dataTable> 
