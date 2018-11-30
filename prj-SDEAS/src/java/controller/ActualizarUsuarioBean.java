@@ -24,8 +24,11 @@ import model.DistritoDB;
 import model.EnumFuncionario;
 import model.Programa;
 import model.ProgramaDB;
+import model.ProgramaUsuario;
+import model.ProgramaUsuarioDB;
 import model.Provincia;
 import model.ProvinciaDB;
+import model.RolUsuario;
 import model.RolUsuarioDB;
 import model.Telefono;
 import model.TelefonoDB;
@@ -60,7 +63,7 @@ public class ActualizarUsuarioBean implements Serializable {
     String OtrasSenas;
     int edad;
     static int Id_Provincia;
-    static  int Id_Canton;
+    static int Id_Canton;
     static int Id_Distrito;
     static int id_Barrio;
     int id_TipoTelefono;
@@ -81,7 +84,7 @@ public class ActualizarUsuarioBean implements Serializable {
     public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
     }
-    
+
     /**
      * Creates a new instance of ActualizarUsuarioBean
      */
@@ -91,7 +94,7 @@ public class ActualizarUsuarioBean implements Serializable {
     }
 
     public void LlenarDatos() throws SNMPExceptions, SQLException {
-        ObtenerDatosSesion datos= new ObtenerDatosSesion();
+        ObtenerDatosSesion datos = new ObtenerDatosSesion();
         UsuarioDB usuDB = new UsuarioDB();
         datos.consultarSesion();
         UsuarioMantenimiento = usuDB.SeleccionarPorId(datos.getId_Usuario());
@@ -166,14 +169,15 @@ public class ActualizarUsuarioBean implements Serializable {
             id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
         }
     }
-    
-    public void actualizar()throws SNMPExceptions, SQLException{
+
+    public void actualizar() throws SNMPExceptions, SQLException {
         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
         ProgramaDB prograDB = new ProgramaDB();
         RolUsuarioDB rolDB = new RolUsuarioDB();
         UsuarioDB usuDB = new UsuarioDB();
         DireccionDB direcDB = new DireccionDB();
         TelefonoDB telDB = new TelefonoDB();
+        ProgramaUsuarioDB programaUsuarioDB = new ProgramaUsuarioDB();
 
         if (validaAutoRegistro()) {
             Usuario usu = new Usuario();
@@ -183,15 +187,19 @@ public class ActualizarUsuarioBean implements Serializable {
             usu.setApellido1(this.getApellido1());
             usu.setApellido2(this.getApellido2());
             usu.setFechaNacimiento(this.getFechaNacimiento());
-            usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
+            Programa progra = new Programa();
+            progra = prograDB.SeleccionarPorId(this.getPrograma());
             usu.setCorreo(this.getCorreo());
             usuDB.ActualizarUsuario(usu);
-          
+            RolUsuario rol1 = rolDB.SeleccionarPorId(2);
+            ProgramaUsuario prousu = new ProgramaUsuario(usu, progra, rol1, "1");
+
+            programaUsuarioDB.actulizar(prousu);
+
             setMensaje("Actualizado con exito");
-        
-       }
+
+        }
     }
-   
 
     public boolean validaAutoRegistro() {
         boolean respuesta;
@@ -544,7 +552,7 @@ public class ActualizarUsuarioBean implements Serializable {
         this.botonNombre = botonNombre;
     }
 
-  public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
+    public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         return pro.SeleccionarTodos();
     }
@@ -604,7 +612,7 @@ public class ActualizarUsuarioBean implements Serializable {
         this.listaIden = listaIden;
     }
 
-    public LinkedList<Direccion> getListaDirec()throws SNMPExceptions,SQLException{
+    public LinkedList<Direccion> getListaDirec() throws SNMPExceptions, SQLException {
         DireccionDB dire = new DireccionDB();
         return dire.SeleccionarPorUsuario(this.getCedula());
     }
@@ -613,8 +621,8 @@ public class ActualizarUsuarioBean implements Serializable {
         this.listaDirec = listaDirec;
     }
 
-    public LinkedList<Telefono> getListaTel()throws SNMPExceptions,SQLException {
-            TelefonoDB telDB = new TelefonoDB();
+    public LinkedList<Telefono> getListaTel() throws SNMPExceptions, SQLException {
+        TelefonoDB telDB = new TelefonoDB();
         return telDB.SeleccionarTodos(this.getCedula());
     }
 

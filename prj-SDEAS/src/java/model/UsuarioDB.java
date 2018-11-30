@@ -188,7 +188,7 @@ public class UsuarioDB {
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
-            select = "select * from Usuario where Id_Usuario = " + Id_Usuario + " and PWDCOMPARE('" + contrasena + "',Contrasenna)=1 and Id_RolUsuario=" + tipoUsuario;
+            select = "select * from Usuario where Id_Usuario = " + Id_Usuario + " and PWDCOMPARE('" + contrasena + "',Contrasenna)=1 and Id_RolUsuario=" + tipoUsuario+" and Id_EstadoAcceso=1";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

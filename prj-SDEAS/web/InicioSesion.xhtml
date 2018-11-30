@@ -24,9 +24,10 @@
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-
+     
     </head>
     <h:body>
+        
 
         <!-- Preloader -->
 
@@ -110,11 +111,14 @@
                 </div>    
             </nav><!-- Navbar end -->
         </header><!-- Header end -->
-        <section id="home" class="contact_form" >
+        <section id=" main-content">
+        <section id="home " class="contact_form" >
             <center>
                 <br></br>
+                <div class="panel-heading" >
                 <h2>Iniciar Sesión</h2>
-                <h:form role="form" class="form-control-static  text-center col-md-4 col-lg-offset-4" >                        
+                                </div>
+                  <h:form role="form" class="form-control-static  text-center col-md-4 col-lg-offset-4" >                        
                     <div class="form-group">Usuario:
                         <h:inputText  value="#{loginControlador.id_Usuario}"  class="form-control text-center" ></h:inputText>
                     </div> 
@@ -136,6 +140,7 @@
                 </h:form> 
             </center>               
         </section>
+            </section>
 
         <!-- About -->
         <section id="about" >
@@ -205,6 +210,7 @@
             </div>
         </section><!-- Contact form end -->
 
+       
         <!-- Footer -->
         <footer>
             <!-- Footer top -->

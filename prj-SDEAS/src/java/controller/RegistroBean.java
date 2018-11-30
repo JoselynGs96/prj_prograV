@@ -24,8 +24,11 @@ import model.DistritoDB;
 import model.EnumFuncionario;
 import model.Programa;
 import model.ProgramaDB;
+import model.ProgramaUsuario;
+import model.ProgramaUsuarioDB;
 import model.Provincia;
 import model.ProvinciaDB;
+import model.RolUsuario;
 import model.RolUsuarioDB;
 import model.Telefono;
 import model.TelefonoDB;
@@ -96,7 +99,7 @@ public class RegistroBean implements Serializable {
         BarrioDB barr = new BarrioDB();
         TipoTelefonoDB tel = new TipoTelefonoDB();
         ProgramaDB progra = new ProgramaDB();
-        UsuarioDB usuarioDB = new UsuarioDB();      
+        UsuarioDB usuarioDB = new UsuarioDB();
         TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
 
         if (!pro.SeleccionarTodos().isEmpty()) {
@@ -319,6 +322,7 @@ public class RegistroBean implements Serializable {
         UsuarioDB usuDB = new UsuarioDB();
         DireccionDB direcDB = new DireccionDB();
         TelefonoDB telDB = new TelefonoDB();
+        ProgramaUsuarioDB programaUsuarioDB = new ProgramaUsuarioDB();
 
         if (validaAutoRegistro()) {
             Usuario usu = new Usuario();
@@ -328,11 +332,14 @@ public class RegistroBean implements Serializable {
             usu.setApellido1(this.getApellido1());
             usu.setApellido2(this.getApellido2());
             usu.setFechaNacimiento(this.getFechaNacimiento());
-            usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
+            Programa progra = new Programa();
+            progra = prograDB.SeleccionarPorId(this.getPrograma());
+            usu.setPrograma(progra);
             usu.setCorreo(this.getCorreo());
             usuDB.registrar(usu);
+            RolUsuario rol1 = rolDB.SeleccionarPorId(2);
             /*agregar telefono*/
-
+            
             for (Telefono tel : listaTel) {
                 tel.setId_Usuario(usu);
                 telDB.registrar(tel);
@@ -342,6 +349,11 @@ public class RegistroBean implements Serializable {
                 dir.setUsuario(usu);
                 direcDB.registrar(dir);
             }
+            /*Agrega programa_usuario*/
+            ProgramaUsuario prousu = new ProgramaUsuario(usu,progra,rol1,"1");
+            
+             programaUsuarioDB.registrar(prousu);
+
             setMensaje("Su solicitud de registro ha sido enviada. Se le enviara un correo con el codigo de acceso y su comtraseña al correo");
         }
     }
