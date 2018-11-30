@@ -24,10 +24,10 @@
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-     
+
     </head>
     <h:body>
-        
+
 
         <!-- Preloader -->
 
@@ -101,46 +101,51 @@
                     <!-- Navigation -->
                     <div class="collapse navbar-collapse" id="navbar-menu">
                         <ul class="nav navbar-nav menu">
-                           <li><a href="index.xhtml">Inicio</a></li>                    
-                                <li><a href="#about">Acerca de</a></li>
-                                <li><a href="#services">Servicios</a></li>
-                                <li><a href="Registro.xhtml">Registrar</a></li>
-                                <li><a href="InicioSesion.xhtml">Iniciar Sesión</a></li>
+                            <li><a href="index.xhtml">Inicio</a></li>                    
+                            <li><a href="#about">Acerca de</a></li>
+                            <li><a href="#services">Servicios</a></li>
+                            <li><a href="Registro.xhtml">Registrar</a></li>
+                            <li><a href="InicioSesion.xhtml">Iniciar Sesión</a></li>
                         </ul>
                     </div>
                 </div>    
             </nav><!-- Navbar end -->
         </header><!-- Header end -->
         <section id=" main-content">
-        <section id="home " class="contact_form" >
-            <center>
-                <br></br>
-                <div class="panel-heading" >
-                <h2>Iniciar Sesión</h2>
-                                </div>
-                  <h:form role="form" class="form-control-static  text-center col-md-4 col-lg-offset-4" >                        
-                    <div class="form-group">Usuario:
-                        <h:inputText  value="#{loginControlador.id_Usuario}"  class="form-control text-center" ></h:inputText>
-                    </div> 
-                    <div class="form-group">Contraseña:
-                        <h:inputText value="#{loginControlador.contrasenna}" class="form-control text-center  "></h:inputText>
-                    </div>    
-                    <div  class="form-group">Tipo de Perfil:<br></br>
-                        <h:selectOneMenu  value="#{loginControlador.tpoUsuario}" style="width:150px">
-                            <f:selectItems var="tipusu" value="#{loginControlador.listaRolUsuario}" itemLabel="#{tipusu.dsc_RolUsuario}" itemValue="#{tipusu.id_RolUsuario}"></f:selectItems>
-                        </h:selectOneMenu>                   
-                    </div>
-                    <h:commandButton actionListener="#{loginControlador.autenticar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
-                                     class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
-                    <br></br> <br></br>
-                    <h:outputText style="color: red" value="#{loginControlador.mensaje}"></h:outputText>
-                    <br></br> <br></br>
-                    <a href="Registro.xhtml" style="color: black;" class="link">No tienes cuenta? Registrate aquí</a>
+            <section id="home " class="contact_form" >
+                <center>
+                    <br></br>
 
-                </h:form> 
-            </center>               
-        </section>
+                    <h:form class="form-control-static text-center col-md-4 col-lg-offset-4" prependId="false">   
+
+                     
+
+                        <div class="panel-heading" >
+                            <h2>Iniciar Sesión</h2>
+                            <p:commandButton icon="pi pi-arrow-left" oncomplete="PF('sidebarinicio').show()" />
+                        </div>
+                        <div class="form-group">Usuario:
+                            <h:inputText  value="#{loginControlador.id_Usuario}"  class="form-control text-center" ></h:inputText>
+                        </div> 
+                        <div class="form-group">Contraseña:
+                            <h:inputText value="#{loginControlador.contrasenna}" class="form-control text-center  "></h:inputText>
+                        </div>    
+                        <div  class="form-group">Tipo de Perfil:<br></br>
+                            <h:selectOneMenu  value="#{loginControlador.tpoUsuario}" style="width:150px">
+                                <f:selectItems var="tipusu" value="#{loginControlador.listaRolUsuario}" itemLabel="#{tipusu.dsc_RolUsuario}" itemValue="#{tipusu.id_RolUsuario}"></f:selectItems>
+                            </h:selectOneMenu>                   
+                        </div>
+                        <h:commandButton actionListener="#{loginControlador.autenticar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
+                                         class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
+                        <br></br> <br></br>
+                        <h:outputText style="color: red" value="#{loginControlador.mensaje}"></h:outputText>
+                        <br></br> <br></br>
+                        <a href="Registro.xhtml" style="color: black;" class="link">No tienes cuenta? Registrate aquí</a>
+
+                    </h:form> 
+                </center>               
             </section>
+        </section>
 
         <!-- About -->
         <section id="about" >
@@ -210,7 +215,7 @@
             </div>
         </section><!-- Contact form end -->
 
-       
+
         <!-- Footer -->
         <footer>
             <!-- Footer top -->

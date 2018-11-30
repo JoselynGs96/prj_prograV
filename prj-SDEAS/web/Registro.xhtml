@@ -53,10 +53,17 @@
                 allDayText: 'Todo el día'
             };
         </script>
+           
     </h:head>
     <h:body>
-        <h:form style="background: #fccc0c;" prependId="false">
 
+        
+        
+        <h:form style="background: #fccc0c;" prependId="false">
+<p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000">
+    <h1 style="font-weight:normal">Right Sidebar</h1>
+    <p:commandButton value="Cancel" oncomplete="PF('sidebar2').hide()"/>
+</p:sidebar>
             <!-- Header -->
             <header>
                 <!-- Top Navbar -->
@@ -124,6 +131,7 @@
                 
                 <div style="background:#fccc0c;width: 100%;align-content: center">
                     <center>  <h2>Personal</h2></center>
+                  <p:commandButton icon="pi pi-arrow-left" oncomplete="PF('sidebar2').show()" />
                 </div>
 
                 <center>
@@ -372,7 +380,10 @@
                 </center>
 
             </div>
+      
         </h:form>
+             
     </h:body>
+    
 
 </html>
