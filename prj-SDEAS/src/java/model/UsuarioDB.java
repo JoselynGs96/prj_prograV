@@ -129,18 +129,18 @@ public class UsuarioDB {
     }
 
     /*REgistra un usuario*/
-    public void registrar(Usuario usu) throws SNMPExceptions, SQLException {
+    public void registrar(Usuario usuario) throws SNMPExceptions, SQLException {
+
         String strSQL = "";
 
         try {
-            Usuario usuario = new Usuario();
-            usuario = usu;
+            Usuario usu = usuario;
             SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
 
             String fecha = formato.format(usuario.getFechaNacimiento());
 //mydate is your date object
 
-            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_RolUsuario],[Id_EstadoAcceso],[TipoFuncionario],[Log_Activo]) values(" + usuario.cedula + "," + usuario.TipoIden.getId_TipoIdentificacion() + ",'" + usuario.nombre + "','" + usuario.apellido1 + "','" + usuario.apellido2 + "','" + fecha + "','" + usuario.getCorreo() + "'," + 2 + "," + 3 + ",'" + usuario.Funcionario.toString() + "'," + 1 + ")";
+            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_RolUsuario],[Id_EstadoAcceso],[TipoFuncionario],[Log_Activo]) values(" + usu.cedula + "," + usu.TipoIden.getId_TipoIdentificacion() + ",'" + usu.nombre + "','" + usu.apellido1 + "','" + usu.apellido2 + "','" + fecha + "','" + usu.correo + "'," + 2 + "," + 3 + ",'" + usu.Funcionario.toString() + "'," + 1 + ")";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
@@ -153,19 +153,27 @@ public class UsuarioDB {
         }
 
     }
-    
-   public void ActualizarUsuario(Usuario usu) throws SNMPExceptions, SQLException{
-         String strSQL = "";
+
+    public void ActualizarUsuario(Usuario usu) throws SNMPExceptions, SQLException {
+        String strSQL = "";
 
         try {
-            Usuario usuario = new Usuario();
-            usuario = usu;
+            Usuario usuario = usu;
             SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
 
             String fecha = formato.format(usuario.getFechaNacimiento());
-//mydate is your date object
-
-            strSQL = "UPDATE [dbo].[Usuario] SET [Nombre] ='" +  usuario.nombre + "',[Apellido1]="+usuario.apellido1+"', [Apellido2] ='" +usuario.apellido2+"', [FechaNacimiento] ='" +fecha+"', [Correo] ='"+usuario.correo+"',[TipoFuncionario] ="+usuario.Funcionario.toString()+"'where [Id_Usuario]="+usuario.cedula;
+//mydate is your date object     
+            String hola="";
+            
+            
+            
+            hola= usuario.cedula;
+                       
+            strSQL = "UPDATE [dbo].[Usuario] SET [Nombre] ='" + usuario.getNombre() + 
+               "',[Apellido1]=" + usuario.getApellido1() + "', [Apellido2] ='" + usuario.getApellido2() + 
+                    "', [FechaNacimiento] ='" + fecha + "', [Correo] ='" + usuario.getCorreo() + 
+                    "',[TipoFuncionario] =" + usuario.getFuncionario().toString() +
+                    "'where [Id_Usuario]=" + usuario.getCedula();
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -188,7 +196,7 @@ public class UsuarioDB {
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
-            select = "select * from Usuario where Id_Usuario = " + Id_Usuario + " and PWDCOMPARE('" + contrasena + "',Contrasenna)=1 and Id_RolUsuario=" + tipoUsuario+" and Id_EstadoAcceso=1";
+            select = "select * from Usuario where Id_Usuario = " + Id_Usuario + " and PWDCOMPARE('" + contrasena + "',Contrasenna)=1 and Id_RolUsuario=" + tipoUsuario + " and Id_EstadoAcceso=1";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -231,6 +239,7 @@ public class UsuarioDB {
         }
 
     }
+
     /*Ingresa contraseña por primera vez*/
     public void IngresarContrasenna(Usuario usu) throws SNMPExceptions, SQLException {
         String strSQL = "";

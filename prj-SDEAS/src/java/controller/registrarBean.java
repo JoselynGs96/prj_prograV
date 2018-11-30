@@ -5,7 +5,6 @@
  */
 package controller;
 
-import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -43,11 +42,10 @@ import model.UsuarioDB;
  *
  * @author Fabi
  */
-@Named(value = "registroBean")
+@Named(value = "registrarBean")
 @SessionScoped
-public class RegistroBean implements Serializable {
-
-    String cedula;
+public class registrarBean implements Serializable {
+String cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
@@ -88,7 +86,7 @@ public class RegistroBean implements Serializable {
     /**
      * Creates a new instance of RegistroBean
      */
-    public RegistroBean() throws SNMPExceptions, SQLException {
+    public registrarBean() throws SNMPExceptions, SQLException {
         llenarCombos();
     }
 
@@ -336,6 +334,7 @@ public class RegistroBean implements Serializable {
             progra = prograDB.SeleccionarPorId(this.getPrograma());
             usu.setPrograma(progra);
             usu.setCorreo(this.getCorreo());
+            usu.setFuncionario(this.getFuncionario());
             usuDB.registrar(usu);
             RolUsuario rol1 = rolDB.SeleccionarPorId(2);
             /*agregar telefono*/

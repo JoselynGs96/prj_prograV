@@ -190,6 +190,7 @@ public class ActualizarUsuarioBean implements Serializable {
             Programa progra = new Programa();
             progra = prograDB.SeleccionarPorId(this.getPrograma());
             usu.setCorreo(this.getCorreo());
+              usu.setFuncionario(this.getFuncionario());
             usuDB.ActualizarUsuario(usu);
             RolUsuario rol1 = rolDB.SeleccionarPorId(2);
             ProgramaUsuario prousu = new ProgramaUsuario(usu, progra, rol1, "1");
