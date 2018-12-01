@@ -43,7 +43,7 @@ public class ProgramaUsuarioDB {
                 estado = 1;
             }
              strSQL = "INSERT INTO Programa_Usuario (Id_Programa, Id_Usuario, Id_RolUsuario,TipoFuncionario, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
-                    + "VALUES ('" 	+	pu.getUsuario().id	+"', '" 
+                    + "VALUES ('" 	+	pu.getUsuario().Id +"', '" 
             + pu.getPrograma().id + "', '" +  pu.rolUsuario.Id_RolUsuario + "', '"  + pu.getFuncionario().toString()
             + "', '" +  pu.Id_Registra
             + "', '" +  new java.sql.Date(pu.FechaRegistra.getTime())
@@ -160,7 +160,7 @@ public class ProgramaUsuarioDB {
                       while (rsPA.next()) {
 
                         Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa")) ;
-                        Usuario Id_Usuario = usu.SeleccionarPorId(rsPA.getString("Id_Usuario"));
+                        Usuario Id_Usuario = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                         RolUsuario Id_RolUsuario = rol.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
                         EnumFuncionario TipoFunci = EnumFuncionario.valueOf(rsPA.getString("TipoFuncionario"));
                         int Log_Activo = rsPA.getInt("Log_Activo");

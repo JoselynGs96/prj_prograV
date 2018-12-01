@@ -5,7 +5,6 @@
  */
 package controller;
 
-import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -24,8 +23,11 @@ import model.DistritoDB;
 import model.EnumFuncionario;
 import model.Programa;
 import model.ProgramaDB;
+import model.ProgramaUsuario;
+import model.ProgramaUsuarioDB;
 import model.Provincia;
 import model.ProvinciaDB;
+import model.RolUsuario;
 import model.RolUsuarioDB;
 import model.Telefono;
 import model.TelefonoDB;
@@ -40,11 +42,10 @@ import model.UsuarioDB;
  *
  * @author Fabi
  */
-@Named(value = "registroBean")
+@Named(value = "registrarBean")
 @SessionScoped
-public class RegistroBean implements Serializable {
-
-    String cedula;
+public class registrarBean implements Serializable {
+int cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
@@ -77,7 +78,7 @@ public class RegistroBean implements Serializable {
     LinkedList<Telefono> listaTel = new LinkedList<Telefono>();
     EnumFuncionario funcionario;
     Usuario UsuarioMantenimiento = new Usuario();
-    Date fecha = new Date();
+
     public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
     }
@@ -85,7 +86,7 @@ public class RegistroBean implements Serializable {
     /**
      * Creates a new instance of RegistroBean
      */
-    public RegistroBean() throws SNMPExceptions, SQLException {
+    public registrarBean() throws SNMPExceptions, SQLException {
         llenarCombos();
     }
 
@@ -96,7 +97,7 @@ public class RegistroBean implements Serializable {
         BarrioDB barr = new BarrioDB();
         TipoTelefonoDB tel = new TipoTelefonoDB();
         ProgramaDB progra = new ProgramaDB();
-        UsuarioDB usuarioDB = new UsuarioDB();      
+        UsuarioDB usuarioDB = new UsuarioDB();
         TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
 
         if (!pro.SeleccionarTodos().isEmpty()) {
@@ -135,7 +136,7 @@ public class RegistroBean implements Serializable {
             this.setMensaje("*Debe colocar el tipo de identificación.");
             respuesta = false;
         } else {
-            if (this.getCedula().equals("")) {
+            if (this.getCedula()==0) {
                 this.setMensaje("*Debe colocar la cédula de identificación.");
                 respuesta = false;
             } else {
@@ -319,39 +320,39 @@ public class RegistroBean implements Serializable {
         UsuarioDB usuDB = new UsuarioDB();
         DireccionDB direcDB = new DireccionDB();
         TelefonoDB telDB = new TelefonoDB();
+        ProgramaUsuarioDB programaUsuarioDB = new ProgramaUsuarioDB();
 
         if (validaAutoRegistro()) {
             Usuario usu = new Usuario();
-            usu.setTipoIden(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
-            usu.setCedula(this.getCedula());
+            usu.setTipoIdentificacion(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
+            usu.setId(this.getCedula());
             usu.setNombre(this.getNombre());
             usu.setApellido1(this.getApellido1());
             usu.setApellido2(this.getApellido2());
             usu.setFechaNacimiento(this.getFechaNacimiento());
-            usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
+            Programa progra = new Programa();
+            progra = prograDB.SeleccionarPorId(this.getPrograma());
+            usu.setPrograma(progra);
             usu.setCorreo(this.getCorreo());
-            usu.setId_Registra(Integer.parseInt(this.getCedula()));
-            usu.setFechaRegistra(fecha);
-            usu.setId_Edita(Integer.parseInt(this.getCedula()));
-            usu.setFechaEdita(fecha);
+            usu.setFuncionario(this.getFuncionario());
             usuDB.registrar(usu);
+            RolUsuario rol1 = rolDB.SeleccionarPorId(2);
             /*agregar telefono*/
             
             for (Telefono tel : listaTel) {
                 tel.setId_Usuario(usu);
-                tel.setId_Registra(Integer.parseInt(this.getCedula()));
-                tel.setFechaRegistra(fecha);
-                tel.setId_Edita(Integer.parseInt(this.getCedula()));
-                tel.setFechaEdita(fecha);
                 telDB.registrar(tel);
             }
-            
-          
             /*agregar direcciones*/
             for (Direccion dir : listaDirec) {
                 dir.setUsuario(usu);
                 direcDB.registrar(dir);
             }
+            /*Agrega programa_usuario*/
+            ProgramaUsuario prousu = new ProgramaUsuario(progra,rol1,"1");
+            
+             programaUsuarioDB.registrar(prousu);
+
             setMensaje("Su solicitud de registro ha sido enviada. Se le enviara un correo con el codigo de acceso y su comtraseña al correo");
         }
     }
@@ -365,11 +366,11 @@ public class RegistroBean implements Serializable {
         this.listaTipoTelefono = listaTipoTelefono;
     }
 
-    public String getCedula() {
+    public int getCedula() {
         return cedula;
     }
 
-    public void setCedula(String cedula) {
+    public void setCedula(int cedula) {
         this.cedula = cedula;
     }
 

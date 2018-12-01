@@ -12,23 +12,20 @@ import java.util.Date;
  * @author Fabi
  */
 public class Usuario {
-    int id;
-    int ced;
+    int Id;
+    TipoIdentificacion TipoIdentificacion;
+    String Nombre;
+    String Apellido1;
+    String Apellido2;
+    Date FechaNacimiento;
+    String Correo;
+    EstadoAcceso EstadoAcceso;
+    String Log_Activo;
     int TipoId;
-    String cedula;
-    TipoIdentificacion TipoIden;
-    Date fechaNacimiento;
-    String correo;
     String contrasenna;
     String codAcceso;
-    int estado;  
     RolUsuario rolUsuario;
-    String nombre;
-    String apellido1;
-    String apellido2;
     Programa Programa;  
-    String est;
-    EstadoAcceso estAcc;
     String nombreCompleto;
     EnumFuncionario Funcionario;
     int Id_Registra;
@@ -38,74 +35,104 @@ public class Usuario {
     
   
     
+    
+    public Usuario( int cedula,TipoIdentificacion TipoIden,String nombre,String apellido1, String apellido2,Date fechaNacimiento,String correo,EstadoAcceso estAcc,String Log_Act, RolUsuario rol){
+        this.setId(cedula);
+        this.setTipoIdentificacion(TipoIden);
+        this.setNombre(nombre);
+        this.setApellido1(apellido1);
+        this.setApellido2(apellido2);
+        this.setFechaNacimiento(fechaNacimiento);
+        this.setEstadoAcceso(estAcc);
+        this.setCorreo(correo);
+        this.setLog_Activo(Log_Activo);
+        this.setRolUsuario(rol);
+        
+    
+    }
     public Usuario(){
         
     }
-
-    public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado,  String nombre, String apellido1, String apellido2,String est, EstadoAcceso estAcc) {
-        this.setCed(ced);
-        this.setCedula(cedula);
-        this.setTipoIden(TipoIden);
-        this.setFechaNacimiento(fechaNacimiento);
-        this.setCorreo(correo);
-        this.setEstado(estado);
-        this.setNombre(nombre);
-        this.setApellido1(apellido1);
-        this.setApellido2(apellido2);
-        this.setEst(est);
-        this.setEstAcc(estAcc);
-    }
-
-    public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado, String nombre, String apellido1, String apellido2, String est, EstadoAcceso estAcc,int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita) {
-        this.setCed(ced);
-        this.setCedula(cedula);
-        this.setTipoIden(TipoIden);
-        this.setFechaNacimiento(fechaNacimiento);
-        this.setCorreo(correo);
-        this.setEstado(estado);
-        this.setNombre(nombre);
-        this.setApellido1(apellido1);
-        this.setApellido2(apellido2);
-        this.setEst(est);
-        this.setEstAcc(estAcc);
-        this.setId_Registra(Id_Registra);
-        this.setFechaRegistra(FechaRegistra);
-        this.setId_Edita(Id_Edita);
-        this.setFechaEdita(FechaEdita);
-    }
     
     
-
-    public String getCedula() {
-        return cedula;
+    public int getId() {
+        return Id;
     }
 
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
+    public void setId(int Id) {
+        this.Id = Id;
     }
 
-    public TipoIdentificacion getTipoIden() {
-        return TipoIden;
+    public TipoIdentificacion getTipoIdentificacion() {
+        return TipoIdentificacion;
     }
 
-    public void setTipoIden(TipoIdentificacion TipoIden) {
-        this.TipoIden = TipoIden;
+    public void setTipoIdentificacion(TipoIdentificacion TipoIdentificacion) {
+        this.TipoIdentificacion = TipoIdentificacion;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
+
+    public String getApellido1() {
+        return Apellido1;
+    }
+
+    public void setApellido1(String Apellido1) {
+        this.Apellido1 = Apellido1;
+    }
+
+    public String getApellido2() {
+        return Apellido2;
+    }
+
+    public void setApellido2(String Apellido2) {
+        this.Apellido2 = Apellido2;
     }
 
     public Date getFechaNacimiento() {
-        return fechaNacimiento;
+        return FechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setFechaNacimiento(Date FechaNacimiento) {
+        this.FechaNacimiento = FechaNacimiento;
     }
 
     public String getCorreo() {
-        return correo;
+        return Correo;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setCorreo(String Correo) {
+        this.Correo = Correo;
+    }
+
+    public EstadoAcceso getEstadoAcceso() {
+        return EstadoAcceso;
+    }
+
+    public void setEstadoAcceso(EstadoAcceso EstadoAcceso) {
+        this.EstadoAcceso = EstadoAcceso;
+    }
+
+    public String getLog_Activo() {
+        return Log_Activo;
+    }
+
+    public void setLog_Activo(String Log_Activo) {
+        this.Log_Activo = Log_Activo;
+    }
+
+    public int getTipoId() {
+        return TipoId;
+    }
+
+    public void setTipoId(int TipoId) {
+        this.TipoId = TipoId;
     }
 
     public String getContrasenna() {
@@ -124,44 +151,12 @@ public class Usuario {
         this.codAcceso = codAcceso;
     }
 
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
-
     public RolUsuario getRolUsuario() {
         return rolUsuario;
     }
 
     public void setRolUsuario(RolUsuario rolUsuario) {
         this.rolUsuario = rolUsuario;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido1() {
-        return apellido1;
-    }
-
-    public void setApellido1(String apellido1) {
-        this.apellido1 = apellido1;
-    }
-
-    public String getApellido2() {
-        return apellido2;
-    }
-
-    public void setApellido2(String apellido2) {
-        this.apellido2 = apellido2;
     }
 
     public Programa getPrograma() {
@@ -172,48 +167,8 @@ public class Usuario {
         this.Programa = Programa;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getCed() {
-        return ced;
-    }
-
-    public void setCed(int ced) {
-        this.ced = ced;
-    }
-
-    public int getTipoId() {
-        return TipoId;
-    }
-
-    public void setTipoId(int TipoId) {
-        this.TipoId = TipoId;
-    }
-
-    public String getEst() {
-        return est;
-    }
-
-    public void setEst(String est) {
-        this.est = est;
-    }
-
-    public EstadoAcceso getEstAcc() {
-        return estAcc;
-    }
-
-    public void setEstAcc(EstadoAcceso estAcc) {
-        this.estAcc = estAcc;
-    }
-
     public String getNombreCompleto() {
-        return this.nombre +" "+this.apellido1+" "+this.apellido2;
+        return nombreCompleto;
     }
 
     public void setNombreCompleto(String nombreCompleto) {
@@ -259,6 +214,10 @@ public class Usuario {
     public void setFechaEdita(Date FechaEdita) {
         this.FechaEdita = FechaEdita;
     }
+    
+    
+
+
     
 
 }

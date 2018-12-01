@@ -24,8 +24,11 @@ import model.DistritoDB;
 import model.EnumFuncionario;
 import model.Programa;
 import model.ProgramaDB;
+import model.ProgramaUsuario;
+import model.ProgramaUsuarioDB;
 import model.Provincia;
 import model.ProvinciaDB;
+import model.RolUsuario;
 import model.RolUsuarioDB;
 import model.Telefono;
 import model.TelefonoDB;
@@ -44,7 +47,7 @@ import model.UsuarioDB;
 @SessionScoped
 public class ActualizarUsuarioBean implements Serializable {
 
-    String cedula;
+    int cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
@@ -60,7 +63,7 @@ public class ActualizarUsuarioBean implements Serializable {
     String OtrasSenas;
     int edad;
     static int Id_Provincia;
-    static  int Id_Canton;
+    static int Id_Canton;
     static int Id_Distrito;
     static int id_Barrio;
     int id_TipoTelefono;
@@ -81,7 +84,7 @@ public class ActualizarUsuarioBean implements Serializable {
     public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
     }
-    
+
     /**
      * Creates a new instance of ActualizarUsuarioBean
      */
@@ -91,31 +94,31 @@ public class ActualizarUsuarioBean implements Serializable {
     }
 
     public void LlenarDatos() throws SNMPExceptions, SQLException {
-        ObtenerDatosSesion datos= new ObtenerDatosSesion();
+        ObtenerDatosSesion datos = new ObtenerDatosSesion();
         UsuarioDB usuDB = new UsuarioDB();
         datos.consultarSesion();
-        UsuarioMantenimiento = usuDB.SeleccionarPorId(datos.getId_Usuario());
+        UsuarioMantenimiento = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
         DireccionDB direc = new DireccionDB();
         TelefonoDB teldb = new TelefonoDB();
-        if (this.UsuarioMantenimiento.getCed() != 0) {
+        if (this.UsuarioMantenimiento.getId()!= 0) {
             this.setBotonNombre("Actualizar Información");
             /*Pantalla personal*/
-            this.setId_TipoCedula(UsuarioMantenimiento.getTipoIden().getId_TipoIdentificacion());
+            this.setId_TipoCedula(UsuarioMantenimiento.getTipoIdentificacion().getId_TipoIdentificacion());
             this.setNombre(UsuarioMantenimiento.getNombre());
             this.setApellido1(UsuarioMantenimiento.getApellido1());
             this.setApellido2(UsuarioMantenimiento.getApellido2());
             this.setApellido2(UsuarioMantenimiento.getApellido2());
-            this.setCedula(UsuarioMantenimiento.getCedula());
+            this.setCedula(UsuarioMantenimiento.getId());
             /*Buscar como hacer q este funcione*/
             this.setFechaNacimiento(UsuarioMantenimiento.getFechaNacimiento());
             /*Pantalla Direccion*/
 
-            if (!direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula()).isEmpty()) {
-                listaDirec = direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula());
+            if (!direc.SeleccionarPorUsuario(UsuarioMantenimiento.getId()).isEmpty()) {
+                listaDirec = direc.SeleccionarPorUsuario(UsuarioMantenimiento.getId());
             }
             /*Pantalla de telefono*/
-            if (!teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula()).isEmpty()) {
-                listaTel = teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula());
+            if (!teldb.SeleccionarTodos(UsuarioMantenimiento.getId()).isEmpty()) {
+                listaTel = teldb.SeleccionarTodos(UsuarioMantenimiento.getId());
             }
             this.setCorreo(UsuarioMantenimiento.getCorreo());
             /*Pantalla Progrema Deas*/
@@ -166,34 +169,39 @@ public class ActualizarUsuarioBean implements Serializable {
             id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
         }
     }
-    
-    public void actualizar()throws SNMPExceptions, SQLException{
+
+    public void actualizar() throws SNMPExceptions, SQLException {
         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
         ProgramaDB prograDB = new ProgramaDB();
         RolUsuarioDB rolDB = new RolUsuarioDB();
         UsuarioDB usuDB = new UsuarioDB();
         DireccionDB direcDB = new DireccionDB();
         TelefonoDB telDB = new TelefonoDB();
+        ProgramaUsuarioDB programaUsuarioDB = new ProgramaUsuarioDB();
 
         if (validaAutoRegistro()) {
             Usuario usu = new Usuario();
-            usu.setTipoIden(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
-            usu.setCedula(this.getCedula());
+            usu.setTipoIdentificacion(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
+            usu.setId(this.getCedula());
             usu.setNombre(this.getNombre());
             usu.setApellido1(this.getApellido1());
             usu.setApellido2(this.getApellido2());
             usu.setFechaNacimiento(this.getFechaNacimiento());
-            usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
+            Programa progra = new Programa();
+            progra = prograDB.SeleccionarPorId(this.getPrograma());
             usu.setCorreo(this.getCorreo());
             usu.setId_Edita(116390998);
             usu.setFechaEdita(fecha);
             usuDB.ActualizarUsuario(usu);
-          
+            RolUsuario rol1 = rolDB.SeleccionarPorId(2);
+            ProgramaUsuario prousu = new ProgramaUsuario(progra, rol1, "1");
+
+            programaUsuarioDB.actulizar(prousu);
+
             setMensaje("Actualizado con exito");
-        
-       }
+
+        }
     }
-   
 
     public boolean validaAutoRegistro() {
         boolean respuesta;
@@ -201,7 +209,7 @@ public class ActualizarUsuarioBean implements Serializable {
             this.setMensaje("*Debe colocar el tipo de identificación.");
             respuesta = false;
         } else {
-            if (this.getCedula().equals("")) {
+            if (this.getCedula()==0) {
                 this.setMensaje("*Debe colocar la cédula de identificación.");
                 respuesta = false;
             } else {
@@ -329,7 +337,7 @@ public class ActualizarUsuarioBean implements Serializable {
     }
 
     /*Elimina Direcciones*/
-    public void eliminarDirecciones(String id_Direc) throws SNMPExceptions, SQLException {
+    public void eliminarDirecciones(int id_Direc) throws SNMPExceptions, SQLException {
         DireccionDB direc = new DireccionDB();
         direc.eliminaDireccion(id_Direc);
     }
@@ -365,16 +373,16 @@ public class ActualizarUsuarioBean implements Serializable {
     }
 
     /*Elimina telefono*/
-    public void eliminarTelefonos(String id_Tel) throws SNMPExceptions, SQLException {
+    public void eliminarTelefonos(int id_Tel) throws SNMPExceptions, SQLException {
         TelefonoDB tel = new TelefonoDB();
         tel.eliminaTelefono(id_Tel);
     }
 
-    public String getCedula() {
+    public int getCedula() {
         return cedula;
     }
 
-    public void setCedula(String cedula) {
+    public void setCedula(int cedula) {
         this.cedula = cedula;
     }
 
@@ -546,7 +554,7 @@ public class ActualizarUsuarioBean implements Serializable {
         this.botonNombre = botonNombre;
     }
 
-  public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
+    public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         return pro.SeleccionarTodos();
     }
@@ -606,7 +614,7 @@ public class ActualizarUsuarioBean implements Serializable {
         this.listaIden = listaIden;
     }
 
-    public LinkedList<Direccion> getListaDirec()throws SNMPExceptions,SQLException{
+    public LinkedList<Direccion> getListaDirec() throws SNMPExceptions, SQLException {
         DireccionDB dire = new DireccionDB();
         return dire.SeleccionarPorUsuario(this.getCedula());
     }
@@ -615,8 +623,8 @@ public class ActualizarUsuarioBean implements Serializable {
         this.listaDirec = listaDirec;
     }
 
-    public LinkedList<Telefono> getListaTel()throws SNMPExceptions,SQLException {
-            TelefonoDB telDB = new TelefonoDB();
+    public LinkedList<Telefono> getListaTel() throws SNMPExceptions, SQLException {
+        TelefonoDB telDB = new TelefonoDB();
         return telDB.SeleccionarTodos(this.getCedula());
     }
 

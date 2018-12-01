@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-    <title>Panel de Administración</title>
+    <title>Usuario Por Programa</title>
     <meta charset="utf-8"/>
     <!-- Bootstrap core CSS -->
     <link href="RecursoMante/css/bootstrap.css" rel="stylesheet"/>
@@ -27,42 +27,19 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script>
-                                function abrirModal(){
-                                     $('#modalVer').modal('show');
-                                 }
-                                  $(document).ready(tipoRecurso);
+          function abrirModal(){
+              $('#modalVer').modal('show');
+          }
+          $(document).ready(tipoRecurso);
+          
+          $( function() {
+            $( "#datepicker" ).datepicker();
+          } );
     </script>
-    <script>
-            PrimeFaces.locales['es'] = {
-                closeText: 'Cerrar',
-                prevText: 'Anterior',
-                nextText: 'Siguiente',
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-                weekHeader: 'Semana',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: '',
-                timeOnlyTitle: 'Sólo hora',
-                timeText: 'Tiempo',
-                hourText: 'Hora',
-                minuteText: 'Minuto',
-                secondText: 'Segundo',
-                currentText: 'Fecha actual',
-                ampm: false,
-                month: 'Mes',
-                week: 'Semana',
-                day: 'Día',
-                allDayText: 'Todo el día'
-            };
-        </script>
     </h:head>
     <h:body> 
   <section id="container">
+    
       <h:form id="myForm" prependId="false">
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -353,7 +330,6 @@
                                     <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.usuario.nombreCompleto}" style="width: 100%;"  ></p:inputText>
                                     <br></br>
                                     <p:outputLabel>Fecha de Nacimiento:</p:outputLabel>
-                                    
                                     <br></br>
                                     <p:outputLabel>Estado de Acceso:</p:outputLabel>
                                     <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoAcceso}" >
@@ -446,7 +422,9 @@
                                     <h:outputText />
                                 </f:facet>
                                 <center>
-                                    <h:commandButton   alt="Ver más" title="Ver más" actionListener="#{usuariosPorProgranaBean.verMas(usu.id)}"  class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 3px" image="RecursoMante/img/ver.png"> </h:commandButton>
+                                    <h:commandButton   alt="Ver más" title="Ver más" actionListener="#{usuariosPorProgranaBean.verMas(usu.id)}"  
+                                    class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 3px" image="RecursoMante/img/ver.png"></h:commandButton>
+                                   
                                     <h:commandButton actionListener="#{usuariosPorProgranaBean.editarBoton(usu.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> </h:commandButton>
                                 </center>
                             </h:column>
@@ -487,44 +465,8 @@
     <script type="text/javascript" src="RecursoMante/js/gritter-conf.js"></script>
 
     <!--script for this page-->
-    <script src="RecursoMante/js/sparkline-chart.js"></script>    
-	<script src="RecursoMante/js/zabuto_calendar.js"></script>	
+    <script src="RecursoMante/js/sparkline-chart.js"></script>  	
 	
-	
-	<script type="application/javascript">
-        $(document).ready(function () {
-            $("#date-popover").popover({html: true, trigger: "manual"});
-            $("#date-popover").hide();
-            $("#date-popover").click(function (e) {
-                $(this).hide();
-            });
-        
-            $("#my-calendar").zabuto_calendar({
-                action: function () {
-                    return myDateFunction(this.id, false);
-                },
-                action_nav: function () {
-                    return myNavFunction(this.id);
-                },
-                ajax: {
-                    url: "show_data.php?action=1",
-                    modal: true
-                },
-                legend: [
-                    {type: "text", label: "Special event", badge: "00"},
-                    {type: "block", label: "Regular event", }
-                ]
-            });
-        });
-        
-        
-        function myNavFunction(id) {
-            $("#date-popover").hide();
-            var nav = $("#" + id).data("navigation");
-            var to = $("#" + id).data("to");
-            console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
-        }
-    </script>
     </h:body>
 </html>
 
