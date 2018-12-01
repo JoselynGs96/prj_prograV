@@ -39,9 +39,10 @@ public class TelefonoDB {
             Telefono telefono = new Telefono();
             telefono = tel;
 
-            strSQL = "INSERT INTO Telefono (Numero, Id_Usuario,Id_TipoTelefono, Log_Activo) "
+            strSQL = "INSERT INTO Telefono (Numero, Id_Usuario,Id_TipoTelefono,Id_Registra,FechaRegistra,Id_Edita,FechaEdita Log_Activo) "
                     + "VALUES (" + telefono.getNumero() + ", "
-                    + telefono.getId_Usuario().cedula +","+ telefono.getId_TipoTelefono().id_Telefono + ", " + 1 + ")";
+                    + telefono.getId_Usuario().cedula +","+ telefono.getId_TipoTelefono().id_Telefono + ", "  
+                    + telefono.getId_Registra()+","+new java.sql.Date(telefono.FechaRegistra.getTime())+","+telefono.Id_Edita+","+new java.sql.Date(telefono.FechaEdita.getTime())+ 1+")";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {

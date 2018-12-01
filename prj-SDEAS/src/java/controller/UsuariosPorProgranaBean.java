@@ -146,6 +146,17 @@ public class UsuariosPorProgranaBean implements Serializable {
         }
     }
     
+    public void cambiarTipoFuncionario(int idPro, int idT) throws SNMPExceptions, SQLException{
+        ProgramaUsuarioDB pdb = new ProgramaUsuarioDB();
+        for (int i = 0; i < listaProusu.size(); i++) {
+            
+            ProgramaUsuario pro = listaProusu.get(i);
+            if(pro.getPrograma().getId() == idPro && pro.getRolUsuario().getId_RolUsuario() == idT){
+                //cambiar
+            }
+        }
+    }
+    
     public void guardarBoton(){
         UsuarioManteDB us = new UsuarioManteDB();
         ProgramaUsuarioDB proU = new ProgramaUsuarioDB();
@@ -159,7 +170,9 @@ public class UsuariosPorProgranaBean implements Serializable {
                 us.actulizar(usuario);
                 
                 for (int i = 0; i < listaProusu.size(); i++) {
-                   proU.actulizar(listaProusu.get(i));
+                    listaProusu.get(i).setId_Edita(116390998);
+                    listaProusu.get(i).setFechaEdita(fecha);
+                    proU.actulizar(listaProusu.get(i));
                 }
                 setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Usuario actualizado con éxito!</div> ");
             }

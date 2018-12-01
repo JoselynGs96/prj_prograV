@@ -77,7 +77,7 @@ public class RegistroBean implements Serializable {
     LinkedList<Telefono> listaTel = new LinkedList<Telefono>();
     EnumFuncionario funcionario;
     Usuario UsuarioMantenimiento = new Usuario();
-
+    Date fecha = new Date();
     public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
     }
@@ -330,13 +330,23 @@ public class RegistroBean implements Serializable {
             usu.setFechaNacimiento(this.getFechaNacimiento());
             usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
             usu.setCorreo(this.getCorreo());
+            usu.setId_Registra(Integer.parseInt(this.getCedula()));
+            usu.setFechaRegistra(fecha);
+            usu.setId_Edita(Integer.parseInt(this.getCedula()));
+            usu.setFechaEdita(fecha);
             usuDB.registrar(usu);
             /*agregar telefono*/
-
+            
             for (Telefono tel : listaTel) {
                 tel.setId_Usuario(usu);
+                tel.setId_Registra(Integer.parseInt(this.getCedula()));
+                tel.setFechaRegistra(fecha);
+                tel.setId_Edita(Integer.parseInt(this.getCedula()));
+                tel.setFechaEdita(fecha);
                 telDB.registrar(tel);
             }
+            
+          
             /*agregar direcciones*/
             for (Direccion dir : listaDirec) {
                 dir.setUsuario(usu);

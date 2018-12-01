@@ -140,7 +140,12 @@ public class UsuarioDB {
             String fecha = formato.format(usuario.getFechaNacimiento());
 //mydate is your date object
 
-            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_RolUsuario],[Id_EstadoAcceso],[TipoFuncionario],[Log_Activo]) values(" + usuario.cedula + "," + usuario.TipoIden.getId_TipoIdentificacion() + ",'" + usuario.nombre + "','" + usuario.apellido1 + "','" + usuario.apellido2 + "','" + fecha + "','" + usuario.getCorreo() + "'," + 2 + "," + 3 + ",'" + usuario.Funcionario.toString() + "'," + 1 + ")";
+            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_RolUsuario],[Id_EstadoAcceso],[TipoFuncionario],[Log_Activo],Id_Registra,FechaRegistra,Id_Edita,FechaEdita) values(" 
+                    + usuario.cedula + "," + usuario.TipoIden.getId_TipoIdentificacion() 
+                    + ",'" + usuario.nombre + "','" + usuario.apellido1 + "','" 
+                    + usuario.apellido2 + "','" + fecha + "','" + usuario.getCorreo() 
+                    + "'," + 2 + "," + 3 + ",'" + usuario.Funcionario.toString() + "'," + 1 
+                    + "', '" +  usuario.getId_Registra()  + "', '"+  new java.sql.Date(usuario.getFechaRegistra().getTime()) + "', '" + usuario.getId_Edita() + "', '" + new java.sql.Date(usuario.getFechaEdita().getTime()) + ")";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
@@ -165,7 +170,15 @@ public class UsuarioDB {
             String fecha = formato.format(usuario.getFechaNacimiento());
 //mydate is your date object
 
-            strSQL = "UPDATE [dbo].[Usuario] SET [Nombre] ='" +  usuario.nombre + "',[Apellido1]="+usuario.apellido1+"', [Apellido2] ='" +usuario.apellido2+"', [FechaNacimiento] ='" +fecha+"', [Correo] ='"+usuario.correo+"',[TipoFuncionario] ="+usuario.Funcionario.toString()+"'where [Id_Usuario]="+usuario.cedula;
+            strSQL = "UPDATE [dbo].[Usuario] SET [Nombre] ='" +  usuario.nombre + 
+                    "',[Apellido1]="+usuario.apellido1+"', "
+                    + "[Apellido2] ='" +usuario.apellido2+"', "
+                    + "[FechaNacimiento] ='" +fecha+"', "
+                    + "[Correo] ='"+usuario.correo+"',"
+                    + "[TipoFuncionario] ="+usuario.Funcionario.toString()
+                    + "Id_Edita = "+usuario.Id_Edita
+                    + "FechaEdita = "+new java.sql.Date(usuario.getFechaEdita().getTime())
+                    +"'where [Id_Usuario]="+usuario.cedula;
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {

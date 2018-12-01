@@ -31,14 +31,18 @@ public class Usuario {
     EstadoAcceso estAcc;
     String nombreCompleto;
     EnumFuncionario Funcionario;
-
+    int Id_Registra;
+    Date FechaRegistra;
+    int Id_Edita;
+    Date FechaEdita;
+    
   
     
     public Usuario(){
         
     }
 
-    public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado, String nombre, String apellido1, String apellido2, String est, EstadoAcceso estAcc) {
+    public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado,  String nombre, String apellido1, String apellido2,String est, EstadoAcceso estAcc) {
         this.setCed(ced);
         this.setCedula(cedula);
         this.setTipoIden(TipoIden);
@@ -50,6 +54,24 @@ public class Usuario {
         this.setApellido2(apellido2);
         this.setEst(est);
         this.setEstAcc(estAcc);
+    }
+
+    public Usuario(int ced, String cedula, TipoIdentificacion TipoIden, Date fechaNacimiento, String correo,  int estado, String nombre, String apellido1, String apellido2, String est, EstadoAcceso estAcc,int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita) {
+        this.setCed(ced);
+        this.setCedula(cedula);
+        this.setTipoIden(TipoIden);
+        this.setFechaNacimiento(fechaNacimiento);
+        this.setCorreo(correo);
+        this.setEstado(estado);
+        this.setNombre(nombre);
+        this.setApellido1(apellido1);
+        this.setApellido2(apellido2);
+        this.setEst(est);
+        this.setEstAcc(estAcc);
+        this.setId_Registra(Id_Registra);
+        this.setFechaRegistra(FechaRegistra);
+        this.setId_Edita(Id_Edita);
+        this.setFechaEdita(FechaEdita);
     }
     
     
@@ -204,6 +226,38 @@ public class Usuario {
 
     public void setFuncionario(EnumFuncionario Funcionario) {
         this.Funcionario = Funcionario;
+    }
+
+    public int getId_Registra() {
+        return Id_Registra;
+    }
+
+    public void setId_Registra(int Id_Registra) {
+        this.Id_Registra = Id_Registra;
+    }
+
+    public Date getFechaRegistra() {
+        return FechaRegistra;
+    }
+
+    public void setFechaRegistra(Date FechaRegistra) {
+        this.FechaRegistra = FechaRegistra;
+    }
+
+    public int getId_Edita() {
+        return Id_Edita;
+    }
+
+    public void setId_Edita(int Id_Edita) {
+        this.Id_Edita = Id_Edita;
+    }
+
+    public Date getFechaEdita() {
+        return FechaEdita;
+    }
+
+    public void setFechaEdita(Date FechaEdita) {
+        this.FechaEdita = FechaEdita;
     }
     
 

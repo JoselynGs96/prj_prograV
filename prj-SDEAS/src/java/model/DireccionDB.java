@@ -38,7 +38,14 @@ public class DireccionDB {
             Direccion direccion = new Direccion();
             direccion = direc;
 
-            strSQL = "INSERT INTO Direccion (Id_Usuario, Id_Provincia,Id_Canton,Id_Distrito,Id_Barrio,Otras_Sennas ,Log_Activo) VALUES (" + direccion.getUsuario().cedula + "," + direccion.getId_Provincia().Id_Provincia + "," + direccion.getId_Canton().Id_Canton + ", " + direccion.getId_Distrito().Id_Distrito + "," + direccion.getId_Barrio().Id_Barrio + ",'" + direccion.Otras_sennas + "'," + 1 + ")";
+            strSQL = "INSERT INTO Direccion (Id_Usuario, Id_Provincia,Id_Canton,Id_Distrito,Id_Barrio,Otras_Sennas,Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) VALUES (" + direccion.getUsuario().cedula + "," + direccion.getId_Provincia().Id_Provincia + "," + direccion.getId_Canton().Id_Canton 
+                    + ", " + direccion.getId_Distrito().Id_Distrito + "," + direccion.getId_Barrio().Id_Barrio + ",'" 
+                    + direccion.Otras_sennas 
+                    + "'," + direccion.Id_Registra
+                    + "'," + new java.sql.Date(direccion.getFechaRegistra().getTime())
+                    + "'," + direccion.Id_Edita
+                    + "'," + new java.sql.Date(direccion.getFechaEdita().getTime())
+                    + 1 + ")";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {

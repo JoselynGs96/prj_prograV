@@ -77,7 +77,7 @@ public class ActualizarUsuarioBean implements Serializable {
     LinkedList<Telefono> listaTel = new LinkedList<Telefono>();
     EnumFuncionario funcionario;
     Usuario UsuarioMantenimiento = new Usuario();
-
+    Date fecha = new Date();
     public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
     }
@@ -185,6 +185,8 @@ public class ActualizarUsuarioBean implements Serializable {
             usu.setFechaNacimiento(this.getFechaNacimiento());
             usu.setPrograma(prograDB.SeleccionarPorId(this.getPrograma()));
             usu.setCorreo(this.getCorreo());
+            usu.setId_Edita(116390998);
+            usu.setFechaEdita(fecha);
             usuDB.ActualizarUsuario(usu);
           
             setMensaje("Actualizado con exito");

@@ -43,7 +43,7 @@ public class CursoDB {
             }
              strSQL = "INSERT INTO Curso (Nombre, Dsc_Curso, Id_Programa,  Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
                     + "VALUES ('" 	+	curso.getNombre()	+"', '" 
-            + curso.getDescripcion() + "', '"  + curso.getPrograma().id+ "', '" +  curso.getId_Registra()  + "', '" + curso.getFechaRegistra() + "', '" + curso.getId_Edita() + "', '" + curso.getFechaEdita() + "', '" + estado +"')"; 
+            + curso.getDescripcion() + "', '"  + curso.getPrograma().id+ "', '" +  curso.getId_Registra()  + "', '" + new java.sql.Date(curso.getFechaRegistra().getTime()) + "', '" + curso.getId_Edita() + "', '" + new java.sql.Date(curso.getFechaEdita().getTime()) + "', '" + estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -73,7 +73,7 @@ public class CursoDB {
                      +"', Dsc_Curso= '" + curso.getDescripcion()
                      +"', Id_Programa='" + curso.getPrograma().id
                      +"', Id_Edita= '" + curso.getId_Edita()
-                     +"', FechaEdita= '" + curso.getFechaEdita()
+                     +"', FechaEdita= '" + new java.sql.Date(curso.getFechaEdita().getTime())
                      +"', Log_Activo='" + estado
                      +"' WHERE Id_Curso='" + curso.getId()+"';";
                     

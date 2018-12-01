@@ -48,7 +48,7 @@ public class UsuarioManteDB {
              strSQL = "UPDATE Usuario SET "
                      +"Id_EstadoAcceso='" + usuario.EstadoAcceso.getId()
                      +"', Id_Edita= '" + usuario.getId_Edita()
-                     +"', FechaEdita= '" + usuario.getFechaEdita()
+                     +"', FechaEdita= '" + new java.sql.Date(usuario.getFechaEdita().getTime()) 
                      +"', Log_Activo='" + estado
                      +"' WHERE Id_Usuario='" + usuario.getId()+"';";
                     

@@ -29,7 +29,7 @@ public class UsuarioMante {
     public UsuarioMante() {
     }
 
-    public UsuarioMante(int Id, TipoIdentificacion TipoIdentificacion, String Nombre, String Apellido1, String Apellido2, Date FechaNacimiento, String Correo, EstadoAcceso EstadoAcceso, String Log_Activo, String NombreCompleto, String Edad, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita) {
+    public UsuarioMante(int Id, TipoIdentificacion TipoIdentificacion, String Nombre, String Apellido1, String Apellido2, Date FechaNacimiento, String Correo, EstadoAcceso EstadoAcceso, String Log_Activo, String NombreCompleto, String Edad, int Id_Edita, Date FechaEdita) {
         this.setId(Id);
         this.setTipoIdentificacion(TipoIdentificacion);
         this.setNombre(Nombre);

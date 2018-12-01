@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author Fabi
@@ -17,6 +19,10 @@ public class Direccion {
     Usuario usuario;
     String Otras_sennas;
     String id_direccion;
+    int Id_Registra;
+    Date FechaRegistra;
+    int Id_Edita;
+    Date FechaEdita;
 
     public String getId_direccion() {
         return id_direccion;
@@ -39,6 +45,21 @@ public class Direccion {
         this.setUsuario(usuario);
     
     }
+
+    public Direccion(Provincia Id_Provincia, Canton Id_Canton, Distrito Id_Distrito, Barrio Id_Barrio, Usuario usuario, String Otras_sennas, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita) {
+        this.setId_Barrio(Id_Barrio);
+        this.setId_Canton(Id_Canton);
+        this.setId_Distrito(Id_Distrito);
+        this.setId_Provincia(Id_Provincia);
+        this.setOtras_sennas(Otras_sennas);
+        this.setUsuario(usuario);
+        this.setId_Registra(Id_Registra);
+        this.setFechaRegistra(FechaRegistra);
+        this.setId_Edita(Id_Edita);
+        this.setFechaEdita(FechaEdita);
+    }
+    
+    
 
   
 
@@ -89,5 +110,38 @@ public class Direccion {
     public void setOtras_sennas(String Otras_sennas) {
         this.Otras_sennas = Otras_sennas;
     }
+
+    public int getId_Registra() {
+        return Id_Registra;
+    }
+
+    public void setId_Registra(int Id_Registra) {
+        this.Id_Registra = Id_Registra;
+    }
+
+    public Date getFechaRegistra() {
+        return FechaRegistra;
+    }
+
+    public void setFechaRegistra(Date FechaRegistra) {
+        this.FechaRegistra = FechaRegistra;
+    }
+
+    public int getId_Edita() {
+        return Id_Edita;
+    }
+
+    public void setId_Edita(int Id_Edita) {
+        this.Id_Edita = Id_Edita;
+    }
+
+    public Date getFechaEdita() {
+        return FechaEdita;
+    }
+
+    public void setFechaEdita(Date FechaEdita) {
+        this.FechaEdita = FechaEdita;
+    }
+    
     
 }
