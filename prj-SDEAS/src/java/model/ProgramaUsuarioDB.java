@@ -43,7 +43,7 @@ public class ProgramaUsuarioDB {
                 estado = 1;
             }
              strSQL = "INSERT INTO Programa_Usuario (Id_Programa, Id_Usuario, Id_RolUsuario, Log_Activo) "
-                    + "VALUES ('" 	+	pu.getUsuario().id	+"', '" 
+                    + "VALUES ('" 	+	pu.getUsuario().Id	+"', '" 
             + pu.getPrograma().id + "', '" +  pu.rolUsuario.Id_RolUsuario + "', '"+ estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
@@ -152,7 +152,7 @@ public class ProgramaUsuarioDB {
                       while (rsPA.next()) {
 
                         Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa")) ;
-                        Usuario Id_Usuario = usu.SeleccionarPorId(rsPA.getString("Id_Usuario"));
+                        Usuario Id_Usuario = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                         RolUsuario Id_RolUsuario = rol.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         ProgramaUsuario pu = new ProgramaUsuario( Id_Usuario, Id_Programa, Id_RolUsuario, Log_Activo==0? "Inactivo":"Activo");

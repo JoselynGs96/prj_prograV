@@ -44,7 +44,7 @@ import model.UsuarioDB;
 @Dependent
 public class UsuarioBean {
 
-    String cedula;
+    int cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
@@ -99,24 +99,24 @@ public class UsuarioBean {
     public void PaginaRegistro() throws SNMPExceptions, SQLException {
         DireccionDB direc = new DireccionDB();
         TelefonoDB teldb = new TelefonoDB();
-        if (this.UsuarioMantenimiento.getCed() != 0) {
+        if (this.UsuarioMantenimiento.getId()!= 0) {
             this.setBotonNombre("Actualizar Información");
             /*Pantalla personal*/
             this.setNombre(UsuarioMantenimiento.getNombre());
             this.setApellido1(UsuarioMantenimiento.getApellido1());
             this.setApellido2(UsuarioMantenimiento.getApellido2());
             this.setApellido2(UsuarioMantenimiento.getApellido2());
-            this.setCedula(UsuarioMantenimiento.getCedula());
+            this.setCedula(UsuarioMantenimiento.getId());
             /*Buscar como hacer q este funcione*/
             this.setFechaNacimiento(UsuarioMantenimiento.getFechaNacimiento());
             /*Pantalla Direccion*/
 
-            if (!direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula()).isEmpty()) {
-                listaDirec = direc.SeleccionarPorUsuario(UsuarioMantenimiento.getCedula());
+            if (!direc.SeleccionarPorUsuario(UsuarioMantenimiento.getId()).isEmpty()) {
+                listaDirec = direc.SeleccionarPorUsuario(UsuarioMantenimiento.getId());
             }
             /*Pantalla de telefono*/
-            if (!teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula()).isEmpty()) {
-                listaTel = teldb.SeleccionarTodos(UsuarioMantenimiento.getCedula());
+            if (!teldb.SeleccionarTodos(UsuarioMantenimiento.getId()).isEmpty()) {
+                listaTel = teldb.SeleccionarTodos(UsuarioMantenimiento.getId());
             }
             this.setCorreo(UsuarioMantenimiento.getCorreo());
             /*Pantalla Progrema Deas*/
@@ -149,11 +149,11 @@ public class UsuarioBean {
         this.listaTipoTelefono = listaTipoTelefono;
     }
 
-    public String getCedula() {
+    public int getCedula() {
         return cedula;
     }
 
-    public void setCedula(String cedula) {
+    public void setCedula(int cedula) {
         this.cedula = cedula;
     }
 

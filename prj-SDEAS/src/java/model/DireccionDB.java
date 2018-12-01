@@ -38,7 +38,7 @@ public class DireccionDB {
             Direccion direccion = new Direccion();
             direccion = direc;
 
-            strSQL = "INSERT INTO Direccion (Id_Usuario, Id_Provincia,Id_Canton,Id_Distrito,Id_Barrio,Otras_Sennas ,Log_Activo) VALUES (" + direccion.getUsuario().cedula + "," + direccion.getId_Provincia().Id_Provincia + "," + direccion.getId_Canton().Id_Canton + ", " + direccion.getId_Distrito().Id_Distrito + "," + direccion.getId_Barrio().Id_Barrio + ",'" + direccion.Otras_sennas + "'," + 1 + ")";
+            strSQL = "INSERT INTO Direccion (Id_Usuario, Id_Provincia,Id_Canton,Id_Distrito,Id_Barrio,Otras_Sennas ,Log_Activo) VALUES (" + direccion.getUsuario().Id + "," + direccion.getId_Provincia().Id_Provincia + "," + direccion.getId_Canton().Id_Canton + ", " + direccion.getId_Distrito().Id_Distrito + "," + direccion.getId_Barrio().Id_Barrio + ",'" + direccion.Otras_sennas + "'," + 1 + ")";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -52,7 +52,7 @@ public class DireccionDB {
         }
     }
 
-    public LinkedList<Direccion> SeleccionarPorUsuario(String id_Usuario) throws SNMPExceptions, SQLException {
+    public LinkedList<Direccion> SeleccionarPorUsuario(int id_Usuario) throws SNMPExceptions, SQLException {
         String select = "";
         ProvinciaDB proDB = new ProvinciaDB();
         CantonDB canDB = new CantonDB();
@@ -101,7 +101,7 @@ public class DireccionDB {
         return listaDireccion;
     }
 
-    public void eliminaDireccion(String id_direccion)throws SNMPExceptions, SQLException {
+    public void eliminaDireccion(int id_direccion)throws SNMPExceptions, SQLException {
     String strSQL = "";
         try {
            strSQL = "delete Direccion from Direccion where Id_Direccion="+id_direccion;

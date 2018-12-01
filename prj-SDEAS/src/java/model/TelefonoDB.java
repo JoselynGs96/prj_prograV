@@ -41,7 +41,7 @@ public class TelefonoDB {
 
             strSQL = "INSERT INTO Telefono (Numero, Id_Usuario,Id_TipoTelefono, Log_Activo) "
                     + "VALUES (" + telefono.getNumero() + ", "
-                    + telefono.getId_Usuario().cedula +","+ telefono.getId_TipoTelefono().id_Telefono + ", " + 1 + ")";
+                    + telefono.getId_Usuario().Id +","+ telefono.getId_TipoTelefono().id_Telefono + ", " + 1 + ")";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -55,7 +55,7 @@ public class TelefonoDB {
         }
     }
     
-    public LinkedList<Telefono> SeleccionarTodos(String id_Usuario) throws SNMPExceptions,
+    public LinkedList<Telefono> SeleccionarTodos(int id_Usuario) throws SNMPExceptions,
             SQLException {
         String select = "";
         TipoTelefonoDB telDB = new TipoTelefonoDB();
@@ -97,7 +97,7 @@ public class TelefonoDB {
         return listaTel;
     }
     /*Elimina telefonos de las listas*/
-    public void eliminaTelefono(String id_telefono)throws SNMPExceptions, SQLException {
+    public void eliminaTelefono(int id_telefono)throws SNMPExceptions, SQLException {
     String strSQL = "";
         try {
            strSQL = "delete Telefono from Telefono where Id_Telefono ="+id_telefono;

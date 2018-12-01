@@ -65,14 +65,14 @@ public class UsuariosPorProgranaBean implements Serializable {
         usuarioModal = new UsuarioManteDB().SeleccionarPorId(i);
         
         DireccionDB dd = new DireccionDB();
-        listaDirecciones = dd.SeleccionarPorUsuario(i+"");
+        listaDirecciones = dd.SeleccionarPorUsuario(i);
          for (int j = 0; j < listaDirecciones.size(); j++) {
              Direccion dir = listaDirecciones.get(j);
              direcciones += "Dirección #"+j+1+": "+ dir.getOtras_sennas() +" ("+dir.getId_Provincia()+", "+dir.getId_Canton()+", "+dir.getId_Distrito()+","+dir.getId_Barrio()+") \n";
          }
         
         TelefonoDB tt = new TelefonoDB();
-        listaTelefonos = tt.SeleccionarTodos(i +"");
+        listaTelefonos = tt.SeleccionarTodos(i);
         for (int j = 0; j < listaTelefonos.size(); j++) {
              Telefono tel = listaTelefonos.get(j);
              telefonos += tel.getId_TipoTelefono().getDsc_TipoTelefono()+": "+ tel.getNumero()+" \n";

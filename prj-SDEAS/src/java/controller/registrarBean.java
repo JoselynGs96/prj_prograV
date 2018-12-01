@@ -45,7 +45,7 @@ import model.UsuarioDB;
 @Named(value = "registrarBean")
 @SessionScoped
 public class registrarBean implements Serializable {
-String cedula;
+int cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
@@ -136,7 +136,7 @@ String cedula;
             this.setMensaje("*Debe colocar el tipo de identificación.");
             respuesta = false;
         } else {
-            if (this.getCedula().equals("")) {
+            if (this.getCedula()==0) {
                 this.setMensaje("*Debe colocar la cédula de identificación.");
                 respuesta = false;
             } else {
@@ -324,8 +324,8 @@ String cedula;
 
         if (validaAutoRegistro()) {
             Usuario usu = new Usuario();
-            usu.setTipoIden(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
-            usu.setCedula(this.getCedula());
+            usu.setTipoIdentificacion(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
+            usu.setId(this.getCedula());
             usu.setNombre(this.getNombre());
             usu.setApellido1(this.getApellido1());
             usu.setApellido2(this.getApellido2());
@@ -366,11 +366,11 @@ String cedula;
         this.listaTipoTelefono = listaTipoTelefono;
     }
 
-    public String getCedula() {
+    public int getCedula() {
         return cedula;
     }
 
-    public void setCedula(String cedula) {
+    public void setCedula(int cedula) {
         this.cedula = cedula;
     }
 

@@ -25,29 +25,27 @@ import model.UsuarioDB;
 @Named(value = "loginControlador")
 @SessionScoped
 public class LoginControlador implements Serializable {
-       
+
     String Id_Usuario;
     String Contrasenna;
     Usuario Usuario1;
     String TpoUsuario;
     String Mensaje;
-     LinkedList<RolUsuario> listaRolUsuario = new LinkedList<RolUsuario>();
-     int id_rol; 
+    LinkedList<RolUsuario> listaRolUsuario = new LinkedList<RolUsuario>();
+    int id_rol;
 
-  
-
-     /**
+    /**
      * Creates a new instance of LoginControlador
      */
-    public LoginControlador() throws SNMPExceptions,SQLException{
+    public LoginControlador() throws SNMPExceptions, SQLException {
         RolUsuarioDB rol = new RolUsuarioDB();
-         if (!rol.SeleccionarTodos().isEmpty()) {
+        if (!rol.SeleccionarTodos().isEmpty()) {
             listaRolUsuario = rol.SeleccionarTodos();
             id_rol = rol.SeleccionarTodos().element().getId_RolUsuario();
         }
     }
-    
-     /*valida el login*/
+
+    /*valida el login*/
     public void validaIngresar() {
         if (this.getId_Usuario().equals("")) {
             this.setMensaje("*Debe colocar el usuario.");
@@ -57,29 +55,33 @@ public class LoginControlador implements Serializable {
             }
         }
     }
-    
-     public void autenticar(){
-       try{          
-           Usuario1=UsuarioDB.InicioSeccion(this.getId_Usuario(), this.getContrasenna(), this.TpoUsuario);
-           
-           if (Usuario1 != null){
-               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario",Id_Usuario); 
-               if(Usuario1.getRolUsuario().getId_RolUsuario()==1){
-                FacesContext.getCurrentInstance().getExternalContext().redirect("Mantenimiento.xhtml");
-               }else{
-               FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-               }
-              
-           }else{
-               this.setMensaje("Usuario o Contraseña o Tipo Funcionario incorrectos");
-               
-           }
-       }catch (Exception e){
-       
-       }
-       
-   }
-       public String getMensaje() {
+
+    public void autenticar() {
+        try {
+            Usuario1 = UsuarioDB.InicioSeccion(this.getId_Usuario(), this.getContrasenna(), this.TpoUsuario);
+
+            if (Usuario1 != null) {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", Id_Usuario);
+                if (Usuario1.getLog_Activo().equals("Inactivo")) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("CodigoVerificacion.xhtml");
+                } else {
+                    if (Usuario1.getRolUsuario().getId_RolUsuario() == 1) {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("Mantenimiento.xhtml");
+                    } else {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+                    }
+                }
+            } else {
+                this.setMensaje("Usuario o Contraseña o Tipo Funcionario incorrectos");
+
+            }
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    public String getMensaje() {
         return Mensaje;
     }
 
@@ -102,7 +104,7 @@ public class LoginControlador implements Serializable {
     public void setTpoUsuario(String TpoUsuario) {
         this.TpoUsuario = TpoUsuario;
     }
-    
+
     public String getId_Usuario() {
         return Id_Usuario;
     }
@@ -118,6 +120,7 @@ public class LoginControlador implements Serializable {
     public void setContrasenna(String Contrasenna) {
         this.Contrasenna = Contrasenna;
     }
+
     public LinkedList<RolUsuario> getListaRolUsuario() {
         return listaRolUsuario;
     }
@@ -125,7 +128,8 @@ public class LoginControlador implements Serializable {
     public void setListaRolUsuario(LinkedList<RolUsuario> listaRolUsuario) {
         this.listaRolUsuario = listaRolUsuario;
     }
-     public int getId_rol() {
+
+    public int getId_rol() {
         return id_rol;
     }
 
