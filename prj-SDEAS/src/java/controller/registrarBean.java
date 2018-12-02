@@ -220,11 +220,11 @@ int cedula;
                 respuesta = false;
             } else {
                 if (this.getId_Distrito() == 0) {
-                    this.setMensaje1("*Debe colocar el Distrito.");
+                    this.setMensaje1("*Debe colocar la Distrito.");
                     respuesta = false;
                 } else {
                     if (this.getId_Barrio() == 0) {
-                        this.setMensaje1("*Debe colocar el Barrio.");
+                        this.setMensaje1("*Debe colocar la Barrio.");
                         respuesta = false;
                     } else {
                         if (this.getOtrasSenas().equals("")) {
@@ -253,7 +253,7 @@ int cedula;
             direc.setCanton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
             direc.setDistrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
             direc.setBarrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
-            direc.setOtras_sennas(this.getOtrasSenas());
+            direc.setOtras_sennas(this.getOtrasSenas());       
             listaDirec.add(direc);
             limpiarDireccion();
         }
@@ -314,7 +314,7 @@ int cedula;
 
     /*Registra el usuario*/
     public void ingresarUsuario() throws SNMPExceptions, SQLException {
-        TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
+         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
         ProgramaDB prograDB = new ProgramaDB();
         RolUsuarioDB rolDB = new RolUsuarioDB();
         UsuarioDB usuDB = new UsuarioDB();
@@ -349,7 +349,7 @@ int cedula;
                 direcDB.registrar(dir);
             }
             /*Agrega programa_usuario*/
-            ProgramaUsuario prousu = new ProgramaUsuario(progra,rol1,"1");
+           ProgramaUsuario prousu = new ProgramaUsuario(usu, progra, rol1, this.getFuncionario(), "1");
             
              programaUsuarioDB.registrar(prousu);
 
