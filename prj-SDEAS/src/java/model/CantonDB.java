@@ -19,9 +19,6 @@ import javax.inject.Provider;
  */
 public class CantonDB {
 
-    int Id_Canton;
-    String Dsc_Canton;
-    Provincia Id_Provincia;
 
     private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;
@@ -86,7 +83,7 @@ public class CantonDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Canton,Dsc_Canton, Id_Provincia from Canton WHERE Id_Canton = " + idCanton+"and Id_Provincia="+id_Provincia;
+                    = "SELECT Id_Canton,Dsc_Canton, Id_Provincia from Canton WHERE Id_Canton = CONVERT(int," + idCanton+") and Id_Provincia=CONVERT(int,"+id_Provincia+")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

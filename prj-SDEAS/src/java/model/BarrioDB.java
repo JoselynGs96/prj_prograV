@@ -89,11 +89,11 @@ public class BarrioDB {
         ResultSet rsPA = null;
         Barrio bar = null;
 
-        try {
+        try {                                                                                         
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Barrio,Dsc_Barrio, Id_Provincia,Id_Canton,Id_Distrito from Barrio WHERE Id_Canton = " + Id_Canton+"and Id_Provincia="+Id_Provincia+"and Id_Distrito="+id_Distrito+"and Id_Barrio="+Id_barrio;
+                    = "SELECT Id_Barrio,Dsc_Barrio, Id_Provincia,Id_Canton,Id_Distrito from Barrio WHERE Id_Canton = CONVERT(int," + Id_Canton+") and Id_Provincia= CONVERT(int,"+Id_Provincia+" )and Id_Distrito= CONVERT(int,"+id_Distrito+") and Id_Barrio=CONVERT(int,"+Id_barrio+")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

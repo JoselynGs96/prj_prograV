@@ -220,11 +220,11 @@ int cedula;
                 respuesta = false;
             } else {
                 if (this.getId_Distrito() == 0) {
-                    this.setMensaje1("*Debe colocar la Distrito.");
+                    this.setMensaje1("*Debe colocar el Distrito.");
                     respuesta = false;
                 } else {
                     if (this.getId_Barrio() == 0) {
-                        this.setMensaje1("*Debe colocar la Barrio.");
+                        this.setMensaje1("*Debe colocar el Barrio.");
                         respuesta = false;
                     } else {
                         if (this.getOtrasSenas().equals("")) {
@@ -249,10 +249,10 @@ int cedula;
         BarrioDB barr = new BarrioDB();
 
         if (validarDirecciones()) {
-            direc.setId_Provincia(pro.SeleccionarPorId(this.getId_Provincia()));
-            direc.setId_Canton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
-            direc.setId_Distrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
-            direc.setId_Barrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
+            direc.setProvincia(pro.SeleccionarPorId(this.getId_Provincia()));
+            direc.setCanton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
+            direc.setDistrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
+            direc.setBarrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
             direc.setOtras_sennas(this.getOtrasSenas());
             listaDirec.add(direc);
             limpiarDireccion();

@@ -80,13 +80,13 @@ public class ProvinciaDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Provincia,Dsc_Corta_Provincia, Dsc_Provincia from Provincia WHERE Id_Provincia = " + idProvincia;
+                    = "SELECT Id_Provincia,Dsc_Corta_Provincia, Dsc_Provincia from Provincia WHERE Id_Provincia = CONVERT(int," + idProvincia+")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
 
-                  int Id_Provincia = rsPA.getInt("Id_Provincia");
+                int Id_Provincia = rsPA.getInt("Id_Provincia");
                 String Dsc_Corta_Provincia = rsPA.getString("Dsc_Corta_Provincia");
                 String Dsc_Provincia = rsPA.getString("Dsc_Provincia");
                 pro = new Provincia(Id_Provincia, Dsc_Corta_Provincia, Dsc_Provincia);

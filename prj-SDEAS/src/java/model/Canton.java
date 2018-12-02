@@ -13,13 +13,13 @@ public class Canton {
 
     int Id_Canton;
     String Dsc_Canton;
-    Provincia Id_Provincia;
+    Provincia Provincia;
      public Canton() {
     }
      public Canton( int Id_Canton,String Dsc_Canton,Provincia Id_Provincia) {
          this.setId_Canton(Id_Canton);
          this.setDsc_Canton(Dsc_Canton);
-         this.setId_Provincia(Id_Provincia);
+         this.setProvincia(Id_Provincia);
     }
      
 
@@ -39,12 +39,14 @@ public class Canton {
         this.Dsc_Canton = Dsc_Canton;
     }
 
-    public Provincia getId_Provincia() {
-        return Id_Provincia;
+    public Provincia getProvincia() {
+        return Provincia;
     }
 
-    public void setId_Provincia(Provincia Id_Provincia) {
-        this.Id_Provincia = Id_Provincia;
+    public void setProvincia(Provincia Provincia) {
+        this.Provincia = Provincia;
     }
+
+    
    
 }

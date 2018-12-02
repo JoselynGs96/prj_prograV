@@ -32,7 +32,7 @@ public class Telefono {
         this.setNumero(Numero);
     }
 
-    public Telefono(String Numero, Usuario Id_Usuario, TipoTelefono Id_TipoTelefono, String id_Telefono, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita) {
+    public Telefono(String Numero, Usuario Id_Usuario, TipoTelefono Id_TipoTelefono,  int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita) {
         this.setId_TipoTelefono(Id_TipoTelefono); 
         this.setNumero(Numero);
         this.setId_Registra(Id_Registra);

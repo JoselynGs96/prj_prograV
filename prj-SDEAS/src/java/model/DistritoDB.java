@@ -90,7 +90,7 @@ public class DistritoDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Distrito,Dsc_Distrito, Id_Provincia,Id_Canton from Distrito where Id_Distrito = "+idDis+"and Id_Canton="+id_can+"and Id_Provincia="+id_provincia ;
+                    = "SELECT Id_Distrito,Dsc_Distrito, Id_Provincia,Id_Canton from Distrito where Id_Distrito = CONVERT(int,"+idDis+") and Id_Canton=CONVERT(int,"+id_can+") and Id_Provincia=CONVERT(int,"+id_provincia +")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

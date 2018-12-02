@@ -67,7 +67,7 @@ public class TelefonoDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "select Id_Telefono, Numero,Id_TipoTelefono from Telefono where Id_Usuario="+id_Usuario;
+                    = "select Id_Telefono, Numero, Id_TipoTelefono from Telefono where Id_Usuario =" + id_Usuario;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -97,6 +97,75 @@ public class TelefonoDB {
 
         return listaTel;
     }
+    
+    public Telefono SeleccionarPorId(int id) throws SNMPExceptions,
+            SQLException {
+        String select = "";
+        TipoTelefonoDB telDB = new TipoTelefonoDB();
+        Telefono tel = null;
+        ResultSet rsPA = null;
+       
+        try {
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            select
+                    = "select Id_Telefono, Numero,Id_TipoTelefono from Telefono where Id_Telefono="+id;
+
+            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+
+            while (rsPA.next()) {
+                
+                int Id_Telefono = rsPA.getInt("Id_Telefono");
+                int numero = rsPA.getInt("Numero");               
+                TipoTelefono tipoTel = telDB.SeleccionarPorId(rsPA.getInt("Id_TipoTelefono"));
+                tel = new Telefono();
+                tel.setId_TipoTelefono(tipoTel);
+                tel.setNumero(numero+"");
+                tel.id_Telefono= Id_Telefono+"";
+            }
+
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return tel;
+    }
+    
+        public void actulizar(Telefono tel) throws SNMPExceptions, SQLException { 
+        String strSQL = "";   
+        int estado = 0;
+        try {  
+            Telefono telefono = new Telefono(); 
+            telefono = tel;             
+            
+             strSQL = "UPDATE Telefono SET "
+                     +"Numero='" +telefono.getNumero()
+                     +"', Id_TipoTelefono= '" + telefono.getId_TipoTelefono().id_Telefono
+                     +"', Id_Edita= '" + telefono.getId_Edita()
+                     +"', FechaEdita= '" + new java.sql.Date(telefono.getFechaEdita().getTime())
+                     +"', Log_Activo='" + estado
+                     +"' WHERE Id_Telefono='" + telefono.getId_Telefono()+"';";
+                    
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
+        } catch (SQLException e) { 
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
+                                    e.getMessage(), e.getErrorCode());         
+        }catch (Exception e) { 
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
+                                    e.getMessage()); 
+        } finally { 
+         
+        } 
+    } 
+    
     /*Elimina telefonos de las listas*/
     public void eliminaTelefono(int id_telefono)throws SNMPExceptions, SQLException {
     String strSQL = "";

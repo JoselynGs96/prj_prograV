@@ -324,10 +324,10 @@ public class ActualizarUsuarioBean implements Serializable {
         UsuarioDB usu = new UsuarioDB();
 
         if (validarDirecciones()) {
-            direc.setId_Provincia(pro.SeleccionarPorId(this.getId_Provincia()));
-            direc.setId_Canton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
-            direc.setId_Distrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
-            direc.setId_Barrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
+            direc.setProvincia(pro.SeleccionarPorId(this.getId_Provincia()));
+            direc.setCanton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
+            direc.setDistrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
+            direc.setBarrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
             direc.setOtras_sennas(this.getOtrasSenas());
             direc.setUsuario(usu.SeleccionarPorId(this.getCedula()));
             dir.registrar(direc);
