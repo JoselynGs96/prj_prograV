@@ -80,7 +80,7 @@ public class ProvinciaDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Provincia,Dsc_Corta_Provincia, Dsc_Provincia from Provincia WHERE Id_Provincia = CONVERT(int," + idProvincia+")";
+                    = "SELECT Id_Provincia,Dsc_Corta_Provincia, Dsc_Provincia from Provincia WHERE Id_Provincia = " + idProvincia;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

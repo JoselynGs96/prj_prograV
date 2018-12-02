@@ -42,8 +42,14 @@ public class ProgramaDB {
                 estado = 1;
             }
              strSQL = "INSERT INTO Programa (Nombre, Dsc_Programa, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
-                    + "VALUES ('" 	+	programa.getNombre()	+"', '" 
-            + programa.getDescripcion() + "', '" +  programa.getId_Registra()  + "', '" + new java.sql.Date(programa.getFechaRegistra().getTime()) + "', '" + programa.getId_Edita() + "', '" + new java.sql.Date(programa.getFechaEdita().getTime())+  "', '" +  estado +"')"; 
+                    + "VALUES ('" 	
+                     +	programa.getNombre()	
+                     +"', '"  + programa.getDescripcion() 
+                     + "', '" +  programa.getId_Registra()  
+                     + "', '" + new java.sql.Date(programa.getFechaRegistra().getTime()) 
+                     + "', '" + programa.getId_Edita() 
+                     + "', '" + new java.sql.Date(programa.getFechaEdita().getTime())
+                     +  "', '" +  estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 

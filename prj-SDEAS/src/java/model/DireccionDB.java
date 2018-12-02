@@ -38,14 +38,18 @@ public class DireccionDB {
             Direccion direccion = new Direccion();
             direccion = direc;
 
-            strSQL = "INSERT INTO Direccion (Id_Usuario, Id_Provincia,Id_Canton,Id_Distrito,Id_Barrio,Otras_Sennas,Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) VALUES (" + direccion.getUsuario().Id + "," + direccion.getProvincia().Id_Provincia + "," + direccion.getCanton().Id_Canton 
-                    + ", " + direccion.getDistrito().Id_Distrito + "," + direccion.getBarrio().Id_Barrio + ",'" 
-                    + direccion.Otras_sennas 
-                    + "'," + direccion.Id_Registra
-                    + "'," + new java.sql.Date(direccion.getFechaRegistra().getTime())
-                    + "'," + direccion.Id_Edita
-                    + "'," + new java.sql.Date(direccion.getFechaEdita().getTime())
-                    + 1 + ")";
+            strSQL = "INSERT INTO Direccion (Id_Barrio,Id_Distrito,Id_Canton,Id_Provincia,Id_Usuario,Otras_Sennas,Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) VALUES ('" 
+                    + direccion.getBarrio().Id_Barrio
+                    +"', '"+ direccion.getDistrito().Id_Distrito 
+                    +"', '"+ direccion.getCanton().Id_Canton 
+                    +"', '"+ direccion.getProvincia().Id_Provincia 
+                    +"', '"+ direccion.getUsuario().Id 
+                    +"', '"+direccion.Otras_sennas 
+                    +"', '"+ direccion.Id_Registra
+                    +"', '"+ new java.sql.Date(direccion.getFechaRegistra().getTime())
+                    +"', '"+ direccion.Id_Edita
+                    +"', '"+ new java.sql.Date(direccion.getFechaEdita().getTime())
+                    +"', '"+ 1 + "')";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {

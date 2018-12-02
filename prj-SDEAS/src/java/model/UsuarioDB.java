@@ -141,11 +141,11 @@ public class UsuarioDB {
             String fecha = formato.format(usuario.getFechaNacimiento());
 //mydate is your date object
 
-            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_RolUsuario],[Id_EstadoAcceso],Id_Registra,FechaRegistra,Id_Edita,FechaEdita,[Log_Activo]) values('" 
+            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_EstadoAcceso],Id_Registra,FechaRegistra,Id_Edita,FechaEdita,[Log_Activo]) values('" 
                     + usuario.Id + "','" + usuario.TipoIdentificacion.getId_TipoIdentificacion() 
                     + "','" + usuario.Nombre + "','" + usuario.Apellido1 + "','" 
                     + usuario.Apellido2 + "','" +  new java.sql.Date(usuario.getFechaNacimiento().getTime()) + "','" + usuario.getCorreo() 
-                    + "','" + 2 + "','" + 3  
+                    + "','" + 2 
                     + "', '" +  usuario.getId_Registra()  + "', '"+  new java.sql.Date(usuario.getFechaRegistra().getTime()) + "', '" + usuario.getId_Edita() + "', '" + new java.sql.Date(usuario.getFechaEdita().getTime()) + "', '" + 1 +"')";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
