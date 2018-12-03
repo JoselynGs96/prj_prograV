@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta charset="utf-8"/>
+        <title>SDEAS - Registrate</title>
+        <!-- Mobile Specific Meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <!-- Custom Fonts -->       
+        <link href="../Recursos/custom-font/fonts.css" rel="stylesheet" type="text/css"/>
+        <!-- Bootstrap -->       
+        <link href="../Recursos/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Font Awesome -->
+        <link href="../Recursos/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Bootsnav -->      
+        <link href="../Recursos/css/bootsnav.css" rel="stylesheet" type="text/css"/>
+        <!-- Fancybox -->
+        <link href="../Recursos/css/jquery.fancybox.css" rel="stylesheet" type="text/css"/>      
+        <!-- Custom stylesheet -->      
+        <link href="../Recursos/css/custom.css" rel="stylesheet" type="text/css"/>
+        <!--[if lt IE 9]>
+                <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <script>
+            PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo el día'
+            };
+        </script>
+
+    </h:head>
+    <h:body>
+
+
+
+        <h:form style="background: #fccc0c;" prependId="false">
+            <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
+                <p:scrollPanel mode="native" style="width:100%;height:100%; border:0px; margin-bottom: 50px" > 
+                    <h1 style="font-weight:normal">Ayuda</h1>          
+                    <br></br>
+                    <strong>¿Desea Iniciar Sesión? </strong>
+                    <br></br>
+                    Llene los datos Usuario que corresponde a la cédula, contraseña del usuario y el Tipo de Perfil.
+                    Luego, clic sobre el  <br></br> botón &#8594;
+                    <img src="Recursos/images//botonInicio.JPG" style="width:80px ;height:60px" alt=""/>
+                    <br></br>
+                    <br></br>
+                    <strong>¿Desea Registrarse? </strong>
+                    <br></br>      
+                    Clic sobre el  <br></br> botón &#8594;
+                    No tienes cuenta? Registrate aquí
+                    <br></br>
+                    <br></br>
+
+                    <div style="margin-bottom: 30px; height: 50px"></div>
+                </p:scrollPanel>
+            </p:sidebar>
+            <!-- Header -->
+            <header>
+                <!-- Top Navbar -->
+                <div class="top_nav">
+                    <div class="container">
+                        <ul class="list-inline info">
+                            <li><a href="#"><span class="fa fa-phone"></span> (506) 2435-5000</a></li>
+                            <li><a href="#"><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
+                            <li><a href="#"><span class="fa fa-clock-o"></span> Lunes - Sabado 9:00am - 5:00pm</a></li>
+                        </ul>
+                        <ul class="list-inline social_icon">
+                            <li><a href=""><span class="fa fa-facebook"></span></a></li>
+                            <li><a href=""><span class="fa fa-twitter"></span></a></li>
+                            <li><a href=""><span class="fa fa-behance"></span></a></li>
+                            <li><a href=""><span class="fa fa-dribbble"></span></a></li>
+                            <li><a href=""><span class="fa fa-linkedin"></span></a></li>
+                            <li><a href=""><span class="fa fa-youtube"></span></a></li>
+                        </ul>			
+                    </div>
+                </div><!-- Top Navbar end -->
+
+                <!-- Navbar -->
+                <nav class="navbar bootsnav">
+                    <!-- Top Search -->
+                    <div class="top-search">
+                        <div class="container">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Search"/>
+                                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <!-- Atribute Navigation -->
+                        <div class="attr-nav">
+                            <ul>
+                                <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+                            </ul>
+                        </div>
+                        <!-- Header Navigation -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <a class="navbar-brand" href=""><img class="logo" src="../Recursos/images/logo.png" alt=""/></a>
+                        </div>
+                        <!-- Navigation -->
+                        <div class="collapse navbar-collapse" id="navbar-menu">
+                            <ul class="nav navbar-nav menu">
+                                <li><a href="index.xhtml">Inicio</a></li>                    
+                                <li><a href="#about">Acerca de</a></li>
+                                <li><a href="#services">Servicios</a></li>
+                                <li><a href="Registro.xhtml">Registrar</a></li>
+                                <li><a href="InicioSesion.xhtml">Iniciar Sesión</a></li>
+                            </ul>
+                        </div>
+                    </div>    
+                </nav><!-- Navbar end -->
+            </header><!-- Header end -->
+            <secion class="contact_form" >
+            <div style="background:white" class="col-lg-offset-3 col-lg-6">      
+
+                <center>
+                      <div class="panel-heading" >
+                          <h1>Iniciar Sesión  </h1>
+                          <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px;" ><img align="right" style="width:20px; height:20px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda.png" alt=""/></a>
+                    </div>
+                    <div class="form-group">Usuario:
+                        <h:inputText  value="#{loginControlador.id_Usuario}"  class="form-control text-center" ></h:inputText>
+                    </div> 
+                    <div class="form-group">Contraseña:
+                        <h:inputText value="#{loginControlador.contrasenna}" class="form-control text-center  "></h:inputText>
+                    </div>    
+                    <div  class="form-group">Tipo de Perfil:<br></br>
+                        <h:selectOneMenu  value="#{loginControlador.tpoUsuario}" style="width:150px">
+                            <f:selectItems var="tipusu" value="#{loginControlador.listaRolUsuario}" itemLabel="#{tipusu.dsc_RolUsuario}" itemValue="#{tipusu.id_RolUsuario}"></f:selectItems>
+                        </h:selectOneMenu>                   
+                    </div>
+                    <h:commandButton actionListener="#{loginControlador.autenticar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
+                                     class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
+                    <br></br> <br></br>
+                    <h:outputText style="color: red" value="#{loginControlador.mensaje}"></h:outputText>
+                    <br></br> <br></br>
+                    <a href="Registro.xhtml" style="color: black;" class="link">No tienes cuenta? Registrate aquí</a>
+                </center>
+
+            </div>
+                </secion>
+          
+
+        </h:form>
+
+    </h:body>
+
+
+</html>
+
