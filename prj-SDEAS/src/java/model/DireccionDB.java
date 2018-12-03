@@ -38,18 +38,46 @@ public class DireccionDB {
             Direccion direccion = new Direccion();
             direccion = direc;
 
-            strSQL = "INSERT INTO Direccion (Id_Barrio,Id_Distrito,Id_Canton,Id_Provincia,Id_Usuario,Otras_Sennas,Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) VALUES ('" 
+            strSQL = "INSERT INTO Direccion (Id_Barrio,Id_Distrito,Id_Canton,Id_Provincia,Id_Usuario,Otras_Sennas,Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) VALUES ('"
                     + direccion.getBarrio().Id_Barrio
-                    +"', '"+ direccion.getDistrito().Id_Distrito 
-                    +"', '"+ direccion.getCanton().Id_Canton 
-                    +"', '"+ direccion.getProvincia().Id_Provincia 
-                    +"', '"+ direccion.getUsuario().Id 
-                    +"', '"+direccion.Otras_sennas 
-                    +"', '"+ direccion.Id_Registra
-                    +"', '"+ new java.sql.Date(direccion.getFechaRegistra().getTime())
-                    +"', '"+ direccion.Id_Edita
-                    +"', '"+ new java.sql.Date(direccion.getFechaEdita().getTime())
-                    +"', '"+ 1 + "')";
+                    + "', '" + direccion.getDistrito().Id_Distrito
+                    + "', '" + direccion.getCanton().Id_Canton
+                    + "', '" + direccion.getProvincia().Id_Provincia
+                    + "', '" + direccion.getUsuario().Id
+                    + "', '" + direccion.Otras_sennas
+                    + "', '" + direccion.Id_Registra
+                    + "', '" + new java.sql.Date(direccion.getFechaRegistra().getTime())
+                    + "', '" + direccion.Id_Edita
+                    + "', '" + new java.sql.Date(direccion.getFechaEdita().getTime())
+                    + "', '" + 1 + "')";
+
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+    }
+
+    public void Actualiza(Direccion direc) throws SNMPExceptions, SQLException {
+        String strSQL = "";
+        try {
+            Direccion direccion = new Direccion();
+            direccion = direc;
+
+            strSQL = "UPDATE [dbo].[Direccion] SET [Id_Barrio] ='" + direccion.getBarrio().Id_Barrio
+                    + "',[Id_Distrito] = '" + direccion.getDistrito().Id_Distrito
+                    + " ',[Id_Canton] ='" + direccion.getCanton().Id_Canton
+                    + " ',[Id_Provincia] ='"+direccion.getProvincia().Id_Provincia
+                    + "',[Id_Usuario] ='"+direccion.getUsuario().Id
+                    + "',[Otras_Sennas] ='"+direccion.Otras_sennas                  
+                    + "',[Id_Edita] ='"+direccion.Id_Edita
+                    + "',[FechaEdita]='" +  new java.sql.Date(direccion.getFechaEdita().getTime())
+                    + "'WHERE Id_Direccion= "+ direccion.id_direccion;
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -71,13 +99,12 @@ public class DireccionDB {
         BarrioDB barDB = new BarrioDB();
         ResultSet rsPA = null;
         LinkedList<Direccion> listaDireccion = new LinkedList<Direccion>();
-        
 
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Otras_Sennas from Direccion WHERE Id_Usuario= CONVERT(int," + id_Usuario+")";
+                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Otras_Sennas from Direccion WHERE Id_Usuario= CONVERT(int," + id_Usuario + ")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -112,7 +139,7 @@ public class DireccionDB {
 
         return listaDireccion;
     }
-    
+
     public Direccion SeleccionarPorId(int id) throws SNMPExceptions, SQLException {
         String select = "";
         ProvinciaDB proDB = new ProvinciaDB();
@@ -126,7 +153,7 @@ public class DireccionDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Otras_Sennas from Direccion WHERE Id_Direccion= CONVERT(int," + id +")";
+                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Otras_Sennas from Direccion WHERE Id_Direccion= CONVERT(int," + id + ")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -160,15 +187,11 @@ public class DireccionDB {
 
         return dir;
     }
-    
-    
-    
 
-
-    public void eliminaDireccion(int id_direccion)throws SNMPExceptions, SQLException {
-    String strSQL = "";
+    public void eliminaDireccion(int id_direccion) throws SNMPExceptions, SQLException {
+        String strSQL = "";
         try {
-           strSQL = "delete Direccion from Direccion where Id_Direccion="+id_direccion;
+            strSQL = "delete Direccion from Direccion where Id_Direccion=" + id_direccion;
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -181,34 +204,34 @@ public class DireccionDB {
 
         }
     }
-    
-    public void actulizar(Direccion dir) throws SNMPExceptions, SQLException { 
-        String strSQL = "";   
+
+    public void actulizar(Direccion dir) throws SNMPExceptions, SQLException {
+        String strSQL = "";
         int estado = 0;
-        try {  
-            Direccion direccion = new Direccion(); 
-            direccion = dir;             
-            
-             strSQL = "UPDATE Direccion SET "
-                     +"Id_Barrio='" +direccion.Barrio.Id_Barrio
-                     +"', Id_Distrito= '" + direccion.Distrito.Id_Distrito
-                     +"', Id_Canton= '" + direccion.Canton.Id_Canton
-                     +"', Id_Provincia= '" + direccion.Provincia.Id_Provincia
-                     +"', Otras_Sennas='" + direccion.Otras_sennas
-                     +"', Id_Edita='" + direccion.Id_Edita
-                     +"', FechaEdita='" + new java.sql.Date(direccion.getFechaEdita().getTime())
-                     +"' WHERE Id_Direccion='" + direccion.getId_direccion()+"';";
-                    
-            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
-        } catch (SQLException e) { 
-            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
-                                    e.getMessage(), e.getErrorCode());         
-        }catch (Exception e) { 
-            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
-                                    e.getMessage()); 
-        } finally { 
-         
-        } 
-    } 
-    
+        try {
+            Direccion direccion = new Direccion();
+            direccion = dir;
+
+            strSQL = "UPDATE Direccion SET "
+                    + "Id_Barrio='" + direccion.Barrio.Id_Barrio
+                    + "', Id_Distrito= '" + direccion.Distrito.Id_Distrito
+                    + "', Id_Canton= '" + direccion.Canton.Id_Canton
+                    + "', Id_Provincia= '" + direccion.Provincia.Id_Provincia
+                    + "', Otras_Sennas='" + direccion.Otras_sennas
+                    + "', Id_Edita='" + direccion.Id_Edita
+                    + "', FechaEdita='" + new java.sql.Date(direccion.getFechaEdita().getTime())
+                    + "' WHERE Id_Direccion='" + direccion.getId_direccion() + "';";
+
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+    }
+
 }

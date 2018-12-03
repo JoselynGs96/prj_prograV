@@ -339,7 +339,8 @@ public class ActualizarUsuarioBean implements Serializable {
     /*Elimina Direcciones*/
     public void eliminarDirecciones(int id_Direc) throws SNMPExceptions, SQLException {
         DireccionDB direc = new DireccionDB();
-        direc.eliminaDireccion(id_Direc);
+        Direccion direccion = direc.SeleccionarPorId(id_Direc);
+        direc.Actualiza(direccion);
     }
 
     /*Limpia los campos de Direccion*/
@@ -375,7 +376,8 @@ public class ActualizarUsuarioBean implements Serializable {
     /*Elimina telefono*/
     public void eliminarTelefonos(int id_Tel) throws SNMPExceptions, SQLException {
         TelefonoDB tel = new TelefonoDB();
-        tel.eliminaTelefono(id_Tel);
+        Telefono telefono = tel.SeleccionarPorId(id_Tel);
+        tel.Actualizar(telefono);
     }
 
     public int getCedula() {
