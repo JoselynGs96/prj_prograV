@@ -78,6 +78,7 @@ int cedula;
     LinkedList<Telefono> listaTel = new LinkedList<Telefono>();
     EnumFuncionario funcionario;
     Usuario UsuarioMantenimiento = new Usuario();
+    Date fecha = new Date();
 
     public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
@@ -253,7 +254,11 @@ int cedula;
             direc.setCanton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
             direc.setDistrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
             direc.setBarrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
-            direc.setOtras_sennas(this.getOtrasSenas());       
+            direc.setOtras_sennas(this.getOtrasSenas());     
+            direc.setId_Registra(116390998);
+            direc.setFechaRegistra(fecha);
+            direc.setId_Edita(116390098);
+            direc.setFechaEdita(fecha);
             listaDirec.add(direc);
             limpiarDireccion();
         }
@@ -289,6 +294,10 @@ int cedula;
             Telefono tel = new Telefono();
             tel.setId_TipoTelefono(telefo.SeleccionarPorId(this.getId_TipoTelefono()));
             tel.setNumero(this.getNumeroTelefono());
+            tel.setId_Registra(116390998);
+            tel.setFechaRegistra(fecha);
+            tel.setId_Edita(116390098);
+            tel.setFechaEdita(fecha);
             listaTel.add(tel);
             limpiarTelefono();
         }
@@ -330,13 +339,14 @@ int cedula;
             usu.setApellido1(this.getApellido1());
             usu.setApellido2(this.getApellido2());
             usu.setFechaNacimiento(this.getFechaNacimiento());
-            Programa progra = new Programa();
-            progra = prograDB.SeleccionarPorId(this.getPrograma());
-            usu.setPrograma(progra);
+            usu.setId_Registra(116390998);
+            usu.setFechaRegistra(fecha);
+            usu.setId_Edita(116390998);
+            usu.setFechaEdita(fecha);
             usu.setCorreo(this.getCorreo());
-            usu.setFuncionario(this.getFuncionario());
             usuDB.registrar(usu);
-            RolUsuario rol1 = rolDB.SeleccionarPorId(2);
+            
+            
             /*agregar telefono*/
             
             for (Telefono tel : listaTel) {
@@ -348,10 +358,17 @@ int cedula;
                 dir.setUsuario(usu);
                 direcDB.registrar(dir);
             }
+            
+            Programa progra = new Programa();
+            progra = prograDB.SeleccionarPorId(this.getPrograma());
+            RolUsuario rol1 = rolDB.SeleccionarPorId(2);
             /*Agrega programa_usuario*/
            ProgramaUsuario prousu = new ProgramaUsuario(usu, progra, rol1, this.getFuncionario(), "1");
-            
-             programaUsuarioDB.registrar(prousu);
+           prousu.setId_Registra(116390998);
+           prousu.setFechaEdita(fecha);
+           prousu.setId_Edita(116390998);
+           prousu.setFechaRegistra(fecha);
+           programaUsuarioDB.registrar(prousu);
 
             setMensaje("Su solicitud de registro ha sido enviada. Se le enviara un correo con el codigo de acceso y su comtraseña al correo");
         }

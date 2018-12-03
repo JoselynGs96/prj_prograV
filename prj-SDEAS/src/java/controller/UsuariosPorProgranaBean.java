@@ -184,7 +184,9 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
     
     public void editarDireccion(String id) throws SNMPExceptions, SQLException{
-        Direccion dir = new DireccionDB().SeleccionarPorId(Integer.getInteger(id));
+        DireccionDB ddb = new DireccionDB();
+        Direccion dir = new Direccion();
+        dir = ddb.SeleccionarPorId(Integer.getInteger(id));
         setIdDireccion(Integer.getInteger(dir.getId_direccion()));
         setId_Provincia(dir.getProvincia().getId_Provincia());
         setId_Canton(dir.getCanton().getId_Canton());

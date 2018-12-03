@@ -126,7 +126,7 @@ public class DireccionDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Otras_Sennas from Direccion WHERE Id_Usuario= CONVERT(int," + id +")";
+                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Otras_Sennas from Direccion WHERE Id_Direccion= CONVERT(int," + id +")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
