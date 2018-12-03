@@ -271,10 +271,8 @@
                             <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >DIRECCIONES</th>
                         </tr>
                         <tr>
-                            <td colspan="2">
-                                <center>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.direcciones}"></p:outputLabel>
-                                </center>
+                            <td colspan="2" style="padding: 5px">
+                                <h:inputTextarea style=" margin-top: 3px; width: 450px; border: 0px; " value="#{usuariosPorProgranaBean.direcciones}"></h:inputTextarea>
                             </td>
                         </tr>
                         <tr bgcolor="#F3EC88">
@@ -289,13 +287,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="2">
-                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; color:#222533;" >Telefonos:</p:outputLabel>
-                            </th>
-                        </tr>
-                         <tr>
-                            <td colspan="2">
-                                <p:outputLabel style="margin-top: 3px; width:200px" value="#{usuariosPorProgranaBean.telefonos}"></p:outputLabel>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color:#222533;" >Telefonos:</p:outputLabel>
+                            </td>
+                            <td style="padding: 5px">
+                                <h:inputTextarea readonly="true" style="margin-top: 3px; width:250px; border: 0px; "  value="#{usuariosPorProgranaBean.telefonos}"></h:inputTextarea>
                             </td>
                         </tr>
                         <tr bgcolor="#F3EC88">
@@ -304,7 +300,7 @@
                         <tr>
                             <td colspan="2">
                                 <center>
-                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.programas}"></p:outputLabel>
+                                <h:inputTextarea readonly="true" style=" margin-top: 3px; width:450px; border: 0px; text-align: center " value="#{usuariosPorProgranaBean.programas}"></h:inputTextarea>
                                 </center>
                             </td>
                         </tr>
@@ -323,13 +319,13 @@
           <section class="wrapper">
               <h3><i class="fa fa-angle-right"></i> Usuarios Por Programa</h3>
               <div class="row mtbox" style="margin-top: 0px">
-                    <div class="col-lg-5 main-chart">
-                        <div class="panel panel-default">
+                  <div class="col-lg-5 main-chart">
+                      <div class="panel panel-default row" style="margin-left: 20px">
                             <div class="panel-heading" >
                                 <span>Información del Usuario</span>
                                 <a onclick="PF('sidebar2').show()"  href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px" ><img align="right"  width="20px" height="20px" src="RecursoMante/img/ayuda.png" alt=""/></a>
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body " width="100%">
                              
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="active"><a data-toggle="tab" href="#personal"  title="Personal"><img width="20px" height="20px" src="RecursoMante/img/usuario.png" alt=""/></a></li>
@@ -338,180 +334,221 @@
                                 <li><a title="Programas DEAS" data-toggle="tab" href="#programas"><img width="20px" height="20px" src="RecursoMante/img/progra.png" alt=""/></a></li>
                             </ul>
                             <br></br>
-                                    <p:outputLabel value="#{usuariosPorProgranaBean.mensajeError}" escape="false"></p:outputLabel>
-                                    <p:outputLabel value="#{usuariosPorProgranaBean.mensajeGuardar}" escape="false"></p:outputLabel>
-                             <div class="tab-content" style="width: 100%">
+                                    <h:outputLabel id="msjE"   value="#{usuariosPorProgranaBean.mensajeError}" escape="false">
+                                    </h:outputLabel>
+                                    <h:outputLabel id="msjG" value="#{usuariosPorProgranaBean.mensajeGuardar}" escape="false"></h:outputLabel>
+                             <div class="tab-content">
                                 <div id="personal" class="tab-pane fade in active">
                                     <table style="width: 100%;"> 
                                         <tr>
                                             <td>  <p:outputLabel style="margin-top: 5px">Tipo de Identificación:</p:outputLabel></td>
-                                            <td>  <p:inputText  class="form-control" value="#{usuariosPorProgranaBean.tipoIdentificacion}" style="width: 90%; margin-top: 5px; margin-left: 10px" readonly="true"></p:inputText></td>
+                                            <td>  <p:inputText class="form-control" value="#{usuariosPorProgranaBean.tipoIdentificacion}" style="width: 90%; margin-top: 5px; margin-left: 10px" readonly="true">
+                                                     
+                                                  </p:inputText></td>
                                         </tr>
                                         <tr>
                                             <td>  <p:outputLabel style="margin-top: 5px">Cédula:</p:outputLabel></td>
-                                            <td>  <p:inputText class="form-control" value="#{usuariosPorProgranaBean.id}" style="width: 90%; margin-top: 5px; margin-left: 10px" readonly="true"></p:inputText></td>
+                                            <td>  <p:inputText class="form-control" value="#{usuariosPorProgranaBean.id}" style="width: 90%; margin-top: 5px; margin-left: 10px" readonly="true">
+                                                    
+                                                 </p:inputText>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>  <p:outputLabel style="margin-top: 5px">Nombre:</p:outputLabel></td>
-                                            <td>  <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.nombre}" style="width: 90%; margin-top: 5px; margin-left: 10px"  ></p:inputText></td>
+                                            <td>  <p:inputText id="nom"  class="form-control"  value="#{usuariosPorProgranaBean.nombre}" style="width: 90%; margin-top: 5px; margin-left: 10px"  >
+                                                        <f:ajax event="change" execute="nom"   ></f:ajax>
+                                                  </p:inputText></td>
                                         </tr>
                                         <tr>
                                             <td>  <p:outputLabel style="margin-top: 5px">Primer Apellido:</p:outputLabel></td>
-                                            <td> <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.apellido1}" style="width: 90%; margin-top: 5px; margin-left: 10px"  ></p:inputText></td>
+                                            <td> <p:inputText id="ap1"  class="form-control"  value="#{usuariosPorProgranaBean.apellido1}" style="width: 90%; margin-top: 5px; margin-left: 10px"  >
+                                                        <f:ajax event="change" execute="ap1"   ></f:ajax>
+                                                 </p:inputText></td>
                                         </tr>
                                         <tr>
                                             <td>  <p:outputLabel style="margin-top: 5px">Segundo Apellido:</p:outputLabel></td>
-                                            <td> <p:inputText   class="form-control"  value="#{usuariosPorProgranaBean.apellido2}" style="width: 90%; margin-top: 5px; margin-left: 10px"  ></p:inputText></td>
+                                            <td> <p:inputText id="ap2"  class="form-control"  value="#{usuariosPorProgranaBean.apellido2}" style="width: 90%; margin-top: 5px; margin-left: 10px"  >
+                                                        <f:ajax event="change" execute="ap2"   ></f:ajax>
+                                                </p:inputText></td>
                                         </tr>
                                         <tr style="height: 40px">
                                             <td>  <p:outputLabel style="margin-top: 5px">Fecha Nacimiento:</p:outputLabel></td>
-                                            <td>  <p:calendar style=" margin-top: 5px; margin-left: 10px" value="#{usuariosPorProgranaBean.fechaNacimiento}" effect="fold" locale="es" navigator="true" showOtherMonths="true"  pattern="dd-MM-yyyy" mask="true"  yearRange="c-100:c-15"   ></p:calendar></td>
+                                            <td>  <p:calendar id="fe" style=" margin-top: 5px; margin-left: 10px" 
+                                            value="#{usuariosPorProgranaBean.fechaNacimiento}" effect="fold" locale="es" 
+                                            navigator="true" showOtherMonths="true"  pattern="dd-MM-yyyy" mask="true"  
+                                            yearRange="c-100:c-15">
+                                                        <f:ajax event="change" execute="fe"   ></f:ajax>
+                                                </p:calendar></td>
                                         </tr>
                                     </table>
                                     <br></br>
                                     <p:outputLabel>Estado de Acceso:</p:outputLabel>
-                                    <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoAcceso}" >
+                                    <p:selectOneRadio layout="pageDirection" id="ea" value="#{usuariosPorProgranaBean.estadoAcceso}" >
+                                        <f:ajax event="change" execute="ea"   ></f:ajax>
                                         <f:selectItems value="#{usuariosPorProgranaBean.listaEstadoAcceso}" var="au" itemValue="#{au.id}" itemLabel="#{au.nombre}"></f:selectItems>
                                     </p:selectOneRadio>
                                     <br></br>
                                     <p:outputLabel>Estado de Usuario:</p:outputLabel>
-                                    <p:selectOneRadio layout="pageDirection" value="#{usuariosPorProgranaBean.estadoUsuario}">
+                                    <p:selectOneRadio layout="pageDirection" id="eu" value="#{usuariosPorProgranaBean.estadoUsuario}">
+                                        <f:ajax event="change" execute="eu"   ></f:ajax>
                                         <f:selectItem itemValue="Activo" itemLabel=" &nbsp;Activo&nbsp;" ></f:selectItem>
                                         <f:selectItem itemValue="Inactivo" itemLabel=" &nbsp;Inactivo&nbsp;"></f:selectItem>
                                     </p:selectOneRadio>
                                 </div>
                                 <div id="direccion" class="tab-pane fade">
-                                    <table style="width: 100%;">
+                                    <div style="overflow: auto">
+                                        <table style="width: 100%;">
                                             <tr>
-                                                <td>
+                                                <td align="right">
                                                     <h:outputText value="Provincia" style="margin-top: 5px" />  </td>
                                                 <td>
-                                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 90%; margin-top: 5px; margin-left: 10px " value="#{usuariosPorProgranaBean.id_Provincia}" id="Provincia" >
-                                                        <f:selectItems var="pro" value="#{usuariosPorProgranaBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
+                                                    <h:selectOneMenu class="form-control"   id="pro" style="width: 90%; margin-top: 5px; margin-left: 10px " value="#{usuariosPorProgranaBean.id_Provincia}" >
+                                                        <f:ajax event="change" execute="di" render="ca di ba" ></f:ajax>
+                                                        <f:selectItems var="pro" value="#{usuariosPorProgranaBean.getListaPro()}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
+                                                        
                                                     </h:selectOneMenu>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
+                                                <td align="right">
                                                     <h:outputText value="Canton" style="margin-top: 5px" />  </td>
                                                 <td>
-                                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 90%; margin-top: 5px; margin-left: 10px " value="#{usuariosPorProgranaBean.id_Canton}" id="Canton" >
-                                                        <f:selectItems var="can" value="#{usuariosPorProgranaBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
+                                                    <h:selectOneMenu class="form-control" id="ca" style="width: 90%; margin-top: 5px; margin-left: 10px " value="#{usuariosPorProgranaBean.id_Canton}"  >
+                                                       <f:ajax event="change" execute="ca" render="di ba" ></f:ajax>
+                                                       <f:selectItems var="can" value="#{usuariosPorProgranaBean.getListaCan()}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
+                                                      
                                                     </h:selectOneMenu>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
+                                                <td align="right">
                                                     <h:outputText value="Distrito" style="margin-top: 5px" />  </td>
                                                 <td>   
-                                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 90%; margin-top: 5px; margin-left: 10px " value="#{usuariosPorProgranaBean.id_Distrito}" >
-                                                        <f:selectItems var="dis" value="#{usuariosPorProgranaBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
+                                                    <h:selectOneMenu class="form-control" id="di" style="width: 90%; margin-top: 5px; margin-left: 10px " value="#{usuariosPorProgranaBean.id_Distrito}" >
+                                                        <f:ajax event="change" execute="di" render="ba" ></f:ajax>
+                                                        <f:selectItems var="dis" value="#{usuariosPorProgranaBean.getListaDis()}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
+                                                       
                                                     </h:selectOneMenu>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>
+                                                <td align="right">
                                                     <h:outputText value="Barrio" style="margin-top: 5px" />  </td>
                                                 <td>
-                                                    <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 90%; margin-top: 5px; margin-left: 10px " value="#{usuariosPorProgranaBean.id_Barrio}" >
-                                                        <f:selectItems var="bar" value="#{usuariosPorProgranaBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
+                                                    <h:selectOneMenu class="form-control"  id="ba"  style="width: 90%; margin-top: 5px; margin-left: 10px " value="#{usuariosPorProgranaBean.id_Barrio}" >
+                                                        <f:ajax event="change" execute="ba"   ></f:ajax>
+                                                        <f:selectItems var="bar" value="#{usuariosPorProgranaBean.getListaBarrio()}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
                                                     </h:selectOneMenu>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>  <h:outputText value="Otras señas" style="margin-top: 5px" />  </td>
-                                                <td>  <p:inputTextarea  style="margin-top: 5px; margin-left: 10px; width: 90% "  value="#{usuariosPorProgranaBean.otrasSennas}" class="col-md-12 form-control" id="otras"> </p:inputTextarea>
+                                                <td align="right">  <h:outputText value="Otras señas" style="margin-top: 5px" />  </td>
+                                                <td>  <p:inputTextarea  style="margin-top: 5px; margin-left: 10px; width: 90% "  value="#{usuariosPorProgranaBean.otrasSennas}" class="col-md-12 form-control" id="otras">
+                                                        <f:ajax event="change" execute="otras"></f:ajax>
+                                                      </p:inputTextarea>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <br></br>
                                                 <center>
-                                                    <td colspan="2" align="center">  <h:commandButton style="margin-top: 20px; font-size: 12px; border-color: #2775e2; color: #2775e2;" actionListener="#{usuariosPorProgranaBean.guardarDireccion()}" 
-                                                                                       class="btn btn-default btn-sm" value="Guardar Dirección"></h:commandButton>
+                                                    <td colspan="2" align="center">  <h:commandButton id="gd" style="margin-top: 20px; font-size: 12px; border-color: #2775e2; color: #2775e2;" actionListener="#{usuariosPorProgranaBean.guardarDireccion()}" 
+                                                                                       class="btn btn-default btn-sm" value="Guardar Dirección">
+                                                            <f:ajax event="action" execute="gd" render="dataDirec pro ca di ba otras msjE"  ></f:ajax>
+                                                        </h:commandButton>
                                                     </td> 
                                                 </center>
                                             </tr>
 
                                             <tr>   
-                                                <td colspan="2"> 
-                                                    <h:dataTable  id="dataDirec" width="100%"  class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaDirecciones}" var="direc">
+                                                <td colspan="2">
+                                                    <h:dataTable   id="dataDirec" style="max-width: 400px; margin-left: 0px" class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaDirecciones}" var="direc">
+                                                        
                                                         <h:column>
                                                             <f:facet name="header">
                                                                 <h:outputText value="Provincia"/>
                                                             </f:facet>
-                                                            <h:outputText value="#{direc.provincia.dsc_Provincia}"/>
+                                                            <h:outputText id="p" value="#{direc.provincia.dsc_Provincia}"/>
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
                                                                 <h:outputText value="Canton"/>
                                                             </f:facet>
-                                                            <h:outputText value="#{direc.canton.dsc_Canton}"/>
+                                                            <h:outputText id="c" value="#{direc.canton.dsc_Canton}"/>
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
                                                                 <h:outputText value="Distrito"/>
                                                             </f:facet>
-                                                            <h:outputText value="#{direc.distrito.dsc_Distrito}"/>
+                                                            <h:outputText id="d" value="#{direc.distrito.dsc_Distrito}"/>
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
                                                                 <h:outputText value="Barrio"/>
                                                             </f:facet>
-                                                            <h:outputText value="#{direc.barrio.dsc_Barrio}"/>
+                                                            <h:outputText id="b" value="#{direc.barrio.dsc_Barrio}"/>
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
                                                                 <h:outputText value="Otras Señas"/>
                                                             </f:facet>
-                                                            <h:outputText value="#{direc.otras_sennas}"/>
+                                                            <h:outputText id="o" value="#{direc.otras_sennas}"/>
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
                                                                 <h:outputText value=""/>
                                                             </f:facet>
-                                                            <h:commandButton actionListener="#{usuariosPorProgranaBean.editarDireccion(direc.id_direccion)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                                            <h:commandButton id="editDir" actionListener="#{usuariosPorProgranaBean.editarDireccion(direc.id_direccion)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> 
+                                                                <f:ajax event="action" execute="editDir" render="pro ca di ba otras" ></f:ajax>
+                                                            </h:commandButton>
                                                         </h:column>
                                                     </h:dataTable>
                                                 </td>
                                             </tr>
                                         </table>
+                                    </div>
                                 </div>
                                 <div id="contacto" class="tab-pane fade">
                                     <table style="width: 100%;"> 
                                         <tr>
                                             <td align="right">  <h:outputText value="Correo:" /> </td>
-                                            <td>  <h:inputText  style="float: left; margin-left: 10px; width: 97% " id="correo" value="#{usuariosPorProgranaBean.correo}"  class="form-inline form-control" ></h:inputText>   </td>
+                                            <td>  <h:inputText id="co" style="float: left; margin-left: 10px; width: 97% "  value="#{usuariosPorProgranaBean.correo}"  class="form-inline form-control" >
+                                                        <f:ajax event="change" execute="co"   ></f:ajax>
+                                                  </h:inputText>   </td>
                                         </tr>
                                     </table>
-                                    <div style="border: 1px solid gainsboro; margin-top: 10px; padding: 4px">
-                                        <table  style="width: 100%; " >
+                                    <div id="pt" style="border: 1px solid gainsboro; margin-top: 10px; padding: 4px; overflow: auto">
+                                        <table  style="width: 100%; ">
                                         <caption>Teléfonos</caption>
                                          <tr>
                                             <td>  
                                                 <h:outputText value="Tipo Teléfono:" style="margin-top: 5px;"/> 
                                             </td>
                                             <td>    
-                                                <h:selectOneMenu class="form-control"   style="width: 80%; margin-top: 5px; margin-left: 10px" value="#{usuariosPorProgranaBean.idTipoTelefono}" id="tel" >
+                                                <h:selectOneMenu class="form-control"  style="width: 80%; margin-top: 5px; margin-left: 10px" value="#{usuariosPorProgranaBean.idTipoTelefono}"  id="tele" >
+                                                    <f:ajax event="change" execute="tele"   ></f:ajax>
                                                     <f:selectItems var="tel" value="#{usuariosPorProgranaBean.listaTipoTelefonos}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
                                                 </h:selectOneMenu> 
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>   <h:outputText value="Número: " style="margin-top: 5px"/> </td>
-                                            <td> <h:inputText   style="float: left; margin-top: 5px; margin-left: 10px; width: 80% " id="numero" value="#{usuariosPorProgranaBean.numero}"  class="form-control form-inline" ></h:inputText>   </td>
+                                            <td> <h:inputText   style="float: left; margin-top: 5px; margin-left: 10px; width: 80% " id="numero"  value="#{usuariosPorProgranaBean.numero}"  class="form-control form-inline" >
+                                                     <f:ajax event="change" execute="numero"   ></f:ajax>
+                                                </h:inputText>   </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2" align="center">  
                                                 <center>
-                                                    <h:commandButton actionListener="#{usuariosPorProgranaBean.guardarTelefono()}" 
-                                                                     style="margin-top: 15px; font-size: 12px; border-color: #2775e2; color: #2775e2;" class="btn btn-default btn-sm" value="Guardar Teléfono"></h:commandButton>
+                                                    <h:commandButton id="gt" actionListener="#{usuariosPorProgranaBean.guardarTelefono()}" 
+                                                                     style="margin-top: 15px; font-size: 12px; border-color: #2775e2; color: #2775e2;" class="btn btn-default btn-sm" value="Guardar Teléfono">
+                                                        <f:ajax event="action" execute="gt" render="dataTel tele numero msjE"  ></f:ajax>
+                                                    </h:commandButton>
                                                 </center>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td  colspan="2">
-
-                                                <h:dataTable style="margin-top: 5px" id="dataTel" class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaTelefonos}" var="tell">
+                                                <h:dataTable style="margin-top: 5px" id="dataTel" class="table table-striped table-advance table-hover" width="100%" value="#{usuariosPorProgranaBean.listaTelefonos}" var="tell">
                                                     <h:column>
                                                         <f:facet name="header">
                                                             <h:outputText value="Tipo Télefono"/>
@@ -528,10 +565,11 @@
                                                         <f:facet name="header">
                                                             <h:outputText value=""/>
                                                         </f:facet>
-                                                        <h:commandButton actionListener="#{usuariosPorProgranaBean.editarBoton(usu.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                                        <h:commandButton id="editTel" actionListener="#{usuariosPorProgranaBean.editarTelefono(tell.id_Telefono)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> 
+                                                            <f:ajax event="action" execute="editTel" render="tele numero" ></f:ajax>
+                                                        </h:commandButton>
                                                     </h:column>
                                                 </h:dataTable>
-
                                             </td>
                                         </tr>
                                     </table>
@@ -539,43 +577,50 @@
                                     
                                 </div>
                                 <div id="programas" class="tab-pane fade">
-                                    <p:outputLabel style="font-weight: bold;">Programas al que Pertenece:</p:outputLabel>
-                                    <h:dataTable  class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaProusu}" style="width: 100%;" var="pu" >
-                                        <center>
-                                        <h:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Programa"/>
-                                            </f:facet>
-                                            <h:outputText value="#{pu.programa.nombre}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Rol"/>
-                                            </f:facet>
-                                            <h:outputText value="#{pu.rolUsuario.dsc_RolUsuario}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Estado"/>
-                                            </f:facet>
-                                             <h:outputText value="#{pu.estado}" />
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header">
-                                                <h:outputText value=""/>
-                                            </f:facet>
-                                            <h:commandButton title="Cambiar estado" value="Cambiar" actionListener="#{usuariosPorProgranaBean.cambiarEstado(pu.programa.id,pu.rolUsuario.id_RolUsuario)}" style="width: 90px; height: 25px; font-size: 12px; border-color: #2775e2; color: #2775e2;" class="btn btn-default btn-xs" ></h:commandButton>
-                                        </h:column>
-                                        </center>
-                                     </h:dataTable>
-                                </div>
+                                        <p:outputLabel style="font-weight: bold;">Programas al que Pertenece:</p:outputLabel>
+                                        <div style="overflow: auto">
+                                        <h:dataTable id="tProgra"  class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaProusu}" style="width: 100%;" var="pu" >
+                                            <center>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Programa"/>
+                                                </f:facet>
+                                                <h:outputText value="#{pu.programa.nombre}" />
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Rol"/>
+                                                </f:facet>
+                                                <h:outputText value="#{pu.rolUsuario.dsc_RolUsuario}" />
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Estado"/>
+                                                </f:facet>
+                                                <h:outputText id="est" value="#{pu.estado}" />
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value=""/>
+                                                </f:facet>
+                                                <h:commandButton title="Cambiar estado" id="ce" value="Cambiar" actionListener="#{usuariosPorProgranaBean.cambiarEstado(pu.programa.id,pu.rolUsuario.id_RolUsuario)}" style="width: 90px; height: 25px; font-size: 12px; border-color: #2775e2; color: #2775e2;" class="btn btn-default btn-xs" >
+                                                    <f:ajax event="action" execute="ce" render="est" ></f:ajax>
+                                                </h:commandButton>
+                                            </h:column>
+                                            </center>
+                                         </h:dataTable>
+                                        </div>
+                                 </div>
                              </div>
-                            
                              <div>
                                  <br></br>
-                                <h:commandButton class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.nuevoBoton()}"  value="Nuevo" ></h:commandButton>
+                                <h:commandButton class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.nuevoBoton()}"  value="Nuevo" >
+                                    <f:ajax event="action" render="@form"></f:ajax>
+                                </h:commandButton>
                                 <h:commandButton style="margin-left: 5px" class="btn btn-primary" onclick="window.open('faces/Registro.xhtml')"  value="Registrar"></h:commandButton>
-                                <h:commandButton style="margin-left: 5px" class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.guardarBoton()}"  value="Guardar"></h:commandButton>
+                                <h:commandButton style="margin-left: 5px" class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.guardarBoton()}"  value="Guardar">
+                                    <f:ajax event="action" render="@form"></f:ajax>
+                                </h:commandButton>
                              </div> 
                             </div>
                         </div>
@@ -586,10 +631,12 @@
                     <div class="col-lg-7 main-chart">
                         <div>
                             <p:inputText placeholder="Buscar..."   class="form-control" value="#{usuariosPorProgranaBean.buscarFiltro}"   style="width: 200px; float: left;"></p:inputText>
-                            <h:commandButton actionListener="#{usuariosPorProgranaBean.buscar()}" class="btn btn-default"  image="RecursoMante/img/buscar.png"  style="height:34px; margin-left: 5px; margin-right: 10px; display: inline-block;"></h:commandButton>
+                            <h:commandButton actionListener="#{usuariosPorProgranaBean.buscar()}" id="bus" class="btn btn-default"  image="RecursoMante/img/buscar.png"  style="height:34px; margin-left: 5px; margin-right: 10px; display: inline-block;">
+                               
+                            </h:commandButton>
                         </div>
                         <br></br>
-                        <p:outputLabel escape="false" style="width: 100%" value="#{usuariosPorProgranaBean.mensajeFiltro}" ></p:outputLabel>
+                        <p:outputLabel escape="false" style="width: 100%" id="msjf" value="#{usuariosPorProgranaBean.mensajeFiltro}" ></p:outputLabel>
                         <h:dataTable  id="datausu" class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaUsuario}" var="usu" >
                             <h:column>
                                 <f:facet name="header">
@@ -623,7 +670,9 @@
                                     <h:commandButton   alt="Ver más" title="Ver más" actionListener="#{usuariosPorProgranaBean.verMas(usu.id)}"  
                                     class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 3px" image="RecursoMante/img/ver.png"></h:commandButton>
                                    
-                                    <h:commandButton actionListener="#{usuariosPorProgranaBean.editarBoton(usu.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png"> </h:commandButton>
+                                    <h:commandButton actionListener="#{usuariosPorProgranaBean.editarBoton(usu.id)}" alt="Editar" title="Editar" class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 10px" image="RecursoMante/img/editar.png">
+                                        <f:ajax event="action" render="@form"></f:ajax>
+                                    </h:commandButton>
                                 </center>
                             </h:column>
                         </h:dataTable> 

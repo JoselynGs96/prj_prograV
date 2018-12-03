@@ -36,7 +36,7 @@ public class Usuario {
   
     
     
-    public Usuario( int cedula,TipoIdentificacion TipoIden,String nombre,String apellido1, String apellido2,Date fechaNacimiento,String correo,EstadoAcceso estAcc,String Log_Act, RolUsuario rol){
+    public Usuario( int cedula,TipoIdentificacion TipoIden,String nombre,String apellido1, String apellido2,Date fechaNacimiento,String correo,EstadoAcceso estAcc,String Log_Act){
         this.setId(cedula);
         this.setTipoIdentificacion(TipoIden);
         this.setNombre(nombre);
@@ -46,7 +46,6 @@ public class Usuario {
         this.setEstadoAcceso(estAcc);
         this.setCorreo(correo);
         this.setLog_Activo(Log_Activo);
-        this.setRolUsuario(rol);
         
     
     }

@@ -44,7 +44,7 @@ public class UsuarioDB {
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
-            select = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo, CodigoAcceso,Id_RolUsuario from Usuario";
+            select = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo, CodigoAcceso from Usuario";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -59,8 +59,7 @@ public class UsuarioDB {
                 String correo = rsPA.getString("Correo");
                 EstadoAcceso estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
                 String Log_Act = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
-                RolUsuario rol = rolDb.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
-                Usuario usu = new Usuario(cedula, TipoIden, nombre, apellido1, apellido2, fechaNacimiento, correo, estAcc, Log_Act, rol);
+                Usuario usu = new Usuario(cedula, TipoIden, nombre, apellido1, apellido2, fechaNacimiento, correo, estAcc, Log_Act);
 
                 listaUsuario.add(usu);
             }
@@ -94,7 +93,7 @@ public class UsuarioDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo, CodigoAcceso,Id_RolUsuario from Usuario WHERE Id_Usuario=" + idUsuario;
+                    = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo, CodigoAcceso from Usuario WHERE Id_Usuario=" + idUsuario;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -109,8 +108,7 @@ public class UsuarioDB {
                 String correo = rsPA.getString("Correo");
                 EstadoAcceso estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
                 String Log_Act = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
-                RolUsuario rol = rolDb.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
-                usu = new Usuario(cedula, TipoIden, nombre, apellido1, apellido2, fechaNacimiento, correo, estAcc, Log_Act, rol);
+                usu = new Usuario(cedula, TipoIden, nombre, apellido1, apellido2, fechaNacimiento, correo, estAcc, Log_Act);
 
             }
 
@@ -171,7 +169,7 @@ public class UsuarioDB {
 //mydate is your date object     
 
             strSQL = "UPDATE [dbo].[Usuario] SET [Nombre] ='" +  usuario.Nombre + 
-                    "',[Apellido1]="+usuario.Apellido1
+                      "', [Apellido1]="+usuario.Apellido1
                     + "', [Apellido2] ='" +usuario.Apellido2
                     + "', [FechaNacimiento] ='" +fecha
                     + "', [Correo] ='"+usuario.Correo

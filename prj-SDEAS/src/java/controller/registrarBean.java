@@ -311,7 +311,7 @@ int cedula;
 
     /*Elimina telefono*/
     public void eliminarTelefono(String numero) {
-        for (Telefono tel : listaTel) {
+        for(Telefono tel : listaTel) {
 
             if (tel.getNumero().equals(numero)) {
 

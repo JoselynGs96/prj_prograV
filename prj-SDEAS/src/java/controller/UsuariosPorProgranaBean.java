@@ -29,11 +29,8 @@ import model.Provincia;
 import model.ProvinciaDB;
 import model.Telefono;
 import model.TelefonoDB;
-import model.TipoIdentificacion;
-import model.TipoIdentificacionDB;
 import model.TipoTelefono;
 import model.TipoTelefonoDB;
-import model.Usuario;
 import model.UsuarioDB;
 import model.UsuarioMante;
 import model.UsuarioManteDB;
@@ -46,6 +43,18 @@ import org.primefaces.PrimeFaces;
 @Named(value = "usuariosPorProgranaBean")
 @SessionScoped
 public class UsuariosPorProgranaBean implements Serializable {
+    ProgramaDB proDB = new ProgramaDB();
+    ProgramaUsuarioDB prousuDB = new ProgramaUsuarioDB();
+    TelefonoDB telDB = new TelefonoDB();
+    DireccionDB dirDB = new DireccionDB();
+    EstadoAccesoDB estAccDB = new EstadoAccesoDB();
+    ProvinciaDB pro = new ProvinciaDB();
+    CantonDB can = new CantonDB();
+    DistritoDB dis = new DistritoDB();
+    BarrioDB barr = new BarrioDB();
+    TipoTelefonoDB tel = new TipoTelefonoDB();
+    UsuarioManteDB usuarioDB = new UsuarioManteDB();
+    
     Date fecha = new Date();
     String buscarFiltro = "";
     UsuarioMante usuario = null;
@@ -84,17 +93,17 @@ public class UsuariosPorProgranaBean implements Serializable {
     int estadoAcceso = 0;
     String estadoUsuario = "";
     
-    int idDireccion;
-    int Id_Provincia;
-    int Id_Canton;
-    int Id_Distrito;
-    int id_Barrio;
-    String otrasSennas;
+    int idDireccion=0;
+    int Id_Provincia=0;
+    int Id_Canton=0;
+    int Id_Distrito=0;
+    int id_Barrio=0;
+    String otrasSennas="";
     
     LinkedList<TipoTelefono> listaTipoTelefonos = new LinkedList<>();
-    String idTelefono;
-    int idTipoTelefono;
-    int numero;
+    String idTelefono = "";
+    int idTipoTelefono = 1;
+    String numero = "";
     
     public UsuariosPorProgranaBean() throws SNMPExceptions, SQLException{
         seleccionarTodos();
@@ -115,8 +124,8 @@ public class UsuariosPorProgranaBean implements Serializable {
         id_Barrio = 0;
         otrasSennas = "";
         idTelefono = "";
-        idTipoTelefono = 0;
-        numero = 0;
+        idTipoTelefono = 1;
+        numero = "";
         Correo = "";
         
         if(!listaTipoTelefonos.isEmpty()){
@@ -151,11 +160,11 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
     
     public void editarBoton(int id) throws SNMPExceptions, SQLException{
-        listaTipoTelefonos = new TipoTelefonoDB().SeleccionarTodos();
+        setMensajeError("");
+        listaTipoTelefonos = tel.SeleccionarTodos();
         llenarCombosDireccion();
         try{
-            UsuarioManteDB udb = new UsuarioManteDB();
-            usuario = udb.SeleccionarPorId(id);
+            usuario = usuarioDB.SeleccionarPorId(id);
             setTipoIdentificacion(usuario.getTipoIdentificacion().getDsc_TipoTelefono());
             setId(usuario.getId()+"");
             setNombre(usuario.getNombre());
@@ -167,104 +176,122 @@ public class UsuariosPorProgranaBean implements Serializable {
             
             setCorreo(usuario.getCorreo());
             
-            TelefonoDB tt = new TelefonoDB();
-            listaTelefonos = tt.SeleccionarTodos(usuario.getId());
+            listaTelefonos = telDB.SeleccionarTodos(usuario.getId());
             
-            DireccionDB dd = new DireccionDB();
-            listaDirecciones = dd.SeleccionarPorUsuario(usuario.getId());
+            listaDirecciones = dirDB.SeleccionarPorUsuario(usuario.getId());
             
-            ProgramaUsuarioDB pdb = new ProgramaUsuarioDB();
-            listaProusu = pdb.SeleccionarPorId(id);
+            listaProusu = prousuDB.SeleccionarPorId(id);
             
             
        }catch(Exception e){
-           setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el usuario...¡Intentelo de nuevo!</div>");
+           setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Error!&nbsp;</strong>Hubo un error al buscar el usuario...¡Intentelo de nuevo!</div>");
        }
         
     }
     
     public void editarDireccion(String id) throws SNMPExceptions, SQLException{
-        DireccionDB ddb = new DireccionDB();
-        Direccion dir = new Direccion();
-        dir = ddb.SeleccionarPorId(Integer.getInteger(id));
-        setIdDireccion(Integer.getInteger(dir.getId_direccion()));
-        setId_Provincia(dir.getProvincia().getId_Provincia());
-        setId_Canton(dir.getCanton().getId_Canton());
-        setId_Distrito(dir.getDistrito().getId_Distrito());
-        setId_Barrio(dir.getBarrio().getId_Barrio());
-        setOtrasSennas(dir.getOtras_sennas());
+        for (Direccion d : listaDirecciones) {
+            if(d.getId_direccion().endsWith(id)){
+                setIdDireccion(Integer.parseInt(d.getId_direccion()));
+                    setId_Provincia(d.getProvincia().getId_Provincia());
+                    setId_Canton(d.getCanton().getId_Canton());
+                    setId_Distrito(d.getDistrito().getId_Distrito());
+                    setId_Barrio(d.getBarrio().getId_Barrio());
+                    setOtrasSennas(d.getOtras_sennas());
+            }
+        }
+        
     }
     
     public void limpiarCamposDireccion(){
         setIdDireccion(0);
         setId_Provincia(0);
+        setId_Canton(0);
+        setId_Distrito(0);
+        setId_Barrio(0);
         setOtrasSennas("");
     }
     
     public void guardarDireccion() throws SNMPExceptions, SQLException{
-       if(ValidaDireccion()){
-        for (Direccion direccion : listaDirecciones) {
-            if(direccion.getId_direccion().equals(idDireccion)){
-                direccion.setId_Edita(116390998);
-                direccion.setFechaEdita(fecha);
-                direccion.setProvincia(new ProvinciaDB().SeleccionarPorId(Id_Provincia));
-                direccion.setCanton(new CantonDB().SeleccionarPorId(Id_Canton, Id_Provincia));
-                direccion.setDistrito(new DistritoDB().SeleccionarPorId(Id_Distrito, Id_Canton, Id_Provincia));
-                direccion.setBarrio(new BarrioDB().SeleccionarPorId(Id_Provincia, Id_Canton, Id_Distrito, id_Barrio));
-                direccion.setOtras_sennas(otrasSennas);
-            }else{
-                listaDirecciones.add(new Direccion(new ProvinciaDB().SeleccionarPorId(Id_Provincia), new CantonDB().SeleccionarPorId(Id_Canton, Id_Provincia),new DistritoDB().SeleccionarPorId(Id_Distrito, Id_Canton, Id_Provincia), new BarrioDB().SeleccionarPorId(Id_Provincia, Id_Canton, Id_Distrito, id_Barrio), new UsuarioDB().SeleccionarPorId(Integer.getInteger(Id)) , otrasSennas, 116390998, fecha, 116390998, fecha));
+       boolean ind = false;
+        if(ValidaDireccion()){
+            for (Direccion direccion : listaDirecciones) {
+                if(direccion.getId_direccion().equals(Integer.toString(idDireccion))){
+                    direccion.setId_Edita(116390998);
+                    direccion.setFechaEdita(fecha);
+                    direccion.setProvincia(pro.SeleccionarPorId(Id_Provincia));
+                    direccion.setCanton(can.SeleccionarPorId(Id_Canton, Id_Provincia));
+                    direccion.setDistrito(dis.SeleccionarPorId(Id_Distrito, Id_Canton, Id_Provincia));
+                    direccion.setBarrio(barr.SeleccionarPorId(Id_Provincia, Id_Canton, Id_Distrito, id_Barrio));
+                    direccion.setOtras_sennas(getOtrasSennas());
+                    ind = true;
+                }
+            }  
+
+            if(ind == false){
+                Direccion dir = new Direccion();
+                dir.setProvincia(pro.SeleccionarPorId(Id_Provincia));
+                dir.setCanton(can.SeleccionarPorId(Id_Canton, Id_Provincia));
+                dir.setDistrito(dis.SeleccionarPorId(Id_Distrito, Id_Canton, Id_Provincia));
+                dir.setBarrio(barr.SeleccionarPorId(Id_Provincia, Id_Canton, Id_Distrito, id_Barrio));
+                dir.setUsuario(new UsuarioDB().SeleccionarPorId(Integer.parseInt(Id)));
+                dir.setOtras_sennas(otrasSennas);
+                dir.setId_Registra(116390998);
+                dir.setFechaRegistra(fecha);
+                dir.setId_Edita(116390998);
+                dir.setFechaEdita(fecha);
+                listaDirecciones.add(dir);
             }
-        }  
+            limpiarCamposDireccion();
        }
-        limpiarCamposDireccion();
+       
     }
     
     public boolean ValidaDireccion(){
         boolean indicador = true;
         
-        if(Id.equals("")){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el registro a actualizar</div>");
+        if(getId().equals("")){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Debe seleccionar el registro a actualizar</div>");
              return indicador = false;
          }else{
              setMensajeError("");
              indicador = true;
          }
         
-         if(Id_Provincia==0){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar la Provincia</div>");
+         if(getId_Provincia()==0){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Debe seleccionar la Provincia</div>");
              return indicador = false;
          }else{
              setMensajeError("");
              indicador = true;
          }
          
-         if(Id_Canton==0){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el Cantón</div>");
+         if(getId_Canton() ==0){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Debe seleccionar el Cantón</div>");
              return indicador = false;
          }else{
              setMensajeError("");
              indicador = true;
          }
          
-         if(Id_Distrito==0){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el Distrito</div>");
+         if(getId_Distrito()==0){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Debe seleccionar el Distrito</div>");
              return indicador = false;
          }else{
              setMensajeError("");
              indicador = true;
          }
          
-         if(id_Barrio==0){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el Barrio</div>");
+         if(getId_Barrio() ==0){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Error!&nbsp;</strong>Debe seleccionar el Barrio</div>");
              return indicador = false;
          }else{
              setMensajeError("");
              indicador = true;
          }
          
-         if(otrasSennas.equals("")){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe llenar el campo Otras señas</div>");
+         if(getOtrasSennas().equals("")){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Error!&nbsp;</strong>Debe llenar el campo Otras señas</div>");
              return indicador = false;
          }else{
              setMensajeError("");
@@ -274,32 +301,36 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
     
     public void editarTelefono(String id) throws SNMPExceptions, SQLException{
-        Telefono tel = new TelefonoDB().SeleccionarPorId(Integer.getInteger(id));
-        setIdTelefono(tel.getId_Telefono());
-        setIdTipoTelefono(tel.getId_TipoTelefono().getId_Telefono());
-        setNumero(Integer.getInteger(tel.getNumero()));
+         for (Telefono telefono : listaTelefonos) {
+                if(telefono.getId_Telefono().equals(id)){
+                    setIdTelefono(telefono.getId_Telefono());
+                    setIdTipoTelefono(telefono.getId_TipoTelefono().getId_Telefono());
+                    setNumero(telefono.getNumero());
+                }
+         }
+        
     }
     
     public boolean ValidarTelefono(){
        boolean indicador;
        
-       if(Id.equals("")){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el registro a actualizar</div>");
+       if(getId().equals("")){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Error!&nbsp;</strong>Debe seleccionar el registro a actualizar</div>");
              return indicador = false;
          }else{
              setMensajeError("");
              indicador = true;
          }
        
-        if(idTipoTelefono == 1){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el Tipo de Teléfono</div>");
+        if(getIdTipoTelefono() == 1){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Debe seleccionar el Tipo de Teléfono</div>");
              return indicador = false;
          }else{
              setMensajeError("");
              indicador = true;
          }
-        if(numero == 0){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe llenar el campo Numero</div>");
+        if(getNumero().equals("")){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Debe llenar el campo Numero</div>");
              return indicador = false;
          }else{
              setMensajeError("");
@@ -310,48 +341,55 @@ public class UsuariosPorProgranaBean implements Serializable {
     
     public void limpiarCamposTelefono(){
         setIdTelefono("");
-        setIdTipoTelefono(0);
-        setNumero(0);
+        setIdTipoTelefono(1);
+        setNumero("");
     }
     
     public void guardarTelefono() throws SNMPExceptions, SQLException{
+        boolean ind = false;
         if(ValidarTelefono()){
-        for (Telefono telefono : listaTelefonos) {
-            if(telefono.getId_Telefono().equals(idTelefono)){
-                telefono.setId_Edita(116390998);
-                telefono.setFechaEdita(fecha);
-                telefono.setId_TipoTelefono(new TipoTelefonoDB().SeleccionarPorId(idTipoTelefono));
-                telefono.setNumero(numero+"");
-            }else{
-                listaTelefonos.add(new Telefono(numero+"",new UsuarioDB().SeleccionarPorId(Integer.getInteger(Id)) , new TipoTelefonoDB().SeleccionarPorId(idTipoTelefono), 116390998, fecha, 116390998, fecha));
+            for (Telefono telefono : listaTelefonos) {
+                if(telefono.getId_Telefono().equals(getIdTelefono())){
+                    telefono.setId_Edita(116390998);
+                    telefono.setFechaEdita(fecha);
+                    telefono.setId_TipoTelefono(tel.SeleccionarPorId(getIdTipoTelefono()));
+                    telefono.setNumero(getNumero());
+                    ind = true;
+                }
             }
-        }  
+            
+            if(ind == false){
+                listaTelefonos.add(new Telefono(getNumero(),
+                        new UsuarioDB().SeleccionarPorId(Integer.parseInt(getId())) , 
+                        new TipoTelefonoDB().SeleccionarPorId(idTipoTelefono), 
+                        116390998, fecha, 116390998, fecha));
+            }
+            
+            limpiarCamposTelefono();
         }
-        limpiarCamposTelefono();
+        
+        
     }
    
     public void verMas(int i) throws SNMPExceptions, SQLException{
-        usuarioModal = new UsuarioManteDB().SeleccionarPorId(i);
+        usuarioModal = usuarioDB.SeleccionarPorId(i);
         
-        DireccionDB dd = new DireccionDB();
-        listaDirecciones = dd.SeleccionarPorUsuario(i);
+        listaDirecciones = dirDB.SeleccionarPorUsuario(i);
          for (int j = 0; j < listaDirecciones.size(); j++) {
              Direccion dir = listaDirecciones.get(j);
-             direcciones += "Dirección #"+j+1+": "+ dir.getOtras_sennas() +" ("+dir.getProvincia()+", "+dir.getCanton()+", "+dir.getDistrito()+","+dir.getBarrio()+") \n";
+             direcciones += "Dirección #"+(j+1)+": "+ dir.getOtras_sennas() +" ("+dir.getProvincia().getDsc_Provincia()+", "+dir.getCanton().getDsc_Canton()+", "+dir.getDistrito().getDsc_Distrito()+","+dir.getBarrio().getDsc_Barrio()+")\n";
          }
         
-        TelefonoDB tt = new TelefonoDB();
-        listaTelefonos = tt.SeleccionarTodos(i);
+        listaTelefonos = telDB.SeleccionarTodos(i);
         for (int j = 0; j < listaTelefonos.size(); j++) {
              Telefono tel = listaTelefonos.get(j);
-             telefonos += tel.getId_TipoTelefono().getDsc_TipoTelefono()+": "+ tel.getNumero()+" \n";
+             telefonos += tel.getId_TipoTelefono().getDsc_TipoTelefono()+": "+ tel.getNumero()+"\n";
          }
         
-        ProgramaUsuarioDB pp = new ProgramaUsuarioDB();
-        listaProusuModal = pp.SeleccionarPorId(i);
+        listaProusuModal = prousuDB.SeleccionarPorId(i);
          for (int j = 0; j < listaProusuModal.size(); j++) {
              ProgramaUsuario ps = listaProusuModal.get(j);
-             programas +=  ps.getPrograma().getNombre() +", "+ps.getRolUsuario().getDsc_RolUsuario() +", "+ps.getEstado()+"\n";
+             programas +=  ps.getPrograma().getNombre() +", "+(ps.getRolUsuario().getId_RolUsuario()==3?ps.getRolUsuario().getDsc_RolUsuario()+" : "+ps.getFuncionario().toString(): ps.getRolUsuario().getDsc_RolUsuario()) +", "+ps.getEstado()+"\n";
          }
         
         
@@ -359,27 +397,25 @@ public class UsuariosPorProgranaBean implements Serializable {
      }
    
     public void buscar() throws SNMPExceptions, SQLException{
-        UsuarioManteDB udb = new UsuarioManteDB();
         try{
         if(!getBuscarFiltro().equals("")){
-            if(!udb.FiltrarUsuario(buscarFiltro).isEmpty()){
-                listaUsuario = udb.FiltrarUsuario(buscarFiltro);
+            if(!usuarioDB.FiltrarUsuario(buscarFiltro).isEmpty()){
+                listaUsuario = usuarioDB.FiltrarUsuario(buscarFiltro);
                  setMensajeFiltro("");
             }else{
-                listaUsuario = udb.SeleccionarTodos();
-                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+                listaUsuario = usuarioDB.SeleccionarTodos();
+                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' ><strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
             }
         }else{
             seleccionarTodos();
             setMensajeFiltro("");
         }
         }catch(Exception e){
-            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el usuario...¡Intentelo de nuevo!</div>");
+            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Hubo un error al buscar el usuario...¡Intentelo de nuevo!</div>");
         }
      }
     
     public void cambiarEstado(int idPro, int idT) throws SNMPExceptions, SQLException{
-        ProgramaUsuarioDB pdb = new ProgramaUsuarioDB();
         for (int i = 0; i < listaProusu.size(); i++) {
             
             ProgramaUsuario pro = listaProusu.get(i);
@@ -397,7 +433,6 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
     
     public void cambiarTipoFuncionario(int idPro, int idT) throws SNMPExceptions, SQLException{
-        ProgramaUsuarioDB pdb = new ProgramaUsuarioDB();
         for (int i = 0; i < listaProusu.size(); i++) {
             
             ProgramaUsuario pro = listaProusu.get(i);
@@ -408,10 +443,6 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
     
     public void guardarBoton(){
-        UsuarioManteDB us = new UsuarioManteDB();
-        ProgramaUsuarioDB proU = new ProgramaUsuarioDB();
-        DireccionDB dirDB = new DireccionDB();
-        TelefonoDB telDB = new TelefonoDB();
         try{
             if(Validaciones()){
                 usuario.setNombre(Nombre);
@@ -420,10 +451,10 @@ public class UsuariosPorProgranaBean implements Serializable {
                 usuario.setFechaNacimiento(FechaNacimiento);
                 usuario.setCorreo(Correo);
                 usuario.setLog_Activo(this.estadoUsuario);
-                usuario.setEstadoAcceso(new EstadoAccesoDB().SeleccionarPorId(this.estadoAcceso));
+                usuario.setEstadoAcceso(estAccDB.SeleccionarPorId(this.estadoAcceso));
                 usuario.setId_Edita(116390998);
                 usuario.setFechaEdita(fecha);
-                us.actulizar(usuario);
+                usuarioDB.actulizar(usuario);
                 
                 for (int i = 0; i < listaDirecciones.size(); i++) {
                     if(listaDirecciones.get(i).getId_direccion().equals("")){
@@ -444,13 +475,13 @@ public class UsuariosPorProgranaBean implements Serializable {
                 }
                 
                 for (int i = 0; i < listaProusu.size(); i++) {
-                    proU.actulizar(listaProusu.get(i));
+                    prousuDB.actulizar(listaProusu.get(i));
                 }
-                setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Usuario actualizado con éxito!</div> ");
+                setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <strong>Exitoso!&nbsp;</strong>¡Usuario actualizado con éxito!</div> ");
             }
             seleccionarTodos();
         }catch(Exception e){
-            setMensajeError( "<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al guardar el usuario...¡Intentelo de nuevo!</div>");
+            setMensajeError( "<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Hubo un error al guardar el usuario...¡Intentelo de nuevo!</div>");
         }
     }
     
@@ -458,7 +489,7 @@ public class UsuariosPorProgranaBean implements Serializable {
         boolean indicador = true;
          
          if(Id.equals("")){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el registro a actualizar</div>");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Debe seleccionar el registro a actualizar</div>");
              return indicador = false;
          }else{
              setMensajeError("");
@@ -466,7 +497,7 @@ public class UsuariosPorProgranaBean implements Serializable {
          }
          
          if(Nombre.equals("")){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Nombre del usuario requerido</div>");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Nombre del usuario requerido</div>");
              return indicador = false;
          }else{
              setMensajeError("");
@@ -474,7 +505,7 @@ public class UsuariosPorProgranaBean implements Serializable {
          }
          
          if(Apellido1.equals("")){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Primer apellido requerido</div>");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Primer apellido requerido</div>");
              return indicador = false;
          }else{
              setMensajeError("");
@@ -482,7 +513,7 @@ public class UsuariosPorProgranaBean implements Serializable {
          }
          
          if(Apellido2.equals("")){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Segundo apellido requerido</div>");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Segundo apellido requerido</div>");
              return indicador = false;
          }else{
              setMensajeError("");
@@ -490,7 +521,7 @@ public class UsuariosPorProgranaBean implements Serializable {
          }
          
          if(FechaNacimiento == null){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Fecha de Nacimiento requerida</div>");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Fecha de Nacimiento requerida</div>");
              return indicador = false;
          }else{
              setMensajeError("");
@@ -498,7 +529,7 @@ public class UsuariosPorProgranaBean implements Serializable {
          }
          
          if(Correo.equals("")){
-             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Correo requerido</div>");
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Correo requerido</div>");
              return indicador = false;
          }else{
              setMensajeError("");
@@ -508,21 +539,14 @@ public class UsuariosPorProgranaBean implements Serializable {
          return indicador;
     }
     
-    
-    
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
-       UsuarioManteDB u = new UsuarioManteDB();
-        if(!u.SeleccionarTodos().isEmpty()){
+        if(!usuarioDB.SeleccionarTodos().isEmpty()){
             listaUsuario.clear();
-            listaUsuario = u.SeleccionarTodos();
+            listaUsuario = usuarioDB.SeleccionarTodos();
         }
     }
     
     public void llenarCombosDireccion() throws SNMPExceptions, SQLException {
-        ProvinciaDB pro = new ProvinciaDB();
-        CantonDB can = new CantonDB();
-        DistritoDB dis = new DistritoDB();
-        BarrioDB barr = new BarrioDB();
 
         if (!pro.SeleccionarTodos().isEmpty()) {
             listaPro = pro.SeleccionarTodos();
@@ -542,7 +566,6 @@ public class UsuariosPorProgranaBean implements Serializable {
         }
        
     }
-
     
     public UsuarioMante getUsuario() {
         return usuario;
@@ -641,8 +664,7 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
 
     public LinkedList<EstadoAcceso> getListaEstadoAcceso() throws SNMPExceptions, SQLException {
-        EstadoAccesoDB db = new EstadoAccesoDB();
-        return db.SeleccionarTodos();
+        return estAccDB.SeleccionarTodos();
     }
 
     public void setListaEstadoAcceso(LinkedList<EstadoAcceso> listaEstadoAcceso) {
@@ -664,7 +686,6 @@ public class UsuariosPorProgranaBean implements Serializable {
     public void setDirecciones(String direcciones) {
         this.direcciones = direcciones;
     }
-
 
     public String getProgramas() {
         return programas;
@@ -754,9 +775,95 @@ public class UsuariosPorProgranaBean implements Serializable {
         this.Correo = Correo;
     }
 
-    public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
-        ProvinciaDB pro = new ProvinciaDB();
-        getListaCan();
+    public ProgramaDB getProDB() {
+        return proDB;
+    }
+
+    public void setProDB(ProgramaDB proDB) {
+        this.proDB = proDB;
+    }
+
+    public ProgramaUsuarioDB getProusuDB() {
+        return prousuDB;
+    }
+
+    public void setProusuDB(ProgramaUsuarioDB prousuDB) {
+        this.prousuDB = prousuDB;
+    }
+
+    public TelefonoDB getTelDB() {
+        return telDB;
+    }
+
+    public void setTelDB(TelefonoDB telDB) {
+        this.telDB = telDB;
+    }
+
+    public DireccionDB getDirDB() {
+        return dirDB;
+    }
+
+    public void setDirDB(DireccionDB dirDB) {
+        this.dirDB = dirDB;
+    }
+
+    public EstadoAccesoDB getEstAccDB() {
+        return estAccDB;
+    }
+
+    public void setEstAccDB(EstadoAccesoDB estAccDB) {
+        this.estAccDB = estAccDB;
+    }
+
+    public ProvinciaDB getPro() {
+        return pro;
+    }
+
+    public void setPro(ProvinciaDB pro) {
+        this.pro = pro;
+    }
+
+    public CantonDB getCan() {
+        return can;
+    }
+
+    public void setCan(CantonDB can) {
+        this.can = can;
+    }
+
+    public DistritoDB getDis() {
+        return dis;
+    }
+
+    public void setDis(DistritoDB dis) {
+        this.dis = dis;
+    }
+
+    public BarrioDB getBarr() {
+        return barr;
+    }
+
+    public void setBarr(BarrioDB barr) {
+        this.barr = barr;
+    }
+
+    public TipoTelefonoDB getTel() {
+        return tel;
+    }
+
+    public void setTel(TipoTelefonoDB tel) {
+        this.tel = tel;
+    }
+
+    public UsuarioManteDB getUsuarioDB() {
+        return usuarioDB;
+    }
+
+    public void setUsuarioDB(UsuarioManteDB usuarioDB) {
+        this.usuarioDB = usuarioDB;
+    }
+
+     public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
         return pro.SeleccionarTodos();
     }
 
@@ -765,8 +872,6 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
 
     public LinkedList<Canton> getListaCan() throws SNMPExceptions, SQLException {
-        CantonDB can = new CantonDB();
-        getListaDis();
         return can.SeleccionarTodos(this.getId_Provincia());
     }
 
@@ -775,8 +880,6 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
 
     public LinkedList<Distrito> getListaDis() throws SNMPExceptions, SQLException {
-        DistritoDB dis = new DistritoDB();
-        getListaBarrio();
         return dis.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton());
     }
 
@@ -785,13 +888,13 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
 
     public LinkedList<Barrio> getListaBarrio() throws SNMPExceptions, SQLException {
-        BarrioDB barr = new BarrioDB();
         return barr.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito());
     }
 
     public void setListaBarrio(LinkedList<Barrio> listaBarrio) {
         this.listaBarrio = listaBarrio;
     }
+    
 
     public int getId_Provincia() {
         return Id_Provincia;
@@ -865,11 +968,11 @@ public class UsuariosPorProgranaBean implements Serializable {
         this.idTipoTelefono = idTipoTelefono;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
     

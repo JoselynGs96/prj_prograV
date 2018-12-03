@@ -45,12 +45,18 @@ public class UsuarioManteDB {
             if(usuario.Log_Activo.equals("Activo")){
                 estado = 1;
             }
-             strSQL = "UPDATE Usuario SET "
-                     +"Id_EstadoAcceso='" + usuario.EstadoAcceso.getId()
-                     +"', Id_Edita= '" + usuario.getId_Edita()
-                     +"', FechaEdita= '" + new java.sql.Date(usuario.getFechaEdita().getTime()) 
-                     +"', Log_Activo='" + estado
-                     +"' WHERE Id_Usuario='" + usuario.getId()+"';";
+            
+            strSQL = "UPDATE Usuario SET "
+                    + "[Nombre] ='" +  usuario.Nombre 
+                    + "', [Apellido1]='" +usuario.Apellido1
+                    + "', [Apellido2] ='" +usuario.Apellido2
+                    + "', [FechaNacimiento] ='" + new java.sql.Date(usuario.getFechaNacimiento().getTime())
+                    + "', [Correo] ='"+usuario.Correo
+                    + "', [Id_EstadoAcceso] ='"+usuario.EstadoAcceso.getId()
+                    + "', [Log_Activo] ='"+estado
+                    + "', Id_Edita = '"+usuario.Id_Edita
+                    + "', FechaEdita = '"+new java.sql.Date(usuario.getFechaEdita().getTime())
+                    + "' where [Id_Usuario]= '"+usuario.Id+"';";
                     
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
