@@ -10,6 +10,7 @@ import dao.SNMPExceptions;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -105,7 +106,7 @@ public class ProgramaDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Programa, Nombre, Dsc_Programa, Log_Activo from Programa WHERE Id_Programa = " +idPrograma;
+                      "SELECT Id_Programa, Nombre, Dsc_Programa, Id_Edita, FechaEdita, Log_Activo from Programa WHERE Id_Programa = " +idPrograma;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -114,8 +115,12 @@ public class ProgramaDB {
                         int Id_Programa = rsPA.getInt("Id_Programa");
                         String Nombre = rsPA.getString("Nombre");
                         String Dsc_Programa = rsPA.getString("Dsc_Programa");
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         pro = new Programa(Id_Programa, Nombre, Dsc_Programa, Log_Activo==0? "Inactivo":"Activo");
+                        pro.setId_Edita(idEdita);
+                        pro.setFechaEdita(fechaEdita);
                       }
               
             rsPA.close();
@@ -145,7 +150,7 @@ public class ProgramaDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Programa, Nombre, Dsc_Programa, Log_Activo from Programa";
+                      "SELECT Id_Programa, Nombre, Dsc_Programa, Id_Edita, FechaEdita, Log_Activo from Programa";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -154,9 +159,14 @@ public class ProgramaDB {
                         int Id_Programa = rsPA.getInt("Id_Programa");
                         String Nombre = rsPA.getString("Nombre");
                         String Dsc_Programa = rsPA.getString("Dsc_Programa");
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         Programa pro = new Programa(Id_Programa, Nombre, Dsc_Programa, Log_Activo==0? "Inactivo":"Activo");
+                        pro.setId_Edita(idEdita);
+                        pro.setFechaEdita(fechaEdita);
                         listaPrograma.add(pro);
+                       
                       }
               
             rsPA.close();
@@ -194,7 +204,7 @@ public class ProgramaDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Programa, Nombre, Dsc_Programa, Log_Activo from Programa WHERE"
+                      "SELECT Id_Programa, Nombre, Dsc_Programa,Id_Edita, FechaEdita, Log_Activo from Programa WHERE"
                            + "   ( Cast(Id_Programa as nvarchar(5)) LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Nombre LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Dsc_Programa LIKE '%' + '" + filtro + "' + '%')"
@@ -207,8 +217,12 @@ public class ProgramaDB {
                         int Id_Programa = rsPA.getInt("Id_Programa");
                         String Nombre = rsPA.getString("Nombre");
                         String Dsc_Programa = rsPA.getString("Dsc_Programa");
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         Programa pro = new Programa(Id_Programa, Nombre, Dsc_Programa, Log_Activo==0? "Inactivo":"Activo");
+                        pro.setId_Edita(idEdita);
+                        pro.setFechaEdita(fechaEdita);
                         listaPrograma.add(pro);
                       }
               

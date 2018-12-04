@@ -237,20 +237,21 @@
                             
                             <br></br>
                             <p:outputLabel>Tipo de Recurso:</p:outputLabel>
-                            <h:selectOneMenu  onchange="submit()" id="ti" class="form-control"  style="width: 90%" value="#{recursoInfraestructuraBean.tipoRecurso}" >
+                            <h:selectOneMenu  id="ti" class="form-control" onchange="submit()" style="width: 90%" value="#{recursoInfraestructuraBean.tipoRecurso}" >
+                             
                                 <f:selectItems   var="tip" value="#{recursoInfraestructuraBean.listaTipoRecurso}" itemLabel="#{tip.nombre}" itemValue="#{tip.id}"></f:selectItems>
                             </h:selectOneMenu>
                             <br></br>
                             <div id="cp">
                                 <p:outputLabel>Capacidad:</p:outputLabel>
                                 <br></br>
-                                <p:spinner  value="#{recursoInfraestructuraBean.capacidad}" min="0" />
+                                <p:spinner id="cap"  value="#{recursoInfraestructuraBean.capacidad}" min="0" />
                                 <br></br>
                             </div>
                             <div id="ct">
                                 <p:outputLabel>Cantidad:</p:outputLabel>
                                 <br></br>
-                                <p:spinner  value="#{recursoInfraestructuraBean.cantidad}" min="0" />
+                                <p:spinner  id="cat" value="#{recursoInfraestructuraBean.cantidad}" min="0" />
                                 <br></br>
                             </div>
                             

@@ -5,6 +5,7 @@
  */
 package controller;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -301,7 +302,7 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
     
     public void editarTelefono(String id) throws SNMPExceptions, SQLException{
-         for (Telefono telefono : listaTelefonos) {
+         for(Telefono telefono : listaTelefonos) {
                 if(telefono.getId_Telefono().equals(id)){
                     setIdTelefono(telefono.getId_Telefono());
                     setIdTipoTelefono(telefono.getId_TipoTelefono().getId_Telefono());
@@ -329,6 +330,7 @@ public class UsuariosPorProgranaBean implements Serializable {
              setMensajeError("");
              indicador = true;
          }
+        
         if(getNumero().equals("")){
              setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Debe llenar el campo Numero</div>");
              return indicador = false;
@@ -336,6 +338,14 @@ public class UsuariosPorProgranaBean implements Serializable {
              setMensajeError("");
              indicador = true;
          }
+        
+        try{
+            Integer.parseInt(getNumero());
+            indicador = true;
+        }catch(Exception e){
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>En el campo Numero debe ingresar datos numéricos</div>");
+            return false;
+        }
         return indicador;
     }
     
@@ -359,10 +369,15 @@ public class UsuariosPorProgranaBean implements Serializable {
             }
             
             if(ind == false){
-                listaTelefonos.add(new Telefono(getNumero(),
-                        new UsuarioDB().SeleccionarPorId(Integer.parseInt(getId())) , 
-                        new TipoTelefonoDB().SeleccionarPorId(idTipoTelefono), 
-                        116390998, fecha, 116390998, fecha));
+                Telefono telefono = new Telefono();
+                telefono.setNumero(getNumero());
+                telefono.setId_Usuario(new UsuarioDB().SeleccionarPorId(Integer.parseInt(getId())));
+                telefono.setId_TipoTelefono(new TipoTelefonoDB().SeleccionarPorId(idTipoTelefono));
+                telefono.setId_Registra(116390998);
+                telefono.setFechaRegistra(fecha);
+                telefono.setId_Edita(116390998);
+                telefono.setFechaEdita(fecha);
+                listaTelefonos.add(telefono);
             }
             
             limpiarCamposTelefono();
@@ -372,6 +387,13 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
    
     public void verMas(int i) throws SNMPExceptions, SQLException{
+        direcciones = "";
+        telefonos = "";
+        programas = "";
+        listaDirecciones.clear();
+        listaTelefonos.clear();
+        listaProusuModal.clear();
+        
         usuarioModal = usuarioDB.SeleccionarPorId(i);
         
         listaDirecciones = dirDB.SeleccionarPorUsuario(i);
@@ -431,19 +453,9 @@ public class UsuariosPorProgranaBean implements Serializable {
             }
         }
     }
-    
-    public void cambiarTipoFuncionario(int idPro, int idT) throws SNMPExceptions, SQLException{
-        for (int i = 0; i < listaProusu.size(); i++) {
-            
-            ProgramaUsuario pro = listaProusu.get(i);
-            if(pro.getPrograma().getId() == idPro && pro.getRolUsuario().getId_RolUsuario() == idT){
-                //cambiar
-            }
-        }
-    }
-    
-    public void guardarBoton(){
-        try{
+   
+    public void guardarBoton() throws SNMPExceptions, SQLException{
+        
             if(Validaciones()){
                 usuario.setNombre(Nombre);
                 usuario.setApellido1(Apellido1);
@@ -456,33 +468,31 @@ public class UsuariosPorProgranaBean implements Serializable {
                 usuario.setFechaEdita(fecha);
                 usuarioDB.actulizar(usuario);
                 
-                for (int i = 0; i < listaDirecciones.size(); i++) {
-                    if(listaDirecciones.get(i).getId_direccion().equals("")){
-                        dirDB.registrar(listaDirecciones.get(i));
+                for (Direccion listaDireccione : listaDirecciones) {
+                    if(!listaDireccione.getId_direccion().equals("")){
+                        dirDB.actulizar(listaDireccione);
                     }else{
-                        dirDB.actulizar(listaDirecciones.get(i));
+                        dirDB.registrar(listaDireccione);
                     }
-                    
                 }
                 
-                for (int i = 0; i < listaTelefonos.size(); i++) {
-                    if(listaTelefonos.get(i).getId_Telefono().equals("")){
-                        telDB.registrar(listaTelefonos.get(i));
+                for (Telefono lisTelefon : listaTelefonos) {
+                    if(!lisTelefon.getId_Telefono().equals("")){
+                        telDB.actulizar(lisTelefon);
                     }else{
-                        telDB.actulizar(listaTelefonos.get(i));
+                        telDB.registrar(lisTelefon);
                     }
-                    
                 }
                 
-                for (int i = 0; i < listaProusu.size(); i++) {
-                    prousuDB.actulizar(listaProusu.get(i));
+                for (ProgramaUsuario listaProus : listaProusu) {
+                     prousuDB.actulizar(listaProus);
                 }
+                
+                
                 setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <strong>Exitoso!&nbsp;</strong>¡Usuario actualizado con éxito!</div> ");
             }
             seleccionarTodos();
-        }catch(Exception e){
-            setMensajeError( "<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Hubo un error al guardar el usuario...¡Intentelo de nuevo!</div>");
-        }
+        
     }
     
     public boolean Validaciones(){

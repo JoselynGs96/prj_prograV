@@ -10,6 +10,7 @@ import dao.SNMPExceptions;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -38,7 +39,8 @@ public class DireccionDB {
             Direccion direccion = new Direccion();
             direccion = direc;
 
-            strSQL = "INSERT INTO Direccion (Id_Barrio,Id_Distrito,Id_Canton,Id_Provincia,Id_Usuario,Otras_Sennas,Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) VALUES ('"
+            strSQL = "INSERT INTO Direccion (Id_Barrio, Id_Distrito, Id_Canton, Id_Provincia, Id_Usuario, Otras_Sennas, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo)"
+                    + "VALUES ('"
                     + direccion.getBarrio().Id_Barrio
                     + "', '" + direccion.getDistrito().Id_Distrito
                     + "', '" + direccion.getCanton().Id_Canton
@@ -71,13 +73,13 @@ public class DireccionDB {
 
             strSQL = "UPDATE [dbo].[Direccion] SET [Id_Barrio] ='" + direccion.getBarrio().Id_Barrio
                     + "',[Id_Distrito] = '" + direccion.getDistrito().Id_Distrito
-                    + " ',[Id_Canton] ='" + direccion.getCanton().Id_Canton
-                    + " ',[Id_Provincia] ='"+direccion.getProvincia().Id_Provincia
+                    + "',[Id_Canton] ='" + direccion.getCanton().Id_Canton
+                    + "',[Id_Provincia] ='"+direccion.getProvincia().Id_Provincia
                     + "',[Id_Usuario] ='"+direccion.getUsuario().Id
                     + "',[Otras_Sennas] ='"+direccion.Otras_sennas                  
                     + "',[Id_Edita] ='"+direccion.Id_Edita
                     + "',[FechaEdita]='" +  new java.sql.Date(direccion.getFechaEdita().getTime())
-                    + "'WHERE Id_Direccion= "+ direccion.id_direccion;
+                    + "'WHERE Id_Direccion= '"+ direccion.id_direccion +"';";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -104,7 +106,7 @@ public class DireccionDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Otras_Sennas from Direccion WHERE Id_Usuario= CONVERT(int," + id_Usuario + ")";
+                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia,Id_Usuario, Otras_Sennas, Id_Edita, FechaEdita from Direccion WHERE Id_Usuario= CONVERT(int," + id_Usuario + ")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -114,14 +116,20 @@ public class DireccionDB {
                 Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"), rsPA.getInt("Id_Provincia"));
                 Provincia provincia = proDB.SeleccionarPorId(rsPA.getInt("Id_Provincia"));
                 String id_direccion = rsPA.getString("Id_Direccion");
+                Usuario usuario = new UsuarioDB().SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                 String otrasSenas = rsPA.getString("Otras_Sennas");
+                int idEdita = rsPA.getInt("Id_Edita");
+                Date fechaEdita = rsPA.getDate("FechaEdita");
                 Direccion dir = new Direccion();
                 dir.setId_direccion(id_direccion);
                 dir.setProvincia(provincia);
                 dir.setCanton(can);
                 dir.setDistrito(dis);
                 dir.setBarrio(bar);
+                dir.setUsuario(usuario);
                 dir.setOtras_sennas(otrasSenas);
+                dir.setId_Edita(idEdita);
+                dir.setFechaEdita(fechaEdita);
                 listaDireccion.add(dir);
             }
 
@@ -153,7 +161,7 @@ public class DireccionDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Otras_Sennas from Direccion WHERE Id_Direccion= CONVERT(int," + id + ")";
+                    = "SELECT Id_Direccion, Id_Barrio, Id_Canton, Id_Distrito, Id_Provincia, Id_Usuario, Otras_Sennas, Id_Edita, FechaEdita from Direccion WHERE Id_Direccion= CONVERT(int," + id + ")";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -163,14 +171,20 @@ public class DireccionDB {
                 Canton can = canDB.SeleccionarPorId(rsPA.getInt("Id_Canton"), rsPA.getInt("Id_Provincia"));
                 Provincia provincia = proDB.SeleccionarPorId(rsPA.getInt("Id_Provincia"));
                 String id_direccion = rsPA.getString("Id_Direccion");
+                Usuario usuario = new UsuarioDB().SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                 String otrasSenas = rsPA.getString("Otras_Sennas");
+                int idEdita = rsPA.getInt("Id_Edita");
+                Date fechaEdita = rsPA.getDate("FechaEdita");
                 dir = new Direccion();
                 dir.setId_direccion(id_direccion);
                 dir.setProvincia(provincia);
+                dir.setUsuario(usuario);
                 dir.setCanton(can);
                 dir.setDistrito(dis);
                 dir.setBarrio(bar);
                 dir.setOtras_sennas(otrasSenas);
+                dir.setId_Edita(idEdita);
+                dir.setFechaEdita(fechaEdita);
             }
 
             rsPA.close();

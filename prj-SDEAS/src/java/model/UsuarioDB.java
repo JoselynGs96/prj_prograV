@@ -44,7 +44,7 @@ public class UsuarioDB {
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
-            select = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo, CodigoAcceso from Usuario";
+            select = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, Log_Activo, CodigoAcceso from Usuario";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -58,9 +58,12 @@ public class UsuarioDB {
                 Date fechaNacimiento = rsPA.getDate("FechaNacimiento");
                 String correo = rsPA.getString("Correo");
                 EstadoAcceso estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                int idEdita = rsPA.getInt("Id_Edita");
+                Date fechaEdita = rsPA.getDate("FechaEdita");
                 String Log_Act = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
                 Usuario usu = new Usuario(cedula, TipoIden, nombre, apellido1, apellido2, fechaNacimiento, correo, estAcc, Log_Act);
-
+                usu.setId_Edita(idEdita);
+                usu.setFechaEdita(fechaEdita);
                 listaUsuario.add(usu);
             }
 
@@ -93,7 +96,7 @@ public class UsuarioDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo, CodigoAcceso from Usuario WHERE Id_Usuario=" + idUsuario;
+                    = "Select Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, Log_Activo, CodigoAcceso from Usuario WHERE Id_Usuario=" + idUsuario;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -107,9 +110,12 @@ public class UsuarioDB {
                 Date fechaNacimiento = rsPA.getDate("FechaNacimiento");
                 String correo = rsPA.getString("Correo");
                 EstadoAcceso estAcc = est.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                int idEdita = rsPA.getInt("Id_Edita");
+                Date fechaEdita = rsPA.getDate("FechaEdita");
                 String Log_Act = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
                 usu = new Usuario(cedula, TipoIden, nombre, apellido1, apellido2, fechaNacimiento, correo, estAcc, Log_Act);
-
+                usu.setId_Edita(idEdita);
+                usu.setFechaEdita(fechaEdita);
             }
 
             rsPA.close();
@@ -139,12 +145,22 @@ public class UsuarioDB {
             String fecha = formato.format(usuario.getFechaNacimiento());
 //mydate is your date object
 
-            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_EstadoAcceso],Id_Registra,FechaRegistra,Id_Edita,FechaEdita,[Log_Activo]) values('" 
-                    + usuario.Id + "','" + usuario.TipoIdentificacion.getId_TipoIdentificacion() 
-                    + "','" + usuario.Nombre + "','" + usuario.Apellido1 + "','" 
-                    + usuario.Apellido2 + "','" +  new java.sql.Date(usuario.getFechaNacimiento().getTime()) + "','" + usuario.getCorreo() 
-                    + "','" + 2 
-                    + "', '" +  usuario.getId_Registra()  + "', '"+  new java.sql.Date(usuario.getFechaRegistra().getTime()) + "', '" + usuario.getId_Edita() + "', '" + new java.sql.Date(usuario.getFechaEdita().getTime()) + "', '" + 1 +"')";
+            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_EstadoAcceso],Id_Registra,FechaRegistra,Id_Edita,FechaEdita,[Log_Activo]) "
+                    + "values('" 
+                    +          usuario.Id 
+                    + "', '" + usuario.TipoIdentificacion.getId_TipoIdentificacion() 
+                    + "', '" + usuario.Nombre 
+                    + "', '" + usuario.Apellido1 
+                    + "', '" + usuario.Apellido2 
+                    + "', '" + new java.sql.Date(usuario.getFechaNacimiento().getTime()) 
+                    + "', '" + usuario.getCorreo() 
+                    + "', '" + 3 
+                    + "', '" + usuario.getId_Registra()  
+                    + "', '" + new java.sql.Date(usuario.getFechaRegistra().getTime()) 
+                    + "', '" + usuario.getId_Edita() 
+                    + "', '" + new java.sql.Date(usuario.getFechaEdita().getTime()) 
+                    + "', '" + 1 +"')";
+            
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,

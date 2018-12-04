@@ -121,7 +121,6 @@ public class recursoInfraestructuraBean implements Serializable {
      /*Botón ver más*/
      public void verMas(int i) throws SNMPExceptions, SQLException{
         RecursoDB recd = new RecursoDB();
-        this.recurso = null;
         this.recurso = recd.SeleccionarPorId(i);
          if(recurso.getTipoRecurso().getId()==2){
              setDscTipo("Capacidad: ");

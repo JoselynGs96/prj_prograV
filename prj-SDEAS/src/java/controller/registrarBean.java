@@ -217,19 +217,19 @@ int cedula;
             respuesta = false;
         } else {
             if (this.getId_Canton() == 0) {
-                this.setMensaje1("*Debe colocar la Cantón.");
+                this.setMensaje1("*Debe colocar el Cantón.");
                 respuesta = false;
             } else {
                 if (this.getId_Distrito() == 0) {
-                    this.setMensaje1("*Debe colocar la Distrito.");
+                    this.setMensaje1("*Debe colocar el Distrito.");
                     respuesta = false;
                 } else {
                     if (this.getId_Barrio() == 0) {
-                        this.setMensaje1("*Debe colocar la Barrio.");
+                        this.setMensaje1("*Debe colocar el Barrio.");
                         respuesta = false;
                     } else {
                         if (this.getOtrasSenas().equals("")) {
-                            this.setMensaje1("*Debe colocar las otras señas.");
+                            this.setMensaje1("*Debe colocar otras señas.");
                             respuesta = false;
                         } else {
                             respuesta = true;
@@ -361,7 +361,9 @@ int cedula;
             
             Programa progra = new Programa();
             progra = prograDB.SeleccionarPorId(this.getPrograma());
-            RolUsuario rol1 = rolDB.SeleccionarPorId(2);
+            RolUsuario rol1 = rolDB.SeleccionarPorId(3);
+            
+            
             /*Agrega programa_usuario*/
            ProgramaUsuario prousu = new ProgramaUsuario(usu, progra, rol1, this.getFuncionario(), "1");
            prousu.setId_Registra(116390998);
@@ -370,7 +372,7 @@ int cedula;
            prousu.setFechaRegistra(fecha);
            programaUsuarioDB.registrar(prousu);
 
-            setMensaje("Su solicitud de registro ha sido enviada. Se le enviara un correo con el codigo de acceso y su comtraseña al correo");
+           setMensaje("Su solicitud de registro ha sido enviada. Se le enviará un correo con el código de acceso y su contraseña al correo proporcionado cuando el Coordinador acepte la solicitud");
         }
     }
 

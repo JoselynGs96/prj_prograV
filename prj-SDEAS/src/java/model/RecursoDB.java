@@ -10,6 +10,7 @@ import dao.SNMPExceptions;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -101,7 +102,7 @@ public class RecursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Log_Activo from Recurso WHERE Id_Recurso = " +idRecurso;
+                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Id_Edita, FechaEdita, Log_Activo from Recurso WHERE Id_Recurso = " +idRecurso;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -113,8 +114,12 @@ public class RecursoDB {
                         int Cantidad = rsPA.getInt("Cantidad");
                         int Capacidad = rsPA.getInt("Capacidad");
                         TipoRecurso tipoRecurso = tdb.SeleccionarPorId(rsPA.getInt("Id_TipoRecurso"));
+                        int idEdita =  rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         rec = new Recurso(Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, tipoRecurso, Log_Activo==0? "Inactivo":"Activo");
+                        rec.setId_Edita(idEdita);
+                        rec.setFechaEdita(fechaEdita);
                       }
               
             rsPA.close();
@@ -143,7 +148,7 @@ public class RecursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Log_Activo from Recurso";
+                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Id_Edita, FechaEdita, Log_Activo from Recurso";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -155,8 +160,12 @@ public class RecursoDB {
                         int Cantidad = rsPA.getInt("Cantidad");
                         int Capacidad = rsPA.getInt("Capacidad");
                         TipoRecurso tipoRecurso = tdb.SeleccionarPorId(rsPA.getInt("Id_TipoRecurso"));
+                        int idEdita =  rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         Recurso rec = new Recurso(Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, tipoRecurso, Log_Activo==0? "Inactivo":"Activo");
+                        rec.setId_Edita(idEdita);
+                        rec.setFechaEdita(fechaEdita);
                         listaRecurso.add(rec);
                       }
               
@@ -195,7 +204,7 @@ public class RecursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Log_Activo from Recurso WHERE"
+                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Id_Edita, FechaEdita, Log_Activo from Recurso WHERE"
                            + " ( Cast(Id_Recurso as nvarchar(5)) LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Nombre LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Dsc_Recurso LIKE '%' + '" + filtro + "' + '%')"
@@ -213,8 +222,12 @@ public class RecursoDB {
                         int Cantidad = rsPA.getInt("Cantidad");
                         int Capacidad = rsPA.getInt("Capacidad");
                         TipoRecurso tipoRecurso = tdb.SeleccionarPorId(rsPA.getInt("Id_TipoRecurso"));
+                        int idEdita =  rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         Recurso rec = new Recurso(Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, tipoRecurso, Log_Activo==0? "Inactivo":"Activo");
+                        rec.setId_Edita(idEdita);
+                        rec.setFechaEdita(fechaEdita);
                         listaRecurso.add(rec);
                       }
               

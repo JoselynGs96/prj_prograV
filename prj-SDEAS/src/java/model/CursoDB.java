@@ -10,6 +10,7 @@ import dao.SNMPExceptions;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -100,7 +101,7 @@ public class CursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Log_Activo from Curso WHERE Id_Curso = " +idCurso;
+                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Id_Edita, FechaEdita, Log_Activo from Curso WHERE Id_Curso = " +idCurso;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -110,8 +111,12 @@ public class CursoDB {
                         String Nombre = rsPA.getString("Nombre");
                         String Dsc_Curso = rsPA.getString("Dsc_Curso");
                         Programa Programa = proDB.SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fecha = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         cur = new Curso(Id_Curso, Nombre, Dsc_Curso, Programa, Log_Activo==0? "Inactivo":"Activo");
+                        cur.setId_Edita(idEdita);
+                        cur.setFechaEdita(fecha);
                       }
               
             rsPA.close();
@@ -141,7 +146,7 @@ public class CursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Log_Activo from Curso";
+                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Id_Edita, FechaEdita, Log_Activo from Curso";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -151,8 +156,12 @@ public class CursoDB {
                         String Nombre = rsPA.getString("Nombre");
                         String Dsc_Curso = rsPA.getString("Dsc_Curso");
                         Programa Programa = proDB.SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fecha = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         Curso cur = new Curso(Id_Curso, Nombre, Dsc_Curso, Programa, Log_Activo==0? "Inactivo":"Activo");
+                        cur.setId_Edita(idEdita);
+                        cur.setFechaEdita(fecha);
                         listaCurso.add(cur);
                       }
               
@@ -192,7 +201,7 @@ public class CursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Log_Activo from Curso WHERE"
+                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Id_Edita, FechaEdita, Log_Activo from Curso WHERE"
                            + "   ( Cast(Id_Curso as nvarchar(5)) LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Nombre LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Dsc_Curso LIKE '%' + '" + filtro + "' + '%')"
@@ -206,8 +215,12 @@ public class CursoDB {
                         String Nombre = rsPA.getString("Nombre");
                         String Dsc_Curso = rsPA.getString("Dsc_Curso");
                         Programa Programa = proDB.SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fecha = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         Curso cur = new Curso(Id_Curso, Nombre, Dsc_Curso, Programa, Log_Activo==0? "Inactivo":"Activo");
+                        cur.setId_Edita(idEdita);
+                        cur.setFechaEdita(fecha);
                         listaCurso.add(cur);
                       }
               

@@ -22,6 +22,8 @@
         <link href="../Recursos/css/jquery.fancybox.css" rel="stylesheet" type="text/css"/>      
         <!-- Custom stylesheet -->      
         <link href="../Recursos/css/custom.css" rel="stylesheet" type="text/css"/>
+        
+        <link href="Recursos/css/menu.css" rel="stylesheet" type="text/css"/>
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -53,43 +55,57 @@
                 allDayText: 'Todo el día'
             };
         </script>
+        <script>
+                        /* Open when someone clicks on the span element */
+            function openNav() {
+                document.getElementById("myNav").style.width = "100%";
+            }
 
+            /* Close when someone clicks on the "x" symbol inside the overlay */
+            function closeNav() {
+                document.getElementById("myNav").style.width = "0%";
+            }
+        </script>
     </h:head>
     <h:body>
+    <h:form prependId="false">
+            
+        <div id="myNav" class="overlay" style="z-index: 10000">
 
+            <!-- Button to close the overlay navigation -->
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
+            <!-- Overlay content -->
+            <div class="overlay-content">
+              <a href="#per" onclick="closeNav()">Personal</a>
+              <a href="#dir" onclick="closeNav()">Direcciones</a>
+              <a href="#con" onclick="closeNav()">Contacto</a>
+              <a href="#prog" onclick="closeNav()">Programa DEAS</a>
+            </div>
 
-        <h:form prependId="false">
-            <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
-                <p:scrollPanel mode="native" style="width:100%;height:100%; border:0px; margin-bottom: 50px" > 
-                    <h1 style="font-weight:normal">Ayuda</h1>          
-                    <br></br>
-                    <strong>¿Desea agregar direcciones? </strong>
-                    <br></br>
-                    Llene los datos Provinica,Distrit,Cantón, Barrio y otras señas.
-                    Luego, clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images//agregarDirecciones.JPG" style="width:80px ;height:60px" alt=""/>
-                    <br></br>
-                    <br></br>
-                    <strong>¿Desea agregar Telefonos? </strong>
-                    <br></br>  
-                    Llene los datos Tipo Telefono y el número.
-                    Luego,Clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images//agregarTelefono.JPG" style="width:80px ;height:60px" alt=""/>
-                    <br></br>
-                    <br></br>
-                    <strong>¿Desea Registar sus datos? </strong>
-                    <br></br>  
-                    Llene todos los datos de el formulario.
-                    Luego,Clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images//botonregistarrse.JPG" style="width:80px ;height:60px" alt=""/>
-                    <br></br>
-                    <br></br>
-
-                    <div style="margin-bottom: 30px; height: 50px"></div>
-                </p:scrollPanel>
-            </p:sidebar>
-            <!-- Header -->
+          </div>
+        
+        
+             <!-- Preloader -->
+             <div id="loading">
+                <div id="loading-center">
+                    <div id="loading-center-absolute">
+                        <div class="object"></div>
+                        <div class="object"></div>
+                        <div class="object"></div>
+                        <div class="object"></div>
+                        <div class="object"></div>
+                        <div class="object"></div>
+                        <div class="object"></div>
+                        <div class="object"></div>
+                        <div class="object"></div>
+                        <div class="object"></div>
+                    </div>
+                </div>
+            </div>
+            <!--End off Preloader -->
+            
+            <!--   Header  -->
             <header>
                 <!-- Top Navbar -->
                 <div class="top_nav">
@@ -97,7 +113,7 @@
                         <ul class="list-inline info">
                             <li><a href="#"><span class="fa fa-phone"></span> (506) 2435-5000</a></li>
                             <li><a href="#"><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
-                            <li><a href="#"><span class="fa fa-clock-o"></span> Lunes - Sabado 9:00am - 5:00pm</a></li>
+                            <li><a href="#"><span class="fa fa-clock-o"></span> Lunes - Domingos 9:00am - 5:00pm</a></li>
                         </ul>
                         <ul class="list-inline social_icon">
                             <li><a href=""><span class="fa fa-facebook"></span></a></li>
@@ -140,271 +156,404 @@
                         <!-- Navigation -->
                         <div class="collapse navbar-collapse" id="navbar-menu">
                             <ul class="nav navbar-nav menu">
-                                <li><a href="index.xhtml">Inicio</a></li>                                 
-                                <li><a href="Registro.xhtml">Registrar</a></li>
-                                <li><a href="InicioSesion.xhtml">Iniciar Sesión</a></li>
+                                <li><a href="faces/index.xhtml">Inicio</a></li>                                 
+                                <li><a href="faces/Registro.xhtml">Registrar</a></li>
+                                <li><a href="face/InicioSesion.xhtml">Iniciar Sesión</a></li>
                             </ul>
                         </div>
                     </div>    
                 </nav><!-- Navbar end -->
-            </header><!-- Header end -->
-            <div style="background:white" class="col-lg-offset-3 col-lg-6 ">      
-                <h:outputText style="color: green;" value="#{registrarBean.mensaje}"></h:outputText>
+            </header>
+            
+            <div class="social">
+		<ul>
+                    <li><a class="icon-ayuda" onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:40px; height:40px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda2.png" alt=""/></a></li>
+                         
+		</ul>
+	    </div>
+            
+            <!--    Ayuda   -->
+             <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
+                        <p:scrollPanel mode="native" style="width:100%;height:100%; padding: 5px; border:0px; margin-bottom: 50px" > 
+                            <h1 style="font-weight:normal">Ayuda</h1>          
+                            <br></br>
+                            <strong>¿Desea agregar direcciones? </strong>
+                            <br></br>
+                            Llene los datos Provincia,Distrito,Cantón, Barrio y otras señas.
+                            Luego, clic sobre el  <br></br> botón &#8594;
+                            <img src="Recursos/images//btnAgregaDir.PNG" style="width:100px ;height:60px" alt=""/>
+                            <br></br>
+                            <br></br>
+                            <strong>¿Desea agregar Telefonos? </strong>
+                            <br></br>  
+                            Llene los datos Tipo Telefono y el número.
+                            Luego,Clic sobre el  <br></br> botón &#8594;
+                            <img src="Recursos/images//btnAgregaTel.PNG" style="width:100px ;height:60px" alt=""/>
+                            <br></br>
+                            <br></br>
+                            <strong>¿Desea Registrar sus datos? </strong>
+                            <br></br>  
+                            Llene todos los campod del formulario.
+                            Luego,Clic sobre el  <br></br> botón &#8594;
+                            <img src="Recursos/images//botonregistarrse.JPG" style="width:100px ;height:60px" alt=""/>
+                            <br></br>
+                            <br></br>
 
-
-                <div style="background:#fccc0c;width: 100%;align-content: center">
-                    <center>  <h2>Personal <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px;" ><img align="right" style="width:20px; height:20px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda.png" alt=""/></a></h2></center>
-
-                </div>
-
-                <center>
-                    <table style="width: 90%; margin-right: 5%; margin-left: 5%">
-                        <tr>
-                            <td>    <h:outputText value="Tipo de cédula *" /></td>
-                            <td>      <h:selectOneMenu  class="form-control"  style="width: 400px; margin-left: 10px" value="#{registrarBean.id_TipoCedula}" id="ident" >
-                                    <f:selectItems var="iden" value="#{registrarBean.listaIden}" itemLabel="#{iden.dsc_TipoTelefono}" itemValue="#{iden.id_TipoIdentificacion}"></f:selectItems>  
-                                </h:selectOneMenu> 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 
-                                <h:outputText value="Cédula *" style="margin-top: 5px" />
-                            </td>
-                            <td>   
-                                <p:inputText style="float: left; margin-top: 5px; margin-left: 10px"  value="#{registrarBean.cedula}" label="cedula" id="cedula"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 
-                                <h:outputText value="Nombre *" style="margin-top: 5px" /></td>
-                            <td>   
-                                <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.nombre}" label="nombre" id="nombre"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>    <h:outputText value="Primer Apellido *" style="margin-top: 5px; "/>   </td>                             
-                            <td>    <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.apellido1}" label="apellido1" id="apellido1"/>
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td  >     
-                                <h:outputText value="Segundo Apellido *" style="margin-top: 5px; " />            
-                            </td>                  
-                            <td>     
-                                <p:inputText style="float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.apellido2}" label="apellido2" id="apellido2"/>
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td>
-                                <h:outputText value="Fecha de nacimiento: " style="margin-top: 5px" />
-                            </td>
-                            <td>
-                                <p:calendar locale="es" style="float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.fechaNacimiento}"  pattern="dd-MM-yyyy" mask="true" label="ca margin-left: 5pxlendario" id="calendario"/>
-                            </td>
-
-                        </tr>
-                    </table>
-                </center>
-                <div style="background:#fccc0c;width: 100%;"><center>  <h2>Direcciones</h2></center></div>
-                <center>
-                    <table style="width: 90%; margin-right: 5%; margin-left: 5%">
-
-                        <tr>
-                            <td>
-                                <h:outputText value="Provincia" style="margin-top: 5px" />  </td>
-                            <td>
-                                <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{registrarBean.id_Provincia}" id="Provincia" >
-                                    <f:selectItems var="pro" value="#{registrarBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
-                                </h:selectOneMenu>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h:outputText value="Canton" style="margin-top: 5px" />  </td>
-                            <td>
-                                <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{registrarBean.id_Canton}" id="Canton" >
-                                    <f:selectItems var="can" value="#{registrarBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
-                                </h:selectOneMenu>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h:outputText value="Distrito" style="margin-top: 5px" />  </td>
-                            <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{registrarBean.id_Distrito}" >
-                                    <f:selectItems var="dis" value="#{registrarBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
-                                </h:selectOneMenu>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h:outputText value="Barrio" style="margin-top: 5px" />  </td>
-                            <td>
-                                <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 400px; margin-top: 5px; margin-left: 10px " value="#{registrarBean.id_Barrio}" >
-                                    <f:selectItems var="bar" value="#{registrarBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
-                                </h:selectOneMenu>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>  <h:outputText value="Otras señas" style="margin-top: 5px" />  </td>
-                            <td>  <p:inputTextarea style="margin-top: 5px; margin-left: 10px; width: 400px "  value="#{registrarBean.otrasSenas}" class="col-md-12" id="otras"> </p:inputTextarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">  
-                                <h:outputText style="color: red;" value="#{registrarBean.mensaje1}"></h:outputText>
-                            </td>
-                        </tr>
-                        <tr>
-                            <center>
-                                <td colspan="2">  <h:commandButton action="#{registrarBean.agregarDireccones()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
-                                                                   class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
-                                </td> 
-                            </center>
-
-                        </tr>
-
-                        <tr>   
-                            <td colspan="2"> 
-                                <h:dataTable id="dataDirec" class="table table-striped table-advance table-hover" value="#{registrarBean.listaDirec}" var="direc">
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Provincia"/>
-                                        </f:facet>
-                                        <h:outputText value="#{direc.provincia.dsc_Provincia}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Canton"/>
-                                        </f:facet>
-                                        <h:outputText value="#{direc.canton.dsc_Canton}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Distrito"/>
-                                        </f:facet>
-                                        <h:outputText value="#{direc.distrito.dsc_Distrito}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Barrio"/>
-                                        </f:facet>
-                                        <h:outputText value="#{direc.barrio.dsc_Barrio}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Otras Señas"/>
-                                        </f:facet>
-                                        <h:outputText value="#{direc.otras_sennas}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value=""/>
-                                        </f:facet>
-                                        <h:commandButton  action="#{registrarBean.eliminarDirecciones(direc.id_direccion)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
-                                    </h:column>
-                                </h:dataTable>
-                            </td>
-                        </tr>
-                    </table>
-                </center>
-
-                <div style="background:#fccc0c;width: 100%;"><center> <h2>Contacto</h2></center></div>
-                <center>
-                    <table style="width: 90%; margin-right: 5%; margin-left: 5%"> 
-
-
-                        <tr>
-                            <td>  <h:outputText value="Correo *" /> </td>
-                            <td>  <p:inputText style="float: left; margin-left: 10px " id="correo" value="#{registrarBean.correo}"  class="form-inline" ></p:inputText>   </td>
-                        </tr>
-                        <tr>
-                            <td>  <h:outputText value="Tipo Teléfono: *" style="margin-top: 5px; margin-top: 5px; margin-left: 10px"/> </td>
-                            <td>     <h:selectOneMenu class="form-control"   style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{registrarBean.id_TipoTelefono}" id="tel" >
-                                    <f:selectItems var="tel" value="#{registrarBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
-                                </h:selectOneMenu> </td>
-                        </tr>
-                        <tr>
-                            <td>   <h:outputText value="Número: *" style="margin-top: 5px"/> </td>
-                            <td> <p:inputText  style="float: left; margin-top: 5px; margin-left: 10px " id="numero" value="#{registrarBean.numeroTelefono}"  class="form-inline" ></p:inputText>   </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">  
-                                <h:outputText style="color: red;" value="#{registrarBean.mensaje2}"></h:outputText>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">  
-                                <center>
-                                    <h:commandButton action="#{registrarBean.agregarTelefonos()}" style="background-color:#fccc0c;border-color: #fccc0c; margin-top: 20px;" 
-                                                     class="btn btn-primary btn-lg" value="Agregar Telefono"></h:commandButton>
+                            <div style="margin-bottom: 30px; height: 50px"></div>
+                        </p:scrollPanel>
+                    </p:sidebar>
+            <!--    Fin Ayuda   -->
+           
+            
+            
+            <div class="container-fluid" style="margin-bottom: 100px">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8" style="background:white; align-content: center">
+                        
+                    <h1  id="per" style="margin-top: 20px; color: #222533" >Registro</h1>
+                    <p>Por favor, rellene este formulario para solicitar una cuenta para el acceso al sistema <br></br>Los campos con un (*) son requeridos</p>
+                        <hr style="color:#787774; "></hr>
+                       <!--    Info Personal   -->
+                       <div class="panel panel-default" style="margin-top: 40px">
+                            <div class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
+                                <center>  <h2>Personal 
+                                        <a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:30px; height:30px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a>
+                                    </h2>
                                 </center>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td  colspan="2">
+                            </div>
 
-                                <h:dataTable id="dataTel" class="table table-striped table-advance table-hover" value="#{registrarBean.listaTel}" var="tell">
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Tipo Télefono"/>
-                                        </f:facet>
-                                        <h:outputText value="#{tell.id_TipoTelefono.dsc_TipoTelefono}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="Número de Télefono"/>
-                                        </f:facet>
-                                        <h:outputText value="#{tell.numero}"/>
-                                    </h:column>  
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value=""/>
-                                        </f:facet>
-                                        <h:commandButton  actionListener="#{registrarBean.eliminarTelefonos(tell.id_Telefono)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
-                                    </h:column>
-                                </h:dataTable>
+                            <div class="panel-body">
+                                <h:outputText style="color: green;" value="#{registrarBean.mensaje}"></h:outputText>
+                                 <center>
+                                    <table style="width: 90%; margin-right: 5%; margin-left: 5%">
+                                        <tr>
+                                            <td>    <h:outputText value="Tipo de cédula *" /></td>
+                                            <td>      
+                                                <h:selectOneMenu  class="form-control"  style="width: 194px; margin-left: 10px" value="#{registrarBean.id_TipoCedula}" id="ident" >
+                                                    <f:selectItems var="iden" value="#{registrarBean.listaIden}" itemLabel="#{iden.dsc_TipoTelefono}" itemValue="#{iden.id_TipoIdentificacion}"></f:selectItems>  
+                                                </h:selectOneMenu> 
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td> 
+                                                <h:outputText value="Cédula *" style="margin-top: 5px" />
+                                            </td>
+                                             <td>   
+                                                <h:inputText class="form-control"   style="width: 194px; float: left; margin-top: 5px; margin-left: 10px"  value="#{registrarBean.cedula}" label="cedula" id="cedula"/>
+                                            </td>
 
-                            </td>
-                        </tr>
-                    </table>
-                </center>
-                <div style="background:#fccc0c;width: 100%;"> <center> <h2>Programa Deas</h2></center></div>
-                <center>
-                    <table style="width: 90%; margin-right: 5%; margin-left: 5%"> 
+                                        </tr>
+                                        <tr>
+                                            <td> 
+                                                <h:outputText value="Nombre *" style="margin-top: 5px" /></td>
+                                            <td>   
+                                                <h:inputText class="form-control"  style="width: 194px;float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.nombre}" label="nombre" id="nombre"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>    <h:outputText value="Primer Apellido *" style="margin-top: 5px; "/>   </td>                             
+                                            <td>    <h:inputText class="form-control"  style="width: 194px;float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.apellido1}" label="apellido1" id="apellido1"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
 
-                        <tr>
-                            <td><h:outputText value="Programa: *" style="margin-top: 5px"/> </td>
-                            <td>  <h:selectOneMenu class="form-control"   style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{registrarBean.programa}" id="programa" >
-                                    <f:selectItems var="pro" value="#{registrarBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
-                                </h:selectOneMenu> </td>
-                        </tr>
-                        <tr>
-                            <td>   <h:outputText value="Tipo de Funcionario: *" style="margin-top: 5px"/> </td>
-                            <td>   <h:selectOneMenu class="form-control"   style="width: 400px; margin-top: 5px; margin-left: 10px" value="#{registrarBean.funcionario}" id="rol" >
-                                    <f:selectItems var="rol" value="#{registrarBean.EnumFuncionario()}"></f:selectItems>
-                                </h:selectOneMenu> </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">  
-                                <h:outputText style="color: red;" value="#{registrarBean.mensaje2}"></h:outputText>
-                            </td>
-                        </tr>
-                    </table>
-                </center>
-                <br></br>
+                                            <td  >     
+                                                <h:outputText value="Segundo Apellido *" style="margin-top: 5px; " />            
+                                            </td>                  
+                                            <td>     
+                                                <h:inputText class="form-control"  style="width: 194px;float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.apellido2}" label="apellido2" id="apellido2"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <h:outputText value="Fecha de nacimiento: " style="margin-top: 5px" />
+                                            </td>
+                                            <td>
+                                                <p:calendar locale="es" style="width: 200px;float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.fechaNacimiento}"  pattern="dd-MM-yyyy" mask="true" label="ca margin-left: 5pxlendario" id="calendario"/>
+                                            </td>
+
+                                        </tr>
+                                    </table>
+                                </center>
+                            </div>
+                       </div>
+                       <div class="panel panel-default" style="margin-top: 40px">
+                            <div id="dir" class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
+                                <center>  <h2>Direcciones<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></h2></center>
+                            </div>
+
+                            <div class="panel-body">
+                                <center>
+                            <table style="width: 90%; margin-right: 5%; margin-left: 5%">
+
+                                <tr>
+                                    <td>
+                                        <h:outputText value="Provincia*" style="margin-top: 5px" />  </td>
+                                    <td>
+                                        <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Provincia}" id="Provincia" >
+                                            <f:selectItems var="pro" value="#{registrarBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:outputText value="Canton*" style="margin-top: 5px" />  </td>
+                                    <td>
+                                        <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Canton}" id="Canton" >
+                                            <f:selectItems var="can" value="#{registrarBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:outputText value="Distrito*" style="margin-top: 5px" />  </td>
+                                    <td>   <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Distrito}" >
+                                            <f:selectItems var="dis" value="#{registrarBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:outputText value="Barrio*" style="margin-top: 5px" />  </td>
+                                    <td>
+                                        <h:selectOneMenu class="form-control" onchange="submit()"  style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Barrio}" >
+                                            <f:selectItems var="bar" value="#{registrarBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>  <h:outputText value="Otras señas*" style="margin-top: 5px" />  </td>
+                                    <td>  <h:inputTextarea  style="margin-top: 5px; margin-left: 220px; width: 300px "  value="#{registrarBean.otrasSenas}" class="col-md-12 form-control" id="otras"> </h:inputTextarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">  
+                                        <h:outputText style="color: red;" value="#{registrarBean.mensaje1}"></h:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <center>
+                                        <td colspan="2">  <h:commandButton action="#{registrarBean.agregarDireccones()}" style="background-color:#C0BFB5;border-color: #C0BFB5; margin-top: 20px;" 
+                                                                           class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
+                                        </td> 
+                                        <br></br>
+                                    </center>
+
+                                </tr>
+
+                                <tr>   
+                                    <td colspan="2"> 
+                                        <h:dataTable id="dataDirec" style="margin-top: 20px" class="table table-striped table-advance table-hover" value="#{registrarBean.listaDirec}" var="direc">
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Provincia"/>
+                                                </f:facet>
+                                                <h:outputText value="#{direc.provincia.dsc_Provincia}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Canton"/>
+                                                </f:facet>
+                                                <h:outputText value="#{direc.canton.dsc_Canton}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Distrito"/>
+                                                </f:facet>
+                                                <h:outputText value="#{direc.distrito.dsc_Distrito}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Barrio"/>
+                                                </f:facet>
+                                                <h:outputText value="#{direc.barrio.dsc_Barrio}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Otras Señas"/>
+                                                </f:facet>
+                                                <h:outputText value="#{direc.otras_sennas}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value=""/>
+                                                </f:facet>
+                                                <h:commandButton  action="#{registrarBean.eliminarDirecciones(direc.id_direccion)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
+                                            </h:column>
+                                        </h:dataTable>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
+                            </div>
+                       </div>
+                       <div class="panel panel-default" style="margin-top: 40px">
+                            <div id="con" class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
+                                <center><h2>Contacto<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></h2></center>
+                            </div>
+
+                            <div class="panel-body">
+                                <center>
+                            <table style="width: 90%; margin-right: 5%; margin-left: 5%"> 
 
 
-                <center>
-                    <h:commandButton action="#{registrarBean.ingresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
-                                     class="btn btn-primary btn-lg" value="Registrar" ></h:commandButton><br></br>
-                    <h:outputText style="color: red;" value="#{registrarBean.mensaje}"></h:outputText>
-                </center>
+                                <tr>
+                                    <td>  <h:outputText value="Correo *" /> </td>
+                                    <td>  <h:inputText style="float: left; margin-left: 190px; width:300px " id="correo" value="#{registrarBean.correo}"  class="form-inline form-control" ></h:inputText>   </td>
+                                </tr>
+                                <tr>
+                                    <td>  <h:outputText value="Tipo Teléfono: *" style="margin-top: 5px; margin-top: 5px;"/> </td>
+                                    <td>     <h:selectOneMenu class="form-control"   style="width: 300px; margin-top: 5px; margin-left: 190px" value="#{registrarBean.id_TipoTelefono}" id="tel" >
+                                            <f:selectItems var="tel" value="#{registrarBean.listaTipoTelefono}" itemLabel="#{tel.dsc_TipoTelefono}" itemValue="#{tel.id_Telefono}"></f:selectItems>
+                                        </h:selectOneMenu> </td>
+                                </tr>
+                                <tr>
+                                    <td>   <h:outputText value="Número: *" style="margin-top: 5px"/> </td>
+                                    <td> <h:inputText  style="float: left; margin-top: 5px; margin-left: 190px; width: 300px " id="numero" value="#{registrarBean.numeroTelefono}"  class="form-inline form-control" ></h:inputText>   </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">  
+                                        <h:outputText style="color: red;" value="#{registrarBean.mensaje2}"></h:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                            <h:commandButton action="#{registrarBean.agregarTelefonos()}" style="background-color:#C0BFB5;;border-color:#C0BFB5;; margin-top: 20px;" 
+                                                             class="btn btn-primary btn-lg" value="Agregar Telefono"></h:commandButton>
+                                       
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td  colspan="2">
 
+                                        <h:dataTable id="dataTel" style="margin-top: 20px" class="table table-striped table-advance table-hover" value="#{registrarBean.listaTel}" var="tell">
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Tipo Télefono"/>
+                                                </f:facet>
+                                                <h:outputText value="#{tell.id_TipoTelefono.dsc_TipoTelefono}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Número de Télefono"/>
+                                                </f:facet>
+                                                <h:outputText value="#{tell.numero}"/>
+                                            </h:column>  
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value=""/>
+                                                </f:facet>
+                                                <h:commandButton  actionListener="#{registrarBean.eliminarTelefonos(tell.id_Telefono)}" class="btn btn-warning btn-xs" style="width: 35px; height:35px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
+                                            </h:column>
+                                        </h:dataTable>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
+                            </div>
+                       </div>
+                       <div  class="panel panel-default" style="margin-top: 40px">
+                            <div id="prog" class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
+                                <center><h2>Programa DEAS<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></h2></center>
+                            </div>
+
+                            <div class="panel-body">
+                                <center>
+                            <table style="width: 90%; margin-right: 5%; margin-left: 5%"> 
+
+                                <tr>
+                                    <td><h:outputText value="Programa: *" style="margin-top: 5px"/> </td>
+                                    <td>  <h:selectOneMenu class="form-control"   style="width: 300px; margin-top: 5px; margin-left: 130px" value="#{registrarBean.programa}" id="programa" >
+                                            <f:selectItems var="pro" value="#{registrarBean.listaPrograma}" itemLabel="#{pro.nombre}" itemValue="#{pro.id}"></f:selectItems>
+                                        </h:selectOneMenu> </td>
+                                </tr>
+                                <tr>
+                                    <td>   <h:outputText value="Tipo de Funcionario: *" style="margin-top: 5px"/> </td>
+                                    <td>   <h:selectOneMenu class="form-control"   style="width: 300px; margin-top: 5px; margin-left: 130px" value="#{registrarBean.funcionario}" id="rol" >
+                                            <f:selectItems var="rol" value="#{registrarBean.EnumFuncionario()}"></f:selectItems>
+                                        </h:selectOneMenu> </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">  
+                                        <h:outputText style="color: red;" value="#{registrarBean.mensaje2}"></h:outputText>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
+                            </div>
+                       </div>
+                     <br></br>
+                     <center>
+                            <h:commandButton action="#{registrarBean.ingresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                                             class="btn btn-primary btn-lg" value="Registrar" ></h:commandButton><br></br>
+                            <h:outputText style="color: red;" value="#{registrarBean.mensaje}"></h:outputText>
+                     </center>
+                </div>
             </div>
+            
+            
+            
+           
+            
+            <!-- Footer -->
+            <footer>
+            <!-- Footer top -->
+            <div class="container footer_top">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6">
+                        <div class="footer_item">
+                            <h4>Acerca de:</h4>
+                            <img class="logo" src="../Recursos/images/logo.png" alt="Construction" />
+                            <p>Sistema de información, para automatizar el proceso de planificación y uso de la infraestructura de la Dirección de Extensión y Acción Social (DEAS) Universidad Técnica Nacional</p>
 
+                            <ul class="list-inline footer_social_icon">
+                                <li><a href=""><span class="fa fa-facebook"></span></a></li>
+                                <li><a href=""><span class="fa fa-twitter"></span></a></li>
+                                <li><a href=""><span class="fa fa-youtube"></span></a></li>
+                                <li><a href=""><span class="fa fa-google-plus"></span></a></li>
+                                <li><a href=""><span class="fa fa-linkedin"></span></a></li>
+                            </ul>
+                        </div>
+                    </div>                                 
+                    <div class="col-lg-6 col-sm-6">
+                        <div class="footer_item">
+                            <h4>Contáctenos</h4>
+                            <ul class="list-unstyled footer_contact">
+                                <li><a href=""><span class="fa fa-map-marker"></span> Sede Central: Villa Bonita de Alajuela, 300 mts suroeste de Perimercados y 300 sur (carretera a Villa Bonita).</a></li>
+                                <li><a href=""><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
+                                <li><a href=""><span class="fa fa-mobile"></span><p>(506) 2435-5000 <br /></p></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Footer top end -->
 
-        </h:form>
-    </h:body>	
+            <!-- Footer bottom -->
+            <div class="footer_bottom text-center">
+                <p class="wow fadeInRight">                   
+                    <li> &copy;2018 UTN Todos los Derechos Reservados.</li> <li>Fabiola Alfaro y Joselyn Granados</li>
+                </p>
+            </div><!-- Footer bottom end -->
+        </footer>
+            <!-- Footer end -->
+    
+        <!-- JavaScript -->   
+       
+        <script src="../Recursos/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="Recursos/js/jquery-1.12.1.min.js" type="text/javascript"></script>
+        <!-- Bootsnav js -->       
+        <script src="../Recursos/js/bootsnav.js" type="text/javascript"></script>
+
+        <!-- JS Implementing Plugins -->
+        <script src="../Recursos/js/isotope.js" type="text/javascript"></script>
+        <script src="../Recursos/js/isotope-active.js" type="text/javascript"></script>
+        <script src="../Recursos/js/jquery.fancybox.js" type="text/javascript"></script>
+
+        <script src="../Recursos/js/jquery.scrollUp.min.js" type="text/javascript"></script>
+        <script src="../Recursos/js/main.js" type="text/javascript"></script>
+
+     </h:form>   
+    </h:body>
 </html>

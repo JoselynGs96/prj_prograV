@@ -81,7 +81,7 @@ public class UsuarioManteDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo from Usuario WHERE Id_Usuario = " +id;
+                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, Log_Activo from Usuario WHERE Id_Usuario = " +id;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -95,9 +95,13 @@ public class UsuarioManteDB {
                         Date FechaNacimiento = rsPA.getDate("FechaNacimiento");
                         String Correo = rsPA.getString("Correo");
                         EstadoAcceso EstadoAcceso = estadoAcceso.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         String Log_Activo = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
                         usuario = new UsuarioMante(Id, TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, EstadoAcceso, Log_Activo);
                         usuario.setEdad(calculaEdad(FechaNacimiento));
+                        usuario.setId_Edita(idEdita);
+                        usuario.setFechaEdita(fechaEdita);
                       }
               
             rsPA.close();
@@ -127,7 +131,7 @@ public class UsuarioManteDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo from Usuario";
+                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, Log_Activo from Usuario WHERE Id_EstadoAcceso != "+2;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -141,9 +145,13 @@ public class UsuarioManteDB {
                         Date FechaNacimiento = rsPA.getDate("FechaNacimiento");
                         String Correo = rsPA.getString("Correo");
                         EstadoAcceso EstadoAcceso = estadoAcceso.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         String Log_Activo = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
                         UsuarioMante usu = new UsuarioMante(Id, TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, EstadoAcceso, Log_Activo);
                         usu.setEdad(calculaEdad(FechaNacimiento));
+                        usu.setId_Edita(idEdita);
+                        usu.setFechaEdita(fechaEdita);
                         listaUsuarioMante.add(usu);
                       }
               
@@ -184,13 +192,13 @@ public class UsuarioManteDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Log_Activo from Usuario WHERE"
-                           + " ( Cast(Id_Usuario as nvarchar(20)) LIKE '%' + '" + filtro + "' + '%')"
-                           + "OR ( Nombre LIKE '%' + '" + filtro + "' + '%')"
-                           + "OR ( Apellido1 LIKE '%' + '" + filtro + "' + '%')"
-                           + "OR ( Apellido2 LIKE '%' + '" + filtro + "' + '%')"
-                           + "OR ( Correo LIKE '%' + '" + filtro + "' + '%')"
-                           + "OR ( Cast(Log_Activo as nvarchar(5)) LIKE '%' + '" + valor + "' + '%')";
+                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, Log_Activo from Usuario WHERE"
+                           + " ( Cast(Id_Usuario as nvarchar(20)) LIKE '%' + '" + filtro + "' + '%') AND Id_EstadoAcceso != "+2
+                           + "OR ( Nombre LIKE '%' + '" + filtro + "' + '%') AND Id_EstadoAcceso != "+2
+                           + "OR ( Apellido1 LIKE '%' + '" + filtro + "' + '%') AND Id_EstadoAcceso != "+2
+                           + "OR ( Apellido2 LIKE '%' + '" + filtro + "' + '%') AND Id_EstadoAcceso != "+2
+                           + "OR ( Correo LIKE '%' + '" + filtro + "' + '%') AND Id_EstadoAcceso != "+2
+                           + "OR ( Cast(Log_Activo as nvarchar(5)) LIKE '%' + '" + valor + "' + '%')AND Id_EstadoAcceso != "+2;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -204,8 +212,12 @@ public class UsuarioManteDB {
                         Date FechaNacimiento = rsPA.getDate("FechaNacimiento");
                         String Correo = rsPA.getString("Correo");
                         EstadoAcceso EstadoAcceso = estadoAcceso.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         String Log_Activo = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
                         UsuarioMante usu = new UsuarioMante(Id, TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, EstadoAcceso, Log_Activo);
+                        usu.setId_Edita(idEdita);
+                        usu.setFechaEdita(fechaEdita);
                         listaUsuarioMante.add(usu);
                       }
               

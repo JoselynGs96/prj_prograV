@@ -34,7 +34,7 @@
           $(document).ready(tipoRecurso);
     </script>
     <script>
-            PrimeFaces.locales['es'] = {
+           PrimeFaces.locales['es'] = {
                 closeText: 'Cerrar',
                 prevText: 'Anterior',
                 nextText: 'Siguiente',
@@ -334,9 +334,8 @@
                                 <li><a title="Programas DEAS" data-toggle="tab" href="#programas"><img width="20px" height="20px" src="RecursoMante/img/progra.png" alt=""/></a></li>
                             </ul>
                             <br></br>
-                                    <h:outputLabel id="msjE"   value="#{usuariosPorProgranaBean.mensajeError}" escape="false">
-                                    </h:outputLabel>
-                                    <h:outputLabel id="msjG" value="#{usuariosPorProgranaBean.mensajeGuardar}" escape="false"></h:outputLabel>
+                                     <h:outputLabel id="msjE" style="width: 100%"  value="#{usuariosPorProgranaBean.mensajeError}" escape="false"></h:outputLabel>
+                                    <h:outputLabel id="msjG" style="width: 100%"  value="#{usuariosPorProgranaBean.mensajeGuardar}" escape="false"></h:outputLabel>
                              <div class="tab-content">
                                 <div id="personal" class="tab-pane fade in active">
                                     <table style="width: 100%;"> 
@@ -553,7 +552,7 @@
                                                         <f:facet name="header">
                                                             <h:outputText value="Tipo Télefono"/>
                                                         </f:facet>
-                                                        <h:outputText value="#{tell.id_TipoTelefono.dsc_TipoTelefono}"/>
+                                                        <h:outputText value="#{tell.id_TipoTelefono.dsc_TipoTelefono}"></h:outputText>
                                                     </h:column>
                                                     <h:column>
                                                         <f:facet name="header">
@@ -580,6 +579,7 @@
                                         <p:outputLabel style="font-weight: bold;">Programas al que Pertenece:</p:outputLabel>
                                         <div style="overflow: auto">
                                         <h:dataTable id="tProgra"  class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaProusu}" style="width: 100%;" var="pu" >
+                                           
                                             <center>
                                             <h:column>
                                                 <f:facet name="header">

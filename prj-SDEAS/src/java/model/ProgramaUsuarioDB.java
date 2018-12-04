@@ -10,6 +10,7 @@ import dao.SNMPExceptions;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -42,13 +43,17 @@ public class ProgramaUsuarioDB {
             if(pu.estado.equals("Activo")){
                 estado = 1;
             }
-             strSQL = "INSERT INTO Programa_Usuario (Id_Programa, Id_Usuario, Id_RolUsuario,TipoFuncionario, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
-                    + "VALUES ('" 	+	pu.getUsuario().Id +"', '" 
-            + pu.getPrograma().id + "', '" +  pu.rolUsuario.Id_RolUsuario + "', '"  + pu.getFuncionario().toString()
-            + "', '" +  pu.Id_Registra
-            + "', '" +  new java.sql.Date(pu.FechaRegistra.getTime())
-            + "', '" +  pu.Id_Edita 
-            + "', '" +  new java.sql.Date(pu.FechaEdita.getTime())+ "', '"+estado +"')"; 
+             strSQL = "INSERT INTO Programa_Usuario (Id_Programa, Id_Usuario, Id_RolUsuario, TipoFuncionario, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
+                    + "VALUES ('" 
+                    +	pu.getPrograma().getId()
+                    + "', '" +  pu.getUsuario().getId()
+                    + "', '" +  pu.getRolUsuario().getId_RolUsuario()
+                    + "', '" +  pu.getFuncionario().toString()
+                    + "', '" +  pu.getId_Registra()
+                    + "', '" +  new java.sql.Date(pu.getFechaRegistra().getTime())
+                    + "', '" +  pu.getId_Edita()
+                    + "', '" +  new java.sql.Date(pu.getFechaEdita().getTime())
+                    + "', '" + estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -76,11 +81,11 @@ public class ProgramaUsuarioDB {
                 }
                 
              strSQL = "UPDATE Programa_Usuario SET "
-                     +"TipoFuncionario='"+pu.getFuncionario().toString()
-                     +"'Id_Edita='"+pu.getId_Edita()
-                     +"'FechaEdita='"+new java.sql.Date(pu.FechaEdita.getTime())
-                     +"'Log_Activo='" + estado
-                     +"' WHERE Id_Programa='" + pu.getPrograma().id  +"'AND Id_RolUsuario='"+pu.getRolUsuario().Id_RolUsuario+"';";
+                     +"TipoFuncionario='" +pu.getFuncionario().toString()
+                     +"', Id_Edita='"+ pu.getId_Edita()
+                     +"', FechaEdita='"+ new java.sql.Date(pu.getFechaEdita().getTime())
+                     +"', Log_Activo='" + estado
+                     +"' WHERE Id_Programa='" + pu.getPrograma().id  +"'AND Id_RolUsuario='"+ pu.getRolUsuario().Id_RolUsuario+"'AND Id_Usuario='"+pu.usuario.Id+"';";
                     
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
            
@@ -109,17 +114,23 @@ public class ProgramaUsuarioDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Programa, Id_RolUsuario, TipoFuncionario, Log_Activo from Programa_Usuario WHERE Id_Usuario = " +id;
+                      "SELECT Id_Programa, Id_Usuario, Id_RolUsuario, TipoFuncionario, Id_Edita, FechaEdita, Log_Activo from Programa_Usuario WHERE Id_Usuario = " +id;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
 
-                        Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa")) ;
+                        Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        Usuario usuario = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                         RolUsuario Id_RolUsuario = rol.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
                         EnumFuncionario TipoFunci = EnumFuncionario.valueOf(rsPA.getString("TipoFuncionario"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         ProgramaUsuario p = new ProgramaUsuario(Id_Programa, Id_RolUsuario, TipoFunci, Log_Activo==0? "Inactivo":"Activo");
+                        p.setUsuario(usuario);
+                        p.setId_Edita(idEdita);
+                        p.setFechaEdita(fechaEdita);
                         listaProgramaUsuario.add(p);
                       }
               
@@ -153,7 +164,7 @@ public class ProgramaUsuarioDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                   select = 
-                      "SELECT Id_Programa, Id_Usuario, Id_RolUsuario, TipoFuncionario, Log_Activo from Programa_Usuario";
+                      "SELECT Id_Programa, Id_Usuario, Id_RolUsuario, TipoFuncionario, Id_Edita, FechaEdita, Log_Activo from Programa_Usuario";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -163,8 +174,12 @@ public class ProgramaUsuarioDB {
                         Usuario Id_Usuario = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                         RolUsuario Id_RolUsuario = rol.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
                         EnumFuncionario TipoFunci = EnumFuncionario.valueOf(rsPA.getString("TipoFuncionario"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         ProgramaUsuario pu = new ProgramaUsuario( Id_Usuario, Id_Programa, Id_RolUsuario, TipoFunci, Log_Activo==0? "Inactivo":"Activo");
+                        pu.setId_Edita(idEdita);
+                        pu.setFechaEdita(fechaEdita);
                         listaProgramaUsuario.add(pu);
                       }
               
