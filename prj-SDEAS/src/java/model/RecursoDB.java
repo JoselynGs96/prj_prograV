@@ -137,7 +137,7 @@ public class RecursoDB {
           return rec;
       }
     
-    public  LinkedList<Recurso> SeleccionarTodos() throws SNMPExceptions, 
+    public  LinkedList<Recurso> seleccionarTodos() throws SNMPExceptions, 
             SQLException {
       String select = "";
       ResultSet rsPA = null;

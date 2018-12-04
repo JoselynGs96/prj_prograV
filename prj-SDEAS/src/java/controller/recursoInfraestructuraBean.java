@@ -61,9 +61,9 @@ public class recursoInfraestructuraBean implements Serializable {
     
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
         RecursoDB rec = new RecursoDB();
-        if(!rec.SeleccionarTodos().isEmpty()){
+        if(!rec.seleccionarTodos().isEmpty()){
             listaTablaRecurso.clear();
-            listaTablaRecurso = rec.SeleccionarTodos();
+            listaTablaRecurso = rec.seleccionarTodos();
         }
     }
 
@@ -141,7 +141,7 @@ public class recursoInfraestructuraBean implements Serializable {
                 listaTablaRecurso = recd.FiltrarRecurso(buscarFiltro);
                  setMensajeFiltro("");
             }else{
-                listaTablaRecurso = recd.SeleccionarTodos();
+                listaTablaRecurso = recd.seleccionarTodos();
                 setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
             }
         }else{
