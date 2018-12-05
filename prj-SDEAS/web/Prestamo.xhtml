@@ -190,8 +190,7 @@
                     <div class="panel panel-default" style="margin-top: 40px">
                         <div class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
                             <center>  <h2>Detalle de Solicitud</h2></center>
-                        </div>
-                        <br></br>
+                        </div>                 
                         <br></br>
                         <center>                                         
 
@@ -213,13 +212,13 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <p:outputLabel value="Fecha de Fimal* " style="margin-top: 5px" />
+                                        <p:outputLabel value="Fecha de Final* " style="margin-top: 5px" />
                                     </td>
                                     <td colspan="2">
                                         <p:calendar locale="es" style="width: 200px;float: left; margin-top: 5px; margin-left: 10px " value="#{preestamoBean.fechaFinal}"  pattern="dd-MM-yyyy" mask="true" label="ca margin-left: 5pxlendario" id="calendario1"/>
                                     </td>
                                     <td colspan="2">
-                                        <p:outputLabel value="Hora de Fimal* " style="margin-top: 5px" />
+                                        <p:outputLabel value="Hora de Final* " style="margin-top: 5px" />
                                     </td>
                                     <td colspan="2">
                                         <p:calendar  locale="es"  id="time1" value="#{preestamoBean.horaFinal}" pattern="HH:mm" mask="true" timeOnly="true"  />
@@ -268,25 +267,31 @@
                                 </tr>
                                 <tr>
                                     <td colspan="8">
-                                        <h:dataTable class="table table-striped table-advance table-hover" value="#{preestamoBean.listaRecursoAgregardos}" var="infra">
+                                        <h:dataTable class="table table-striped table-advance table-hover" value="#{preestamoBean.listaRecursoAgregardos}" var="recur">
                                             <h:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="Identificador"/>
                                                 </f:facet>
-                                                <h:outputText value="#{infra.id}"/>
+                                                <h:outputText value="#{recur.id}"/>
                                             </h:column>
                                             <h:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="Nombre del Recurso"/>
                                                 </f:facet>
-                                                <h:outputText value="#{infra.nombre}"/>
+                                                <h:outputText value="#{recur.nombre}"/>
                                             </h:column>
                                             <h:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="Tipo de Recurso"/>
                                                 </f:facet>
-                                                <h:outputText value="#{infra.tipoRecurso.nombre}"/>
+                                                <h:outputText value="#{recur.tipoRecurso.nombre}"/>
                                             </h:column> 
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value=""/>
+                                                </f:facet>
+                                                <h:commandButton  action="#{preestamoBean.eliminarRecursos(recur.id)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
+                                            </h:column>
                                         </h:dataTable>
                                     </td>
                                 </tr>
@@ -301,7 +306,7 @@
                                 </tr>
 
                             </table>
-                            <br></br>
+                    
                             <br></br>
                             
                             <h:commandButton action="#{registrarBean.ingresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 

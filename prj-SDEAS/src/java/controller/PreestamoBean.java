@@ -47,9 +47,9 @@ public class PreestamoBean implements Serializable {
     Date FechaFinal;
     Time HoraInicio;
     Time HoraFinal;
-    int recurso;
+    private int recurso = 1000;
     String Observaciones;
-    String mensajeError;    
+    String mensajeError;
     
     LinkedList<Recurso> listaRecurso = new LinkedList<Recurso>();
     LinkedList<Recurso> listaRecursoAgregardos = new LinkedList<Recurso>();
@@ -58,15 +58,15 @@ public class PreestamoBean implements Serializable {
         if (!recursoDB.seleccionarTodos().isEmpty()) {
             listaRecurso = recursoDB.seleccionarTodos();
         } else {
-            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen recurso</div>");            
-        }        
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen recurso</div>");
+        }
     }
     
     public void agregarRecursos() throws SNMPExceptions, SQLException {
         Recurso recurso = recursoDB.SeleccionarPorId(this.getRecurso());
-        listaRecursoAgregardos.add(recurso);  
-          LinkedList<Recurso> listaRecurso2 = listaRecurso;
-          
+        listaRecursoAgregardos.add(recurso);
+        LinkedList<Recurso> listaRecurso2 = listaRecurso;
+        
         for (Recurso re : listaRecurso2) {
             for (Recurso recursoAgregados : listaRecursoAgregardos) {
                 if (re.getId() == recurso.getId()) {
@@ -75,7 +75,64 @@ public class PreestamoBean implements Serializable {
             }
             
         }
-    }   
+    }
+
+    public void validaciones() {
+        if (this.getFechaInicio() == null) {
+            this.setMensajeError("*Debe colocar la fecha de inicio");
+        } else {
+            if (this.getHoraInicio() == null) {
+                this.setMensajeError("*Debe colocar la hora de inicio");
+            } else {
+                if (this.getFechaFinal() == null) {
+                    this.setMensajeError("*Debe colocar la fecha de final");
+                } else {
+                    if (this.getHoraFinal() == null) {
+                        this.setMensajeError("*Debe colocar la hora de final");
+                    } else {
+                        if (this.getHoraFinal() == null) {
+                            this.setMensajeError("*Debe colocar la hora de final");
+                        } else {
+                            if (validarDiasSeleccionados()) {
+                                this.setMensajeError("Debe seleccionar al menos un dia");
+                            }else{
+                                if(this.getListaRecursoAgregardos().isEmpty()){
+                                     this.setMensajeError("Debe agregar al menos un recurso a la lista");
+                                }else{
+                                    if(this.getObservaciones().equals("")){
+                                         this.setMensajeError("Debe colocar alguna observación");
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean validarDiasSeleccionados() {
+        boolean respuesta = false;
+        return respuesta;
+    }
+    
+    public void eliminarRecursos(int id) throws SNMPExceptions, SQLException {
+        LinkedList<Recurso> listaRecurso2 = recursoDB.seleccionarTodos();
+        LinkedList<Recurso> listaAgregados = listaRecursoAgregardos;
+        Recurso recurso = recursoDB.SeleccionarPorId(id);
+        
+        for (Recurso re : listaRecurso2) {
+            if (re.getId() == id) {
+                listaRecurso.add(re);
+            }
+        }
+        for (Recurso re : listaAgregados) {
+            if (re.getId() == id) {
+                listaRecursoAgregardos.remove(re);
+            }
+        }
+    }
     
     public AgendaDB getAgendaDB() {
         return agendaDB;
@@ -236,7 +293,7 @@ public class PreestamoBean implements Serializable {
     public void setMensajeError(String mensajeError) {
         this.mensajeError = mensajeError;
     }
-
+    
     public LinkedList<Recurso> getListaRecursoAgregardos() {
         return listaRecursoAgregardos;
     }
