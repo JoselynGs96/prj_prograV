@@ -137,7 +137,7 @@ public class registrarBean implements Serializable {
 
     /*Ajax canton*/
     public LinkedList cargarCantonProv(AjaxBehavior evento) throws SNMPExceptions, SQLException {
-        CantonDB can = new CantonDB();
+        CantonDB can = new CantonDB();       
         return can.SeleccionarTodos(this.getId_Provincia());
     }
 

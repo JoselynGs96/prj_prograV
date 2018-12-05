@@ -305,7 +305,7 @@
                                         <td>
                                             <h:selectOneMenu class="form-control"  style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Canton}" id="CmbCan" >
                                                 <f:selectItems var="can" value="#{registrarBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
-                                                <f:ajax render="CmbDis" resetValues="true" listener="#{registrarBean.cargarDisCan(null)}" ></f:ajax>
+                                                <f:ajax render="CmbDis cmbBarr" resetValues="true" listener="#{registrarBean.cargarDisCan(null)}" ></f:ajax>
                                             </h:selectOneMenu>
                                         </td>
                                     </tr>
