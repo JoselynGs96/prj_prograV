@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedList;
+import javax.faces.component.behavior.AjaxBehavior;
 import model.Barrio;
 import model.BarrioDB;
 import model.Canton;
@@ -45,7 +46,8 @@ import model.UsuarioDB;
 @Named(value = "registrarBean")
 @SessionScoped
 public class registrarBean implements Serializable {
-int cedula;
+
+    int cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
@@ -60,12 +62,12 @@ int cedula;
     int Programa;
     String OtrasSenas;
     int edad;
-   private  int Id_Provincia=0;
-   private int Id_Canton=0;
-   private int Id_Distrito=0;
-   private int id_Barrio=0;
-   private int id_TipoTelefono;
-   private int id_TipoCedula;
+    private int Id_Provincia = 0;
+    private int Id_Canton = 0;
+    private int Id_Distrito = 0;
+    private int id_Barrio = 0;
+    private int id_TipoTelefono;
+    private int id_TipoCedula;
     String botonNombre;
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
@@ -102,33 +104,53 @@ int cedula;
         TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
 
         if (!pro.SeleccionarTodos().isEmpty()) {
+            
             listaPro = pro.SeleccionarTodos();
-            Id_Provincia = pro.SeleccionarTodos().element().getId_Provincia();
+            Id_Provincia = listaPro.element().getId_Provincia();
         }
         if (!can.SeleccionarTodos(Id_Provincia).isEmpty()) {
-            listaCan = can.SeleccionarTodos(Id_Provincia);
-            Id_Canton = can.SeleccionarTodos(Id_Provincia).element().getId_Canton();
+          
+            listaCan =  cargarCantonProv(null);
+            Id_Canton = listaCan.element().getId_Canton();
         }
-        if (!dis.SeleccionarTodos(Id_Provincia, Id_Canton).isEmpty()) {
-            listaDis = dis.SeleccionarTodos(Id_Provincia, Id_Canton);
-            Id_Distrito = dis.SeleccionarTodos(Id_Provincia, Id_Canton).element().getId_Distrito();
+        if (!dis.SeleccionarTodos(Id_Provincia, Id_Canton).isEmpty()) {         
+            listaDis = cargarDisCan(null);
+            Id_Distrito = listaDis.element().getId_Distrito();
         }
         if (!barr.SeleccionarTodos(Id_Provincia, Id_Canton, Id_Distrito).isEmpty()) {
-            listaBarrio = barr.SeleccionarTodos(Id_Provincia, Id_Canton, Id_Distrito);
-            id_Barrio = barr.SeleccionarTodos(Id_Provincia, Id_Canton, Id_Distrito).element().getId_Barrio();
+            listaBarrio =cargarBarDis(null);
+            id_Barrio = listaBarrio.element().getId_Barrio();
         }
         if (!tel.SeleccionarTodos().isEmpty()) {
             listaTipoTelefono = tel.SeleccionarTodos();
-            id_TipoTelefono = tel.SeleccionarTodos().element().getId_Telefono();
+            id_TipoTelefono = listaTipoTelefono.element().getId_Telefono();
         }
         if (!progra.SeleccionarTodos().isEmpty()) {
             listaPrograma = progra.SeleccionarTodos();
-            Programa = progra.SeleccionarTodos().element().getId();
+            Programa = listaPrograma.element().getId();
         }
         if (!tipoIden.SeleccionarTodos().isEmpty()) {
             listaIden = tipoIden.SeleccionarTodos();
-            id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
+            id_TipoCedula = listaIden.element().getId_TipoIdentificacion();
         }
+    }
+
+    /*Ajax canton*/
+    public LinkedList cargarCantonProv(AjaxBehavior evento) throws SNMPExceptions, SQLException {
+        CantonDB can = new CantonDB();
+        return can.SeleccionarTodos(this.getId_Provincia());
+    }
+
+    /*Ajax distrito*/
+    public LinkedList cargarDisCan(AjaxBehavior evento) throws SNMPExceptions, SQLException {
+        DistritoDB dis = new DistritoDB();
+        return dis.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton());
+    }
+
+    /*Ajax barrio*/
+    public LinkedList cargarBarDis(AjaxBehavior evento) throws SNMPExceptions, SQLException {
+        BarrioDB barr = new BarrioDB();
+        return barr.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito());
     }
 
     public boolean validaAutoRegistro() {
@@ -137,7 +159,7 @@ int cedula;
             this.setMensaje("*Debe colocar el tipo de identificación.");
             respuesta = false;
         } else {
-            if (this.getCedula()==0) {
+            if (this.getCedula() == 0) {
                 this.setMensaje("*Debe colocar la cédula de identificación.");
                 respuesta = false;
             } else {
@@ -254,7 +276,7 @@ int cedula;
             direc.setCanton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
             direc.setDistrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
             direc.setBarrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
-            direc.setOtras_sennas(this.getOtrasSenas());     
+            direc.setOtras_sennas(this.getOtrasSenas());
             direc.setId_Registra(116390998);
             direc.setFechaRegistra(fecha);
             direc.setId_Edita(116390098);
@@ -311,7 +333,7 @@ int cedula;
 
     /*Elimina telefono*/
     public void eliminarTelefono(String numero) {
-        for(Telefono tel : listaTel) {
+        for (Telefono tel : listaTel) {
 
             if (tel.getNumero().equals(numero)) {
 
@@ -323,7 +345,7 @@ int cedula;
 
     /*Registra el usuario*/
     public void ingresarUsuario() throws SNMPExceptions, SQLException {
-         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
+        TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
         ProgramaDB prograDB = new ProgramaDB();
         RolUsuarioDB rolDB = new RolUsuarioDB();
         UsuarioDB usuDB = new UsuarioDB();
@@ -345,10 +367,8 @@ int cedula;
             usu.setFechaEdita(fecha);
             usu.setCorreo(this.getCorreo());
             usuDB.registrar(usu);
-            
-            
+
             /*agregar telefono*/
-            
             for (Telefono tel : listaTel) {
                 tel.setId_Usuario(usu);
                 telDB.registrar(tel);
@@ -358,21 +378,20 @@ int cedula;
                 dir.setUsuario(usu);
                 direcDB.registrar(dir);
             }
-            
+
             Programa progra = new Programa();
             progra = prograDB.SeleccionarPorId(this.getPrograma());
             RolUsuario rol1 = rolDB.SeleccionarPorId(3);
-            
-            
-            /*Agrega programa_usuario*/
-           ProgramaUsuario prousu = new ProgramaUsuario(usu, progra, rol1, this.getFuncionario(), "1");
-           prousu.setId_Registra(116390998);
-           prousu.setFechaEdita(fecha);
-           prousu.setId_Edita(116390998);
-           prousu.setFechaRegistra(fecha);
-           programaUsuarioDB.registrar(prousu);
 
-           setMensaje("Su solicitud de registro ha sido enviada. Se le enviará un correo con el código de acceso y su contraseña al correo proporcionado cuando el Coordinador acepte la solicitud");
+            /*Agrega programa_usuario*/
+            ProgramaUsuario prousu = new ProgramaUsuario(usu, progra, rol1, this.getFuncionario(), "1");
+            prousu.setId_Registra(116390998);
+            prousu.setFechaEdita(fecha);
+            prousu.setId_Edita(116390998);
+            prousu.setFechaRegistra(fecha);
+            programaUsuarioDB.registrar(prousu);
+
+            setMensaje("Su solicitud de registro ha sido enviada. Se le enviará un correo con el código de acceso y su contraseña al correo proporcionado cuando el Coordinador acepte la solicitud");
         }
     }
 
@@ -507,8 +526,7 @@ int cedula;
     }
 
     public LinkedList<Canton> getListaCan() throws SNMPExceptions, SQLException {
-        CantonDB can = new CantonDB();
-        return can.SeleccionarTodos(this.getId_Provincia());
+        return cargarCantonProv(null);
     }
 
     public void setListaCan(LinkedList<Canton> listaCan) {
@@ -516,8 +534,7 @@ int cedula;
     }
 
     public LinkedList<Distrito> getListaDis() throws SNMPExceptions, SQLException {
-        DistritoDB dis = new DistritoDB();
-        return dis.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton());
+        return cargarDisCan(null);
     }
 
     public void setListaDis(LinkedList<Distrito> listaDis) {
@@ -525,8 +542,7 @@ int cedula;
     }
 
     public LinkedList<Barrio> getListaBarrio() throws SNMPExceptions, SQLException {
-        BarrioDB barr = new BarrioDB();
-        return barr.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito());
+        return cargarBarDis(null);
     }
 
     public void setListaBarrio(LinkedList<Barrio> listaBarrio) {

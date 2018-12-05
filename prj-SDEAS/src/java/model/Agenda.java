@@ -56,8 +56,7 @@ public class Agenda {
         this.Obseraciones = Obseraciones;
     }
 
-    public Agenda(int id_Agenda, boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Time HoraInicio, Time HoraFinal, Recurso recurso, int activo, String Obseraciones) {
-        this.id_Agenda = id_Agenda;
+    public Agenda( boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Time HoraInicio, Time HoraFinal, Recurso recurso, int activo, String Obseraciones) {
         this.Lunes = Lunes;
         this.Martes = Martes;
         this.Miercoles = Miercoles;

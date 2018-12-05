@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
+import model.Agenda;
 import model.AgendaDB;
 import model.DetalleDB;
 import model.Direccion;
@@ -53,9 +54,7 @@ public class PreestamoBean implements Serializable {
     private int recurso = 1000;
     String Observaciones;
     String mensajeError;
-       int Contador = 0;
-
-   
+    int Contador = 0;
 
     LinkedList<Recurso> listaRecurso = new LinkedList<Recurso>();
     LinkedList<Recurso> listaRecursoAgregardos = new LinkedList<Recurso>();
@@ -83,30 +82,41 @@ public class PreestamoBean implements Serializable {
         }
     }
 
-    public void validaciones() {
+    public boolean validaciones() {
+        boolean respuesta;
         if (this.getFechaInicio() == null) {
             this.setMensajeError("*Debe colocar la fecha de inicio");
+              respuesta = false;
         } else {
             if (this.getHoraInicio() == null) {
                 this.setMensajeError("*Debe colocar la hora de inicio");
+                  respuesta = false;
             } else {
                 if (this.getFechaFinal() == null) {
                     this.setMensajeError("*Debe colocar la fecha de final");
+                      respuesta = false;
                 } else {
                     if (this.getHoraFinal() == null) {
                         this.setMensajeError("*Debe colocar la hora de final");
+                          respuesta = false;
                     } else {
                         if (this.getHoraFinal() == null) {
                             this.setMensajeError("*Debe colocar la hora de final");
+                              respuesta = false;
                         } else {
                             if (validarDiasSeleccionados()) {
                                 this.setMensajeError("Debe seleccionar al menos un dia");
+                                  respuesta = false;
                             } else {
                                 if (this.getListaRecursoAgregardos().isEmpty()) {
                                     this.setMensajeError("Debe agregar al menos un recurso a la lista");
+                                      respuesta = false;
                                 } else {
                                     if (this.getObservaciones().equals("")) {
                                         this.setMensajeError("Debe colocar alguna observación");
+                                          respuesta = false;
+                                    }else{
+                                          respuesta = true;
                                     }
                                 }
                             }
@@ -116,6 +126,7 @@ public class PreestamoBean implements Serializable {
                 }
             }
         }
+        return respuesta;
     }
 
     public boolean validarDiasSeleccionados() {
@@ -137,21 +148,21 @@ public class PreestamoBean implements Serializable {
                         } else {
                             if (Sabado) {
                                 respuesta = true;
-                            }else{
-                                    if (Domingo) {
-                                respuesta = true;
+                            } else {
+                                if (Domingo) {
+                                    respuesta = true;
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
+        return respuesta;
     }
 
-    return respuesta ;
-}
-    
-     /*Este metodo valida que los dias seleccionados esten estre el rango*/
+    /*Este metodo valida que los dias seleccionados esten estre el rango*/
     public boolean prueba() throws ParseException {
         /*Tengocontadores x dia para no contar dos dias iguales y que el contador me quede igual a los activos*/
         contadorActivos();
@@ -181,7 +192,7 @@ public class PreestamoBean implements Serializable {
         int diaSemana = can.get(Calendar.DAY_OF_WEEK);
         /*Dias que hay entre las dos fechas*/
         int diasEntreFechas = (int) ((fechaFinal1.getTime() - fechaInicio1.getTime()) / 86400000) + 1;
-            
+
         for (int i = 1; i <= diasEntreFechas; i++) {
             if (diaSemana == 2) {
                 if (this.isLunes()) {
@@ -265,7 +276,7 @@ public class PreestamoBean implements Serializable {
     public void valida() throws ParseException {
         if (validaFechaActual()) {
             if (prueba()) {
-                this.setMensajeError("lo logro babosa");
+
             } else {
                 this.setMensajeError("Los días seleccionados no concuerdan con el rango de fechas");
             }
@@ -316,7 +327,7 @@ public class PreestamoBean implements Serializable {
         int diasEntreFechas1 = (int) ((fechaFinal1.getTime() - ahora.getTime()) / 86400000);
 
         /*si el numero es negativo quire decir que la fecha es menor si es mayor quiere decir que esta bien*/
-        if (diasEntreFechas > 0) {
+        if (diasEntreFechas > 1) {
             contador++;
         } else {
             if (diasEntreFechas1 > 0) {
@@ -331,7 +342,7 @@ public class PreestamoBean implements Serializable {
 
     }
 
-public void eliminarRecursos(int id) throws SNMPExceptions, SQLException {
+    public void eliminarRecursos(int id) throws SNMPExceptions, SQLException {
         LinkedList<Recurso> listaRecurso2 = recursoDB.seleccionarTodos();
         LinkedList<Recurso> listaAgregados = listaRecursoAgregardos;
         Recurso recurso = recursoDB.SeleccionarPorId(id);
@@ -347,13 +358,52 @@ public void eliminarRecursos(int id) throws SNMPExceptions, SQLException {
             }
         }
     }
- public int getContador() {
+
+    public boolean validaExistente() throws SNMPExceptions, SQLException {
+        boolean respuesta = false;
+        int contadorfor = 0;
+        int contadorRespuestas = 0;
+        for (Recurso re : listaRecursoAgregardos) {
+            contadorfor++;
+            Agenda agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), re, 1, this.getObservaciones());
+            int AgendaBD = agendaDB.SeleccionarExistente(agendaNueva);
+            if (AgendaBD == 0) {
+               contadorRespuestas++;
+
+            }
+        }
+        if(contadorRespuestas==contadorfor){
+            this.setMensajeError("Si puede agregar la solicitud");
+            respuesta=true;
+        }else{
+             this.setMensajeError("no puede agregar la solicitud");
+             respuesta=false;
+        }
+
+        return respuesta;
+    }
+    
+    public void IngresarAgendas()throws ParseException,SNMPExceptions, SQLException {
+        if(validaciones()){
+            if(validaFechaActual()){
+                if(validarDiasSeleccionados()){
+                    if(validaExistente()){
+                        
+                    }
+                    
+                }
+            }
+        }
+    }
+
+    public int getContador() {
         return Contador;
     }
 
     public void setContador(int Contador) {
         this.Contador = Contador;
     }
+
     public AgendaDB getAgendaDB() {
         return agendaDB;
     }
