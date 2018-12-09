@@ -25,6 +25,8 @@ public class UsuarioMante {
     String Edad;
     int Id_Edita;
     Date FechaEdita;
+    int Codigo = 0;
+    String contrasenna = "";
 
     public UsuarioMante() {
     }
@@ -160,6 +162,22 @@ public class UsuarioMante {
 
     public void setFechaEdita(Date FechaEdita) {
         this.FechaEdita = FechaEdita;
+    }
+
+    public int getCodigo() {
+        return Codigo;
+    }
+
+    public void setCodigo(int Codigo) {
+        this.Codigo = Codigo;
+    }
+
+    public String getContrasenna() {
+        return contrasenna;
+    }
+
+    public void setContrasenna(String contrasenna) {
+        this.contrasenna = contrasenna;
     }
     
     

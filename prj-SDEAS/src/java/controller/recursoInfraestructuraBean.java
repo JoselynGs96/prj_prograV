@@ -9,6 +9,7 @@ package controller;
 
 
 
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -16,10 +17,16 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedList;
+import model.EnumTipoInfraestructura;
+import model.Programa;
+import model.ProgramaDB;
+import model.ProgramaUsuarioDB;
 import model.Recurso;
 import model.RecursoDB;
 import model.TipoRecurso;
 import model.TipoRecursoDB;
+import model.UsuarioMante;
+import model.UsuarioManteDB;
 import org.primefaces.PrimeFaces;
 
 /**
@@ -33,41 +40,87 @@ public class recursoInfraestructuraBean implements Serializable {
     int cantidad = 0;
     int capacidad = 0;
     int tipoRecurso;
+    int programa;
     String nombre;
     String descripcion;
     String estado = "Activo";
     String dscTipo;
     String dscNum;
     Recurso recurso;
+    EnumTipoInfraestructura tipoInfra;
     String buscarFiltro;
     String mensajeFiltro;
     String mensajeGuardar;
-    String mensajeError;
+    String mensajeError; 
+    String nombreTipoInfra;
+    String dscTipoInfra;
+    UsuarioMante usuario = null;
+    LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
     LinkedList<Recurso> listaTablaRecurso = new LinkedList<Recurso>();
     LinkedList<TipoRecurso> listaTipoRecurso = new LinkedList<TipoRecurso>();
+     public EnumTipoInfraestructura[] EnumTipoInfra() {
+        return EnumTipoInfraestructura.values();
+    }
     Date fecha = new Date();
-    
+    int IdRegistra = 0;
+    int IdEdita = 0;
     /**
      * Creates a new instance of recursoInfraestructuraBean
      */
     
     public recursoInfraestructuraBean() throws SNMPExceptions, SQLException {
+        ObtenerDatosSesion datos = new ObtenerDatosSesion();
+        UsuarioManteDB usuDB = new UsuarioManteDB();
+        datos.consultarSesion();
+        
+        if(!datos.getId_Usuario().equals("")){
+            usuario = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
+            IdRegistra = usuario.getId();
+            IdEdita = usuario.getId();
+        }else{
+            usuario = usuDB.SeleccionarPorId(116390998);
+            IdRegistra = usuario.getId();
+            IdEdita = usuario.getId();
+        }
+        
+        llenarComboTipoRecurso();
+        llenaListaProgramas();
+        seleccionarTodos();
+    }
+    
+    public void llenarComboTipoRecurso() throws SNMPExceptions, SQLException{
         TipoRecursoDB tipDb = new TipoRecursoDB();
         if(!tipDb.SeleccionarTodos().isEmpty()){
             listaTipoRecurso = tipDb.SeleccionarTodos();
         }
-        seleccionarTodos();
     }
     
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
         RecursoDB rec = new RecursoDB();
-        if(!rec.seleccionarTodos().isEmpty()){
-            listaTablaRecurso.clear();
-            listaTablaRecurso = rec.seleccionarTodos();
+        listaTablaRecurso.clear();
+        
+        if(!listaPrograma.isEmpty()){
+            for (Programa programa1 : listaPrograma) {
+                if(!rec.seleccionarTodosPorId(programa1.getId()).isEmpty()){
+                    for (Recurso recurso : rec.seleccionarTodosPorId(programa1.getId())) {
+                        listaTablaRecurso.add(recurso);
+                    }
+                }
+            }
+            
+        }else{
+            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No hay registros porque no hay programas existentes</div>");
         }
     }
 
-    
+    public void llenaListaProgramas() throws SNMPExceptions, SQLException{
+        ProgramaUsuarioDB p = new ProgramaUsuarioDB();
+        if(!p.SeleccionarTodosPorId(usuario.getId()).isEmpty()){
+            listaPrograma = p.SeleccionarTodosPorId(usuario.getId());
+        }else{
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen programas</div>");         
+        }
+    }
     
     /*Botón guardar; inserta uno nuevo o modifica*/
      public void insertarRecurso() throws SNMPExceptions, SQLException{
@@ -81,16 +134,19 @@ public class recursoInfraestructuraBean implements Serializable {
             rec.setCantidad(cantidad);
             rec.setCapacidad(capacidad);
             rec.setTipoRecurso(tdb.SeleccionarPorId(tipoRecurso));
-            rec.setId_Edita(116390998);
+            rec.setId_Edita(IdEdita);
             rec.setFechaEdita(fecha);
             rec.setEstado(estado);
+            ProgramaDB p = new ProgramaDB();
+            rec.setPrograma(p.SeleccionarPorId(programa));
+            rec.setTipoInfraestructura(tipoInfra);
             RecursoDB recd = new RecursoDB();
             if(getId() != 0){
                  recd.actulizar(rec);
                  setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Recurso actualizado con éxito!</div> ");
                  
             }else{
-                 rec.setId_Registra(116390998);
+                 rec.setId_Registra(IdRegistra);
                  rec.setFechaRegistra(fecha);
                  recd.registrar(rec);
                  setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Recurso registrado con éxito!</div> ");
@@ -101,9 +157,6 @@ public class recursoInfraestructuraBean implements Serializable {
            setMensajeError( "<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al guardar el recurso...¡Intentelo de nuevo!</div>");
        }
     }
-
-    
-     
  
      /*Botón editar*/
      public void editar(int i) throws SNMPExceptions, SQLException{
@@ -116,6 +169,11 @@ public class recursoInfraestructuraBean implements Serializable {
          setCapacidad(recurso.getCapacidad());
          setTipoRecurso(recurso.getTipoRecurso().getId());
          setEstado(recurso.getEstado());
+         setPrograma(recurso.getPrograma().getId());
+         if(recurso.getTipoRecurso().getId()==2){
+              setTipoInfra(recurso.getTipoInfraestructura());
+         }
+        
       }
      
      /*Botón ver más*/
@@ -125,9 +183,13 @@ public class recursoInfraestructuraBean implements Serializable {
          if(recurso.getTipoRecurso().getId()==2){
              setDscTipo("Capacidad: ");
              setDscNum(recurso.getCapacidad()+"");
+             setNombreTipoInfra("Tipo Infraestructura: ");
+             setDscTipoInfra(recurso.getTipoInfraestructura().toString());
          }else{
              setDscTipo("Cantidad: ");
              setDscNum(recurso.getCantidad()+"");
+             setNombreTipoInfra("");
+             setDscTipoInfra("");
          }
         PrimeFaces.current().executeScript("abrirModal();");
      }
@@ -135,19 +197,37 @@ public class recursoInfraestructuraBean implements Serializable {
      /*Botón de buscar*/
      public void buscar() throws SNMPExceptions, SQLException{
         RecursoDB recd = new RecursoDB();
+        ProgramaUsuarioDB p = new ProgramaUsuarioDB();
+        LinkedList<Recurso> lr = new LinkedList<Recurso>();
         try{
-        if(!getBuscarFiltro().equals("")){
-            if(!recd.FiltrarRecurso(buscarFiltro).isEmpty()){
-                listaTablaRecurso = recd.FiltrarRecurso(buscarFiltro);
-                 setMensajeFiltro("");
-            }else{
-                listaTablaRecurso = recd.seleccionarTodos();
-                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
-            }
-        }else{
-            seleccionarTodos();
-            setMensajeFiltro("");
-        }
+            if(!listaPrograma.isEmpty()) {
+              if(!listaTablaRecurso.isEmpty()){
+                    if(!getBuscarFiltro().equals("")){
+                        if(!recd.FiltrarRecurso(buscarFiltro).isEmpty()){
+                            listaTablaRecurso = recd.FiltrarRecurso(buscarFiltro);
+                            setMensajeFiltro("");
+                            
+                            for (Recurso recurso : recd.FiltrarRecurso(buscarFiltro)) {
+                                for (Recurso recurso1 : listaTablaRecurso) {
+                                    if(recurso.getId() == recurso1.getId()){
+                                        lr.add(recurso1);
+                                    }
+                                }
+                            }
+
+                            listaTablaRecurso = lr;
+                            setMensajeFiltro("");
+                            
+                        }else{
+                            seleccionarTodos();
+                            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+                        }
+                    }else{
+                        seleccionarTodos();
+                        setMensajeFiltro("");
+                    }
+              }
+          }
         }catch(Exception e){
             setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el recurso...¡Intentelo de nuevo!</div>");
         }
@@ -166,6 +246,8 @@ public class recursoInfraestructuraBean implements Serializable {
          setTipoRecurso(1);
          setCantidad(0);
          setCapacidad(0);
+         setNombre("");
+         setBuscarFiltro("");
      }
      
      
@@ -181,19 +263,29 @@ public class recursoInfraestructuraBean implements Serializable {
              setMensajeError("");
              indicador = true;
          }
+         
+         if(getPrograma() == 0){
+             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el programa al que pertenece el Recurso</div>");
+             return indicador = false;
+         }else{
+             setMensajeError("");
+             indicador = true;
+         }
             
          if(tipoRecurso == 1){
                 setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar el Tipo de Recurso</div>");
                 return indicador = false;
          }else{
                 if(tipoRecurso == 2){
-                        if(getCapacidad() == 0){
+                           if(getCapacidad() == 0){
                             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar la capacidad del recurso</div>");
                             return indicador = false;
                            }else{
                                setMensajeError("");
                                indicador = true;
                            }
+                           
+                          
                 }else{
                         if(getCantidad() == 0){
                                 setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar la cantidad del recurso</div>");
@@ -344,5 +436,78 @@ public class recursoInfraestructuraBean implements Serializable {
         this.dscTipo = dscTipo;
     }
 
+    public EnumTipoInfraestructura getTipoInfra() {
+        return tipoInfra;
+    }
+
+    public void setTipoInfra(EnumTipoInfraestructura tipoInfra) {
+        this.tipoInfra = tipoInfra;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(int programa) {
+        this.programa = programa;
+    }
+
+    public LinkedList<Programa> getListaPrograma() {
+        return listaPrograma;
+    }
+
+    public void setListaPrograma(LinkedList<Programa> listaPrograma) {
+        this.listaPrograma = listaPrograma;
+    }
+
+    public UsuarioMante getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioMante usuario) {
+        this.usuario = usuario;
+    }
+
+    public int getIdRegistra() {
+        return IdRegistra;
+    }
+
+    public void setIdRegistra(int IdRegistra) {
+        this.IdRegistra = IdRegistra;
+    }
+
+    public int getIdEdita() {
+        return IdEdita;
+    }
+
+    public void setIdEdita(int IdEdita) {
+        this.IdEdita = IdEdita;
+    }
+
+    public String getNombreTipoInfra() {
+        return nombreTipoInfra;
+    }
+
+    public void setNombreTipoInfra(String nombreTipoInfra) {
+        this.nombreTipoInfra = nombreTipoInfra;
+    }
+
+    public String getDscTipoInfra() {
+        return dscTipoInfra;
+    }
+
+    public void setDscTipoInfra(String dscTipoInfra) {
+        this.dscTipoInfra = dscTipoInfra;
+    }
+    
+    
     
 }

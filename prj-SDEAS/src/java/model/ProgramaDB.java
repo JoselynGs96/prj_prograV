@@ -184,6 +184,39 @@ public class ProgramaDB {
           return listaPrograma;
       }
     
+     
+    public int ultimoRegistro() throws SNMPExceptions{
+        String select = "";
+      ResultSet rsPA = null;
+      int id = 0;
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_Programa FROM Programa WHERE Id_Programa = (SELECT MAX(Id_Programa) from Programa)";
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+
+                        id = rsPA.getInt("Id_Programa");
+                      }
+          
+            rsPA.close();
+          
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return id;
+    }
+    
     
     public  LinkedList<Programa> FiltrarPrograma(String fil) throws SNMPExceptions, 
             SQLException {

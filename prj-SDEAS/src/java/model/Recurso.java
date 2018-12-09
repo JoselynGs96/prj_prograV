@@ -23,6 +23,8 @@ public class Recurso {
     int Id_Edita;
     Date FechaEdita;
     String estado;
+    EnumTipoInfraestructura TipoInfraestructura;
+    Programa programa = null;
 
     public Recurso() {
     }
@@ -140,6 +142,23 @@ public class Recurso {
 
     public void setFechaEdita(Date FechaEdita) {
         this.FechaEdita = FechaEdita;
+    }
+
+    public EnumTipoInfraestructura getTipoInfraestructura() {
+        return TipoInfraestructura;
+    }
+
+    public void setTipoInfraestructura(EnumTipoInfraestructura TipoInfraestructura) {
+        this.TipoInfraestructura = TipoInfraestructura;
+    }
+
+
+    public Programa getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(Programa programa) {
+        this.programa = programa;
     }
     
     

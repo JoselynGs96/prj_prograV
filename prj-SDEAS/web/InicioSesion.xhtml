@@ -143,7 +143,8 @@
                 </nav><!-- Navbar end -->
             </header><!-- Header end -->
             <secion class="contact_form" >
-            <div style="background:white" class="col-lg-offset-3 col-lg-6">      
+            <div class="col-lg-1"></div>
+            <div style="background:white" class="col-lg-offset-3 col-lg-4">      
 
                 <center>
                       <div class="panel-heading" >
@@ -157,7 +158,7 @@
                         <h:inputText value="#{loginControlador.contrasenna}" class="form-control text-center  "></h:inputText>
                     </div>    
                     <div  class="form-group">Tipo de Perfil:<br></br>
-                        <h:selectOneMenu  value="#{loginControlador.tpoUsuario}" style="width:150px">
+                        <h:selectOneMenu  class="form-control" value="#{loginControlador.tpoUsuario}" style="width:150px">
                             <f:selectItems var="tipusu" value="#{loginControlador.listaRolUsuario}" itemLabel="#{tipusu.dsc_RolUsuario}" itemValue="#{tipusu.id_RolUsuario}"></f:selectItems>
                         </h:selectOneMenu>                   
                     </div>
@@ -166,7 +167,7 @@
                     <br></br> <br></br>
                     <h:outputText style="color: red" value="#{loginControlador.mensaje}"></h:outputText>
                     <br></br> <br></br>
-                    <a href="Registro.xhtml" style="color: black;" class="link">No tienes cuenta? Registrate aquí</a>
+                    <span>No tienes cuenta? Registrate </span><a href="Registro.xhtml" style="color: blue;" class="link">aquí</a>
                 </center>
 
             </div>

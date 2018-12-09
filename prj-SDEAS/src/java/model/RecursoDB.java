@@ -42,9 +42,20 @@ public class RecursoDB {
             if(recurso.estado.equals("Activo")){
                 estado = 1;
             }
-             strSQL = "INSERT INTO Recurso (Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
-                    + "VALUES ('" 	+	recurso.getNombre()	+"', '" 
-            + recurso.getDescripcion() + "', '" + recurso.cantidad + "', '" + recurso.capacidad + "', '" + recurso.getTipoRecurso().id + "', '" +  recurso.getId_Registra()  + "', '" + new java.sql.Date(recurso.getFechaRegistra().getTime()) + "', '" + recurso.getId_Edita() + "', '" + new java.sql.Date(recurso.getFechaEdita().getTime()) + "', '" + estado +"')"; 
+             strSQL = "INSERT INTO Recurso (Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, TipoInfraestructura, Id_Programa, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
+                    + "VALUES ('" 	
+                    +	recurso.getNombre()	
+                    + "', '" + recurso.getDescripcion() 
+                    + "', '" + recurso.cantidad 
+                    + "', '" + recurso.capacidad
+                    + "', '" + recurso.getTipoRecurso().id 
+                    + "', '" + recurso.getTipoInfraestructura().toString() 
+                    + "', '" + recurso.programa.id 
+                    + "', '" + recurso.getId_Registra() 
+                    + "', '" + new java.sql.Date(recurso.getFechaRegistra().getTime()) 
+                    + "', '" + recurso.getId_Edita() 
+                    + "', '" + new java.sql.Date(recurso.getFechaEdita().getTime()) 
+                    + "', '" + estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -74,6 +85,8 @@ public class RecursoDB {
                      +"', Cantidad= '" + recurso.getCantidad()
                      +"', Capacidad= '" + recurso.getCapacidad()
                      +"', Id_TipoRecurso= '" + recurso.getTipoRecurso().id
+                     +"', TipoInfraestructura= '" + recurso.getTipoInfraestructura().toString()
+                     +"', Id_Programa= '" + recurso.getPrograma().getId()
                      +"', Id_Edita= '" + recurso.getId_Edita()
                      +"', FechaEdita= '" + new java.sql.Date(recurso.getFechaEdita().getTime())
                      +"', Log_Activo='" + estado
@@ -102,7 +115,7 @@ public class RecursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Id_Edita, FechaEdita, Log_Activo from Recurso WHERE Id_Recurso = " +idRecurso;
+                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, TipoInfraestructura, Id_Programa, Id_Edita, FechaEdita, Log_Activo from Recurso WHERE Id_Recurso = " +idRecurso;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -114,12 +127,16 @@ public class RecursoDB {
                         int Cantidad = rsPA.getInt("Cantidad");
                         int Capacidad = rsPA.getInt("Capacidad");
                         TipoRecurso tipoRecurso = tdb.SeleccionarPorId(rsPA.getInt("Id_TipoRecurso"));
+                        Programa programa = new ProgramaDB().SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        EnumTipoInfraestructura TipoInfraestructura = EnumTipoInfraestructura.valueOf(rsPA.getString("TipoInfraestructura"));
                         int idEdita =  rsPA.getInt("Id_Edita");
                         Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         rec = new Recurso(Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, tipoRecurso, Log_Activo==0? "Inactivo":"Activo");
                         rec.setId_Edita(idEdita);
                         rec.setFechaEdita(fechaEdita);
+                        rec.setTipoInfraestructura(TipoInfraestructura);
+                        rec.setPrograma(programa);
                       }
               
             rsPA.close();
@@ -148,7 +165,7 @@ public class RecursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Id_Edita, FechaEdita, Log_Activo from Recurso";
+                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, TipoInfraestructura, Id_Programa, Id_Edita, FechaEdita, Log_Activo from Recurso";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -160,12 +177,67 @@ public class RecursoDB {
                         int Cantidad = rsPA.getInt("Cantidad");
                         int Capacidad = rsPA.getInt("Capacidad");
                         TipoRecurso tipoRecurso = tdb.SeleccionarPorId(rsPA.getInt("Id_TipoRecurso"));
+                        EnumTipoInfraestructura TipoInfraestructura = EnumTipoInfraestructura.valueOf(rsPA.getString("TipoInfraestructura"));
+                        Programa programa = new ProgramaDB().SeleccionarPorId(rsPA.getInt("Id_Programa"));
                         int idEdita =  rsPA.getInt("Id_Edita");
                         Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         Recurso rec = new Recurso(Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, tipoRecurso, Log_Activo==0? "Inactivo":"Activo");
                         rec.setId_Edita(idEdita);
                         rec.setFechaEdita(fechaEdita);
+                        rec.setTipoInfraestructura(TipoInfraestructura);
+                        rec.setPrograma(programa);
+                        listaRecurso.add(rec);
+                      }
+              
+            rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return listaRecurso;
+      }
+    
+    public  LinkedList<Recurso> seleccionarTodosPorId(int id) throws SNMPExceptions, 
+            SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      TipoRecursoDB tdb = new TipoRecursoDB();
+      LinkedList<Recurso> listaRecurso= new LinkedList<Recurso>();
+          
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, TipoInfraestructura, Id_Programa, Id_Edita, FechaEdita, Log_Activo from Recurso WHERE Id_Programa="+id;
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+
+                        int Id_Recurso = rsPA.getInt("Id_Recurso");
+                        String Nombre = rsPA.getString("Nombre");
+                        String Dsc_Recurso = rsPA.getString("Dsc_Recurso");
+                        int Cantidad = rsPA.getInt("Cantidad");
+                        int Capacidad = rsPA.getInt("Capacidad");
+                        TipoRecurso tipoRecurso = tdb.SeleccionarPorId(rsPA.getInt("Id_TipoRecurso"));
+                        EnumTipoInfraestructura TipoInfraestructura = EnumTipoInfraestructura.valueOf(rsPA.getString("TipoInfraestructura"));
+                        Programa programa = new ProgramaDB().SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        int idEdita =  rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
+                        int Log_Activo = rsPA.getInt("Log_Activo");
+                        Recurso rec = new Recurso(Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, tipoRecurso, Log_Activo==0? "Inactivo":"Activo");
+                        rec.setId_Edita(idEdita);
+                        rec.setFechaEdita(fechaEdita);
+                        rec.setTipoInfraestructura(TipoInfraestructura);
+                        rec.setPrograma(programa);
                         listaRecurso.add(rec);
                       }
               
@@ -204,7 +276,7 @@ public class RecursoDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, Id_Edita, FechaEdita, Log_Activo from Recurso WHERE"
+                      "SELECT Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, Id_TipoRecurso, TipoInfraestructura, Id_Programa, Id_Edita, FechaEdita, Log_Activo from Recurso WHERE"
                            + " ( Cast(Id_Recurso as nvarchar(5)) LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Nombre LIKE '%' + '" + filtro + "' + '%')"
                            + "OR ( Dsc_Recurso LIKE '%' + '" + filtro + "' + '%')"
@@ -222,10 +294,14 @@ public class RecursoDB {
                         int Cantidad = rsPA.getInt("Cantidad");
                         int Capacidad = rsPA.getInt("Capacidad");
                         TipoRecurso tipoRecurso = tdb.SeleccionarPorId(rsPA.getInt("Id_TipoRecurso"));
+                        EnumTipoInfraestructura TipoInfraestructura = EnumTipoInfraestructura.valueOf(rsPA.getString("TipoInfraestructura"));
+                        Programa programa = new ProgramaDB().SeleccionarPorId(rsPA.getInt("Id_Programa"));
                         int idEdita =  rsPA.getInt("Id_Edita");
                         Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
                         Recurso rec = new Recurso(Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, tipoRecurso, Log_Activo==0? "Inactivo":"Activo");
+                        rec.setTipoInfraestructura(TipoInfraestructura);
+                        rec.setPrograma(programa);
                         rec.setId_Edita(idEdita);
                         rec.setFechaEdita(fechaEdita);
                         listaRecurso.add(rec);

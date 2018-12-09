@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -16,6 +17,9 @@ import model.Curso;
 import model.CursoDB;
 import model.Programa;
 import model.ProgramaDB;
+import model.ProgramaUsuarioDB;
+import model.UsuarioMante;
+import model.UsuarioManteDB;
 
 /**
  *
@@ -36,35 +40,64 @@ public class CursoPorProgramaBean implements Serializable {
     String mensajeGuardar;
     String mensajeError;
     Date fecha = new Date();
-   
+    UsuarioMante usuario = null;
+    int IdRegistra = 0;
+    int IdEdita = 0;
+    
     /**
      * Creates a new instance of ProgramaBean
      */
     public CursoPorProgramaBean() throws SNMPExceptions, SQLException {
-        ProgramaDB proDb = new ProgramaDB();
-        if(!proDb.SeleccionarTodos().isEmpty()){
-            listaPrograma = proDb.SeleccionarTodos();
+        ObtenerDatosSesion datos = new ObtenerDatosSesion();
+        UsuarioManteDB usuDB = new UsuarioManteDB();
+        datos.consultarSesion();
+        
+        if(!datos.getId_Usuario().equals("")){
+            usuario = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
+            IdRegistra = usuario.getId();
+            IdEdita = usuario.getId();
         }else{
-            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen programas</div>");         
+            usuario = usuDB.SeleccionarPorId(116390998);
+            IdRegistra = usuario.getId();
+            IdEdita = usuario.getId();
         }
+        
+        llenaListaProgramas();
         seleccionarTodos();
     }
 
-    
+    public void llenaListaProgramas() throws SNMPExceptions, SQLException{
+        ProgramaUsuarioDB p = new ProgramaUsuarioDB();
+        if(!p.SeleccionarTodosPorId(usuario.getId()).isEmpty()){
+            listaPrograma = p.SeleccionarTodosPorId(usuario.getId());
+        }else{
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen programas</div>");         
+        }
+    }
     
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
         CursoDB cur = new CursoDB();
-        if(!cur.SeleccionarTodos().isEmpty()){
-            listaTablaCurso.clear();
-            listaTablaCurso = cur.SeleccionarTodos();
-            setMensajeError("");
+        listaTablaCurso.clear();
+        
+        if(!listaPrograma.isEmpty()){
+            for (Programa programa1 : listaPrograma) {
+                if(!cur.SeleccionarTodosPorId(programa1.getId()).isEmpty()){
+                    for (Curso curso : cur.SeleccionarTodosPorId(programa1.getId())) {
+                        listaTablaCurso.add(curso);
+                    }
+                }
+            }
+            
+            if(listaTablaCurso.isEmpty()){
+                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No hay registros</div>");
+            }
         }else{
-           
+            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No hay registros porque no hay programas existentes</div>");
         }
     }
     
     /*Botón guardar; inserta uno nuevo o modifica*/
-     public void insertarCurso() throws SNMPExceptions, SQLException{
+    public void insertarCurso() throws SNMPExceptions, SQLException{
         try{
          if(Validaciones() == true){
             Curso cur = new Curso();
@@ -74,14 +107,14 @@ public class CursoPorProgramaBean implements Serializable {
             cur.setEstado(estado);
             ProgramaDB prog = new ProgramaDB();
             cur.setPrograma(prog.SeleccionarPorId(programa));
-            cur.setId_Edita(116390998);
+            cur.setId_Edita(IdEdita);
             cur.setFechaEdita(fecha);
             CursoDB curs = new CursoDB();
             if(getId() != 0){
                  curs.actulizar(cur);
                  setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Curso actualizado con éxito!</div> ");
             }else{
-                 cur.setId_Registra(116390998);
+                 cur.setId_Registra(IdRegistra);
                  cur.setFechaRegistra(fecha);
                  curs.registrar(cur);
                  setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Curso registrado con éxito!</div> ");
@@ -106,19 +139,41 @@ public class CursoPorProgramaBean implements Serializable {
      /*Botón de buscar*/
      public void buscar() throws SNMPExceptions, SQLException{
         CursoDB cur = new CursoDB();
+        ProgramaUsuarioDB p = new ProgramaUsuarioDB();
+        LinkedList<Curso> lc = new LinkedList<Curso>();
         try{
-        if(!getBuscarFiltro().equals("")){
-            if(!cur.FiltrarCurso(buscarFiltro).isEmpty()){
-                listaTablaCurso = cur.FiltrarCurso(buscarFiltro);
-                 setMensajeFiltro("");
-            }else{
-                listaTablaCurso = cur.SeleccionarTodos();
-                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
-            }
-        }else{
-            seleccionarTodos();
-            setMensajeFiltro("");
-        }
+          if(!listaPrograma.isEmpty()) {
+              if(!listaTablaCurso.isEmpty()){
+                    if(!getBuscarFiltro().equals("")){
+                        if(!cur.FiltrarCurso(buscarFiltro).isEmpty()){
+                            listaTablaCurso = cur.FiltrarCurso(buscarFiltro);
+                            setMensajeFiltro("");
+                            
+                            for (Curso curso : cur.FiltrarCurso(buscarFiltro)) {
+                                for (Curso curso1 : listaTablaCurso) {
+                                    if(curso.getId() == curso1.getId()){
+                                        lc.add(curso);
+                                    }
+                                }
+                            }
+
+                            listaTablaCurso = lc;
+                            setMensajeFiltro("");
+                            
+                        }else{
+                            seleccionarTodos();
+                            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+                        }
+                    }else{
+                        seleccionarTodos();
+                        setMensajeFiltro("");
+                    }
+              }
+          }
+            
+            
+            
+        
         }catch(Exception e){
             setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el curso...¡Intentelo de nuevo!</div>");
         }
@@ -133,6 +188,7 @@ public class CursoPorProgramaBean implements Serializable {
          setMensajeGuardar("");
          setMensajeError("");
          setMensajeFiltro("");
+         setBuscarFiltro("");
      }
      
      
@@ -262,6 +318,38 @@ public class CursoPorProgramaBean implements Serializable {
 
     public void setMensajeError(String mensajeError) {
         this.mensajeError = mensajeError;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public UsuarioMante getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioMante usuario) {
+        this.usuario = usuario;
+    }
+
+    public int getIdRegistra() {
+        return IdRegistra;
+    }
+
+    public void setIdRegistra(int IdRegistra) {
+        this.IdRegistra = IdRegistra;
+    }
+
+    public int getIdEdita() {
+        return IdEdita;
+    }
+
+    public void setIdEdita(int IdEdita) {
+        this.IdEdita = IdEdita;
     }
     
    

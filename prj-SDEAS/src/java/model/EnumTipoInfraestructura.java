@@ -7,8 +7,8 @@ package model;
 
 /**
  *
- * @author Fabi
+ * @author ujose
  */
-public enum EnumFuncionario {
-    Docente, Administrativo, Coordinador
+public enum EnumTipoInfraestructura {
+    Aula, Laboratorio, Aula_Especial, Auditorio
 }

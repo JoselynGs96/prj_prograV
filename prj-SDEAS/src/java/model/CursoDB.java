@@ -181,6 +181,52 @@ public class CursoDB {
       }
     
     
+    public  LinkedList<Curso> SeleccionarTodosPorId(int id) throws SNMPExceptions, 
+            SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      ProgramaDB proDB = new ProgramaDB();
+      LinkedList<Curso> listaCurso = new LinkedList<Curso>();
+          
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_Curso, Nombre, Dsc_Curso, Id_Programa, Id_Edita, FechaEdita, Log_Activo from Curso WHERE Id_Programa ="+ id;
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+
+                        int Id_Curso = rsPA.getInt("Id_Curso");
+                        String Nombre = rsPA.getString("Nombre");
+                        String Dsc_Curso = rsPA.getString("Dsc_Curso");
+                        Programa Programa = proDB.SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fecha = rsPA.getDate("FechaEdita");
+                        int Log_Activo = rsPA.getInt("Log_Activo");
+                        Curso cur = new Curso(Id_Curso, Nombre, Dsc_Curso, Programa, Log_Activo==0? "Inactivo":"Activo");
+                        cur.setId_Edita(idEdita);
+                        cur.setFechaEdita(fecha);
+                        listaCurso.add(cur);
+                      }
+              
+            rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return listaCurso;
+      }
+    
+    
     public  LinkedList<Curso> FiltrarCurso(String fil) throws SNMPExceptions, 
             SQLException {
       String select = "";

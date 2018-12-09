@@ -65,11 +65,11 @@
                 <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Menú"></div>
             </div>
             <div class="dropdown pull-right logout" style="margin-top: 20px">
-                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#" ><span>Joselyn Granados</span>
+                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText value="#{recursoInfraestructuraBean.usuario.nombreCompleto}"></h:outputText>
                 <span class="caret"></span></a>
             	<ul class="nav dropdown-menu">
-                    <li><a href="faces/../view/InicioSesion.xhtml">Configuraciones</a></li>
-                    <li><a href="faces/../view/InicioSesion.xhtml">Cerrar Sesión</a></li>
+                    <li><a href="faces/ActualizarUsuario.xhtml">Actualizar Datos</a></li>
+                    <li><a href="faces/InicioSesion.xhtml">Cerrar Sesión</a></li>
             	</ul>
             </div>
       </header>
@@ -200,8 +200,14 @@
                  <h:outputLabel style="font-weight: bold; color:#222533" value="Nombre Recurso:&nbsp;"></h:outputLabel>
                  <h:outputLabel style="margin-left: 10px" value="#{recursoInfraestructuraBean.recurso.nombre}"></h:outputLabel>
                  <br></br>
+                 <h:outputLabel style="font-weight: bold; color:#222533" value="Programa al que pertenece:&nbsp;"></h:outputLabel>
+                 <h:outputLabel style="margin-left: 10px" value="#{recursoInfraestructuraBean.recurso.programa.nombre}"></h:outputLabel>
+                 <br></br>
                  <h:outputLabel style="font-weight: bold; color:#222533" value="Tipo Recurso:&nbsp;"></h:outputLabel>
                  <h:outputLabel style="margin-left: 10px" value="#{recursoInfraestructuraBean.recurso.tipoRecurso.nombre}"></h:outputLabel>
+                 <br></br>
+                 <h:outputLabel style="font-weight: bold; color:#222533" value="#{recursoInfraestructuraBean.nombreTipoInfra}"></h:outputLabel>
+                 <h:outputLabel style="margin-left: 10px" value="#{recursoInfraestructuraBean.dscTipoInfra}"></h:outputLabel>
                  <br></br>
                  <h:outputLabel style="font-weight: bold; color:#222533" value="#{recursoInfraestructuraBean.dscTipo}"></h:outputLabel>
                  <h:outputLabel style="margin-left: 10px" value="#{recursoInfraestructuraBean.dscNum}"></h:outputLabel>
@@ -236,6 +242,12 @@
                             <p:outputLabel>Nombre del Recurso</p:outputLabel><p:inputText  class="form-control"  style="width: 90%" value="#{recursoInfraestructuraBean.nombre}" ></p:inputText>
                             
                             <br></br>
+                            
+                            <p:outputLabel>Programa al que pertenece:</p:outputLabel>
+                            <h:selectOneMenu class="form-control"  style="width: 90%" value="#{recursoInfraestructuraBean.programa}" >
+                                <f:selectItems var="cur" value="#{recursoInfraestructuraBean.listaPrograma}" itemLabel="#{cur.nombre}" itemValue="#{cur.id}"></f:selectItems>
+                            </h:selectOneMenu>
+                            <br></br>
                             <p:outputLabel>Tipo de Recurso:</p:outputLabel>
                             <h:selectOneMenu  id="ti" class="form-control" onchange="submit()" style="width: 90%" value="#{recursoInfraestructuraBean.tipoRecurso}" >
                              
@@ -247,6 +259,12 @@
                                 <br></br>
                                 <p:spinner id="cap"  value="#{recursoInfraestructuraBean.capacidad}" min="0" />
                                 <br></br>
+                                <br></br>
+                                <p:outputLabel>Tipo de Infraestructura:</p:outputLabel>
+                                <br></br>
+                                <h:selectOneMenu class="form-control"   style="width: 90%;" value="#{recursoInfraestructuraBean.tipoInfra}"  >
+                                    <f:selectItems  value="#{recursoInfraestructuraBean.EnumTipoInfra()}"></f:selectItems>
+                                </h:selectOneMenu> 
                             </div>
                             <div id="ct">
                                 <p:outputLabel>Cantidad:</p:outputLabel>

@@ -1,9 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-    <title>Panel de Administración</title>
+    <title>Solicitudes de Eventos</title>
     <meta charset="utf-8"/>
     <!-- Bootstrap core CSS -->
     <link href="RecursoMante/css/bootstrap.css" rel="stylesheet"/>
@@ -12,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="RecursoMante/css/zabuto_calendar.css"/>
     <link rel="stylesheet" type="text/css" href="RecursoMante/js/gritter/css/jquery.gritter.css" />
     <link rel="stylesheet" type="text/css" href="RecursoMante/lineicons/style.css"/>    
-    
+    <link href="RecursoMante/css/datepicker.css" rel="stylesheet" type="text/css"/>
     <!-- Custom styles for this template -->
     <link href="RecursoMante/css/style.css" rel="stylesheet"/>
     <link href="RecursoMante/css/style-responsive.css" rel="stylesheet"/>
@@ -24,9 +26,50 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+          function abrirModal(){
+              $('#modalVer').modal('show');
+          }
+           function abrirModalDenegar(){
+              $('#modalDenegar').modal('show');
+          }
+          
+           
+          
+    </script>
+    <script>
+           PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo el día'
+            };
+        </script>         
     </h:head>
-    <h:body>
+    <h:body> 
   <section id="container">
+    
+      <h:form id="myForm" prependId="false">
       <!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
       *********************************************************************************************************************************************************** -->
@@ -35,13 +78,12 @@
             <div class="sidebar-toggle-box">
                 <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Menú"></div>
             </div>
-           
             <div class="dropdown pull-right logout" style="margin-top: 20px">
-                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><span>Joselyn Granados</span>
+                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText value="#{usuariosPorProgranaBean.usuario4.nombreCompleto}"></h:outputText>
                 <span class="caret"></span></a>
             	<ul class="nav dropdown-menu">
-                    <li><a href="faces/../view/InicioSesion.xhtml">Configuraciones</a></li>
-                    <li><a href="faces/../view/InicioSesion.xhtml">Cerrar Sesión</a></li>
+                    <li><a href="faces/ActualizarUsuario.xhtml">Actualizar Datos</a></li>
+                    <li><a href="faces/InicioSesion.xhtml">Cerrar Sesión</a></li>
             	</ul>
             </div>
       </header>
@@ -113,375 +155,269 @@
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
+      <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
+        <p:scrollPanel mode="native" style="width:100%;height:100%; border:0px; margin-bottom: 50px" > 
+        <h1 style="font-weight:normal">Ayuda</h1>          
+        <br></br>
+        <strong>¿Desea registrar un nuevo Usuario? </strong>
+        <br></br>
+        Clic sobre el <br></br> botón &#8594;
+        <img src="RecursoMante/img/btnRegistrar.PNG" width="60px" height="30px" alt=""/>
+        <br></br>
+        <br></br>
+        <strong>¿Desea limpiar los campos de la ficha "Información del Usuario"? </strong>
+        <br></br>
+        Clic sobre el botón &#8594;
+        <img src="RecursoMante/img/btnNuevo.PNG" width="60px" height="30px" alt=""/>
+        <br></br>
+        <br></br>
+        <strong> ¿Desea editar un registro? </strong>
+        <br></br>
+        Seleccione con el botón &#8594; 
+        <img src="RecursoMante/img/editar.png" width="30px" height="30px" alt=""/> el registro que desea editar.
+        <br></br> Modifique los datos en la ficha "Información del Usuario". 
+        <br></br>
+        <br></br>
+        Para modificar el estado del programa al que pertenece usuario, clic sobre el <br></br> el botón &#8594;  
+        <img src="RecursoMante/img/btnCambiar.PNG" width="80px" height="30px" alt=""/> 
+        <br></br><br></br>
+        Luego, guarde los cambios 
+        <br></br> con el botón &#8594; <img src="RecursoMante/img/btnGuardar.PNG" width="60px" height="30px" alt=""/>
+        <br></br>
+        <br></br>
+        <br></br>
+        <strong> ¿Desea ver más detalles de un registro? </strong>
+        <br></br>
+        Clic sobre el botón &#8594;
+        <img src="RecursoMante/img/btnVer.PNG" width="35px" height="30px" alt=""/>
+        <br></br>
+        <br></br>
+        <strong>¿Desea buscar un registro en específico? </strong>
+        <br></br>
+        Llene el campo "Buscar..." con el dato de referencia y luego, clic sobre el <br></br>
+         el botón  &#8594;
+         <img src="RecursoMante/img/btnBuscar.PNG"  width="35px" height="30px" style="border: 1px solid darkgrey"  alt=""/>
+        <br></br>
+        <br></br>
+        <div style="margin-bottom: 30px; height: 50px"></div>
+        </p:scrollPanel>
+     </p:sidebar>
+      
+      <div id="modalDenegar" class="modal fade" role="dialog">
+          <div class="modal-dialog" style="width: 500px">
+           <div class="modal-content">
+               <div class="modal-header" style="background: #222533">
+                   <button type="button" class="close" style="color: white" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Denegar Acceso</h4>
+              </div>
+             <div class="modal-body">
+                 <strong>Motivo por el que se le deniega el acceso a: <h:outputText value="#{usuariosPorProgranaBean.denegado.nombreCompleto}"></h:outputText></strong>
+                 <center>
+                 <br></br>
+                 <h:inputTextarea class="form-control" style="width: 90% " value="#{usuariosPorProgranaBean.msjRechazo}" >
+                     
+                 </h:inputTextarea>
+                 </center>
+             </div>
+               <div class="modal-footer" style="border-top-color:#ffcb0f; ">
+                 <button type="button"   class="btn c" style="background-color: #222533; color: white" data-dismiss="modal">Cerrar</button>
+                 <h:commandButton class="btn btn-success" value="Confirmar" actionListener="#{usuariosPorProgranaBean.botonDenegar()}"></h:commandButton>
+               </div>
+           </div>
+
+         </div>
+     </div>
+      
+      <div id="modalVer" class="modal fade" role="dialog">
+          <div class="modal-dialog" style="width: 500px">
+           <div class="modal-content">
+               <div class="modal-header" style="background: #222533">
+                   <button type="button" class="close" style="color: white" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Detalles del Usuario</h4>
+             </div>
+             <div class="modal-body">
+                     <table width="100%">
+                        <tr bgcolor="#F3EC88">
+                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black">INFORMACIÓN PERSONAL</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533; " value="Tipo de Identificación:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.tipoIdentificacion.dsc_TipoTelefono}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                               <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Cédula:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.id}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Nombre Completo:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.nombreCompleto}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Fecha de Nacimiento:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.fechaNacimiento.toString()}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Edad:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.edad}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Estado Acceso:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.estadoAcceso.nombre}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Estado Usuario:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.log_Activo}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr bgcolor="#F3EC88">
+                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >DIRECCIONES</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding: 5px">
+                                <h:inputTextarea style=" margin-top: 3px; width: 450px; border: 0px; " value="#{usuariosPorProgranaBean.direcciones}"></h:inputTextarea>
+                            </td>
+                        </tr>
+                        <tr bgcolor="#F3EC88">
+                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >CONTACTO</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color: #222533;" value="Correo:"></p:outputLabel>
+                            </td>
+                            <td>
+                                <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.correo}"></p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                 <p:outputLabel style="font-weight: bold; margin-top: 3px; width:200px; color:#222533;" >Telefonos:</p:outputLabel>
+                            </td>
+                            <td style="padding: 5px">
+                                <h:inputTextarea readonly="true" style="margin-top: 3px; width:250px; border: 0px; "  value="#{usuariosPorProgranaBean.telefonos}"></h:inputTextarea>
+                            </td>
+                        </tr>
+                        <tr bgcolor="#F3EC88">
+                            <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >PROGRAMA DEAS</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <center>
+                                <h:inputTextarea readonly="true" style=" margin-top: 3px; width:450px; border: 0px; text-align: center " value="#{usuariosPorProgranaBean.programas}"></h:inputTextarea>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+             </div>
+               <div class="modal-footer" style="border-top-color:#ffcb0f; ">
+                 <button type="button"   class="btn c" style="background-color: #222533; color: white" data-dismiss="modal">Cerrar</button>
+             </div>
+           </div>
+
+         </div>
+     </div>
+      
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-
-              <div class="row">
-                  <div class="col-lg-9 main-chart">
-                  
-                  	<div class="row mtbox">
-                  		<div class="col-md-2 col-sm-2 col-md-offset-1 box0">
-                  			<div class="box1">
-					  			<span class="li_heart"></span>
-					  			<h3>933</h3>
-                  			</div>
-					  			<p>933 People liked your page the last 24hs. Whoohoo!</p>
-                  		</div>
-                  		<div class="col-md-2 col-sm-2 box0">
-                  			<div class="box1">
-					  			<span class="li_cloud"></span>
-					  			<h3>+48</h3>
-                  			</div>
-					  			<p>48 New files were added in your cloud storage.</p>
-                  		</div>
-                  		<div class="col-md-2 col-sm-2 box0">
-                  			<div class="box1">
-					  			<span class="li_stack"></span>
-					  			<h3>23</h3>
-                  			</div>
-					  			<p>You have 23 unread messages in your inbox.</p>
-                  		</div>
-                  		<div class="col-md-2 col-sm-2 box0">
-                  			<div class="box1">
-					  			<span class="li_news"></span>
-					  			<h3>+10</h3>
-                  			</div>
-					  			<p>More than 10 news were added in your reader.</p>
-                  		</div>
-                  		<div class="col-md-2 col-sm-2 box0">
-                  			<div class="box1">
-					  			<span class="li_data"></span>
-					  			<h3>OK!</h3>
-                  			</div>
-					  			
-                  		</div>
-                  	
-                  	</div><!-- /row mt -->	
-                  
-                      
-                      <div class="row mt">
-                      <!-- SERVER STATUS PANELS -->
-                      	<div class="col-md-4 col-sm-4 mb">
-                      		<div class="white-panel pn donut-chart">
-                      			<div class="white-header">
-						  			<h5>SERVER LOAD</h5>
-                      			</div>
-								<div class="row">
-									<div class="col-sm-6 col-xs-6 goleft">
-										<p><i class="fa fa-database"></i> 70%</p>
-									</div>
-	                      		</div>
-								<canvas id="serverstatus01" height="120" width="120"></canvas>
-								<script>
-									var doughnutData = [
-											{
-												value: 70,
-												color:"#68dff0"
-											},
-											{
-												value : 30,
-												color : "#fdfdfd"
-											}
-										];
-										var myDoughnut = new Chart(document.getElementById("serverstatus01").getContext("2d")).Doughnut(doughnutData);
-								</script>
-	                      	</div>
-                      	</div><!-- /col-md-4-->
-                      	
-
-                      	<div class="col-md-4 col-sm-4 mb">
-                      		<div class="white-panel pn">
-                      			<div class="white-header">
-						  			<h5>TOP PRODUCT</h5>
-                      			</div>
-								<div class="row">
-									<div class="col-sm-6 col-xs-6 goleft">
-										<p><i class="fa fa-heart"></i> 122</p>
-									</div>
-									<div class="col-sm-6 col-xs-6"></div>
-	                      		</div>
-	                      		<div class="centered">
-                                            <img src="assets/img/product.png" width="120"></img>
-	                      		</div>
-                      		</div>
-                      	</div><!-- /col-md-4 -->
-                      	
-						<div class="col-md-4 mb">
-							<!-- WHITE PANEL - TOP USER -->
-							<div class="white-panel pn">
-								<div class="white-header">
-									<h5>TOP USER</h5>
-								</div>
-                                                            <p><img src="assets/img/ui-zac.jpg" class="img-circle" width="80"></img></p>
-								<p><b>Zac Snider</b></p>
-								<div class="row">
-									<div class="col-md-6">
-										<p class="small mt">MEMBER SINCE</p>
-										<p>2012</p>
-									</div>
-									<div class="col-md-6">
-										<p class="small mt">TOTAL SPEND</p>
-										<p>$ 47,60</p>
-									</div>
-								</div>
-							</div>
-						</div><!-- /col-md-4 -->
-                      	
-
-                    </div><!-- /row -->
-                    
-                    				
-					<div class="row">
-						<!-- TWITTER PANEL -->
-						<div class="col-md-4 mb">
-                      		<div class="darkblue-panel pn">
-                      			<div class="darkblue-header">
-						  			<h5>DROPBOX STATICS</h5>
-                      			</div>
-								<canvas id="serverstatus02" height="120" width="120"></canvas>
-								<script>
-									var doughnutData = [
-											{
-												value: 60,
-												color:"#68dff0"
-											},
-											{
-												value : 40,
-												color : "#444c57"
-											}
-										];
-										var myDoughnut = new Chart(document.getElementById("serverstatus02").getContext("2d")).Doughnut(doughnutData);
-								</script>
-								<p>April 17, 2014</p>
-								<footer>
-									<div class="pull-left">
-										<h5><i class="fa fa-hdd-o"></i> 17 GB</h5>
-									</div>
-									<div class="pull-right">
-										<h5>60% Used</h5>
-									</div>
-								</footer>
-                      		</div>
-						</div><!-- /col-md-4 -->
-						
-						
-						<div class="col-md-4 mb">
-							<!-- INSTAGRAM PANEL -->
-							<div class="instagram-panel pn">
-								<i class="fa fa-instagram fa-4x"></i>
-								<p>@THISISYOU<br/>
-									5 min. ago
-								</p>
-								<p><i class="fa fa-comment"></i> 18 | <i class="fa fa-heart"></i> 49</p>
-							</div>
-						</div><!-- /col-md-4 -->
-						
-						<div class="col-md-4 col-sm-4 mb">
-							<!-- REVENUE PANEL -->
-							<div class="darkblue-panel pn">
-								<div class="darkblue-header">
-									<h5>REVENUE</h5>
-								</div>
-								<div class="chart mt">
-									<div class="sparkline" data-type="line" data-resize="true" data-height="75" data-width="90%" data-line-width="1" data-line-color="#fff" data-spot-color="#fff" data-fill-color="" data-highlight-line-color="#fff" data-spot-radius="4" data-data="[200,135,667,333,526,996,564,123,890,464,655]"></div>
-								</div>
-								<p class="mt"><b>$ 17,980</b><br/>Month Income</p>
-							</div>
-						</div><!-- /col-md-4 -->
-						
-					</div><!-- /row -->
-					
-					<div class="row mt">
-                      <!--CUSTOM CHART START -->
-                      <div class="border-head">
-                          <h3>VISITS</h3>
-                      </div>
-                      <div class="custom-bar-chart">
-                          <ul class="y-axis">
-                              <li><span>10.000</span></li>
-                              <li><span>8.000</span></li>
-                              <li><span>6.000</span></li>
-                              <li><span>4.000</span></li>
-                              <li><span>2.000</span></li>
-                              <li><span>0</span></li>
-                          </ul>
-                          <div class="bar">
-                              <div class="title">JAN</div>
-                              <div class="value tooltips" data-original-title="8.500" data-toggle="tooltip" data-placement="top">85%</div>
-                          </div>
-                          <div class="bar ">
-                              <div class="title">FEB</div>
-                              <div class="value tooltips" data-original-title="5.000" data-toggle="tooltip" data-placement="top">50%</div>
-                          </div>
-                          <div class="bar ">
-                              <div class="title">MAR</div>
-                              <div class="value tooltips" data-original-title="6.000" data-toggle="tooltip" data-placement="top">60%</div>
-                          </div>
-                          <div class="bar ">
-                              <div class="title">APR</div>
-                              <div class="value tooltips" data-original-title="4.500" data-toggle="tooltip" data-placement="top">45%</div>
-                          </div>
-                          <div class="bar">
-                              <div class="title">MAY</div>
-                              <div class="value tooltips" data-original-title="3.200" data-toggle="tooltip" data-placement="top">32%</div>
-                          </div>
-                          <div class="bar ">
-                              <div class="title">JUN</div>
-                              <div class="value tooltips" data-original-title="6.200" data-toggle="tooltip" data-placement="top">62%</div>
-                          </div>
-                          <div class="bar">
-                              <div class="title">JUL</div>
-                              <div class="value tooltips" data-original-title="7.500" data-toggle="tooltip" data-placement="top">75%</div>
-                          </div>
-                      </div>
-                      <!--custom chart end-->
-					</div><!-- /row -->	
-					
-                  </div><!-- /col-lg-9 END SECTION MIDDLE -->
-                  
-                  
-      <!-- **********************************************************************************************************************************************************
-      RIGHT SIDEBAR CONTENT
-      *********************************************************************************************************************************************************** -->                  
-                  
-                  <div class="col-lg-3 ds">
-                    <!--COMPLETED ACTIONS DONUTS CHART-->
-						<h3>Solicitudes Eventos</h3>
-                                        
-                      <!-- First Action -->
-                      <div class="desc">
-                      	<div class="thumb">
-                      		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
-                      	</div>
-                      	<div class="details">
-                      		<p><muted>2 Minutes Ago</muted><br/>
-                      		   <a href="#">James Brown</a> subscribed to your newsletter.<br/>
-                      		</p>
-                      	</div>
-                      </div>
-                      <!-- Second Action -->
-                      <div class="desc">
-                      	<div class="thumb">
-                      		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
-                      	</div>
-                      	<div class="details">
-                      		<p><muted>3 Hours Ago</muted><br/>
-                      		   <a href="#">Diana Kennedy</a> purchased a year subscription.<br/>
-                      		</p>
-                      	</div>
-                      </div>
-                      <!-- Third Action -->
-                      <div class="desc">
-                      	<div class="thumb">
-                      		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
-                      	</div>
-                      	<div class="details">
-                      		<p><muted>7 Hours Ago</muted><br/>
-                      		   <a href="#">Brandon Page</a> purchased a year subscription.<br/>
-                      		</p>
-                      	</div>
-                      </div>
-                      <!-- Fourth Action -->
-                      <div class="desc">
-                      	<div class="thumb">
-                      		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
-                      	</div>
-                      	<div class="details">
-                      		<p><muted>11 Hours Ago</muted><br/>
-                      		   <a href="#">Mark Twain</a> commented your post.<br/>
-                      		</p>
-                      	</div>
-                      </div>
-                      <!-- Fifth Action -->
-                      <div class="desc">
-                      	<div class="thumb">
-                      		<span class="badge bg-theme"><i class="fa fa-clock-o"></i></span>
-                      	</div>
-                      	<div class="details">
-                      		<p><muted>18 Hours Ago</muted><br/>
-                      		   <a href="#">Daniel Pratt</a> purchased a wallet in your store.<br/>
-                      		</p>
-                      	</div>
-                      </div>
-
-                       <!-- USERS ONLINE SECTION -->
-						<h3>TEAM MEMBERS</h3>
-                      <!-- First Member -->
-                      <div class="desc">
-                      	<div class="thumb">
-                            <img class="img-circle" src="assets/img/ui-divya.jpg" width="35px" height="35px" align=""></img>
-                      	</div>
-                      	<div class="details">
-                      		<p><a href="#">DIVYA MANIAN</a><br/>
-                      		   <muted>Available</muted>
-                      		</p>
-                      	</div>
-                      </div>
-                      <!-- Second Member -->
-                      <div class="desc">
-                      	<div class="thumb">
-                            <img class="img-circle" src="assets/img/ui-sherman.jpg" width="35px" height="35px" align=""></img>
-                      	</div>
-                      	<div class="details">
-                      		<p><a href="#">DJ SHERMAN</a><br/>
-                      		   <muted>I am Busy</muted>
-                      		</p>
-                      	</div>
-                      </div>
-                      <!-- Third Member -->
-                      <div class="desc">
-                      	<div class="thumb">
-                            <img class="img-circle" src="assets/img/ui-danro.jpg" width="35px" height="35px" align=""></img>
-                      	</div>
-                      	<div class="details">
-                      		<p><a href="#">DAN ROGERS</a><br/>
-                      		   <muted>Available</muted>
-                      		</p>
-                      	</div>
-                      </div>
-                      <!-- Fourth Member -->
-                      <div class="desc">
-                      	<div class="thumb">
-                            <img class="img-circle" src="assets/img/ui-zac.jpg" width="35px" height="35px" align=""></img>
-                      	</div>
-                      	<div class="details">
-                      		<p><a href="#">Zac Sniders</a><br/>
-                      		   <muted>Available</muted>
-                      		</p>
-                      	</div>
-                      </div>
-                      <!-- Fifth Member -->
-                      <div class="desc">
-                      	<div class="thumb">
-                            <img class="img-circle" src="assets/img/ui-sam.jpg" width="35px" height="35px" align=""></img>
-                      	</div>
-                      	<div class="details">
-                      		<p><a href="#">Marcel Newman</a><br/>
-                      		   <muted>Available</muted>
-                      		</p>
-                      	</div>
-                      </div>
-
-                        <!-- CALENDAR-->
-                        <div id="calendar" class="mb">
-                            <div class="panel green-panel no-margin">
-                                <div class="panel-body">
-                                    <div id="date-popover" class="popover top" style="cursor: pointer; disadding: block; margin-left: 33%; margin-top: -50px; width: 175px;">
-                                        <div class="arrow"></div>
-                                        <h3 class="popover-title" style="disadding: none;"></h3>
-                                        <div id="date-popover-content" class="popover-content"></div>
-                                    </div>
-                                    <div id="my-calendar"></div>
-                                </div>
+              <h3><i class="fa fa-angle-right"></i> Solicitudes de Eventos</h3>
+              <div class="row mtbox" style="margin-top: 0px">
+                  <div class="col-lg-5 main-chart">
+                      <div class="panel panel-default row" style="margin-left: 20px">
+                            <div class="panel-heading" >
+                                <span>Validar Disponibilidad</span>
+                                <a onclick="PF('sidebar2').show()"  href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px" ><img align="right"  width="20px" height="20px" src="RecursoMante/img/ayuda.png" alt=""/></a>
                             </div>
-                        </div><!-- / calendar -->
+                            <div class="panel-body " width="100%">
+                             
+                             <div>
+                                 <br></br>
+                                <h:commandButton class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.nuevoBoton()}"  value="Nuevo" >
+                                    <f:ajax event="action" render="@form"></f:ajax>
+                                </h:commandButton>
+                                <h:commandButton style="margin-left: 5px" class="btn btn-primary" onclick="window.open('faces/Registro.xhtml')"  value="Registrar"></h:commandButton>
+                                <h:commandButton style="margin-left: 5px" class="btn btn-primary" actionListener="#{usuariosPorProgranaBean.guardarBoton()}"  value="Guardar">
+                                    <f:ajax event="action" render="@form"></f:ajax>
+                                </h:commandButton>
+                             </div>
+                            </div>
+                    </div>  
+                  </div>     
                       
-                  </div><!-- /col-lg-3 -->
+                    <div class="col-lg-7 main-chart">
+                        <div>
+                            <p:inputText placeholder="Buscar..."   class="form-control" value="#{usuariosPorProgranaBean.buscarFiltro}"   style="width: 200px; float: left;"></p:inputText>
+                            <h:commandButton actionListener="#{usuariosPorProgranaBean.buscar()}" id="bus" class="btn btn-default"  image="RecursoMante/img/buscar.png"  style="height:34px; margin-left: 5px; margin-right: 10px; display: inline-block;">
+                               
+                            </h:commandButton>
+                        </div>
+                        <br></br>
+                        <p:outputLabel escape="false" style="width: 100%" id="msjf" value="#{usuariosPorProgranaBean.mensajeFiltro}" ></p:outputLabel>
+                        <h:dataTable  id="datausu" class="table table-striped table-advance table-hover" value="#{usuariosPorProgranaBean.listaUsuario}" var="usu" >
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Cédula"/>
+                                </f:facet>
+                                <h:outputText value="#{usu.id}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre"/>
+                                </f:facet>
+                                <h:outputText value="#{usu.nombreCompleto}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText />
+                                </f:facet>
+                                <center>
+                                    <h:commandButton   alt="Ver más" title="Ver más" actionListener="#{usuariosPorProgranaBean.verMas(usu.id)}"  
+                                    class="btn btn-default btn-xs" style="width: 40px; height: 30px; margin-left: 3px" image="RecursoMante/img/ver.png"></h:commandButton>
+                                </center>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estado: Pendiente"/>
+                                </f:facet>
+                                <div id="btnEstAc">
+                                    <h:commandButton  disabled="#{usu.estadoAcceso.id != 3}"  actionListener="#{usuariosPorProgranaBean.recibeDenegado(usu.id)}" class="btn btn-danger" value="Denegar"></h:commandButton>
+                                    <h:commandButton  disabled="#{usu.estadoAcceso.id != 3}" actionListener="#{usuariosPorProgranaBean.botonAceptar(usu.id)}" style="margin-left: 5px" class="btn btn-success" value="Aceptar"></h:commandButton>
+                                </div>
+                            </h:column>
+                        </h:dataTable> 
+                    </div>
               </div>
           </section>
+          
       </section>
-
+                        
+     
       <!--main content end-->
       <!--footer start-->
       <footer class="site-footer">
@@ -493,63 +429,25 @@
           </div>
       </footer>
       <!--footer end-->
+      </h:form>
   </section>
-
-    <!-- js placed at the end of the document so the pages load faster -->
-    <script src="RecursoMante/js/jquery.js"></script>
-    <script src="RecursoMante/js/jquery-1.8.3.min.js"></script>
-    <script src="RecursoMante/js/bootstrap.min.js"></script>
+    
+    <h:outputScript library="RecursoMante/js" name="jquery.js" target="head"></h:outputScript>
+    <h:outputScript library="RecursoMante/js" name="jquery-1.8.3.min.js" target="head"></h:outputScript>
     <script class="include" type="text/javascript" src="RecursoMante/js/jquery.dcjqaccordion.2.7.js"></script>
     <script src="RecursoMante/js/jquery.scrollTo.min.js"></script>
     <script src="RecursoMante/js/jquery.nicescroll.js" type="text/javascript"></script>
     <script src="RecursoMante/js/jquery.sparkline.js"></script>
-
-
+    <script src="RecursoMante/js/bootstrap.min.js"></script>
+    
     <!--common script for all pages-->
     <script src="RecursoMante/js/common-scripts.js"></script>
-    
     <script type="text/javascript" src="RecursoMante/js/gritter/js/jquery.gritter.js"></script>
     <script type="text/javascript" src="RecursoMante/js/gritter-conf.js"></script>
 
     <!--script for this page-->
     <script src="RecursoMante/js/sparkline-chart.js"></script>    
-	<script src="RecursoMante/js/zabuto_calendar.js"></script>	
-	
-	
-	<script type="application/javascript">
-        $(document).ready(function () {
-            $("#date-popover").popover({html: true, trigger: "manual"});
-            $("#date-popover").hide();
-            $("#date-popover").click(function (e) {
-                $(this).hide();
-            });
-        
-            $("#my-calendar").zabuto_calendar({
-                action: function () {
-                    return myDateFunction(this.id, false);
-                },
-                action_nav: function () {
-                    return myNavFunction(this.id);
-                },
-                ajax: {
-                    url: "show_data.php?action=1",
-                    modal: true
-                },
-                legend: [
-                    {type: "text", label: "Special event", badge: "00"},
-                    {type: "block", label: "Regular event", }
-                ]
-            });
-        });
-        
-        
-        function myNavFunction(id) {
-            $("#date-popover").hide();
-            var nav = $("#" + id).data("navigation");
-            var to = $("#" + id).data("to");
-            console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
-        }
-    </script>
+    <script src="RecursoMante/js/zabuto_calendar.js"></script>
     </h:body>
 </html>
 

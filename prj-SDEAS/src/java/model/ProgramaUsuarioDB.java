@@ -48,7 +48,7 @@ public class ProgramaUsuarioDB {
                     +	pu.getPrograma().getId()
                     + "', '" +  pu.getUsuario().getId()
                     + "', '" +  pu.getRolUsuario().getId_RolUsuario()
-                    + "', '" +  pu.getFuncionario().toString()
+                    + "', '" +  pu.Funcionario.toString()
                     + "', '" +  pu.getId_Registra()
                     + "', '" +  new java.sql.Date(pu.getFechaRegistra().getTime())
                     + "', '" +  pu.getId_Edita()
@@ -101,6 +101,8 @@ public class ProgramaUsuarioDB {
         } 
     } 
     
+    
+    
     public  LinkedList<ProgramaUsuario> SeleccionarPorId(int id) throws SNMPExceptions, 
             SQLException {
       String select = "";
@@ -148,6 +150,49 @@ public class ProgramaUsuarioDB {
          
           return listaProgramaUsuario;
       }
+    
+    
+    
+    public  LinkedList<Programa> SeleccionarTodosPorId(int id) throws SNMPExceptions, 
+            SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      ProgramaDB pro = new ProgramaDB();
+      UsuarioDB usu = new UsuarioDB();
+      RolUsuarioDB rol = new RolUsuarioDB();
+      
+      LinkedList<Programa> listaPrograma= new LinkedList<Programa>();
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_Programa from Programa_Usuario WHERE Id_Usuario = " +id;
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+
+                        Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        listaPrograma.add(Id_Programa);
+                      }
+              
+            rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return listaPrograma;
+      }
+    
+    
+   
     
     public  LinkedList<ProgramaUsuario> SeleccionarTodos() throws SNMPExceptions, 
             SQLException {

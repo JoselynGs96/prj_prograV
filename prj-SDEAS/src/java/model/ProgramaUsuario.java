@@ -12,15 +12,15 @@ import java.util.Date;
  * @author ujose
  */
 public class ProgramaUsuario {
-    Usuario usuario;
-    Programa programa;
-    RolUsuario rolUsuario;
-    String estado;
-    int Id_Registra;
-    Date FechaRegistra;
-    int Id_Edita;
-    Date FechaEdita;
-    EnumFuncionario Funcionario;
+    Usuario usuario = null;
+    Programa programa = null;
+    RolUsuario rolUsuario = null;
+    String estado = "";
+    int Id_Registra = 0;
+    Date FechaRegistra = null;
+    int Id_Edita = 0;
+    Date FechaEdita = null;
+    EnumFuncionario Funcionario = null;
      
     public ProgramaUsuario() {
     }

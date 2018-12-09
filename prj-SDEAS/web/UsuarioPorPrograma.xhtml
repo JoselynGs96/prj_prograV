@@ -31,7 +31,12 @@
           function abrirModal(){
               $('#modalVer').modal('show');
           }
-          $(document).ready(tipoRecurso);
+           function abrirModalDenegar(){
+              $('#modalDenegar').modal('show');
+          }
+          
+           
+          
     </script>
     <script>
            PrimeFaces.locales['es'] = {
@@ -75,11 +80,11 @@
                 <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Menú"></div>
             </div>
             <div class="dropdown pull-right logout" style="margin-top: 20px">
-                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#" ><span>Joselyn Granados</span>
+                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText value="#{usuariosPorProgranaBean.usuario4.nombreCompleto}"></h:outputText>
                 <span class="caret"></span></a>
             	<ul class="nav dropdown-menu">
-                    <li><a href="faces/../view/InicioSesion.xhtml">Configuraciones</a></li>
-                    <li><a href="faces/../view/InicioSesion.xhtml">Cerrar Sesión</a></li>
+                    <li><a href="faces/ActualizarUsuario.xhtml">Actualizar Datos</a></li>
+                    <li><a href="faces/InicioSesion.xhtml">Cerrar Sesión</a></li>
             	</ul>
             </div>
       </header>
@@ -198,6 +203,31 @@
         <div style="margin-bottom: 30px; height: 50px"></div>
         </p:scrollPanel>
      </p:sidebar>
+      
+      <div id="modalDenegar" class="modal fade" role="dialog">
+          <div class="modal-dialog" style="width: 500px">
+           <div class="modal-content">
+               <div class="modal-header" style="background: #222533">
+                   <button type="button" class="close" style="color: white" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Denegar Acceso</h4>
+              </div>
+             <div class="modal-body">
+                 <strong>Motivo por el que se le deniega el acceso a: <h:outputText value="#{usuariosPorProgranaBean.denegado.nombreCompleto}"></h:outputText></strong>
+                 <center>
+                 <br></br>
+                 <h:inputTextarea class="form-control" style="width: 90% " value="#{usuariosPorProgranaBean.msjRechazo}" >
+                     
+                 </h:inputTextarea>
+                 </center>
+             </div>
+               <div class="modal-footer" style="border-top-color:#ffcb0f; ">
+                 <button type="button"   class="btn c" style="background-color: #222533; color: white" data-dismiss="modal">Cerrar</button>
+                 <h:commandButton class="btn btn-success" value="Confirmar" actionListener="#{usuariosPorProgranaBean.botonDenegar()}"></h:commandButton>
+               </div>
+           </div>
+
+         </div>
+     </div>
       
       <div id="modalVer" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width: 500px">
@@ -380,12 +410,6 @@
                                                 </p:calendar></td>
                                         </tr>
                                     </table>
-                                    <br></br>
-                                    <p:outputLabel>Estado de Acceso:</p:outputLabel>
-                                    <p:selectOneRadio layout="pageDirection" id="ea" value="#{usuariosPorProgranaBean.estadoAcceso}" >
-                                        <f:ajax event="change" execute="ea"   ></f:ajax>
-                                        <f:selectItems value="#{usuariosPorProgranaBean.listaEstadoAcceso}" var="au" itemValue="#{au.id}" itemLabel="#{au.nombre}"></f:selectItems>
-                                    </p:selectOneRadio>
                                     <br></br>
                                     <p:outputLabel>Estado de Usuario:</p:outputLabel>
                                     <p:selectOneRadio layout="pageDirection" id="eu" value="#{usuariosPorProgranaBean.estadoUsuario}">
@@ -652,18 +676,6 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Estado de Acceso"/>
-                                </f:facet>
-                                <h:outputText value="#{usu.estadoAcceso.nombre}"/>
-                            </h:column>
-                             <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Estado de Usuario"/>
-                                </f:facet>
-                                 <h:outputText value="#{usu.log_Activo}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">
                                     <h:outputText />
                                 </f:facet>
                                 <center>
@@ -675,10 +687,20 @@
                                     </h:commandButton>
                                 </center>
                             </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estado: Pendiente"/>
+                                </f:facet>
+                                <div id="btnEstAc">
+                                    <h:commandButton  disabled="#{usu.estadoAcceso.id != 3}"  actionListener="#{usuariosPorProgranaBean.recibeDenegado(usu.id)}" class="btn btn-danger" value="Denegar"></h:commandButton>
+                                    <h:commandButton  disabled="#{usu.estadoAcceso.id != 3}" actionListener="#{usuariosPorProgranaBean.botonAceptar(usu.id)}" style="margin-left: 5px" class="btn btn-success" value="Aceptar"></h:commandButton>
+                                </div>
+                            </h:column>
                         </h:dataTable> 
                     </div>
               </div>
           </section>
+          
       </section>
                         
      

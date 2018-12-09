@@ -70,6 +70,36 @@ public class UsuarioManteDB {
         } 
     } 
     
+    public void actulizarContraCodi(UsuarioMante usu) throws SNMPExceptions, SQLException { 
+        String strSQL = "";   
+        int estado = 0;
+        try {  
+            UsuarioMante usuario = new UsuarioMante(); 
+            usuario = usu;             
+            
+            if(usuario.Log_Activo.equals("Activo")){
+                estado = 1;
+            }
+            
+            strSQL = "UPDATE Usuario SET "
+                    + "', [Contrasenna] PWDENCRYPT('"+usuario.getContrasenna()+ "')'"
+                    + "', [CodigoAcceso] ='"+usuario.getCodigo()
+                    + "', [Id_EstadoAcceso] ='"+usuario.EstadoAcceso.getId()
+                    + "', [Log_Activo] ='"+estado
+                    + "' where [Id_Usuario]= '"+usuario.Id+"';";
+                    
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
+        } catch (SQLException e) { 
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
+                                    e.getMessage(), e.getErrorCode());         
+        }catch (Exception e) { 
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
+                                    e.getMessage()); 
+        } finally { 
+         
+        } 
+    } 
+    
     public  UsuarioMante SeleccionarPorId(int id) throws SNMPExceptions, SQLException {
       String select = "";
       ResultSet rsPA = null;
@@ -131,7 +161,7 @@ public class UsuarioManteDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, Log_Activo from Usuario WHERE Id_EstadoAcceso != "+2;
+                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, Log_Activo from Usuario WHERE Id_EstadoAcceso != "+2 +" ORDER BY Id_EstadoAcceso DESC";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              

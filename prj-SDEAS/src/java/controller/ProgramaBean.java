@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -12,8 +13,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import model.EnumFuncionario;
 import model.Programa;
 import model.ProgramaDB;
+import model.ProgramaUsuario;
+import model.ProgramaUsuarioDB;
+import model.RolUsuario;
+import model.RolUsuarioDB;
+import model.UsuarioDB;
+import model.UsuarioMante;
+import model.UsuarioManteDB;
 
 /**
  *
@@ -32,22 +41,38 @@ public class ProgramaBean implements Serializable {
     String mensajeError = "";
     String mensajeFiltro = "";
     Date fecha = new Date();
+    UsuarioMante usuario = null;
+    int IdRegistra = 0;
+    int IdEdita = 0;
     
     /**
      * Creates a new instance of ProgramaBean
      */
     public ProgramaBean() throws SNMPExceptions, SQLException {
-        seleccionarTodos();
+        ObtenerDatosSesion datos = new ObtenerDatosSesion();
        
+        UsuarioManteDB usuDB = new UsuarioManteDB();
+        datos.consultarSesion();
+        if(!datos.getId_Usuario().equals("")){
+            usuario = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
+            IdRegistra = usuario.getId();
+            IdEdita = usuario.getId();
+        }else{
+            usuario = usuDB.SeleccionarPorId(116390998);
+            IdRegistra = usuario.getId();
+            IdEdita = usuario.getId();
+        }
+        
+        seleccionarTodos();
     }
     
     
     /*Selecciona todos los programas*/
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
-        ProgramaDB pro = new ProgramaDB();
-        if(!pro.SeleccionarTodos().isEmpty()){
+        ProgramaUsuarioDB p = new ProgramaUsuarioDB();
+        if(!p.SeleccionarTodosPorId(usuario.getId()).isEmpty()){
             listaTablaPrograma.clear();
-            listaTablaPrograma = pro.SeleccionarTodos();
+            listaTablaPrograma = p.SeleccionarTodosPorId(usuario.getId());
         }
     }
     
@@ -60,17 +85,33 @@ public class ProgramaBean implements Serializable {
                 pro.setNombre(nombre);
                 pro.setDescripcion(descripcion);
                 pro.setEstado(estado);
-                pro.setId_Edita(116390998);
+                pro.setId_Edita(IdEdita);
                 pro.setFechaEdita(fecha);
+                
                 ProgramaDB prog = new ProgramaDB();
                 if(getId() != 0){
                      prog.actulizar(pro);
                      setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Programa actualizado con éxito!</div> ");
 
                 }else{
-                     pro.setId_Registra(116390998);
+                     pro.setId_Registra(IdRegistra);
                      pro.setFechaRegistra(fecha);
                      prog.registrar(pro);
+                     
+                     pro.setId(prog.ultimoRegistro());
+                     ProgramaUsuarioDB prodb = new ProgramaUsuarioDB();
+                     ProgramaUsuario pr = new ProgramaUsuario();
+                     pr.setPrograma(pro);
+                     pr.setUsuario(new UsuarioDB().SeleccionarPorId(usuario.getId()));
+                     RolUsuarioDB r = new RolUsuarioDB();
+                     pr.setRolUsuario(r.SeleccionarPorId(2));
+                     pr.setId_Registra(IdRegistra);
+                     pr.setFechaRegistra(fecha);
+                     pr.setId_Edita(IdEdita);
+                     pr.setFechaEdita(fecha);
+                     pr.setFuncionario(EnumFuncionario.Coordinador);
+                     pr.setEstado("Activo");
+                     prodb.registrar(pr);
                      setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Programa registrado con éxito!</div>" );
                 }
                 seleccionarTodos();
@@ -80,7 +121,6 @@ public class ProgramaBean implements Serializable {
         }
          
     }
-     
  
      /*Botón editar*/
      public void editar(int i) throws SNMPExceptions, SQLException{
@@ -96,18 +136,32 @@ public class ProgramaBean implements Serializable {
      public void buscar() throws SNMPExceptions, SQLException{
        try{
         ProgramaDB pro = new ProgramaDB();
-        if(!buscarFiltro.equals("")){
-            if(!pro.FiltrarPrograma(buscarFiltro).isEmpty()){
-                listaTablaPrograma = pro.FiltrarPrograma(buscarFiltro);
-                setMensajeFiltro("");
-            }else{
-                listaTablaPrograma = pro.SeleccionarTodos();
-                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+        ProgramaUsuarioDB p = new ProgramaUsuarioDB();
+        LinkedList<Programa> lp = new LinkedList<Programa>();
+        
+        if(!listaTablaPrograma.isEmpty()){
+            
+            if(!buscarFiltro.equals("")){
+                if(!pro.FiltrarPrograma(buscarFiltro).isEmpty()){
+                    
+                    for (Programa programa : pro.FiltrarPrograma(buscarFiltro)) {
+                        for (Programa programa1 : listaTablaPrograma) {
+                            if(programa.getId() == programa1.getId()){
+                                lp.add(programa);
+                            }
+                        }
+                    }
+
+                    listaTablaPrograma = lp;
+                    setMensajeFiltro("");
+                }else{
+                    seleccionarTodos();
+                    setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+                
+                }
             }
-        }else{
-            seleccionarTodos();
-            setMensajeFiltro("");
         }
+        
        }catch(Exception e){
            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el programa...¡Intentelo de nuevo!</div>");
        }
@@ -122,6 +176,7 @@ public class ProgramaBean implements Serializable {
          setMensajeGuardar("");
          setMensajeError("");
          setMensajeFiltro("");
+         setBuscarFiltro("");
      }
      
      /*Validaciones*/
@@ -221,5 +276,38 @@ public class ProgramaBean implements Serializable {
         this.mensajeGuardar = mensajeGuardar;
     }
 
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public UsuarioMante getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioMante usuario) {
+        this.usuario = usuario;
+    }
+
+    public int getIdRegistra() {
+        return IdRegistra;
+    }
+
+    public void setIdRegistra(int IdRegistra) {
+        this.IdRegistra = IdRegistra;
+    }
+
+    public int getIdEdita() {
+        return IdEdita;
+    }
+
+    public void setIdEdita(int IdEdita) {
+        this.IdEdita = IdEdita;
+    }
+
+    
     
 }

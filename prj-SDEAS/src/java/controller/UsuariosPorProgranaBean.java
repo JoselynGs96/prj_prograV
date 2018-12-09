@@ -5,7 +5,7 @@
  */
 package controller;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -13,6 +13,14 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Properties;
+import java.util.Random;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import model.Barrio;
 import model.BarrioDB;
 import model.Canton;
@@ -101,12 +109,35 @@ public class UsuariosPorProgranaBean implements Serializable {
     int id_Barrio=0;
     String otrasSennas="";
     
+    String msjRechazo = "";
+    UsuarioMante denegado = null;
+    
+    
+    UsuarioMante usuario4 = null;
+    int IdRegistra = 0;
+    int IdEdita = 0;
+
     LinkedList<TipoTelefono> listaTipoTelefonos = new LinkedList<>();
     String idTelefono = "";
     int idTipoTelefono = 1;
     String numero = "";
     
     public UsuariosPorProgranaBean() throws SNMPExceptions, SQLException{
+        ObtenerDatosSesion datos = new ObtenerDatosSesion();
+       
+        UsuarioManteDB usuDB = new UsuarioManteDB();
+        datos.consultarSesion();
+        if(!datos.getId_Usuario().equals("")){
+            usuario4 = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
+            IdRegistra = usuario4.getId();
+            IdEdita = usuario4.getId();
+        }else{
+            usuario4 = usuDB.SeleccionarPorId(116390998);
+            IdRegistra = usuario4.getId();
+            IdEdita = usuario4.getId();
+        }
+        
+        
         seleccionarTodos();
     }
     
@@ -160,6 +191,119 @@ public class UsuariosPorProgranaBean implements Serializable {
         usuarioModal = null;
     }
     
+    public void recibeDenegado(int id) throws SNMPExceptions, SQLException{
+        denegado = new UsuarioManteDB().SeleccionarPorId(id);
+        PrimeFaces.current().executeScript("abrirModalDenegar();");
+    }
+   
+    public void botonDenegar() throws SNMPExceptions, SQLException{
+        setMensajeFiltro("");
+        String remitente = "joselyn.grana2@gmail.com";  //Para la dirección nomcuenta@gmail.com
+        String destinatario =  denegado.getCorreo(); //A quien le quieres escribir.
+        String asunto = "Plataforma SDEAS";
+        String cuerpo = "Estimado(a): "+ denegado.getNombreCompleto() +", Se le notifica que su solicitud de acceso a SDEAS fue Denegada:"
+                + "\nDenegada por el siguiente motivo:\n" + getMsjRechazo();
+        
+        
+        Properties props = System.getProperties();
+        props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
+        props.put("mail.smtp.user", remitente);
+        props.put("mail.smtp.clave", "Abril1210jgs");    //La clave de la cuenta
+        props.put("mail.smtp.auth", "true");    //Usar autenticación mediante usuario y clave
+        props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
+        props.put("mail.smtp.port", "587"); //El puerto SMTP seguro de Google
+
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage message = new MimeMessage(session);
+
+        
+        try {
+            message.setFrom(new InternetAddress(remitente));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));   //Se podrían añadir varios de la misma manera
+            message.setSubject(asunto);
+            message.setText(cuerpo);
+            Transport transport = session.getTransport("smtp");
+            transport.connect("smtp.gmail.com", remitente, "Abril1210jgs");
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+            UsuarioManteDB ddd = new UsuarioManteDB();
+            denegado.getEstadoAcceso().setId(2);
+            ddd.actulizar(denegado);
+            setMensajeFiltro("<div class='alert alert-success alert-dismissible fade in' >  <strong>Exito!&nbsp;</strong>Correo enviado satisfactoriamente</div>");
+        }
+        catch (MessagingException me) {
+            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Error!&nbsp;</strong>El correo no se pudo enviar</div>");  //Si se produce un error
+        }
+        
+        seleccionarTodos();
+    }
+    
+    public void botonAceptar( int id) throws SNMPExceptions, SQLException{
+         setMensajeFiltro("");
+        String contra = generarContrasenna();
+        int Codigo = generarCodigo();
+        UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(id);
+        String remitente = "joselyn.grana2@gmail.com";  //Para la dirección nomcuenta@gmail.com
+        String destinatario =  usu.getCorreo(); //A quien le quieres escribir.
+        String asunto = "Aceptación de SDEAS";
+        String cuerpo = "Estimado(a): "+ usu.getNombreCompleto() +",Se le notifica que su solicitud de acceso a SDEAS fue Aceptada:"
+                + "\nCódigo de usuario: " + usu.getId()
+                + "\nContraseña: " + contra
+                + "\nCódigo de seguridad: " + Codigo
+                + "\n\n Dirijase a la página de Inicio de Sesión e ingrese los datos proporcionados anteriormente para finalizar el procesos de autoregistro";
+        
+        
+        Properties props = System.getProperties();
+        props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
+        props.put("mail.smtp.user", remitente);
+        props.put("mail.smtp.clave", "Abril1210jgs");    //La clave de la cuenta
+        props.put("mail.smtp.auth", "true");    //Usar autenticación mediante usuario y clave
+        props.put("mail.smtp.starttls.enable", "true"); //Para conectar de manera segura al servidor SMTP
+        props.put("mail.smtp.port", "587"); //El puerto SMTP seguro de Google
+
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage message = new MimeMessage(session);
+
+        
+        try {
+            message.setFrom(new InternetAddress(remitente));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));   //Se podrían añadir varios de la misma manera
+            message.setSubject(asunto);
+            message.setText(cuerpo);
+            Transport transport = session.getTransport("smtp");
+            transport.connect("smtp.gmail.com", remitente, "Abril1210jgs");
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+            UsuarioManteDB ddd = new UsuarioManteDB();
+            usu.setContrasenna(contra);
+            usu.setCodigo(Codigo);
+            usu.getEstadoAcceso().setId(1);
+            usu.setLog_Activo("Activo");
+            ddd.actulizarContraCodi(usu);
+            setMensajeFiltro("<div class='alert alert-success alert-dismissible fade in' >  <strong>Exito!&nbsp;</strong>Correo enviado satisfactoriamente</div>");
+        }
+        catch (MessagingException me) {
+            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Error!&nbsp;</strong>El correo no se pudo enviar</div>");  //Si se produce un error  //Si se produce un error
+        }
+        seleccionarTodos();
+    }
+    
+    public String generarContrasenna(){
+        int largo = (int)Math.floor(Math.random()*(12-8+1)+8); 
+        String contra = "";
+        char [] chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+        int charsLength = chars.length;
+        Random random = new Random();
+        for (int i = 0; i < largo; i++) {
+            contra += chars[random.nextInt(charsLength)];
+        }
+        return contra;
+    }
+    
+    public int generarCodigo(){
+        return (int)Math.floor(Math.random()*(999999-100000+1)+100000);
+    }
+    
     public void editarBoton(int id) throws SNMPExceptions, SQLException{
         setMensajeError("");
         listaTipoTelefonos = tel.SeleccionarTodos();
@@ -172,7 +316,6 @@ public class UsuariosPorProgranaBean implements Serializable {
             setApellido1(usuario.getApellido1());
             setApellido2(usuario.getApellido2());
             setFechaNacimiento(usuario.getFechaNacimiento());
-            setEstadoAcceso(usuario.getEstadoAcceso().getId());
             setEstadoUsuario(usuario.getLog_Activo());
             
             setCorreo(usuario.getCorreo());
@@ -360,7 +503,7 @@ public class UsuariosPorProgranaBean implements Serializable {
         if(ValidarTelefono()){
             for (Telefono telefono : listaTelefonos) {
                 if(telefono.getId_Telefono().equals(getIdTelefono())){
-                    telefono.setId_Edita(116390998);
+                    telefono.setId_Edita(IdEdita);
                     telefono.setFechaEdita(fecha);
                     telefono.setId_TipoTelefono(tel.SeleccionarPorId(getIdTipoTelefono()));
                     telefono.setNumero(getNumero());
@@ -373,9 +516,9 @@ public class UsuariosPorProgranaBean implements Serializable {
                 telefono.setNumero(getNumero());
                 telefono.setId_Usuario(new UsuarioDB().SeleccionarPorId(Integer.parseInt(getId())));
                 telefono.setId_TipoTelefono(new TipoTelefonoDB().SeleccionarPorId(idTipoTelefono));
-                telefono.setId_Registra(116390998);
+                telefono.setId_Registra(IdRegistra);
                 telefono.setFechaRegistra(fecha);
-                telefono.setId_Edita(116390998);
+                telefono.setId_Edita(IdEdita);
                 telefono.setFechaEdita(fecha);
                 listaTelefonos.add(telefono);
             }
@@ -448,7 +591,7 @@ public class UsuariosPorProgranaBean implements Serializable {
                 }else{
                     pro.setEstado("Activo");
                 }
-                pro.setId_Edita(116390998);
+                pro.setId_Edita(IdEdita);
                 pro.setFechaEdita(fecha);
             }
         }
@@ -463,8 +606,7 @@ public class UsuariosPorProgranaBean implements Serializable {
                 usuario.setFechaNacimiento(FechaNacimiento);
                 usuario.setCorreo(Correo);
                 usuario.setLog_Activo(this.estadoUsuario);
-                usuario.setEstadoAcceso(estAccDB.SeleccionarPorId(this.estadoAcceso));
-                usuario.setId_Edita(116390998);
+                usuario.setId_Edita(IdEdita);
                 usuario.setFechaEdita(fecha);
                 usuarioDB.actulizar(usuario);
                 
@@ -985,6 +1127,47 @@ public class UsuariosPorProgranaBean implements Serializable {
     public void setNumero(String numero) {
         this.numero = numero;
     }
+
+    public String getMsjRechazo() {
+        return msjRechazo;
+    }
+
+    public void setMsjRechazo(String msjRechazo) {
+        this.msjRechazo = msjRechazo;
+    }
+
+    public UsuarioMante getDenegado() {
+        return denegado;
+    }
+
+    public void setDenegado(UsuarioMante denegado) {
+        this.denegado = denegado;
+    }
+
+    public UsuarioMante getUsuario4() {
+        return usuario4;
+    }
+
+    public void setUsuario4(UsuarioMante usuario4) {
+        this.usuario4 = usuario4;
+    }
+
+    public int getIdRegistra() {
+        return IdRegistra;
+    }
+
+    public void setIdRegistra(int IdRegistra) {
+        this.IdRegistra = IdRegistra;
+    }
+
+    public int getIdEdita() {
+        return IdEdita;
+    }
+
+    public void setIdEdita(int IdEdita) {
+        this.IdEdita = IdEdita;
+    }
+    
     
     
     

@@ -20,9 +20,9 @@ import javax.faces.context.ExternalContext;
 @SessionScoped
 public class ObtenerDatosSesion implements Serializable {
     
-    Usuario UsuarioLogin;
-    String datos;
-    String Id_Usuario;
+    Usuario UsuarioLogin = null;
+    String datos = "";
+    String Id_Usuario = "";
 
     public String getId_Usuario() {
         return Id_Usuario;
