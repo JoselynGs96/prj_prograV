@@ -24,8 +24,8 @@ public class Agenda {
     boolean Domingo;
     Date FechaInicio;
     Date FechaFinal;
-    Time HoraInicio;
-    Time HoraFinal;
+    Date HoraInicio;
+    Date HoraFinal;
     Recurso recurso;
     int activo;
     int Id_Registra;
@@ -34,7 +34,7 @@ public class Agenda {
     Date FechaEdita;
     String Obseraciones;
 
-    public Agenda(int id_Agenda, boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Time HoraInicio, Time HoraFinal, Recurso recurso, int activo, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita, String Obseraciones) {
+    public Agenda(int id_Agenda, boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Date HoraInicio, Date HoraFinal, Recurso recurso, int activo, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita, String Obseraciones) {
         this.id_Agenda = id_Agenda;
         this.Lunes = Lunes;
         this.Martes = Martes;
@@ -56,7 +56,7 @@ public class Agenda {
         this.Obseraciones = Obseraciones;
     }
 
-    public Agenda( boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Time HoraInicio, Time HoraFinal, Recurso recurso, int activo, String Obseraciones) {
+    public Agenda( boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Date HoraInicio, Date HoraFinal, Recurso recurso, int activo, String Obseraciones) {
         this.Lunes = Lunes;
         this.Martes = Martes;
         this.Miercoles = Miercoles;
@@ -156,19 +156,19 @@ public class Agenda {
         this.FechaFinal = FechaFinal;
     }
 
-    public Time getHoraInicio() {
+    public Date getHoraInicio() {
         return HoraInicio;
     }
 
-    public void setHoraInicio(Time HoraInicio) {
+    public void setHoraInicio(Date HoraInicio) {
         this.HoraInicio = HoraInicio;
     }
 
-    public Time getHoraFinal() {
+    public Date getHoraFinal() {
         return HoraFinal;
     }
 
-    public void setHoraFinal(Time HoraFinal) {
+    public void setHoraFinal(Date HoraFinal) {
         this.HoraFinal = HoraFinal;
     }
 
