@@ -279,7 +279,8 @@
                                             <h:outputText value="Provincia*" style="margin-top: 5px" />  </td>
                                         <td>
                                             <h:selectOneMenu id="cmbPro" class="form-control"   style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Provincia}"  >
-                                                <f:selectItems var="pro" value="#{registrarBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
+                                                <f:selectItem  itemValue = "0"  itemLabel = "-Seleccione Provincia-"></f:selectItem>
+                                              <f:selectItems var="pro" value="#{registrarBean.listaPro}" itemLabel="#{pro.dsc_Provincia}" itemValue="#{pro.id_Provincia}"></f:selectItems>
                                                 <f:ajax render="CmbCan" resetValues="true" listener="#{registrarBean.cargarCantonProv(null)}" ></f:ajax>
                                             </h:selectOneMenu>
                                         </td>
@@ -289,6 +290,7 @@
                                             <h:outputText value="Canton*" style="margin-top: 5px" />  </td>
                                         <td>
                                             <h:selectOneMenu class="form-control"  style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Canton}" id="CmbCan" >
+                                               <f:selectItem  itemValue = "0"  itemLabel = "-Seleccione Cantón-"></f:selectItem>
                                                 <f:selectItems var="can" value="#{registrarBean.listaCan}" itemLabel="#{can.dsc_Canton}" itemValue="#{can.id_Canton}"></f:selectItems>
                                                 <f:ajax render="CmbDis cmbBarr" resetValues="true" listener="#{registrarBean.cargarDisCan(null)}" ></f:ajax>
                                             </h:selectOneMenu>
@@ -298,6 +300,7 @@
                                         <td>
                                             <h:outputText value="Distrito*" style="margin-top: 5px" />  </td>
                                         <td>   <h:selectOneMenu class="form-control"   style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Distrito}" id="CmbDis">
+                                               <f:selectItem  itemValue = "0"  itemLabel = "-Seleccione Distrito-"></f:selectItem>
                                                 <f:selectItems var="dis" value="#{registrarBean.listaDis}" itemLabel="#{dis.dsc_Distrito}" itemValue="#{dis.id_Distrito}"></f:selectItems>
                                                 <f:ajax render="CmbBar" resetValues="true" listener="#{registrarBean.cargarBarDis(null)}" ></f:ajax>
                                             </h:selectOneMenu>
@@ -308,6 +311,7 @@
                                             <h:outputText value="Barrio*" style="margin-top: 5px" />  </td>
                                         <td>
                                             <h:selectOneMenu class="form-control"  style="width: 300px; margin-top: 5px; margin-left: 220px " value="#{registrarBean.id_Barrio}" id="CmbBar" >
+                                               <f:selectItem  itemValue = "0"  itemLabel = "-Seleccione Barrio-"></f:selectItem>
                                                 <f:selectItems var="bar" value="#{registrarBean.listaBarrio}" itemLabel="#{bar.dsc_Barrio}" itemValue="#{bar.id_Barrio}"></f:selectItems>
                                             </h:selectOneMenu>
                                         </td>
@@ -335,7 +339,7 @@
                                                 <h:column>
                                                     <f:facet name="header">
                                                         <h:outputText value="Provincia"/>
-                                                    </f:facet>
+                                                    </f:facet>                                                   
                                                     <h:outputText value="#{direc.provincia.dsc_Provincia}"/>
                                                 </h:column>
                                                 <h:column>

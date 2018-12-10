@@ -84,11 +84,11 @@ public class AgendaDB {
                     + "           ,[Id_Recurso]\n"
                     + "           ,[Id_Registra]\n"
                     + "           ,[FechaRegistra]\n"
-                    + "            ,[Obseraciones]/n"
+                    + "            ,[Observaciones]\n"
                     + "           ,[Log_Activo])\n"
                     + "     VALUES\n"
-                    + " (" + Lunes + "," + Martes + "," + Miercoles + "," + Jueves + "," + Viernes + "," + Sabado + "," + Domingo + ",'" + agenda.FechaInicio + "','" + agenda.FechaFinal + "','" + agenda.HoraInicio + "','" + agenda.HoraFinal + "'," + agenda.recurso.id
-                    + "," + agenda.Id_Registra + ",'" + new java.sql.Date(agenda.getFechaRegistra().getTime()) + "','" + agenda.Obseraciones + "'," + 1 + ")";
+                    + " (" + Lunes + "," + Martes + "," + Miercoles + "," + Jueves + "," + Viernes + "," + Sabado + "," + Domingo + ",'" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "','" + new java.sql.Date(agenda.getFechaFinal().getTime())+ "','" + new java.sql.Time(agenda.getHoraInicio().getTime()) + "','" + new java.sql.Time(agenda.getHoraFinal().getTime()) + "'," + agenda.recurso.id
+                    + "," + agenda.Id_Registra + ", GETDATE() ,'" + agenda.Obseraciones + "'," + 1 + ")";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -208,8 +208,8 @@ public class AgendaDB {
                 boolean Domingo = (rsPA.getInt("Domingo")) == 1 ? true : false;
                 Date FechaInicio = rsPA.getDate("FechaInicio");
                 Date FechaFinal= rsPA.getDate("FechaFinal");;
-                Time HoraInicio= rsPA.getTime("HoraInicio");
-                Time HoraFinal= rsPA.getTime("HoraFinal");
+                Date HoraInicio= rsPA.getDate("HoraInicio");
+                Date HoraFinal= rsPA.getDate("HoraFinal");
                 Recurso recurso= recursoDB.SeleccionarPorId(rsPA.getInt("Id_Recurso"));
                 int activo =rsPA.getInt("Log_Activo");          
                 String Obseraciones = rsPA.getString("Obseraciones");
@@ -240,7 +240,8 @@ public class AgendaDB {
         int Jueves = agenda.isJueves() ? 1 : 2;
         int Viernes = agenda.isViernes() ? 1 : 2;
         int Sabado = agenda.isSabado() ? 1 : 2;
-        int Domingo = agenda.isDomingo() ? 1 : 2;
+        int Domingo = agenda.isDomingo() ? 1 : 2;   
+        
         String select = "";
         ResultSet rsPA = null;
         int agen = 0;
@@ -248,22 +249,21 @@ public class AgendaDB {
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
-            select
-                    = "Select AgendaRecurso.Id_AgendaRecurso\n"
+            select = "Select AgendaRecurso.Id_AgendaRecurso\n"
                     + "From EncSolicitud inner join DetSolicitud\n"
                     + "On EncSolicitud.Id_EncSolicitud = DetSolicitud.Id_EncSolicitud inner join Recurso\n"
                     + "On DetSolicitud.Id_Recurso = Recurso.Id_Recurso \n"
                     + "and DetSolicitud.Id_Recurso = " + agenda.recurso.id + " and Recurso.Id_Recurso=" + agenda.recurso.id + " inner join AgendaRecurso\n"
                     + "On Recurso.Id_Recurso = AgendaRecurso.Id_Recurso \n"
-                    + "where (('" + agenda.FechaInicio + "' between AgendaRecurso.FechaInicio and AgendaRecurso.FechaFinal) OR ('" + agenda.FechaFinal + "' between AgendaRecurso.FechaInicio and AgendaRecurso.FechaFinal)\n"
-                    + "Or (AgendaRecurso.FechaInicio between '" + agenda.FechaInicio + "' and '" + agenda.FechaFinal + "' or AgendaRecurso.FechaFinal between '" + agenda.FechaInicio + "' and '" + agenda.FechaFinal + "'))\n"
-                    + "and (('" + agenda.HoraInicio + "' between AgendaRecurso.HoraInicio and AgendaRecurso.HoraFinal Or '" + agenda.HoraFinal + "' between AgendaRecurso.HoraInicio and AgendaRecurso.HoraFinal)\n"
-                    + "or (AgendaRecurso.HoraInicio between '" + agenda.HoraInicio + "' and '" + agenda.HoraFinal + "' or AgendaRecurso.HoraFinal between '" + agenda.HoraInicio + "' and '" + agenda.HoraFinal + "'))\n"
+                    + "where (('" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "' between AgendaRecurso.FechaInicio and AgendaRecurso.FechaFinal) OR ('" + new java.sql.Date(agenda.getFechaFinal().getTime()) + "' between AgendaRecurso.FechaInicio and AgendaRecurso.FechaFinal)\n"
+                    + "Or (AgendaRecurso.FechaInicio between '" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "' and '" + new java.sql.Date(agenda.getFechaFinal().getTime()) + "' or AgendaRecurso.FechaFinal between '" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "' and '" + new java.sql.Date(agenda.getFechaFinal().getTime()) + "'))\n"
+                    + "and (('" + new java.sql.Time(agenda.getHoraInicio().getTime())  + "' between AgendaRecurso.HoraInicio and AgendaRecurso.HoraFinal Or '" + new java.sql.Time(agenda.getHoraFinal().getTime()) + "' between AgendaRecurso.HoraInicio and AgendaRecurso.HoraFinal)\n"
+                    + "or (AgendaRecurso.HoraInicio between '" + new java.sql.Time(agenda.getHoraInicio().getTime())+ "' and '" +new java.sql.Time(agenda.getHoraFinal().getTime())+ "' or AgendaRecurso.HoraFinal between '" + new java.sql.Time(agenda.getHoraInicio().getTime()) + "' and '" + new java.sql.Time(agenda.getHoraFinal().getTime()) + "'))\n"
                     + "And (Lunes =" + Lunes + " or Martes = " + Martes + "or Miercoles = " + Miercoles + " or Jueves = " + Jueves + " or Viernes = " + Viernes + " or Sabado = " + Sabado + " or Domingo = " + Domingo + " )\n"
-                    + "and DetSolicitud.Log_Activo = 1\n"
-                    + "GO";
+                    + "and DetSolicitud.Log_Activo = 1\n";
+                   
 
-            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+          rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
             while (rsPA.next()) {
 

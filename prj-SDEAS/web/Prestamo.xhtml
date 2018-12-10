@@ -27,8 +27,7 @@
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <script>
-            PrimeFaces.locales['es'] = {
+        <script>PrimeFaces.locales['es'] = {
                 closeText: 'Cerrar',
                 prevText: 'Anterior',
                 nextText: 'Siguiente',
@@ -42,7 +41,7 @@
                 isRTL: false,
                 showMonthAfterYear: false,
                 yearSuffix: '',
-                timeOnlyTitle: 'Seleccione la hora',
+                timeOnlyTitle: 'Sólo hora',
                 timeText: 'Tiempo',
                 hourText: 'Hora',
                 minuteText: 'Minuto',
@@ -53,8 +52,7 @@
                 week: 'Semana',
                 day: 'Día',
                 allDayText: 'Todo el día'
-            };
-        </script>
+            };</script>
 
     </h:head>
     <h:body>
@@ -246,11 +244,11 @@
 
                                 <tr >
                                     <td colspan="2" >
-                                         <br></br>
+                                        <br></br>
                                         <p:outputLabel>Recurso*</p:outputLabel>    
                                     </td>
                                     <td colspan="2" >
-                                            <br></br>
+                                        <br></br>
                                         <h:selectOneMenu class="form-control" style="width: 250px;" value="#{preestamoBean.recurso}" id="Canton" >
                                             <f:selectItems var="can" value="#{preestamoBean.listaRecurso}" itemLabel="#{can.nombre}" itemValue="#{can.id}"></f:selectItems>
                                         </h:selectOneMenu>
@@ -306,13 +304,14 @@
                                 </tr>
 
                             </table>
-                    
+
                             <br></br>
-                            
+                            <p:outputLabel value="#{preestamoBean.mensajeBueno}" escape="false"></p:outputLabel>
+                    <br></br>
                             <h:commandButton action="#{preestamoBean.ingresarAgendas()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
                                              class="btn btn-primary btn-lg" value="Procesar" ></h:commandButton><br></br>
-                                             <h:outputText style="color: red;" value="#{preestamoBean.mensajeError}"></h:outputText>
-                                <br></br>
+                                             <p:outputLabel value="#{preestamoBean.mensajeError}" escape="false"></p:outputLabel>
+                            <br></br>
                         </center>
 
 

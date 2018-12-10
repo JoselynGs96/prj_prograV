@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -18,13 +19,18 @@ import java.util.Date;
 import java.util.LinkedList;
 import model.Agenda;
 import model.AgendaDB;
+import model.Detalle;
 import model.DetalleDB;
 import model.Direccion;
+import model.EncabezadoSolicitud;
 import model.EncabezadoSolicitudDB;
 import model.Provincia;
 import model.Recurso;
 import model.RecursoDB;
+import model.Usuario;
 import model.UsuarioDB;
+import model.UsuarioMante;
+import model.UsuarioManteDB;
 
 /**
  *
@@ -49,19 +55,22 @@ public class PreestamoBean implements Serializable {
     boolean Domingo;
     Date FechaInicio;
     Date FechaFinal;
-    Time HoraInicio;
-    Time HoraFinal;
+    Date HoraInicio;
+    Date HoraFinal;
     private int recurso = 1000;
     String Observaciones;
     String mensajeError;
     int Contador = 0;
+    Usuario usuario = null;
+    String MensajeBueno;
 
     LinkedList<Recurso> listaRecurso = new LinkedList<Recurso>();
     LinkedList<Recurso> listaRecursoAgregardos = new LinkedList<Recurso>();
 
     public PreestamoBean() throws SNMPExceptions, SQLException {
+       
         if (!recursoDB.seleccionarTodos().isEmpty()) {
-            listaRecurso = recursoDB.seleccionarTodos();
+            listaRecurso = recursoDB.seleccionarTodos();          
         } else {
             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen recurso</div>");
         }
@@ -70,7 +79,8 @@ public class PreestamoBean implements Serializable {
     public void agregarRecursos() throws SNMPExceptions, SQLException {
         Recurso recurso = recursoDB.SeleccionarPorId(this.getRecurso());
         listaRecursoAgregardos.add(recurso);
-        LinkedList<Recurso> listaRecurso2 = listaRecurso;
+        LinkedList<Recurso> listaRecurso2 = listaRecurso;    
+       
 
         for (Recurso re : listaRecurso2) {
             for (Recurso recursoAgregados : listaRecursoAgregardos) {
@@ -85,38 +95,38 @@ public class PreestamoBean implements Serializable {
     public boolean validaciones() {
         boolean respuesta;
         if (this.getFechaInicio() == null) {
-            this.setMensajeError("*Debe colocar la fecha de inicio");
-              respuesta = false;
+            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la fecha de inicio</div>");
+            respuesta = false;
         } else {
             if (this.getHoraInicio() == null) {
-                this.setMensajeError("*Debe colocar la hora de inicio");
-                  respuesta = false;
+                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la hora de inicio</div>");
+                respuesta = false;
             } else {
                 if (this.getFechaFinal() == null) {
-                    this.setMensajeError("*Debe colocar la fecha de final");
-                      respuesta = false;
+                    this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la fecha de final</div>");
+                    respuesta = false;
                 } else {
                     if (this.getHoraFinal() == null) {
-                        this.setMensajeError("*Debe colocar la hora de final");
-                          respuesta = false;
+                        this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe colocar la hora de final</div>*");
+                        respuesta = false;
                     } else {
                         if (this.getHoraFinal() == null) {
-                            this.setMensajeError("*Debe colocar la hora de final");
-                              respuesta = false;
+                            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la hora de final</div>");
+                            respuesta = false;
                         } else {
-                            if (validarDiasSeleccionados()) {
-                                this.setMensajeError("Debe seleccionar al menos un dia");
-                                  respuesta = false;
+                            if (!validarDiasSeleccionados()) {
+                                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar al menos un dia</div>");
+                                respuesta = false;
                             } else {
                                 if (this.getListaRecursoAgregardos().isEmpty()) {
-                                    this.setMensajeError("Debe agregar al menos un recurso a la lista");
-                                      respuesta = false;
+                                    this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe agregar al menos un recurso a la lista</div>");
+                                    respuesta = false;
                                 } else {
                                     if (this.getObservaciones().equals("")) {
-                                        this.setMensajeError("Debe colocar alguna observación");
-                                          respuesta = false;
-                                    }else{
-                                          respuesta = true;
+                                        this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe colocar alguna observación</div>");
+                                        respuesta = false;
+                                    } else {
+                                        respuesta = true;
                                     }
                                 }
                             }
@@ -272,17 +282,6 @@ public class PreestamoBean implements Serializable {
 
     }
 
-    /*Este metodo llama a prueba y manda mensaje*/
-    public void valida() throws ParseException {
-        if (validaFechaActual()) {
-            if (prueba()) {
-
-            } else {
-                this.setMensajeError("Los días seleccionados no concuerdan con el rango de fechas");
-            }
-        }
-    }
-
     /*Este metodo cuenta cuantos dias selecciono el usuario*/
     public void contadorActivos() {
         if (this.isLunes()) {
@@ -368,32 +367,89 @@ public class PreestamoBean implements Serializable {
             Agenda agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), re, 1, this.getObservaciones());
             int AgendaBD = agendaDB.SeleccionarExistente(agendaNueva);
             if (AgendaBD == 0) {
-               contadorRespuestas++;
+                contadorRespuestas++;
 
             }
         }
-        if(contadorRespuestas==contadorfor){
-            this.setMensajeError("Si puede agregar la solicitud");
-            respuesta=true;
-        }else{
-             this.setMensajeError("no puede agregar la solicitud");
-             respuesta=false;
+        if (contadorRespuestas == contadorfor) {
+           
+            respuesta = true;
+        } else {
+            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No puede agregar la solicitud, Ya existe una solicitud con esos datos</div>");
+            respuesta = false;
         }
 
         return respuesta;
     }
-    
-    public void IngresarAgendas()throws ParseException,SNMPExceptions, SQLException {
-        if(validaciones()){
-            if(validaFechaActual()){
-                if(validarDiasSeleccionados()){
-                    if(validaExistente()){
-                        
+
+    public void ingresarAgendas() throws ParseException, SNMPExceptions, SQLException {
+try{
+        EncabezadoSolicitudDB encabezadoDB = new EncabezadoSolicitudDB();
+        DetalleDB detalleDB = new DetalleDB();
+        AgendaDB agendaDB = new AgendaDB();
+        if (validaciones()) {
+             if (validaFechaActual()) {
+            if (prueba()) {            
+                if (validarDiasSeleccionados()) {
+                    if (validaExistente()) {
+                        /*INGRESO EL ENCABEZADO*/
+                        EncabezadoSolicitud encabezado = new EncabezadoSolicitud();
+                        encabezado.setFuncionario(usuarioDB.SeleccionarPorId(207750517));
+                        encabezadoDB.registrar(encabezado);
+                        /*Ingreso el detalle*/
+                        LinkedList<Recurso> listaAgregados = listaRecursoAgregardos;
+                        for (Recurso re : listaAgregados) {
+                            Detalle detalle = new Detalle();
+                            int enca= encabezadoDB.SeleccionarUltimo();
+                            detalle.setEncabezado(encabezadoDB.SeleccionarporId(enca));
+                            detalle.setRecurso(re);
+                            detalleDB.registrar(detalle);
+                        }
+                        /*Ingeso la agenda*/
+                        for (Recurso re : listaRecursoAgregardos) {
+                            Agenda agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), re, 1, this.getObservaciones());
+                            agendaNueva.setId_Registra(207750517);
+                            agendaDB.registrar(agendaNueva);
+                        }
+                        limpiar();
+                        setMensajeError("");
+               
+                        setMensajeBueno("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Su solicitud ha sido enviada correctamente!</div>");
                     }
-                    
+
                 }
+            } else {
+                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Los días seleccionados no concuerdan con el rango de fechas...¡Intentelo de nuevo!</div>");
             }
         }
+        }
+         
+         }catch(Exception e){
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el curso...¡Intentelo de nuevo!</div>");
+        }
+
+    }
+    public void limpiar()throws SNMPExceptions,SQLException{
+        this.setFechaInicio(null);
+        this.setFechaFinal(null);
+        this.setHoraInicio(null);
+        this.setHoraFinal(null);
+        
+          if (!recursoDB.seleccionarTodos().isEmpty()) {
+            listaRecurso = recursoDB.seleccionarTodos();          
+        } else {
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen recurso</div>");
+        }
+          this.listaRecursoAgregardos.remove();
+          this.setObservaciones("");
+          this.setLunes(false);
+          this.setMartes(false);
+          this.setMiercoles(false);
+          this.setJueves(false);
+          this.setViernes(false);
+          this.setJueves(false);
+          this.setDomingo(false);         
+        
     }
 
     public int getContador() {
@@ -419,6 +475,8 @@ public class PreestamoBean implements Serializable {
     public void setEncabezadoDB(EncabezadoSolicitudDB encabezadoDB) {
         this.encabezadoDB = encabezadoDB;
     }
+    
+    
 
     public RecursoDB getRecursoDB() {
         return recursoDB;
@@ -516,19 +574,19 @@ public class PreestamoBean implements Serializable {
         this.FechaFinal = FechaFinal;
     }
 
-    public Time getHoraInicio() {
+    public Date getHoraInicio() {
         return HoraInicio;
     }
 
-    public void setHoraInicio(Time HoraInicio) {
+    public void setHoraInicio(Date HoraInicio) {
         this.HoraInicio = HoraInicio;
     }
 
-    public Time getHoraFinal() {
+    public Date getHoraFinal() {
         return HoraFinal;
     }
 
-    public void setHoraFinal(Time HoraFinal) {
+    public void setHoraFinal(Date HoraFinal) {
         this.HoraFinal = HoraFinal;
     }
 
@@ -572,4 +630,19 @@ public class PreestamoBean implements Serializable {
         this.listaRecursoAgregardos = listaRecursoAgregardos;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getMensajeBueno() {
+        return MensajeBueno;
+    }
+
+    public void setMensajeBueno(String MensajeBueno) {
+        this.MensajeBueno = MensajeBueno;
+    }
 }
