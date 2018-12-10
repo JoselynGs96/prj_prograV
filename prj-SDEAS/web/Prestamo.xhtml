@@ -310,7 +310,7 @@
                     <br></br>
                             <h:commandButton action="#{preestamoBean.ingresarAgendas()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
                                              class="btn btn-primary btn-lg" value="Procesar" ></h:commandButton><br></br>
-                            <h:outputText style="color: red;" value="#{preestamoBean.mensajeError}"></h:outputText>
+                                             <p:outputLabel value="#{preestamoBean.mensajeError}" escape="false"></p:outputLabel>
                             <br></br>
                         </center>
 

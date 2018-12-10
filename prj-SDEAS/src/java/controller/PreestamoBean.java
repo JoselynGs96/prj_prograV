@@ -95,35 +95,35 @@ public class PreestamoBean implements Serializable {
     public boolean validaciones() {
         boolean respuesta;
         if (this.getFechaInicio() == null) {
-            this.setMensajeError("*Debe colocar la fecha de inicio");
+            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la fecha de inicio</div>");
             respuesta = false;
         } else {
             if (this.getHoraInicio() == null) {
-                this.setMensajeError("*Debe colocar la hora de inicio");
+                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la hora de inicio</div>");
                 respuesta = false;
             } else {
                 if (this.getFechaFinal() == null) {
-                    this.setMensajeError("*Debe colocar la fecha de final");
+                    this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la fecha de final</div>");
                     respuesta = false;
                 } else {
                     if (this.getHoraFinal() == null) {
-                        this.setMensajeError("*Debe colocar la hora de final");
+                        this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe colocar la hora de final</div>*");
                         respuesta = false;
                     } else {
                         if (this.getHoraFinal() == null) {
-                            this.setMensajeError("*Debe colocar la hora de final");
+                            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la hora de final</div>");
                             respuesta = false;
                         } else {
                             if (!validarDiasSeleccionados()) {
-                                this.setMensajeError("Debe seleccionar al menos un dia");
+                                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar al menos un dia</div>");
                                 respuesta = false;
                             } else {
                                 if (this.getListaRecursoAgregardos().isEmpty()) {
-                                    this.setMensajeError("Debe agregar al menos un recurso a la lista");
+                                    this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe agregar al menos un recurso a la lista</div>");
                                     respuesta = false;
                                 } else {
                                     if (this.getObservaciones().equals("")) {
-                                        this.setMensajeError("Debe colocar alguna observación");
+                                        this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe colocar alguna observación</div>");
                                         respuesta = false;
                                     } else {
                                         respuesta = true;
@@ -375,7 +375,7 @@ public class PreestamoBean implements Serializable {
            
             respuesta = true;
         } else {
-            this.setMensajeError("No puede agregar la solicitud, Ya existe una solicitud con esos datos");
+            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No puede agregar la solicitud, Ya existe una solicitud con esos datos</div>");
             respuesta = false;
         }
 
@@ -413,12 +413,13 @@ try{
                         }
                         limpiar();
                         setMensajeError("");
-                        setMensajeBueno("Su solicitud ha sido enviada correctamente");
+               
+                        setMensajeBueno("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Su solicitud ha sido enviada correctamente!</div>");
                     }
 
                 }
             } else {
-                this.setMensajeError("Los días seleccionados no concuerdan con el rango de fechas");
+                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Los días seleccionados no concuerdan con el rango de fechas...¡Intentelo de nuevo!</div>");
             }
         }
         }
