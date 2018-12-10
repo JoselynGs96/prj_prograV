@@ -55,10 +55,9 @@ public class EncabezadoSolicitudDB {
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
-                Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
-                enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Coordinador, Tipo_solicitud, estado);
+                enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
 
             }
 
@@ -77,9 +76,9 @@ public class EncabezadoSolicitudDB {
         return enca;
     }
 
-    public long SeleccionarUltimo() throws SNMPExceptions,
+    public int SeleccionarUltimo() throws SNMPExceptions,
             SQLException {
-     long max=0;
+     int max=0;
         String select = "";
         ResultSet rsPA = null;
      
@@ -94,11 +93,9 @@ public class EncabezadoSolicitudDB {
 
             while (rsPA.next()) {
 
-               max=rsPA.getLong("Maximo");
+               max=rsPA.getInt("Maximo");
                if(max==0){
                    max=1000;
-               }else{
-                   max++;
                }
             }
 
@@ -141,10 +138,9 @@ public class EncabezadoSolicitudDB {
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
-                Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
-                EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Coordinador, Tipo_solicitud, estado);
+                EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
 
                 listaEncabezadoSolicituds.add(enca);
             }
@@ -171,7 +167,7 @@ public class EncabezadoSolicitudDB {
         try {
             EncabezadoSolicitud encabezadoSolicitud = encabe;
 
-            strSQL = "INSERT INTO [dbo].[EncSolicitud]([FechaSolicitud],[Id_Funcionario],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo])VALUES(GETDAY()" +"," + encabezadoSolicitud.getFuncionario().Id + "," + 1001 + "," + 4 + "," + 1 + ")";
+            strSQL = "INSERT INTO [dbo].[EncSolicitud]([FechaSolicitud],[Id_Funcionario],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo])VALUES(  GETDATE()  " +"," + encabezadoSolicitud.getFuncionario().Id + "," + 1001 + "," + 4 + "," + 1 + ")";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,

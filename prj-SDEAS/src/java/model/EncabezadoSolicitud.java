@@ -20,12 +20,11 @@ public class EncabezadoSolicitud {
     TipoSolicitud Tipo_solicitud;
     EstadoSolicitud estado;
 
-    public EncabezadoSolicitud(int id_Encabezado, Date FechaInicio, Date FechaFinal, Usuario Funcionario, Usuario Coordinador, TipoSolicitud Tipo_solicitud, EstadoSolicitud estado) {
+    public EncabezadoSolicitud(int id_Encabezado, Date FechaInicio, Date FechaFinal, Usuario Funcionario, TipoSolicitud Tipo_solicitud, EstadoSolicitud estado) {
         this.id_Encabezado = id_Encabezado;
         this.FechaInicio = FechaInicio;
         this.FechaFinal = FechaFinal;
         this.Funcionario = Funcionario;
-        this.Coordinador = Coordinador;
         this.Tipo_solicitud = Tipo_solicitud;
         this.estado = estado;
     }

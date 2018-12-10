@@ -68,19 +68,9 @@ public class PreestamoBean implements Serializable {
     LinkedList<Recurso> listaRecursoAgregardos = new LinkedList<Recurso>();
 
     public PreestamoBean() throws SNMPExceptions, SQLException {
-        ObtenerDatosSesion datos = new ObtenerDatosSesion();
-        UsuarioDB usuDB = new UsuarioDB();
-        datos.consultarSesion();
-
-        if (!datos.getId_Usuario().equals("")) {
-            usuario = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
-
-        } else {
-            usuario = usuDB.SeleccionarPorId(116390998);
-
-        }
+       
         if (!recursoDB.seleccionarTodos().isEmpty()) {
-            listaRecurso = recursoDB.seleccionarTodos();
+            listaRecurso = recursoDB.seleccionarTodos();          
         } else {
             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen recurso</div>");
         }
@@ -292,17 +282,6 @@ public class PreestamoBean implements Serializable {
 
     }
 
-    /*Este metodo llama a prueba y manda mensaje*/
-    public void valida() throws ParseException {
-        if (validaFechaActual()) {
-            if (prueba()) {
-
-            } else {
-                this.setMensajeError("Los días seleccionados no concuerdan con el rango de fechas");
-            }
-        }
-    }
-
     /*Este metodo cuenta cuantos dias selecciono el usuario*/
     public void contadorActivos() {
         if (this.isLunes()) {
@@ -393,7 +372,7 @@ public class PreestamoBean implements Serializable {
             }
         }
         if (contadorRespuestas == contadorfor) {
-            this.setMensajeError("Solicitud realizada");
+           
             respuesta = true;
         } else {
             this.setMensajeError("No puede agregar la solicitud, Ya existe una solicitud con esos datos");
@@ -404,39 +383,72 @@ public class PreestamoBean implements Serializable {
     }
 
     public void ingresarAgendas() throws ParseException, SNMPExceptions, SQLException {
-
+try{
         EncabezadoSolicitudDB encabezadoDB = new EncabezadoSolicitudDB();
         DetalleDB detalleDB = new DetalleDB();
         AgendaDB agendaDB = new AgendaDB();
         if (validaciones()) {
-            if (validaFechaActual()) {
+             if (validaFechaActual()) {
+            if (prueba()) {            
                 if (validarDiasSeleccionados()) {
                     if (validaExistente()) {
-
                         /*INGRESO EL ENCABEZADO*/
                         EncabezadoSolicitud encabezado = new EncabezadoSolicitud();
-                        encabezado.setFuncionario(this.getUsuario());
+                        encabezado.setFuncionario(usuarioDB.SeleccionarPorId(207750517));
                         encabezadoDB.registrar(encabezado);
                         /*Ingreso el detalle*/
                         LinkedList<Recurso> listaAgregados = listaRecursoAgregardos;
                         for (Recurso re : listaAgregados) {
                             Detalle detalle = new Detalle();
-                            detalle.setEncabezado(encabezadoDB.SeleccionarporId((int) encabezadoDB.SeleccionarUltimo()));
+                            int enca= encabezadoDB.SeleccionarUltimo();
+                            detalle.setEncabezado(encabezadoDB.SeleccionarporId(enca));
                             detalle.setRecurso(re);
                             detalleDB.registrar(detalle);
                         }
                         /*Ingeso la agenda*/
                         for (Recurso re : listaRecursoAgregardos) {
                             Agenda agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), re, 1, this.getObservaciones());
+                            agendaNueva.setId_Registra(207750517);
                             agendaDB.registrar(agendaNueva);
                         }
+                        limpiar();
+                        setMensajeError("");
                         setMensajeBueno("Su solicitud ha sido enviada correctamente");
                     }
 
                 }
+            } else {
+                this.setMensajeError("Los días seleccionados no concuerdan con el rango de fechas");
             }
         }
+        }
+         
+         }catch(Exception e){
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el curso...¡Intentelo de nuevo!</div>");
+        }
 
+    }
+    public void limpiar()throws SNMPExceptions,SQLException{
+        this.setFechaInicio(null);
+        this.setFechaFinal(null);
+        this.setHoraInicio(null);
+        this.setHoraFinal(null);
+        
+          if (!recursoDB.seleccionarTodos().isEmpty()) {
+            listaRecurso = recursoDB.seleccionarTodos();          
+        } else {
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen recurso</div>");
+        }
+          this.listaRecursoAgregardos.remove();
+          this.setObservaciones("");
+          this.setLunes(false);
+          this.setMartes(false);
+          this.setMiercoles(false);
+          this.setJueves(false);
+          this.setViernes(false);
+          this.setJueves(false);
+          this.setDomingo(false);         
+        
     }
 
     public int getContador() {
@@ -462,6 +474,8 @@ public class PreestamoBean implements Serializable {
     public void setEncabezadoDB(EncabezadoSolicitudDB encabezadoDB) {
         this.encabezadoDB = encabezadoDB;
     }
+    
+    
 
     public RecursoDB getRecursoDB() {
         return recursoDB;

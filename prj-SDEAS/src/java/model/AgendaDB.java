@@ -84,11 +84,11 @@ public class AgendaDB {
                     + "           ,[Id_Recurso]\n"
                     + "           ,[Id_Registra]\n"
                     + "           ,[FechaRegistra]\n"
-                    + "            ,[Obseraciones]/n"
+                    + "            ,[Observaciones]\n"
                     + "           ,[Log_Activo])\n"
                     + "     VALUES\n"
-                    + " (" + Lunes + "," + Martes + "," + Miercoles + "," + Jueves + "," + Viernes + "," + Sabado + "," + Domingo + ",'" + agenda.FechaInicio + "','" + agenda.FechaFinal + "','" + agenda.HoraInicio + "','" + agenda.HoraFinal + "'," + agenda.recurso.id
-                    + "," + agenda.Id_Registra + ",'" + new java.sql.Date(agenda.getFechaRegistra().getTime()) + "','" + agenda.Obseraciones + "'," + 1 + ")";
+                    + " (" + Lunes + "," + Martes + "," + Miercoles + "," + Jueves + "," + Viernes + "," + Sabado + "," + Domingo + ",'" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "','" + new java.sql.Date(agenda.getFechaFinal().getTime())+ "','" + new java.sql.Time(agenda.getHoraInicio().getTime()) + "','" + new java.sql.Time(agenda.getHoraFinal().getTime()) + "'," + agenda.recurso.id
+                    + "," + agenda.Id_Registra + ", GETDATE() ,'" + agenda.Obseraciones + "'," + 1 + ")";
 
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {

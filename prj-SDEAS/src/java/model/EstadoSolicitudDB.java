@@ -83,7 +83,7 @@ public class EstadoSolicitudDB {
              
                       while (rsPA.next()) {
 
-                        int id  = rsPA.getInt("Id_TipoRecurso");
+                        int id  = rsPA.getInt("Id_EstadoSolicitud");
                         String nombre = rsPA.getString("Nombre");
                         int estado = rsPA.getInt("Log_Activo");
                         ea = new EstadoSolicitud(id, nombre, estado==0? "Inactivo":"Activo");
