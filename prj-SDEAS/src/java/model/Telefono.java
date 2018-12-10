@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -15,7 +15,7 @@ public class Telefono {
     String Numero;
     Usuario Id_Usuario;
     TipoTelefono Id_TipoTelefono;
-    String id_Telefono;
+    String id_Telefono = "";
     int Id_Registra;
     Date FechaRegistra;
     int Id_Edita;

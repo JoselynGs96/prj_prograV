@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedList;
+import javax.faces.component.behavior.AjaxBehavior;
 import model.Barrio;
 import model.BarrioDB;
 import model.Canton;
@@ -22,6 +23,7 @@ import model.DireccionDB;
 import model.Distrito;
 import model.DistritoDB;
 import model.EnumFuncionario;
+import model.EstadoAccesoDB;
 import model.Programa;
 import model.ProgramaDB;
 import model.ProgramaUsuario;
@@ -38,6 +40,7 @@ import model.TipoTelefono;
 import model.TipoTelefonoDB;
 import model.Usuario;
 import model.UsuarioDB;
+import model.UsuarioManteDB;
 
 /**
  *
@@ -47,13 +50,14 @@ import model.UsuarioDB;
 @SessionScoped
 public class ActualizarUsuarioBean implements Serializable {
 
-    int cedula;
+    String cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
-    String mensaje;
     String mensaje1;
     String mensaje2;
+    String msjDireccion;
+    String msjTelefono;
     String nombre;
     String apellido1;
     String apellido2;
@@ -62,12 +66,14 @@ public class ActualizarUsuarioBean implements Serializable {
     int Programa;
     String OtrasSenas;
     int edad;
-    static int Id_Provincia;
-    static int Id_Canton;
-    static int Id_Distrito;
-    static int id_Barrio;
+    int Id_Direccion = 0;
+    int Id_Provincia = 0;
+    int Id_Canton = 0;
+    int Id_Distrito = 0;
+    int id_Barrio = 0;
     int id_TipoTelefono;
     int id_TipoCedula;
+    String Id_Telefono = "";
     String botonNombre;
     LinkedList<Provincia> listaPro = new LinkedList<Provincia>();
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
@@ -85,6 +91,7 @@ public class ActualizarUsuarioBean implements Serializable {
         return EnumFuncionario.values();
     }
 
+    
     /**
      * Creates a new instance of ActualizarUsuarioBean
      */
@@ -95,24 +102,29 @@ public class ActualizarUsuarioBean implements Serializable {
 
     public void LlenarDatos() throws SNMPExceptions, SQLException {
         ObtenerDatosSesion datos = new ObtenerDatosSesion();
+        
         UsuarioDB usuDB = new UsuarioDB();
         datos.consultarSesion();
-        UsuarioMantenimiento = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
+        UsuarioMantenimiento = usuDB.SeleccionarPorId(115690028);
+       
         DireccionDB direc = new DireccionDB();
         TelefonoDB teldb = new TelefonoDB();
+       
         if (this.UsuarioMantenimiento.getId()!= 0) {
             this.setBotonNombre("Actualizar Información");
+            
             /*Pantalla personal*/
             this.setId_TipoCedula(UsuarioMantenimiento.getTipoIdentificacion().getId_TipoIdentificacion());
             this.setNombre(UsuarioMantenimiento.getNombre());
             this.setApellido1(UsuarioMantenimiento.getApellido1());
             this.setApellido2(UsuarioMantenimiento.getApellido2());
             this.setApellido2(UsuarioMantenimiento.getApellido2());
-            this.setCedula(UsuarioMantenimiento.getId());
+            this.setCedula(UsuarioMantenimiento.getId()+"");
+            
             /*Buscar como hacer q este funcione*/
             this.setFechaNacimiento(UsuarioMantenimiento.getFechaNacimiento());
+            
             /*Pantalla Direccion*/
-
             if (!direc.SeleccionarPorUsuario(UsuarioMantenimiento.getId()).isEmpty()) {
                 listaDirec = direc.SeleccionarPorUsuario(UsuarioMantenimiento.getId());
             }
@@ -121,6 +133,7 @@ public class ActualizarUsuarioBean implements Serializable {
                 listaTel = teldb.SeleccionarTodos(UsuarioMantenimiento.getId());
             }
             this.setCorreo(UsuarioMantenimiento.getCorreo());
+            
             /*Pantalla Progrema Deas*/
             this.setFuncionario(UsuarioMantenimiento.getFuncionario());
             this.setFuncionario(UsuarioMantenimiento.getFuncionario());
@@ -128,6 +141,24 @@ public class ActualizarUsuarioBean implements Serializable {
             this.setBotonNombre("Registrarse");
         }
 
+    }
+    
+    /*Ajax canton*/
+    public LinkedList cargarCantonProv(AjaxBehavior evento) throws SNMPExceptions, SQLException {
+        CantonDB can = new CantonDB();       
+        return can.SeleccionarTodos(this.getId_Provincia());
+    }
+
+    /*Ajax distrito*/
+    public LinkedList cargarDisCan(AjaxBehavior evento) throws SNMPExceptions, SQLException {
+        DistritoDB dis = new DistritoDB();
+        return dis.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton());
+    }
+
+    /*Ajax barrio*/
+    public LinkedList cargarBarDis(AjaxBehavior evento) throws SNMPExceptions, SQLException {
+        BarrioDB barr = new BarrioDB();
+        return barr.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito());
     }
 
     public void llenarCombos() throws SNMPExceptions, SQLException {
@@ -141,36 +172,40 @@ public class ActualizarUsuarioBean implements Serializable {
         TipoIdentificacionDB tipoIden = new TipoIdentificacionDB();
 
         if (!pro.SeleccionarTodos().isEmpty()) {
+            
             listaPro = pro.SeleccionarTodos();
-            Id_Provincia = pro.SeleccionarTodos().element().getId_Provincia();
+            Id_Provincia = listaPro.element().getId_Provincia();
         }
         if (!can.SeleccionarTodos(Id_Provincia).isEmpty()) {
-            listaCan = can.SeleccionarTodos(Id_Provincia);
-            Id_Canton = can.SeleccionarTodos(Id_Provincia).element().getId_Canton();
+          
+            listaCan =  cargarCantonProv(null);
+            Id_Canton = listaCan.element().getId_Canton();
         }
-        if (!dis.SeleccionarTodos(Id_Provincia, Id_Canton).isEmpty()) {
-            listaDis = dis.SeleccionarTodos(Id_Provincia, Id_Canton);
-            Id_Distrito = dis.SeleccionarTodos(Id_Provincia, Id_Canton).element().getId_Distrito();
+        if (!dis.SeleccionarTodos(Id_Provincia, Id_Canton).isEmpty()) {         
+            listaDis = cargarDisCan(null);
+            Id_Distrito = listaDis.element().getId_Distrito();
         }
         if (!barr.SeleccionarTodos(Id_Provincia, Id_Canton, Id_Distrito).isEmpty()) {
-            listaBarrio = barr.SeleccionarTodos(Id_Provincia, Id_Canton, Id_Distrito);
-            id_Barrio = barr.SeleccionarTodos(Id_Provincia, Id_Canton, Id_Distrito).element().getId_Barrio();
+            listaBarrio =cargarBarDis(null);
+            id_Barrio = listaBarrio.element().getId_Barrio();
         }
         if (!tel.SeleccionarTodos().isEmpty()) {
             listaTipoTelefono = tel.SeleccionarTodos();
-            id_TipoTelefono = tel.SeleccionarTodos().element().getId_Telefono();
+            id_TipoTelefono = listaTipoTelefono.element().getId_Telefono();
         }
         if (!progra.SeleccionarTodos().isEmpty()) {
             listaPrograma = progra.SeleccionarTodos();
-            Programa = progra.SeleccionarTodos().element().getId();
+            Programa = listaPrograma.element().getId();
         }
         if (!tipoIden.SeleccionarTodos().isEmpty()) {
             listaIden = tipoIden.SeleccionarTodos();
-            id_TipoCedula = tipoIden.SeleccionarTodos().element().getId_TipoIdentificacion();
+            id_TipoCedula = listaIden.element().getId_TipoIdentificacion();
         }
     }
 
     public void actualizar() throws SNMPExceptions, SQLException {
+        
+        try{
         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
         ProgramaDB prograDB = new ProgramaDB();
         RolUsuarioDB rolDB = new RolUsuarioDB();
@@ -182,7 +217,7 @@ public class ActualizarUsuarioBean implements Serializable {
         if (validaAutoRegistro()) {
             Usuario usu = new Usuario();
             usu.setTipoIdentificacion(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
-            usu.setId(this.getCedula());
+            usu.setId(Integer.parseInt(this.getCedula()));
             usu.setNombre(this.getNombre());
             usu.setApellido1(this.getApellido1());
             usu.setApellido2(this.getApellido2());
@@ -190,7 +225,7 @@ public class ActualizarUsuarioBean implements Serializable {
             Programa progra = new Programa();
             progra = prograDB.SeleccionarPorId(this.getPrograma());
             usu.setCorreo(this.getCorreo());
-            usu.setId_Edita(116390998);
+            usu.setId_Edita(usu.getId());
             usu.setFechaEdita(fecha);
             usuDB.ActualizarUsuario(usu);
             RolUsuario rol1 = rolDB.SeleccionarPorId(2);
@@ -198,149 +233,227 @@ public class ActualizarUsuarioBean implements Serializable {
 
             programaUsuarioDB.actulizar(prousu);
 
-            setMensaje("Actualizado con exito");
+            setMensaje2("<div class='alert alert-success alert-dismissible fade in' > <strong>Exitoso&nbsp;</strong>¡Tus datos han sido actualizados con éxito! </div>" );
 
+        }
+        }catch(Exception e){
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, hubo un error al actualizar el usuario. Por favor, intentelo de nuevo</div>" );
         }
     }
 
     public boolean validaAutoRegistro() {
-        boolean respuesta;
-        if (this.getId_TipoCedula() == 0) {
-            this.setMensaje("*Debe colocar el tipo de identificación.");
-            respuesta = false;
+     boolean respuesta = true;
+        
+        
+        if (this.getId_TipoCedula() == 1) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Debe seleccionar el Tipo de Identificación</div>");
+            return false;
         } else {
-            if (this.getCedula()==0) {
-                this.setMensaje("*Debe colocar la cédula de identificación.");
-                respuesta = false;
-            } else {
-                if (this.getNombre().equals("")) {
-                    this.setMensaje("*Debe colocar el Nombre");
-                    respuesta = false;
-                } else {
-                    if (this.getApellido1().equals("")) {
-                        this.setMensaje("*Debe colocar el Primer Apellido");
-                        respuesta = false;
-                    } else {
-                        if (this.getApellido2().equals("")) {
-                            this.setMensaje("*Debe colocar el Segundo Apellido");
-                            respuesta = false;
-                        } else {
-                            if (this.getFechaNacimiento() == null) {
-                                this.setMensaje("*Debe colocar la fecha de nacimiento");
-                                respuesta = false;
-                            } else {
-                                if (listaDirec.isEmpty()) {
-                                    this.setMensaje("*Debe agregar al menos una dirección");
-                                    respuesta = false;
-                                } else {
-                                    if (this.getCorreo().equals("")) {
-                                        this.setMensaje("*Debe colocar el correo electrónico.");
-                                        respuesta = false;
-                                    } else {
-                                        if (this.getPrograma() == 0) {
-                                            this.setMensaje("*Debe colocar el porgrama al que pertenece");
-                                            respuesta = false;
-                                        } else {
-                                            if (listaTel.isEmpty()) {
-                                                this.setMensaje("*Debe agregar al menos un telefono.");
-                                                respuesta = false;
-                                            } else {
-                                                this.setMensaje("");
-                                                respuesta = true;
-                                            }
-
-                                        }
-                                    }
-                                }
-
-                            }
-
-                        }
-                    }
-                }
+            setMensaje1("");
+        }
+        
+        if (this.getCedula().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Número de Identificación requerida</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        try{
+            Integer.parseInt(getCedula());
+            respuesta = true;
+        }catch(Exception e){
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>´El valor en el campo Cédula no es un dato válido</div>");
+            return false;
+        }
+        
+        if(getId_TipoCedula() == 2){
+            if(getCedula().toString().length()<9 ||getCedula().toString().length()>9){
+                setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>El número de cédula ingresado debe estar en el formato correcto, debe contar con los 9 caracteres </div>");
+                return false;
+            }else{
+                setMensaje1("");
             }
         }
-
+        
+        
+        if (this.getNombre().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Nombre de usuario requerido</div>");
+            return false;
+        } else {  
+            setMensaje1("");
+        }
+        
+    
+        if (this.getApellido1().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Primer apellido requerido</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+                    
+                    
+        if (this.getApellido2().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Segundo apellido requerido</div>");
+            return false;
+        } else {
+            setMensaje1("");                
+        }
+           
+        
+        if (this.getFechaNacimiento() == null) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Fecha de nacimiento requerida</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        
+        if (listaDirec.isEmpty()) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe agregar al menos una dirección</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        
+        if (this.getCorreo().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe ingresar un Correo Electrónico</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        if (listaTel.isEmpty()) {  
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Debe ingresar al menos un Teléfono</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        
+        if (this.getPrograma() == 0) {
+           setMensaje1("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Ups!&nbsp;</strong>Debe seleccionar el Programa SDEAS a ingresar</div>");
+           return false;
+        } else {
+           setMensaje1("");                       
+        }
+        
+        
         return respuesta;
     }
-
+   
     /*Valida campos de numeros*/
     public boolean validarNumero() {
-        boolean respuesta;
+        boolean respuesta = true;
         if (this.getId_TipoTelefono() == 0) {
-            this.setMensaje2("*Debe colocar el tipo de Teléfono.");
-            respuesta = false;
+            setMsjTelefono("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe seleccionar el Tipo de Teléfono</div>");
+            return false;
         } else {
-            if (this.getNumeroTelefono().equals("")) {
-                this.setMensaje2("*Debe colocar el número de teléfono.");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
+            setMsjTelefono("");
         }
+        
+        if (this.getNumeroTelefono().equals("")) {
+            setMsjTelefono("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Ups!&nbsp;</strong>Debe ingresar el número de teléfono</div>");
+            return false;
+        } else {
+            setMsjTelefono("");
+        }
+        
         return respuesta;
     }
 
     /*Valida campos de direcciones*/
     public boolean validarDirecciones() {
-        boolean respuesta;
+        boolean respuesta = true;
         if (this.getId_Provincia() == 0) {
-            this.setMensaje1("*Debe colocar la Provincia.");
-            respuesta = false;
+            setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe seleccionar la Provincia</div>");
+            return false;
         } else {
-            if (this.getId_Canton() == 0) {
-                this.setMensaje1("*Debe colocar la Cantón.");
-                respuesta = false;
-            } else {
-                if (this.getId_Distrito() == 0) {
-                    this.setMensaje1("*Debe colocar la Distrito.");
-                    respuesta = false;
-                } else {
-                    if (this.getId_Barrio() == 0) {
-                        this.setMensaje1("*Debe colocar la Barrio.");
-                        respuesta = false;
-                    } else {
-                        if (this.getOtrasSenas().equals("")) {
-                            this.setMensaje1("*Debe colocar las otras señas.");
-                            respuesta = false;
-                        } else {
-                            respuesta = true;
-                        }
-                    }
-                }
-            }
+            setMsjDireccion("");
         }
+        if (this.getId_Canton() == 0) {
+            setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe seleccionar el Cantón</div>");
+            return false;
+        } else {
+            setMsjDireccion("");
+        }
+        if (this.getId_Distrito() == 0) {
+           setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe seleccionar el Distrito</div>");
+            return false;
+        } else {
+            setMsjDireccion("");
+        }
+        if (this.getId_Barrio() == 0) {
+            setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Debe seleccionar el Barrio</div>");
+            return false;
+        } else {
+            setMsjDireccion("");
+        }
+        
+        if (this.getOtrasSenas().equals("")) {
+            setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Campo otras señas requerido</div>");
+            return false;
+        } else {
+            setMsjDireccion("");
+        }
+            
         return respuesta;
     }
-
+    
     /*Agrega direcciones a la lista*/
     public void agregarDireccones() throws SNMPExceptions, SQLException {
-        Direccion direc = new Direccion();
+        DireccionDB dirDB = new DireccionDB();
         ProvinciaDB pro = new ProvinciaDB();
         CantonDB can = new CantonDB();
         DistritoDB dis = new DistritoDB();
         BarrioDB barr = new BarrioDB();
-        DireccionDB dir = new DireccionDB();
-        UsuarioDB usu = new UsuarioDB();
+        
+        boolean ind = false;
+        if(validarDirecciones()){
+            for (Direccion direccion : listaDirec) {
+                if(direccion.getId_direccion().equals(Id_Direccion)){
+                    direccion.setId_Edita(UsuarioMantenimiento.getId());
+                    direccion.setFechaEdita(fecha);
+                    direccion.setProvincia(pro.SeleccionarPorId(Id_Provincia));
+                    direccion.setCanton(can.SeleccionarPorId(Id_Canton, Id_Provincia));
+                    direccion.setDistrito(dis.SeleccionarPorId(Id_Distrito, Id_Canton, Id_Provincia));
+                    direccion.setBarrio(barr.SeleccionarPorId(Id_Provincia, Id_Canton, Id_Distrito, id_Barrio));
+                    direccion.setOtras_sennas(getOtrasSenas());
+                    ind = true;
+                }
+            }  
 
-        if (validarDirecciones()) {
-            direc.setProvincia(pro.SeleccionarPorId(this.getId_Provincia()));
-            direc.setCanton(can.SeleccionarPorId(this.getId_Canton(), this.getId_Provincia()));
-            direc.setDistrito(dis.SeleccionarPorId(this.getId_Distrito(), this.getId_Canton(), this.getId_Provincia()));
-            direc.setBarrio(barr.SeleccionarPorId(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito(), this.getId_Barrio()));
-            direc.setOtras_sennas(this.getOtrasSenas());
-            direc.setUsuario(usu.SeleccionarPorId(this.getCedula()));
-            dir.registrar(direc);
+            if(ind == false){
+                Direccion dir = new Direccion();
+                dir.setProvincia(pro.SeleccionarPorId(Id_Provincia));
+                dir.setCanton(can.SeleccionarPorId(Id_Canton, Id_Provincia));
+                dir.setDistrito(dis.SeleccionarPorId(Id_Distrito, Id_Canton, Id_Provincia));
+                dir.setBarrio(barr.SeleccionarPorId(Id_Provincia, Id_Canton, Id_Distrito, id_Barrio));
+                dir.setUsuario(UsuarioMantenimiento);
+                dir.setOtras_sennas(OtrasSenas);
+                dir.setId_Registra(UsuarioMantenimiento.getId());
+                dir.setFechaRegistra(fecha);
+                dir.setId_Edita(UsuarioMantenimiento.getId());
+                dir.setFechaEdita(fecha);
+                listaDirec.add(dir);
+            }
             limpiarDireccion();
-        }
-
+       }
     }
 
     /*Elimina Direcciones*/
-    public void eliminarDirecciones(int id_Direc) throws SNMPExceptions, SQLException {
-        DireccionDB direc = new DireccionDB();
-        Direccion direccion = direc.SeleccionarPorId(id_Direc);
-        direc.Actualiza(direccion);
+    public void editarDirecciones(String id_Direc) throws SNMPExceptions, SQLException {
+        for (Direccion d : listaDirec) {
+            if(d.getId_direccion().equals(id_Direc)){
+                    setId_Direccion(Integer.parseInt(d.getId_direccion()));
+                    setId_Provincia(d.getProvincia().getId_Provincia());
+                    setId_Canton(d.getCanton().getId_Canton());
+                    setId_Distrito(d.getDistrito().getId_Distrito());
+                    setId_Barrio(d.getBarrio().getId_Barrio());
+                    setOtrasSenas(d.getOtras_sennas());
+            }
+        }
     }
 
     /*Limpia los campos de Direccion*/
@@ -354,15 +467,33 @@ public class ActualizarUsuarioBean implements Serializable {
 
     /*Agrega telefonos a la lista */
     public void agregarTelefonos() throws SNMPExceptions, SQLException {
-        UsuarioDB usu = new UsuarioDB();
-        TipoTelefonoDB telefo = new TipoTelefonoDB();
-        if (validarNumero()) {
-            TelefonoDB telDb = new TelefonoDB();
-            Telefono tel = new Telefono();
-            tel.setId_TipoTelefono(telefo.SeleccionarPorId(this.getId_TipoTelefono()));
-            tel.setNumero(this.getNumeroTelefono());
-            tel.setId_Usuario(usu.SeleccionarPorId(this.getCedula()));
-            telDb.registrar(tel);
+        TipoTelefonoDB tel = new TipoTelefonoDB();
+        UsuarioManteDB usuarioDB = new UsuarioManteDB();
+        TelefonoDB telDB = new TelefonoDB();
+        boolean ind = false;
+        if(validarNumero()){
+            for (Telefono telefono : listaTel) {
+                if(telefono.getId_Telefono().equals(getId_Telefono())){
+                    telefono.setId_Edita(UsuarioMantenimiento.getId());
+                    telefono.setFechaEdita(fecha);
+                    telefono.setId_TipoTelefono(tel.SeleccionarPorId(getId_TipoTelefono()));
+                    telefono.setNumero(getNumeroTelefono());
+                    ind = true;
+                }
+            }
+            
+            if(ind == false){
+                Telefono telefono = new Telefono();
+                telefono.setNumero(getNumeroTelefono());
+                telefono.setId_Usuario(UsuarioMantenimiento);
+                telefono.setId_TipoTelefono(new TipoTelefonoDB().SeleccionarPorId(id_TipoTelefono));
+                telefono.setId_Registra(UsuarioMantenimiento.getId());
+                telefono.setFechaRegistra(fecha);
+                telefono.setId_Edita(UsuarioMantenimiento.getId());
+                telefono.setFechaEdita(fecha);
+                listaTel.add(telefono);
+            }
+            
             limpiarTelefono();
         }
     }
@@ -374,17 +505,22 @@ public class ActualizarUsuarioBean implements Serializable {
     }
 
     /*Elimina telefono*/
-    public void eliminarTelefonos(int id_Tel) throws SNMPExceptions, SQLException {
-        TelefonoDB tel = new TelefonoDB();
-        Telefono telefono = tel.SeleccionarPorId(id_Tel);
-        tel.Actualizar(telefono);
+    public void editarTelefonos(int id_Tel) throws SNMPExceptions, SQLException {
+       for(Telefono telefono : listaTel) {
+                if(telefono.getId_Telefono().equals(id_Tel)){
+                    setId_Telefono(telefono.getId_Telefono());
+                    setId_TipoTelefono(telefono.getId_TipoTelefono().getId_Telefono());
+                    setNumeroTelefono(telefono.getNumero());
+                }
+         }
     }
 
-    public int getCedula() {
+    
+    public String getCedula() {
         return cedula;
     }
 
-    public void setCedula(int cedula) {
+    public void setCedula(String cedula) {
         this.cedula = cedula;
     }
 
@@ -412,13 +548,6 @@ public class ActualizarUsuarioBean implements Serializable {
         this.correo = correo;
     }
 
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
 
     public String getMensaje1() {
         return mensaje1;
@@ -548,6 +677,8 @@ public class ActualizarUsuarioBean implements Serializable {
         this.id_TipoCedula = id_TipoCedula;
     }
 
+    
+
     public String getBotonNombre() {
         return botonNombre;
     }
@@ -556,7 +687,7 @@ public class ActualizarUsuarioBean implements Serializable {
         this.botonNombre = botonNombre;
     }
 
-    public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
+        public LinkedList<Provincia> getListaPro() throws SNMPExceptions, SQLException {
         ProvinciaDB pro = new ProvinciaDB();
         return pro.SeleccionarTodos();
     }
@@ -566,8 +697,7 @@ public class ActualizarUsuarioBean implements Serializable {
     }
 
     public LinkedList<Canton> getListaCan() throws SNMPExceptions, SQLException {
-        CantonDB can = new CantonDB();
-        return can.SeleccionarTodos(this.getId_Provincia());
+        return cargarCantonProv(null);
     }
 
     public void setListaCan(LinkedList<Canton> listaCan) {
@@ -575,8 +705,7 @@ public class ActualizarUsuarioBean implements Serializable {
     }
 
     public LinkedList<Distrito> getListaDis() throws SNMPExceptions, SQLException {
-        DistritoDB dis = new DistritoDB();
-        return dis.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton());
+        return cargarDisCan(null);
     }
 
     public void setListaDis(LinkedList<Distrito> listaDis) {
@@ -584,14 +713,13 @@ public class ActualizarUsuarioBean implements Serializable {
     }
 
     public LinkedList<Barrio> getListaBarrio() throws SNMPExceptions, SQLException {
-        BarrioDB barr = new BarrioDB();
-        return barr.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito());
+        return cargarBarDis(null);
     }
 
     public void setListaBarrio(LinkedList<Barrio> listaBarrio) {
         this.listaBarrio = listaBarrio;
     }
-
+    
     public LinkedList<TipoTelefono> getListaTipoTelefono() {
         return listaTipoTelefono;
     }
@@ -618,7 +746,7 @@ public class ActualizarUsuarioBean implements Serializable {
 
     public LinkedList<Direccion> getListaDirec() throws SNMPExceptions, SQLException {
         DireccionDB dire = new DireccionDB();
-        return dire.SeleccionarPorUsuario(this.getCedula());
+        return dire.SeleccionarPorUsuario(Integer.parseInt(this.getCedula()));
     }
 
     public void setListaDirec(LinkedList<Direccion> listaDirec) {
@@ -627,7 +755,7 @@ public class ActualizarUsuarioBean implements Serializable {
 
     public LinkedList<Telefono> getListaTel() throws SNMPExceptions, SQLException {
         TelefonoDB telDB = new TelefonoDB();
-        return telDB.SeleccionarTodos(this.getCedula());
+        return telDB.SeleccionarTodos(Integer.parseInt(this.getCedula()));
     }
 
     public void setListaTel(LinkedList<Telefono> listaTel) {
@@ -650,4 +778,47 @@ public class ActualizarUsuarioBean implements Serializable {
         this.UsuarioMantenimiento = UsuarioMantenimiento;
     }
 
+    public String getMsjDireccion() {
+        return msjDireccion;
+    }
+
+    public void setMsjDireccion(String msjDireccion) {
+        this.msjDireccion = msjDireccion;
+    }
+
+    public String getMsjTelefono() {
+        return msjTelefono;
+    }
+
+    public void setMsjTelefono(String msjTelefono) {
+        this.msjTelefono = msjTelefono;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getId_Direccion() {
+        return Id_Direccion;
+    }
+
+    public void setId_Direccion(int Id_Direccion) {
+        this.Id_Direccion = Id_Direccion;
+    }
+
+    public String getId_Telefono() {
+        return Id_Telefono;
+    }
+
+    public void setId_Telefono(String Id_Telefono) {
+        this.Id_Telefono = Id_Telefono;
+    }
+    
+    
+    
+    
 }

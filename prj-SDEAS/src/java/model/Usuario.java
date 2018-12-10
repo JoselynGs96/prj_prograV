@@ -32,6 +32,7 @@ public class Usuario {
     Date FechaRegistra;
     int Id_Edita;
     Date FechaEdita;
+    int PrimeraVez;
     
   
     
@@ -212,6 +213,14 @@ public class Usuario {
 
     public void setFechaEdita(Date FechaEdita) {
         this.FechaEdita = FechaEdita;
+    }
+
+    public int getPrimeraVez() {
+        return PrimeraVez;
+    }
+
+    public void setPrimeraVez(int PrimeraVez) {
+        this.PrimeraVez = PrimeraVez;
     }
     
     

@@ -152,6 +152,52 @@ public class ProgramaUsuarioDB {
       }
     
     
+    public  ProgramaUsuario VerificarRol(int idUsu,int idRol) throws SNMPExceptions, 
+            SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      ProgramaDB pro = new ProgramaDB();
+      UsuarioDB usu = new UsuarioDB();
+      RolUsuarioDB rol = new RolUsuarioDB();
+      ProgramaUsuario p = null;
+      
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_Programa, Id_Usuario, Id_RolUsuario, TipoFuncionario, Id_Edita, FechaEdita, Log_Activo from Programa_Usuario WHERE Id_Usuario = " +idUsu+" AND Id_RolUsuario = "+idRol;
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+
+                        Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa"));
+                        Usuario usuario = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
+                        RolUsuario Id_RolUsuario = rol.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
+                        EnumFuncionario TipoFunci = EnumFuncionario.valueOf(rsPA.getString("TipoFuncionario"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
+                        int Log_Activo = rsPA.getInt("Log_Activo");
+                        p = new ProgramaUsuario(Id_Programa, Id_RolUsuario, TipoFunci, Log_Activo==0? "Inactivo":"Activo");
+                        p.setUsuario(usuario);
+                        p.setId_Edita(idEdita);
+                        p.setFechaEdita(fechaEdita);
+                      }
+              
+            rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return p;
+      }
     
     public  LinkedList<Programa> SeleccionarTodosPorId(int id) throws SNMPExceptions, 
             SQLException {
@@ -241,6 +287,47 @@ public class ProgramaUsuarioDB {
           }
          
           return listaProgramaUsuario;
+      }
+    
+    
+    public  LinkedList<UsuarioMante> SeleccionarTodosUsuarioPorPrograma(LinkedList<Programa>  lsP, int idU) throws SNMPExceptions, 
+            SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      ProgramaDB pro = new ProgramaDB();
+      UsuarioManteDB usu = new UsuarioManteDB();
+      RolUsuarioDB rol = new RolUsuarioDB();
+      
+      LinkedList<UsuarioMante> listaUsuario= new LinkedList<UsuarioMante>();
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                for (Programa um : lsP ) {
+                  int id = um.getId();
+                   select = 
+                      "SELECT Id_Usuario from Programa_Usuario WHERE Id_Programa = " +id +"and Id_Usuario !="+idU;
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+
+                        UsuarioMante usua = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
+                        listaUsuario.add(usua);
+                      }
+                 }
+            rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return listaUsuario;
       }
     
     

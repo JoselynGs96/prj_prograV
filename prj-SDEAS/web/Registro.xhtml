@@ -3,13 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      import="java.util.LinkedList">
-
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <meta charset="utf-8"/>
-        <title>SDEAS - Registrate</title>
+        <title>SDEAS - AutoRegistro</title>
         <!-- Mobile Specific Meta -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <!-- Custom Fonts -->       
@@ -24,7 +22,7 @@
         <link href="../Recursos/css/jquery.fancybox.css" rel="stylesheet" type="text/css"/>      
         <!-- Custom stylesheet -->      
         <link href="../Recursos/css/custom.css" rel="stylesheet" type="text/css"/>
-
+        
         <link href="Recursos/css/menu.css" rel="stylesheet" type="text/css"/>
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -70,12 +68,14 @@
         </script>
     </h:head>
     <h:body>
-        <h:form prependId="false">
 
+
+
+        <h:form prependId="false">
             <div id="myNav" class="overlay" style="z-index: 10000">
 
                 <!-- Button to close the overlay navigation -->
-                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <a href="#" class="closebtn" onclick="closeNav()">&times;</a>
 
                 <!-- Overlay content -->
                 <div class="overlay-content">
@@ -86,28 +86,42 @@
                 </div>
 
             </div>
-
-
-            <!-- Preloader -->
-            <div id="loading">
-                <div id="loading-center">
-                    <div id="loading-center-absolute">
-                        <div class="object"></div>
-                        <div class="object"></div>
-                        <div class="object"></div>
-                        <div class="object"></div>
-                        <div class="object"></div>
-                        <div class="object"></div>
-                        <div class="object"></div>
-                        <div class="object"></div>
-                        <div class="object"></div>
-                        <div class="object"></div>
-                    </div>
-                </div>
-            </div>
-            <!--End off Preloader -->
-
-            <!--   Header  -->
+            
+            
+            <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
+                <p:scrollPanel mode="native" style="width:90%;height:100%; border:0px; margin-bottom: 50px" > 
+                    <div style="margin-left: 10px; padding-left: 5px">
+                    <h1 style="font-weight:normal">Ayuda</h1>          
+                    <br></br>
+                    <strong>¿Desea Registar sus datos? </strong>
+                    <br></br>  
+                    Llene todos los datos del formulario.
+                    Luego,Clic sobre el  <br></br> botón &#8594;
+                    <img src="Recursos/images/botonregistarrse.JPG" style="width:80px ;height:60px" alt=""/>
+                    <br></br>
+                    <strong>¿Desea agregar direcciones? </strong>
+                    <br></br>
+                    Llene los datos Provincia,Distrito,Cantón, Barrio y otras señas.
+                    Luego, clic sobre el  <br></br> botón &#8594;
+                    <img src="Recursos/images/btnAgregaDir.PNG" style="width:80px ;height:60px" alt=""/>
+                    <br></br>
+                    <br></br>
+                    <strong>¿Desea agregar Telefonos? </strong>
+                    <br></br>  
+                    Llene los datos Tipo Telefono y el número.
+                    Luego,Clic sobre el  <br></br> botón &#8594;
+                    <img src="Recursos/images/btnAgregaTel.PNG" style="width:80px ;height:60px" alt=""/>
+                    <br></br>
+                    <br></br>
+                    
+                    <br></br>
+                    </div> 
+                    <div style="margin-bottom: 30px; height: 50px"></div>
+                </p:scrollPanel>
+            </p:sidebar>
+           
+            
+            <!-- Header -->
             <header>
                 <!-- Top Navbar -->
                 <div class="top_nav">
@@ -115,7 +129,7 @@
                         <ul class="list-inline info">
                             <li><a href="#"><span class="fa fa-phone"></span> (506) 2435-5000</a></li>
                             <li><a href="#"><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
-                            <li><a href="#"><span class="fa fa-clock-o"></span> Lunes - Domingos 9:00am - 5:00pm</a></li>
+                            <li><a href="#"><span class="fa fa-clock-o"></span> Lunes - Sabado 9:00am - 5:00pm</a></li>
                         </ul>
                         <ul class="list-inline social_icon">
                             <li><a href=""><span class="fa fa-facebook"></span></a></li>
@@ -158,74 +172,43 @@
                         <!-- Navigation -->
                         <div class="collapse navbar-collapse" id="navbar-menu">
                             <ul class="nav navbar-nav menu">
-                                <li><a href="faces/index.xhtml">Inicio</a></li>                                 
-                                <li><a href="faces/Registro.xhtml">Registrar</a></li>
-                                <li><a href="face/InicioSesion.xhtml">Iniciar Sesión</a></li>
+                                <li><a href="index.xhtml">Inicio</a></li>                                 
+                                <li><a href="Registro.xhtml">Registrar</a></li>
+                                <li><a href="InicioSesion.xhtml">Iniciar Sesión</a></li>
                             </ul>
                         </div>
                     </div>    
                 </nav><!-- Navbar end -->
             </header>
-
+            <!-- Header end -->
+            
             <div class="social">
                 <ul>
-                    <li><a class="icon-ayuda" onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:40px; height:40px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda2.png" alt=""/></a></li>
+                    <li><a class="icon-ayuda" onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 0px; margin-right: 5px" ><img align="right" style="width:40px; height:40px;margin-top: 0px;" src="RecursoMante/img/ayuda2.png" alt=""/></a></li>
 
                 </ul>
             </div>
-
-            <!--    Ayuda   -->
-            <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
-                <p:scrollPanel mode="native" style="width:100%;height:100%; padding: 5px; border:0px; margin-bottom: 50px" > 
-                    <h1 style="font-weight:normal">Ayuda</h1>          
-                    <br></br>
-                    <strong>¿Desea agregar direcciones? </strong>
-                    <br></br>
-                    Llene los datos Provincia,Distrito,Cantón, Barrio y otras señas.
-                    Luego, clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images//btnAgregaDir.PNG" style="width:100px ;height:60px" alt=""/>
-                    <br></br>
-                    <br></br>
-                    <strong>¿Desea agregar Telefonos? </strong>
-                    <br></br>  
-                    Llene los datos Tipo Telefono y el número.
-                    Luego,Clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images//btnAgregaTel.PNG" style="width:100px ;height:60px" alt=""/>
-                    <br></br>
-                    <br></br>
-                    <strong>¿Desea Registrar sus datos? </strong>
-                    <br></br>  
-                    Llene todos los campod del formulario.
-                    Luego,Clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images//botonregistarrse.JPG" style="width:100px ;height:60px" alt=""/>
-                    <br></br>
-                    <br></br>
-
-                    <div style="margin-bottom: 30px; height: 50px"></div>
-                </p:scrollPanel>
-            </p:sidebar>
-            <!--    Fin Ayuda   -->
-
-
-
+            
             <div class="container-fluid" style="margin-bottom: 100px">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8" style="background:white; align-content: center">
 
-                    <h1  id="per" style="margin-top: 20px; color: #222533" >Registro</h1>
+                    <h1  id="per" style="margin-top: 20px; color: #222533" >AutoRegistro</h1>
                     <p>Por favor, rellene este formulario para solicitar una cuenta para el acceso al sistema <br></br>Los campos con un (*) son requeridos</p>
                     <hr style="color:#787774; "></hr>
                     <!--    Info Personal   -->
-                    <div class="panel panel-default" style="margin-top: 40px">
+                    <h:outputLabel value="#{registrarBean.mensaje1}" escape="false" style="width: 100%"></h:outputLabel>
+                    <h:outputLabel value="#{registrarBean.mensaje2}" escape="false" style="width: 100%"></h:outputLabel>
+                    
+                    <div class="panel panel-default" style="margin-top: 20px">
                         <div class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
                             <center>  <h2>Personal 
-                                    <a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:30px; height:30px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a>
+                                    <a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px"><img align="right" style="width:30px; margin-right: 5px; height:30px; margin-top: 0px; margin-bottom: 10px;" src="RecursoMante/img/ir.png" alt=""/></a>
                                 </h2>
                             </center>
                         </div>
 
                         <div class="panel-body">
-                            <h:outputText style="color: green;" value="#{registrarBean.mensaje}"></h:outputText>
                             <center>
                                 <table style="width: 90%; margin-right: 5%; margin-left: 5%">
                                     <tr>
@@ -266,15 +249,17 @@
                                             <h:inputText class="form-control"  style="width: 194px;float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.apellido2}" label="apellido2" id="apellido2"/>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="height: 40px">
 
-                                        <td>
-                                            <h:outputText value="Fecha de nacimiento: " style="margin-top: 5px" />
+                                        <td >
+                                            <h:outputText value="Fecha de nacimiento: *" style="margin-top: 5px" />
                                         </td>
                                         <td>
-                                            <p:calendar locale="es" style="width: 200px;float: left; margin-top: 5px; margin-left: 10px " value="#{registrarBean.fechaNacimiento}"  pattern="dd-MM-yyyy" mask="true" label="ca margin-left: 5pxlendario" id="calendario"/>
+                                            <p:calendar id="fe"  onchange="submit()" style=" margin-top: 5px; margin-left: 10px" 
+                                                        value="#{registrarBean.fechaNacimiento}" effect="fold" locale="es" 
+                                            navigator="true" showOtherMonths="true"  pattern="dd-MM-yyyy" mask="true"  
+                                            maxdate="31-12-2013" mindate="01-01-1918"></p:calendar>
                                         </td>
-
                                     </tr>
                                 </table>
                             </center>
@@ -333,12 +318,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">  
-                                            <h:outputText style="color: red;" value="#{registrarBean.mensaje1}"></h:outputText>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <center>
+                                            <h:outputLabel value="#{registrarBean.msjDireccion}" escape="false" style="width: 100%"></h:outputLabel>
+                                            <br></br>
                                             <td colspan="2">  <h:commandButton action="#{registrarBean.agregarDireccones()}" style="background-color:#C0BFB5;border-color: #C0BFB5; margin-top: 20px;" 
                                                                                class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
                                             </td> 
@@ -384,7 +366,7 @@
                                                     <f:facet name="header">
                                                         <h:outputText value=""/>
                                                     </f:facet>
-                                                    <h:commandButton  action="#{registrarBean.eliminarDirecciones(direc.id_direccion)}" class="btn btn-warning btn-xs" style="width: 40px; height: 30px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
+                                                    <h:commandButton  action="#{registrarBean.eliminarDirecciones(direc.otras_sennas)}" class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="Recursos/images/eliminar.png"> </h:commandButton>
                                                 </h:column>
                                             </h:dataTable>
                                         </td>
@@ -418,12 +400,9 @@
                                         <td> <h:inputText  style="float: left; margin-top: 5px; margin-left: 190px; width: 300px " id="numero" value="#{registrarBean.numeroTelefono}"  class="form-inline form-control" ></h:inputText>   </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">  
-                                            <h:outputText style="color: red;" value="#{registrarBean.mensaje2}"></h:outputText>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td colspan="2">
+                                            <h:outputLabel value="#{registrarBean.msjTelefono}" escape="false" style="width: 100%"></h:outputLabel>
+                                            <br></br>
                                             <h:commandButton action="#{registrarBean.agregarTelefonos()}" style="background-color:#C0BFB5;;border-color:#C0BFB5;; margin-top: 20px;" 
                                                              class="btn btn-primary btn-lg" value="Agregar Telefono"></h:commandButton>
 
@@ -449,7 +428,7 @@
                                                     <f:facet name="header">
                                                         <h:outputText value=""/>
                                                     </f:facet>
-                                                    <h:commandButton  actionListener="#{registrarBean.eliminarTelefonos(tell.id_Telefono)}" class="btn btn-warning btn-xs" style="width: 35px; height:35px" image="Recursos/images/icons8-eliminar-50.png"> </h:commandButton>
+                                                    <h:commandButton  action="#{registrarBean.eliminarTelefono(tell.numero)}" class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="Recursos/images/eliminar.png"> </h:commandButton>
                                                 </h:column>
                                             </h:dataTable>
 
@@ -480,28 +459,24 @@
                                                 <f:selectItems var="rol" value="#{registrarBean.EnumFuncionario()}"></f:selectItems>
                                             </h:selectOneMenu> </td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="2">  
-                                            <h:outputText style="color: red;" value="#{registrarBean.mensaje2}"></h:outputText>
-                                        </td>
-                                    </tr>
                                 </table>
                             </center>
                         </div>
                     </div>
                     <br></br>
-                    <center>
-                        <h:commandButton action="#{registrarBean.ingresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
-                                         class="btn btn-primary btn-lg" value="Registrar" ></h:commandButton><br></br>
-                        <h:outputText style="color: red;" value="#{registrarBean.mensaje}"></h:outputText>
-                    </center>
+                    <div style="margin-left: 300px">
+                        <div style="float: left">
+                            <h:commandButton action="#{registrarBean.limpiar()}" style="background-color:#C0BFB5;;border-color:#C0BFB5;" 
+                                                             class="btn btn-primary btn-lg" value="Cancelar"></h:commandButton>
+
+                        </div>    
+                        <div style="display: inline-block; margin-left: 10px;">
+                        <h:commandButton actionListener="#{registrarBean.ingresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                                         class="btn btn-primary btn-lg" value="Registrar" ></h:commandButton>
+                        </div> 
+                    </div>
                 </div>
             </div>
-
-
-
-
-
             <!-- Footer -->
             <footer>
                 <!-- Footer top -->
@@ -544,21 +519,6 @@
             </footer>
             <!-- Footer end -->
 
-            <!-- JavaScript -->   
-
-            <script src="../Recursos/js/bootstrap.min.js" type="text/javascript"></script>
-            <script src="Recursos/js/jquery-1.12.1.min.js" type="text/javascript"></script>
-            <!-- Bootsnav js -->       
-            <script src="../Recursos/js/bootsnav.js" type="text/javascript"></script>
-
-            <!-- JS Implementing Plugins -->
-            <script src="../Recursos/js/isotope.js" type="text/javascript"></script>
-            <script src="../Recursos/js/isotope-active.js" type="text/javascript"></script>
-            <script src="../Recursos/js/jquery.fancybox.js" type="text/javascript"></script>
-
-            <script src="../Recursos/js/jquery.scrollUp.min.js" type="text/javascript"></script>
-            <script src="../Recursos/js/main.js" type="text/javascript"></script>
-
-        </h:form>   
-    </h:body>
+        </h:form>
+    </h:body>	
 </html>

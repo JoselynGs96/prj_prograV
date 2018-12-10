@@ -5,11 +5,15 @@
  */
 package controller;
 
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import javax.faces.component.behavior.AjaxBehavior;
@@ -22,6 +26,7 @@ import model.DireccionDB;
 import model.Distrito;
 import model.DistritoDB;
 import model.EnumFuncionario;
+import model.EstadoAccesoDB;
 import model.Programa;
 import model.ProgramaDB;
 import model.ProgramaUsuario;
@@ -38,6 +43,8 @@ import model.TipoTelefono;
 import model.TipoTelefonoDB;
 import model.Usuario;
 import model.UsuarioDB;
+import model.UsuarioMante;
+import model.UsuarioManteDB;
 
 /**
  *
@@ -47,13 +54,14 @@ import model.UsuarioDB;
 @SessionScoped
 public class registrarBean implements Serializable {
 
-    int cedula;
+    String cedula;
     TipoIdentificacion TipoIden;
     Date fechaNacimiento;
     String correo;
-    String mensaje;
     String mensaje1;
     String mensaje2;
+    String msjDireccion;
+    String msjTelefono;
     String nombre;
     String apellido1;
     String apellido2;
@@ -61,7 +69,7 @@ public class registrarBean implements Serializable {
     String NumeroTelefono;
     int Programa;
     String OtrasSenas;
-    int edad;
+    String edad;
     private int Id_Provincia = 0;
     private int Id_Canton = 0;
     private int Id_Distrito = 0;
@@ -81,7 +89,7 @@ public class registrarBean implements Serializable {
     EnumFuncionario funcionario;
     Usuario UsuarioMantenimiento = new Usuario();
     Date fecha = new Date();
-
+    UsuarioMante usuario = null; 
     public EnumFuncionario[] EnumFuncionario() {
         return EnumFuncionario.values();
     }
@@ -90,6 +98,7 @@ public class registrarBean implements Serializable {
      * Creates a new instance of RegistroBean
      */
     public registrarBean() throws SNMPExceptions, SQLException {
+        
         llenarCombos();
     }
 
@@ -153,113 +162,165 @@ public class registrarBean implements Serializable {
         return barr.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito());
     }
 
-    public boolean validaAutoRegistro() {
-        boolean respuesta;
-        if (this.getId_TipoCedula() == 0) {
-            this.setMensaje("*Debe colocar el tipo de identificación.");
-            respuesta = false;
+    public boolean validaAutoRegistro() throws SNMPExceptions, SQLException {
+        boolean respuesta = true;
+        
+        
+        if (this.getId_TipoCedula() == 1) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Debe seleccionar el Tipo de Identificación</div>");
+            return false;
         } else {
-            if (this.getCedula() == 0) {
-                this.setMensaje("*Debe colocar la cédula de identificación.");
-                respuesta = false;
-            } else {
-                if (this.getNombre().equals("")) {
-                    this.setMensaje("*Debe colocar el Nombre");
-                    respuesta = false;
-                } else {
-                    if (this.getApellido1().equals("")) {
-                        this.setMensaje("*Debe colocar el Primer Apellido");
-                        respuesta = false;
-                    } else {
-                        if (this.getApellido2().equals("")) {
-                            this.setMensaje("*Debe colocar el Segundo Apellido");
-                            respuesta = false;
-                        } else {
-                            if (this.getFechaNacimiento() == null) {
-                                this.setMensaje("*Debe colocar la fecha de nacimiento");
-                                respuesta = false;
-                            } else {
-                                if (listaDirec.isEmpty()) {
-                                    this.setMensaje("*Debe agregar al menos una dirección");
-                                    respuesta = false;
-                                } else {
-                                    if (this.getCorreo().equals("")) {
-                                        this.setMensaje("*Debe colocar el correo electrónico.");
-                                        respuesta = false;
-                                    } else {
-                                        if (this.getPrograma() == 0) {
-                                            this.setMensaje("*Debe colocar el porgrama al que pertenece");
-                                            respuesta = false;
-                                        } else {
-                                            if (listaTel.isEmpty()) {
-                                                this.setMensaje("*Debe agregar al menos un telefono.");
-                                                respuesta = false;
-                                            } else {
-                                                this.setMensaje("");
-                                                respuesta = true;
-                                            }
-
-                                        }
-                                    }
-                                }
-
-                            }
-
-                        }
-                    }
-                }
+            setMensaje1("");
+        }
+        
+        if (this.getCedula().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Número de Identificación requerida</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        try{
+            Integer.parseInt(getCedula());
+            respuesta = true;
+        }catch(Exception e){
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>´El valor en el campo Cédula no es un dato válido</div>");
+            return false;
+        }
+        
+        if(getId_TipoCedula() == 2){
+            if(getCedula().toString().length()<9 ||getCedula().toString().length()>9){
+                setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>El número de cédula ingresado debe estar en el formato correcto, debe contar con los 9 caracteres </div>");
+                return false;
+            }else{
+                setMensaje1("");
             }
         }
-
+        
+        
+        if (this.getNombre().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Nombre de usuario requerido</div>");
+            return false;
+        } else {  
+            setMensaje1("");
+        }
+        
+    
+        if (this.getApellido1().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Primer apellido requerido</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+                    
+                    
+        if (this.getApellido2().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Segundo apellido requerido</div>");
+            return false;
+        } else {
+            setMensaje1("");                
+        }
+           
+        
+        if (this.getFechaNacimiento() == null) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Fecha de nacimiento requerida</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        
+        if (listaDirec.isEmpty()) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe agregar al menos una dirección</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        
+        if (this.getCorreo().equals("")) {
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe ingresar un Correo Electrónico</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        if (listaTel.isEmpty()) {  
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Debe ingresar al menos un Teléfono</div>");
+            return false;
+        } else {
+            setMensaje1("");
+        }
+        
+        
+        if (this.getPrograma() == 0) {
+           setMensaje1("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Ups!&nbsp;</strong>Debe seleccionar el Programa SDEAS a ingresar</div>");
+           return false;
+        } else {
+           setMensaje1("");                       
+        }
+        
+        
         return respuesta;
     }
 
+   
+    
     /*Valida campos de numeros*/
     public boolean validarNumero() {
-        boolean respuesta;
+        boolean respuesta = true;
         if (this.getId_TipoTelefono() == 0) {
-            this.setMensaje2("*Debe colocar el tipo de Teléfono.");
-            respuesta = false;
+            setMsjTelefono("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe seleccionar el Tipo de Teléfono</div>");
+            return false;
         } else {
-            if (this.getNumeroTelefono().equals("")) {
-                this.setMensaje2("*Debe colocar el número de teléfono.");
-                respuesta = false;
-            } else {
-                respuesta = true;
-            }
+            setMsjTelefono("");
         }
+        
+        if (this.getNumeroTelefono().equals("")) {
+            setMsjTelefono("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Ups!&nbsp;</strong>Debe ingresar el número de teléfono</div>");
+            return false;
+        } else {
+            setMsjTelefono("");
+        }
+        
         return respuesta;
     }
 
     /*Valida campos de direcciones*/
     public boolean validarDirecciones() {
-        boolean respuesta;
+        boolean respuesta = true;
         if (this.getId_Provincia() == 0) {
-            this.setMensaje1("*Debe colocar la Provincia.");
-            respuesta = false;
+            setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe seleccionar la Provincia</div>");
+            return false;
         } else {
-            if (this.getId_Canton() == 0) {
-                this.setMensaje1("*Debe colocar el Cantón.");
-                respuesta = false;
-            } else {
-                if (this.getId_Distrito() == 0) {
-                    this.setMensaje1("*Debe colocar el Distrito.");
-                    respuesta = false;
-                } else {
-                    if (this.getId_Barrio() == 0) {
-                        this.setMensaje1("*Debe colocar el Barrio.");
-                        respuesta = false;
-                    } else {
-                        if (this.getOtrasSenas().equals("")) {
-                            this.setMensaje1("*Debe colocar otras señas.");
-                            respuesta = false;
-                        } else {
-                            respuesta = true;
-                        }
-                    }
-                }
-            }
+            setMsjDireccion("");
         }
+        if (this.getId_Canton() == 0) {
+            setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe seleccionar el Cantón</div>");
+            return false;
+        } else {
+            setMsjDireccion("");
+        }
+        if (this.getId_Distrito() == 0) {
+           setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Debe seleccionar el Distrito</div>");
+            return false;
+        } else {
+            setMsjDireccion("");
+        }
+        if (this.getId_Barrio() == 0) {
+            setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Debe seleccionar el Barrio</div>");
+            return false;
+        } else {
+            setMsjDireccion("");
+        }
+        
+        if (this.getOtrasSenas().equals("")) {
+            setMsjDireccion("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Campo otras señas requerido</div>");
+            return false;
+        } else {
+            setMsjDireccion("");
+        }
+            
         return respuesta;
     }
 
@@ -292,7 +353,6 @@ public class registrarBean implements Serializable {
         for (Direccion dir : listaDirec) {
 
             if (dir.getOtras_sennas().equals(otras)) {
-
                 listaDirec.remove(dir);
             }
 
@@ -306,6 +366,7 @@ public class registrarBean implements Serializable {
         this.setId_Canton(0);
         this.setId_Distrito(0);
         this.setOtrasSenas("");
+        setMsjDireccion("");
     }
 
     /*Agrega telefonos a la lista */
@@ -329,6 +390,7 @@ public class registrarBean implements Serializable {
     public void limpiarTelefono() {
         this.setNumeroTelefono("");
         this.setId_TipoTelefono(0);
+        setMsjTelefono("");
     }
 
     /*Elimina telefono*/
@@ -345,6 +407,7 @@ public class registrarBean implements Serializable {
 
     /*Registra el usuario*/
     public void ingresarUsuario() throws SNMPExceptions, SQLException {
+        try{
         TipoIdentificacionDB tipoidenDB = new TipoIdentificacionDB();
         ProgramaDB prograDB = new ProgramaDB();
         RolUsuarioDB rolDB = new RolUsuarioDB();
@@ -352,29 +415,44 @@ public class registrarBean implements Serializable {
         DireccionDB direcDB = new DireccionDB();
         TelefonoDB telDB = new TelefonoDB();
         ProgramaUsuarioDB programaUsuarioDB = new ProgramaUsuarioDB();
-
+        Usuario u = null;
+        u = usuDB.UsuarioExistente(Integer.parseInt(getCedula()));
         if (validaAutoRegistro()) {
+            if(u!=null){
+                setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Ya existe un usuario registrado con el número de cédula proporcionado</div>");
+                return;
+            }else{
+            setMensaje1("");
             Usuario usu = new Usuario();
             usu.setTipoIdentificacion(tipoidenDB.SeleccionarPorId(this.getId_TipoCedula()));
-            usu.setId(this.getCedula());
+            usu.setId(Integer.parseInt(this.getCedula()));
             usu.setNombre(this.getNombre());
             usu.setApellido1(this.getApellido1());
             usu.setApellido2(this.getApellido2());
             usu.setFechaNacimiento(this.getFechaNacimiento());
-            usu.setId_Registra(116390998);
+            usu.setId_Registra(Integer.parseInt(getCedula()));
             usu.setFechaRegistra(fecha);
-            usu.setId_Edita(116390998);
+            usu.setId_Edita(Integer.parseInt(getCedula()));
             usu.setFechaEdita(fecha);
             usu.setCorreo(this.getCorreo());
+            usu.setPrimeraVez(1);
             usuDB.registrar(usu);
 
             /*agregar telefono*/
             for (Telefono tel : listaTel) {
                 tel.setId_Usuario(usu);
+                tel.setId_Registra(Integer.parseInt(getCedula()));
+                tel.setFechaRegistra(fecha);
+                tel.setId_Edita(Integer.parseInt(getCedula()));
+                tel.setFechaEdita(fecha);
                 telDB.registrar(tel);
             }
             /*agregar direcciones*/
             for (Direccion dir : listaDirec) {
+                dir.setId_Registra(Integer.parseInt(getCedula()));
+                dir.setFechaRegistra(fecha);
+                dir.setId_Edita(Integer.parseInt(getCedula()));
+                dir.setFechaEdita(fecha);
                 dir.setUsuario(usu);
                 direcDB.registrar(dir);
             }
@@ -384,17 +462,55 @@ public class registrarBean implements Serializable {
             RolUsuario rol1 = rolDB.SeleccionarPorId(3);
 
             /*Agrega programa_usuario*/
-            ProgramaUsuario prousu = new ProgramaUsuario(usu, progra, rol1, this.getFuncionario(), "1");
-            prousu.setId_Registra(116390998);
+            ProgramaUsuario prousu = new ProgramaUsuario();
+            prousu.setPrograma(progra);
+            prousu.setUsuario(usu);
+            prousu.setRolUsuario(rol1);
+            prousu.setFuncionario(getFuncionario());
+            prousu.setId_Registra(Integer.parseInt(getCedula()));
             prousu.setFechaEdita(fecha);
-            prousu.setId_Edita(116390998);
+            prousu.setId_Edita(Integer.parseInt(getCedula()));
             prousu.setFechaRegistra(fecha);
+            prousu.setEstado("Activo");
             programaUsuarioDB.registrar(prousu);
-
-            setMensaje("Su solicitud de registro ha sido enviada. Se le enviará un correo con el código de acceso y su contraseña al correo proporcionado cuando el Coordinador acepte la solicitud");
+            setMensaje2("<div class='alert alert-success alert-dismissible fade in' > <strong>Exitoso&nbsp;</strong>¡Estas un paso más cerca de ser parte de SDEAS!\n  Su AutoRegistro ha sido enviado al Coordinador del Programa seleccionado. \n  Se le enviará el estado de su solicitud al correo proporcionado. </div>" );
+        }
+        }
+    }catch(Exception e){
+            setMensaje1("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, hubo un error al registrar el usuario. Por favor, intentelo de nuevo</div>" );
         }
     }
+    
+    
 
+    public void limpiar(){
+        setTipoIden(null);
+        setCedula("");
+        setNombre("");
+        setApellido1("");
+        setApellido2("");
+        setFechaNacimiento(null);
+        setId_Provincia(0);
+        setId_Canton(0);
+        setId_Distrito(0);
+        setId_Barrio(0);
+        setOtrasSenas("");
+        listaDirec.clear();
+        setCorreo("");
+        setId_TipoTelefono(1);
+        setNumeroTelefono("");
+        listaTel.clear();
+        setPrograma(0);
+        setFuncionario(EnumFuncionario.Docente);
+        setMensaje1("");
+        setMensaje2("");
+        setMsjDireccion("");
+        setMsjTelefono("");
+        setId_TipoCedula(1);
+        
+    }
+    
+    
     public LinkedList<TipoTelefono> getListaTipoTelefono() {
 
         return listaTipoTelefono;
@@ -404,11 +520,11 @@ public class registrarBean implements Serializable {
         this.listaTipoTelefono = listaTipoTelefono;
     }
 
-    public int getCedula() {
+    public String getCedula() {
         return cedula;
     }
 
-    public void setCedula(int cedula) {
+    public void setCedula(String cedula) {
         this.cedula = cedula;
     }
 
@@ -421,6 +537,7 @@ public class registrarBean implements Serializable {
     }
 
     public Date getFechaNacimiento() {
+        getEdad();
         return fechaNacimiento;
     }
 
@@ -436,13 +553,6 @@ public class registrarBean implements Serializable {
         this.correo = correo;
     }
 
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
 
     public int getId_TipoTelefono() {
         return id_TipoTelefono;
@@ -508,11 +618,11 @@ public class registrarBean implements Serializable {
         this.OtrasSenas = OtrasSenas;
     }
 
-    public int getEdad() {
+    public String getEdad() {
         return edad;
     }
 
-    public void setEdad(int edad) {
+    public void setEdad(String edad) {
         this.edad = edad;
     }
 
@@ -660,4 +770,40 @@ public class registrarBean implements Serializable {
     public void setUsuarioMantenimiento(Usuario UsuarioMantenimiento) {
         this.UsuarioMantenimiento = UsuarioMantenimiento;
     }
+
+    public String getMsjDireccion() {
+        return msjDireccion;
+    }
+
+    public void setMsjDireccion(String msjDireccion) {
+        this.msjDireccion = msjDireccion;
+    }
+
+    public String getMsjTelefono() {
+        return msjTelefono;
+    }
+
+    public void setMsjTelefono(String msjTelefono) {
+        this.msjTelefono = msjTelefono;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+  
+
+    public UsuarioMante getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioMante usuario) {
+        this.usuario = usuario;
+    }
+    
+    
 }

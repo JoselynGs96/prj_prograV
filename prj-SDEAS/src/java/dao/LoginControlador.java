@@ -58,7 +58,7 @@ public class LoginControlador implements Serializable {
 
     public void autenticar() {
         try {
-            Usuario1 = UsuarioDB.InicioSeccion(this.getId_Usuario(), this.getContrasenna(), this.TpoUsuario);
+            Usuario1 = UsuarioDB.InicioSeccion( Integer.parseInt(this.getId_Usuario()), this.getContrasenna());
 
             if (Usuario1 != null) {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", Id_Usuario);

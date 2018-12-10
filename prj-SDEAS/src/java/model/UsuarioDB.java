@@ -132,7 +132,64 @@ public class UsuarioDB {
 
         return usu;
     }
+    
+    public  Usuario UsuarioExistente(int id) throws SNMPExceptions, SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      Usuario usuario = null;
+      TipoIdentificacionDB tipoIdentificacion = new TipoIdentificacionDB();
+      EstadoAccesoDB estadoAcceso = new EstadoAccesoDB();
+          
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, PrimeraVez, Log_Activo from Usuario WHERE Id_Usuario = " +id;
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
 
+                        int Id = rsPA.getInt("Id_Usuario");
+                        TipoIdentificacion TipoIdentificacion = tipoIdentificacion.SeleccionarPorId(rsPA.getInt("Id_TipoIdentificacion"));
+                        String Nombre = rsPA.getString("Nombre");
+                        String Apellido1 = rsPA.getString("Apellido1");
+                        String Apellido2 = rsPA.getString("Apellido2");
+                        Date FechaNacimiento = rsPA.getDate("FechaNacimiento");
+                        String Correo = rsPA.getString("Correo");
+                        EstadoAcceso EstadoAcceso = estadoAcceso.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
+                        int idEdita = rsPA.getInt("Id_Edita");
+                        Date fechaEdita = rsPA.getDate("FechaEdita");
+                        int PrimeraVez = rsPA.getInt("PrimeraVez");
+                        String Log_Activo = rsPA.getInt("Log_Activo") == 1 ? "Activo" : "Inactivo";
+                        usuario = new Usuario();
+                        usuario.setId(Id);
+                        usuario.setTipoIdentificacion(TipoIdentificacion);
+                        usuario.setNombre(Nombre);
+                        usuario.setApellido1(Apellido1);
+                        usuario.setApellido2(Apellido2);
+                        usuario.setFechaNacimiento(FechaNacimiento);
+                        usuario.setCorreo(Correo);
+                        usuario.setEstadoAcceso(EstadoAcceso);
+                        usuario.setPrimeraVez(PrimeraVez);
+                        usuario.setLog_Activo(Log_Activo);
+                      }
+              
+            rsPA.close();
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return usuario;
+      }
+    
     /*REgistra un usuario*/
     public void registrar(Usuario usuario) throws SNMPExceptions, SQLException {
 
@@ -145,7 +202,7 @@ public class UsuarioDB {
             String fecha = formato.format(usuario.getFechaNacimiento());
 //mydate is your date object
 
-            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_EstadoAcceso],Id_Registra,FechaRegistra,Id_Edita,FechaEdita,[Log_Activo]) "
+            strSQL = "INSERT INTO Usuario ([Id_Usuario],[Id_TipoIdentificacion],[Nombre],[Apellido1],[Apellido2],[FechaNacimiento],[Correo],[Id_EstadoAcceso],Id_Registra,FechaRegistra,Id_Edita,FechaEdita,PrimeraVez,[Log_Activo]) "
                     + "values('" 
                     +          usuario.Id 
                     + "', '" + usuario.TipoIdentificacion.getId_TipoIdentificacion() 
@@ -159,7 +216,8 @@ public class UsuarioDB {
                     + "', '" + new java.sql.Date(usuario.getFechaRegistra().getTime()) 
                     + "', '" + usuario.getId_Edita() 
                     + "', '" + new java.sql.Date(usuario.getFechaEdita().getTime()) 
-                    + "', '" + 1 +"')";
+                    + "', '" + usuario.getPrimeraVez()
+                    + "', '" + 0 +"')";
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -206,7 +264,7 @@ public class UsuarioDB {
     }
 
     /*Busca el usuario logeado*/
-    public static Usuario InicioSeccion(String Id_Usuario, String contrasena, String tipoUsuario) throws SNMPExceptions, SQLException {
+    public static Usuario InicioSeccion(int Id_Usuario, String contrasena) throws SNMPExceptions, SQLException {
         String select = "";
         ResultSet rsPA = null;
         Usuario usu = new Usuario();
@@ -214,7 +272,7 @@ public class UsuarioDB {
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
-            select = "select * from Usuario where Id_Usuario = " + Id_Usuario + " and PWDCOMPARE('" + contrasena + "',Contrasenna)=1 and Id_RolUsuario=" + tipoUsuario + " and Id_EstadoAcceso=1";
+            select = "select * from Usuario where Id_Usuario = " + Id_Usuario + " and PWDCOMPARE('" + contrasena + "',Contrasenna)=1 and Id_EstadoAcceso=1";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -225,11 +283,13 @@ public class UsuarioDB {
                 String apellido1 = rsPA.getString("Apellido1");
                 String apellido2 = rsPA.getString("Apellido2");
                 String correo = rsPA.getString("Correo");
+                int PrimeraVez = rsPA.getInt("PrimerzVez");
                 usu = new Usuario();
                 usu.setId(cedula);
                 usu.setNombre(nombre);
                 usu.setApellido1(apellido1);
                 usu.setApellido2(apellido2);
+                usu.setPrimeraVez(PrimeraVez);
 
             }
 

@@ -12,17 +12,17 @@ import java.util.Date;
  * @author Fabi
  */
 public class Direccion {
-    Provincia Provincia;
-    Canton Canton;
-    Distrito Distrito;
-    Barrio Barrio;
-    Usuario usuario;
-    String Otras_sennas;
-    String id_direccion;
-    int Id_Registra;
-    Date FechaRegistra;
-    int Id_Edita;
-    Date FechaEdita;
+    Provincia Provincia = null;
+    Canton Canton = null;
+    Distrito Distrito = null;
+    Barrio Barrio = null;
+    Usuario usuario = null;
+    String Otras_sennas = "";
+    String id_direccion = "";
+    int Id_Registra = 0;
+    Date FechaRegistra = null;
+    int Id_Edita = 0; 
+    Date FechaEdita = null;
 
     public String getId_direccion() {
         return id_direccion;

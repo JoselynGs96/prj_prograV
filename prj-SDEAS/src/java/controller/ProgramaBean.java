@@ -109,7 +109,6 @@ public class ProgramaBean implements Serializable {
                      pr.setFechaRegistra(fecha);
                      pr.setId_Edita(IdEdita);
                      pr.setFechaEdita(fecha);
-                     pr.setFuncionario(EnumFuncionario.Coordinador);
                      pr.setEstado("Activo");
                      prodb.registrar(pr);
                      setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Programa registrado con éxito!</div>" );

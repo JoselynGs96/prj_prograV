@@ -82,8 +82,8 @@ public class UsuarioManteDB {
             }
             
             strSQL = "UPDATE Usuario SET "
-                    + "', [Contrasenna] PWDENCRYPT('"+usuario.getContrasenna()+ "')'"
-                    + "', [CodigoAcceso] ='"+usuario.getCodigo()
+                    + "[Contrasenna] = PWDENCRYPT('"+usuario.getContrasenna()+"')"
+                    + ", [CodigoAcceso] ='"+usuario.getCodigo()
                     + "', [Id_EstadoAcceso] ='"+usuario.EstadoAcceso.getId()
                     + "', [Log_Activo] ='"+estado
                     + "' where [Id_Usuario]= '"+usuario.Id+"';";

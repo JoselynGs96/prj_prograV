@@ -10,5 +10,5 @@ package model;
  * @author Fabi
  */
 public enum EnumFuncionario {
-    Docente, Administrativo, Coordinador
+    Docente, Administrativo
 }

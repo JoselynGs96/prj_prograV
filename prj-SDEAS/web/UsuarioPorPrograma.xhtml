@@ -405,7 +405,7 @@
                                             <td>  <p:calendar id="fe" style=" margin-top: 5px; margin-left: 10px" 
                                             value="#{usuariosPorProgranaBean.fechaNacimiento}" effect="fold" locale="es" 
                                             navigator="true" showOtherMonths="true"  pattern="dd-MM-yyyy" mask="true"  
-                                            yearRange="c-100:c-15">
+                                            maxdate="31-12-2013" mindate="01-01-1918">
                                                         <f:ajax event="change" execute="fe"   ></f:ajax>
                                                 </p:calendar></td>
                                         </tr>

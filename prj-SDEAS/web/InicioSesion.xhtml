@@ -7,7 +7,7 @@
 
     <h:head>
         <meta charset="utf-8"/>
-        <title>SDEAS - Registrate</title>
+        <title>SDEAS - Inicio de Sesión</title>
         <!-- Mobile Specific Meta -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <!-- Custom Fonts -->       
@@ -25,41 +25,11 @@
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <script>
-            PrimeFaces.locales['es'] = {
-                closeText: 'Cerrar',
-                prevText: 'Anterior',
-                nextText: 'Siguiente',
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-                weekHeader: 'Semana',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: '',
-                timeOnlyTitle: 'Sólo hora',
-                timeText: 'Tiempo',
-                hourText: 'Hora',
-                minuteText: 'Minuto',
-                secondText: 'Segundo',
-                currentText: 'Fecha actual',
-                ampm: false,
-                month: 'Mes',
-                week: 'Semana',
-                day: 'Día',
-                allDayText: 'Todo el día'
-            };
-        </script>
-
+        
     </h:head>
     <h:body>
 
-
-
-        <h:form style="background: #fccc0c;" prependId="false">
+        <h:form prependId="false">
             <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
                 <p:scrollPanel mode="native" style="width:100%;height:100%; border:0px; margin-bottom: 50px" > 
                     <h1 style="font-weight:normal">Ayuda</h1>          
@@ -142,7 +112,7 @@
                     </div>    
                 </nav><!-- Navbar end -->
             </header><!-- Header end -->
-            <secion class="contact_form" >
+            <secion class="contact_form container" >
             <div class="col-lg-1"></div>
             <div style="background:white" class="col-lg-offset-3 col-lg-4">      
 
@@ -152,31 +122,71 @@
                           <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px;" ><img align="right" style="width:20px; height:20px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda.png" alt=""/></a>
                     </div>
                     <div class="form-group">Usuario:
-                        <h:inputText  value="#{loginControlador.id_Usuario}"  class="form-control text-center" ></h:inputText>
+                        <h:inputText  value="#{inicioSesionBean.cedula}" class="form-control text-center" ></h:inputText>
                     </div> 
                     <div class="form-group">Contraseña:
-                        <h:inputText value="#{loginControlador.contrasenna}" class="form-control text-center  "></h:inputText>
+                        <h:inputSecret value="#{inicioSesionBean.contrasenna}" class="form-control text-center  " ></h:inputSecret>
                     </div>    
                     <div  class="form-group">Tipo de Perfil:<br></br>
-                        <h:selectOneMenu  class="form-control" value="#{loginControlador.tpoUsuario}" style="width:150px">
-                            <f:selectItems var="tipusu" value="#{loginControlador.listaRolUsuario}" itemLabel="#{tipusu.dsc_RolUsuario}" itemValue="#{tipusu.id_RolUsuario}"></f:selectItems>
+                        <h:selectOneMenu  class="form-control" value="#{inicioSesionBean.id_rol}" style="width:150px">
+                            <f:selectItems var="tipusu" value="#{inicioSesionBean.listaRolUsuario}" itemLabel="#{tipusu.dsc_RolUsuario}" itemValue="#{tipusu.id_RolUsuario}"></f:selectItems>
                         </h:selectOneMenu>                   
                     </div>
-                    <h:commandButton actionListener="#{loginControlador.autenticar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
+                    <br></br>
+                    <h:commandButton actionListener="#{inicioSesionBean.validaUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c" 
                                      class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
                     <br></br> <br></br>
-                    <h:outputText style="color: red" value="#{loginControlador.mensaje}"></h:outputText>
+                    <h:outputLabel value="#{inicioSesionBean.msjError}" escape="false"></h:outputLabel>
                     <br></br> <br></br>
                     <span>No tienes cuenta? Registrate </span><a href="Registro.xhtml" style="color: blue;" class="link">aquí</a>
                 </center>
 
             </div>
-                </secion>
+            </secion>
           
+        <!-- Footer -->
+        <footer>
+            <!-- Footer top -->
+            <div class="container footer_top">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6">
+                        <div class="footer_item">
+                            <h4>Acerca de:</h4>
+                            <img class="logo" src="../Recursos/images/logo.png" alt="Construction" />
+                            <p>Sistema de información, para automatizar el proceso de planificación y uso de la infraestructura de la Dirección de Extensión y Acción Social (DEAS) Universidad Técnica Nacional</p>
 
+                            <ul class="list-inline footer_social_icon">
+                                <li><a href=""><span class="fa fa-facebook"></span></a></li>
+                                <li><a href=""><span class="fa fa-twitter"></span></a></li>
+                                <li><a href=""><span class="fa fa-youtube"></span></a></li>
+                                <li><a href=""><span class="fa fa-google-plus"></span></a></li>
+                                <li><a href=""><span class="fa fa-linkedin"></span></a></li>
+                            </ul>
+                        </div>
+                    </div>                                 
+                    <div class="col-lg-6 col-sm-6">
+                        <div class="footer_item">
+                            <h4>Contáctenos</h4>
+                            <ul class="list-unstyled footer_contact">
+                                <li><a href=""><span class="fa fa-map-marker"></span> Sede Central: Villa Bonita de Alajuela, 300 mts suroeste de Perimercados y 300 sur (carretera a Villa Bonita).</a></li>
+                                <li><a href=""><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
+                                <li><a href=""><span class="fa fa-mobile"></span><p>(506) 2435-5000 <br /></p></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Footer top end -->
+
+            <!-- Footer bottom -->
+            <div class="footer_bottom text-center">
+                <p class="wow fadeInRight">                   
+                    <li> &copy;2018 UTN Todos los Derechos Reservados.</li> <li>Fabiola Alfaro y Joselyn Granados</li>
+                </p>
+            </div><!-- Footer bottom end -->
+        </footer>
+        <!-- Footer end -->
+            
         </h:form>
 
     </h:body>
-
-
 </html>

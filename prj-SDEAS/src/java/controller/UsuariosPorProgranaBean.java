@@ -31,6 +31,7 @@ import model.Distrito;
 import model.DistritoDB;
 import model.EstadoAcceso;
 import model.EstadoAccesoDB;
+import model.Programa;
 import model.ProgramaDB;
 import model.ProgramaUsuario;
 import model.ProgramaUsuarioDB;
@@ -77,7 +78,9 @@ public class UsuariosPorProgranaBean implements Serializable {
     LinkedList<Canton> listaCan = new LinkedList<Canton>();
     LinkedList<Distrito> listaDis = new LinkedList<Distrito>();
     LinkedList<Barrio> listaBarrio = new LinkedList<Barrio>();
-   
+    LinkedList<Programa> listaProgramaCoordinador = new LinkedList<Programa>();
+    
+    
     /*Para el modal*/
     UsuarioMante usuarioModal = null;
     LinkedList<ProgramaUsuario> listaProusuModal = new LinkedList<ProgramaUsuario>();
@@ -107,8 +110,8 @@ public class UsuariosPorProgranaBean implements Serializable {
     int Id_Canton=0;
     int Id_Distrito=0;
     int id_Barrio=0;
-    String otrasSennas="";
     
+    String otrasSennas="";
     String msjRechazo = "";
     UsuarioMante denegado = null;
     
@@ -266,6 +269,12 @@ public class UsuariosPorProgranaBean implements Serializable {
 
         
         try {
+            UsuarioManteDB ddd = new UsuarioManteDB();
+            usu.setContrasenna(contra);
+            usu.setCodigo(Codigo);
+            usu.getEstadoAcceso().setId(1);
+            usu.setLog_Activo("Activo");
+            ddd.actulizarContraCodi(usu);
             message.setFrom(new InternetAddress(remitente));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));   //Se podrían añadir varios de la misma manera
             message.setSubject(asunto);
@@ -274,12 +283,6 @@ public class UsuariosPorProgranaBean implements Serializable {
             transport.connect("smtp.gmail.com", remitente, "Abril1210jgs");
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-            UsuarioManteDB ddd = new UsuarioManteDB();
-            usu.setContrasenna(contra);
-            usu.setCodigo(Codigo);
-            usu.getEstadoAcceso().setId(1);
-            usu.setLog_Activo("Activo");
-            ddd.actulizarContraCodi(usu);
             setMensajeFiltro("<div class='alert alert-success alert-dismissible fade in' >  <strong>Exito!&nbsp;</strong>Correo enviado satisfactoriamente</div>");
         }
         catch (MessagingException me) {
@@ -291,7 +294,7 @@ public class UsuariosPorProgranaBean implements Serializable {
     public String generarContrasenna(){
         int largo = (int)Math.floor(Math.random()*(12-8+1)+8); 
         String contra = "";
-        char [] chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+        char [] chars = "0123456789abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         int charsLength = chars.length;
         Random random = new Random();
         for (int i = 0; i < largo; i++) {
@@ -335,8 +338,8 @@ public class UsuariosPorProgranaBean implements Serializable {
     
     public void editarDireccion(String id) throws SNMPExceptions, SQLException{
         for (Direccion d : listaDirecciones) {
-            if(d.getId_direccion().endsWith(id)){
-                setIdDireccion(Integer.parseInt(d.getId_direccion()));
+            if(d.getId_direccion().equals(id)){
+                    setIdDireccion(Integer.parseInt(d.getId_direccion()));
                     setId_Provincia(d.getProvincia().getId_Provincia());
                     setId_Canton(d.getCanton().getId_Canton());
                     setId_Distrito(d.getDistrito().getId_Distrito());
@@ -360,8 +363,8 @@ public class UsuariosPorProgranaBean implements Serializable {
        boolean ind = false;
         if(ValidaDireccion()){
             for (Direccion direccion : listaDirecciones) {
-                if(direccion.getId_direccion().equals(Integer.toString(idDireccion))){
-                    direccion.setId_Edita(116390998);
+                if(direccion.getId_direccion().equals(String.valueOf(idDireccion))){
+                    direccion.setId_Edita(IdEdita);
                     direccion.setFechaEdita(fecha);
                     direccion.setProvincia(pro.SeleccionarPorId(Id_Provincia));
                     direccion.setCanton(can.SeleccionarPorId(Id_Canton, Id_Provincia));
@@ -380,9 +383,9 @@ public class UsuariosPorProgranaBean implements Serializable {
                 dir.setBarrio(barr.SeleccionarPorId(Id_Provincia, Id_Canton, Id_Distrito, id_Barrio));
                 dir.setUsuario(new UsuarioDB().SeleccionarPorId(Integer.parseInt(Id)));
                 dir.setOtras_sennas(otrasSennas);
-                dir.setId_Registra(116390998);
+                dir.setId_Registra(IdRegistra);
                 dir.setFechaRegistra(fecha);
-                dir.setId_Edita(116390998);
+                dir.setId_Edita(IdEdita);
                 dir.setFechaEdita(fecha);
                 listaDirecciones.add(dir);
             }
@@ -562,21 +565,44 @@ public class UsuariosPorProgranaBean implements Serializable {
      }
    
     public void buscar() throws SNMPExceptions, SQLException{
+        LinkedList<UsuarioMante> uu = new LinkedList<>();
+        
         try{
         if(!getBuscarFiltro().equals("")){
             if(!usuarioDB.FiltrarUsuario(buscarFiltro).isEmpty()){
-                listaUsuario = usuarioDB.FiltrarUsuario(buscarFiltro);
+                uu = usuarioDB.FiltrarUsuario(buscarFiltro);
+                
+                    for (UsuarioMante lu : uu) {
+                        boolean ind = false;
+                        for (UsuarioMante usuarioMante : listaUsuario) {
+                            if(usuarioMante.getId() == lu.getId()){
+                                ind = true;
+                            }
+                        }
+                        
+                        if(ind == false){
+                            uu.remove(lu);
+                        }
+                    }
+                    
+                    if(!uu.isEmpty()){
+                        listaUsuario = uu;
+                    }else{
+                        seleccionarTodos();
+                        setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+                    }
+                
                  setMensajeFiltro("");
             }else{
-                listaUsuario = usuarioDB.SeleccionarTodos();
-                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' ><strong>Error!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+                seleccionarTodos();
+                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
             }
         }else{
             seleccionarTodos();
             setMensajeFiltro("");
         }
         }catch(Exception e){
-            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>Hubo un error al buscar el usuario...¡Intentelo de nuevo!</div>");
+            setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Hubo un error al buscar el usuario...¡Intentelo de nuevo!</div>");
         }
      }
     
@@ -614,7 +640,8 @@ public class UsuariosPorProgranaBean implements Serializable {
                     if(!listaDireccione.getId_direccion().equals("")){
                         dirDB.actulizar(listaDireccione);
                     }else{
-                        dirDB.registrar(listaDireccione);
+                        Direccion di = listaDireccione;
+                        dirDB.registrar(di);
                     }
                 }
                 
@@ -692,9 +719,14 @@ public class UsuariosPorProgranaBean implements Serializable {
     }
     
     public void seleccionarTodos() throws SNMPExceptions, SQLException{
-        if(!usuarioDB.SeleccionarTodos().isEmpty()){
+        ProgramaUsuarioDB p = new ProgramaUsuarioDB();
+        if(!p.SeleccionarTodosPorId(usuario4.getId()).isEmpty()){
+            listaProgramaCoordinador = p.SeleccionarTodosPorId(usuario4.getId());
+            
+            if(!p.SeleccionarTodosUsuarioPorPrograma(listaProgramaCoordinador, usuario4.getId()).isEmpty()){
             listaUsuario.clear();
-            listaUsuario = usuarioDB.SeleccionarTodos();
+            listaUsuario = p.SeleccionarTodosUsuarioPorPrograma(listaProgramaCoordinador, usuario4.getId());
+            }
         }
     }
     
@@ -1166,6 +1198,14 @@ public class UsuariosPorProgranaBean implements Serializable {
 
     public void setIdEdita(int IdEdita) {
         this.IdEdita = IdEdita;
+    }
+
+    public LinkedList<Programa> getListaProgramaCoordinador() {
+        return listaProgramaCoordinador;
+    }
+
+    public void setListaProgramaCoordinador(LinkedList<Programa> listaProgramaCoordinador) {
+        this.listaProgramaCoordinador = listaProgramaCoordinador;
     }
     
     
