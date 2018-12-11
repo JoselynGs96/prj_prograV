@@ -14,9 +14,9 @@ import java.util.Date;
 public class Usuario {
     int Id;
     TipoIdentificacion TipoIdentificacion;
-    String Nombre;
-    String Apellido1;
-    String Apellido2;
+    String Nombre = "";
+    String Apellido1 = "";
+    String Apellido2 = "";
     Date FechaNacimiento;
     String Correo;
     EstadoAcceso EstadoAcceso;
@@ -26,7 +26,7 @@ public class Usuario {
     String codAcceso;
     RolUsuario rolUsuario;
     Programa Programa;  
-    String nombreCompleto;
+    String nombreCompleto = "";
     EnumFuncionario Funcionario;
     int Id_Registra;
     Date FechaRegistra;

@@ -53,10 +53,10 @@ public class PreestamoBean implements Serializable {
     boolean Viernes;
     boolean Sabado;
     boolean Domingo;
-    Date FechaInicio;
-    Date FechaFinal;
-    Date HoraInicio;
-    Date HoraFinal;
+    Date FechaInicio = new Date();
+    Date FechaFinal = new Date();
+    Date HoraInicio = new Date();
+    Date HoraFinal = new Date();
     private int recurso = 1000;
     String Observaciones;
     String mensajeError;

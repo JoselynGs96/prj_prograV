@@ -11,11 +11,11 @@ package model;
  */
 public class Detalle {
 
-    int Id_Detalle;
-    EncabezadoSolicitud encabezado;
-    JornadaAcademica jornadaAcademica;
-    int activo;
-    Recurso recurso; 
+    int Id_Detalle = 0;
+    EncabezadoSolicitud encabezado = null;
+    JornadaAcademica jornadaAcademica = null;
+    int activo = 0;
+    Recurso recurso = null; 
 
     
     
@@ -61,7 +61,8 @@ public class Detalle {
     public void setActivo(int activo) {
         this.activo = activo;
     }
-public Recurso getRecurso() {
+    
+    public Recurso getRecurso() {
         return recurso;
     }
 
