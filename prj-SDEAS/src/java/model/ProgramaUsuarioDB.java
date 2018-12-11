@@ -160,6 +160,7 @@ public class ProgramaUsuarioDB {
       UsuarioDB usu = new UsuarioDB();
       RolUsuarioDB rol = new RolUsuarioDB();
       ProgramaUsuario p = null;
+      EnumFuncionario TipoFunci = null;
       
           try {
               AccesoDatos accesoDatos = new AccesoDatos();  
@@ -174,11 +175,23 @@ public class ProgramaUsuarioDB {
                         Programa Id_Programa = pro.SeleccionarPorId(rsPA.getInt("Id_Programa"));
                         Usuario usuario = usu.SeleccionarPorId(rsPA.getInt("Id_Usuario"));
                         RolUsuario Id_RolUsuario = rol.SeleccionarPorId(rsPA.getInt("Id_RolUsuario"));
-                        EnumFuncionario TipoFunci = EnumFuncionario.valueOf(rsPA.getString("TipoFuncionario"));
+                        if((Id_RolUsuario).Id_RolUsuario == 3){
+                          TipoFunci = EnumFuncionario.valueOf(rsPA.getString("TipoFuncionario"));
+                         }
                         int idEdita = rsPA.getInt("Id_Edita");
                         Date fechaEdita = rsPA.getDate("FechaEdita");
                         int Log_Activo = rsPA.getInt("Log_Activo");
-                        p = new ProgramaUsuario(Id_Programa, Id_RolUsuario, TipoFunci, Log_Activo==0? "Inactivo":"Activo");
+                        p = new ProgramaUsuario();
+                        p.setPrograma(Id_Programa);
+                        p.setRolUsuario(Id_RolUsuario);
+                        if(p.rolUsuario.Id_RolUsuario==3){
+                            p.setFuncionario(TipoFunci);
+                        }
+                        if(Log_Activo==0){
+                            p.setEstado("Inactivo");
+                        }else{
+                            p.setEstado("Activo");
+                        }
                         p.setUsuario(usuario);
                         p.setId_Edita(idEdita);
                         p.setFechaEdita(fechaEdita);

@@ -56,7 +56,7 @@ public class LoginControlador implements Serializable {
         }
     }
 
-    public void autenticar() {
+    /*public void autenticar() {
         try {
             Usuario1 = UsuarioDB.InicioSeccion( Integer.parseInt(this.getId_Usuario()), this.getContrasenna());
 
@@ -79,7 +79,7 @@ public class LoginControlador implements Serializable {
 
         }
 
-    }
+    }*/
 
     public String getMensaje() {
         return Mensaje;

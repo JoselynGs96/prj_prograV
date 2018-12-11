@@ -118,21 +118,23 @@
                        <div class="panel-heading" >
                             <h1>Activar Cuenta  </h1>
                             <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px;" ><img align="right" style="width:20px; height:20px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda.png" alt=""/></a>
-                        </div>
-                        <div class="form-group">Código de Acceso:
-                            <h:inputText value="#{usuariosBean.codAcceso}" class="form-control text-center  "></h:inputText>
+                            <p>Por su seguridad debes cambiar la contraseña <br></br>Los campos con un (*) son requeridos</p>
+                            <hr style="color:#787774; "></hr>
+                       </div>
+                        <div class="form-group">Código de Acceso *
+                            <h:inputText value="#{inicioSesionBean.codigoSeguridad}" class="form-control text-center  "></h:inputText>
                         </div>  
-                         <div class="form-group">Nueva contraseña:
-                             <h:inputSecret value="#{usuariosBean.codAcceso}" class="form-control text-center  "></h:inputSecret>
+                         <div class="form-group">Nueva contraseña *
+                             <h:inputSecret value="#{inicioSesionBean.nuevaContrasenna}" class="form-control text-center  "></h:inputSecret>
                         </div>   
-                         <div class="form-group">Repita la contraseña:
-                            <h:inputSecret value="#{usuariosBean.codAcceso}" class="form-control text-center  "></h:inputSecret>
+                         <div class="form-group">Verificar contraseña *
+                             <h:inputSecret value="#{inicioSesionBean.verificarContrasenna}" class="form-control text-center  "></h:inputSecret>
                         </div>   
                         <br></br>
-                        <h:commandButton actionListener="#" style="background-color:#fccc0c;border-color: #fccc0c" 
-                                         class="btn btn-primary btn-lg" value="Verificar"></h:commandButton>
+                        <h:commandButton actionListener="#{inicioSesionBean.ingresar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
+                                         class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
                         <br></br> <br></br>
-                        <h:outputLabel escape="false" value="#{usuariosBean.mensajeCod}"></h:outputLabel>
+                        <h:outputLabel escape="false" value="#{inicioSesionBean.msjError2}"></h:outputLabel>
                         <br></br> <br></br>
                 </center>
 

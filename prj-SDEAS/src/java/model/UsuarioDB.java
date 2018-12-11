@@ -144,7 +144,7 @@ public class UsuarioDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, Id_EstadoAcceso, Id_Edita, FechaEdita, PrimeraVez, Log_Activo from Usuario WHERE Id_Usuario = " +id;
+                      "SELECT Id_Usuario, Id_TipoIdentificacion, Nombre, Apellido1, Apellido2, FechaNacimiento, Correo, CodigoAcceso, Id_EstadoAcceso, Id_Edita, FechaEdita, PrimeraVez, Log_Activo from Usuario WHERE Id_Usuario = " +id;
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
@@ -157,6 +157,7 @@ public class UsuarioDB {
                         String Apellido2 = rsPA.getString("Apellido2");
                         Date FechaNacimiento = rsPA.getDate("FechaNacimiento");
                         String Correo = rsPA.getString("Correo");
+                        int codigoAcceso = rsPA.getInt("CodigoAcceso");
                         EstadoAcceso EstadoAcceso = estadoAcceso.SeleccionarPorId(rsPA.getInt("Id_EstadoAcceso"));
                         int idEdita = rsPA.getInt("Id_Edita");
                         Date fechaEdita = rsPA.getDate("FechaEdita");
@@ -173,6 +174,7 @@ public class UsuarioDB {
                         usuario.setEstadoAcceso(EstadoAcceso);
                         usuario.setPrimeraVez(PrimeraVez);
                         usuario.setLog_Activo(Log_Activo);
+                        usuario.setCodAcceso(codigoAcceso + "");
                       }
               
             rsPA.close();
@@ -264,64 +266,48 @@ public class UsuarioDB {
     }
 
     /*Busca el usuario logeado*/
-    public static Usuario InicioSeccion(int Id_Usuario, String contrasena) throws SNMPExceptions, SQLException {
-        String select = "";
-        ResultSet rsPA = null;
-        Usuario usu = new Usuario();
-
-        try {
-            AccesoDatos accesoDatos = new AccesoDatos();
-
-            select = "select * from Usuario where Id_Usuario = " + Id_Usuario + " and PWDCOMPARE('" + contrasena + "',Contrasenna)=1 and Id_EstadoAcceso=1";
-
-            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
-
-            while (rsPA.next()) {
-
-                int cedula = rsPA.getInt("Id_Usuario");
-                String nombre = rsPA.getString("Nombre");
-                String apellido1 = rsPA.getString("Apellido1");
-                String apellido2 = rsPA.getString("Apellido2");
-                String correo = rsPA.getString("Correo");
-                int PrimeraVez = rsPA.getInt("PrimerzVez");
-                usu = new Usuario();
-                usu.setId(cedula);
-                usu.setNombre(nombre);
-                usu.setApellido1(apellido1);
-                usu.setApellido2(apellido2);
-                usu.setPrimeraVez(PrimeraVez);
-
-            }
-
+   public int InicioSesion(int id, String contrasenna) throws SNMPExceptions, SQLException {
+      String select = "";
+      ResultSet rsPA = null;
+      int num = 0;
+          
+          try {
+              AccesoDatos accesoDatos = new AccesoDatos();  
+              
+                   select = 
+                      "SELECT Id_Usuario from Usuario WHERE Id_Usuario = " +id+" AND Contrasenna = '"+contrasenna+"'";
+              
+                      rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+             
+                      while (rsPA.next()) {
+                          num = rsPA.getInt("Id_Usuario");
+                      }
+              
             rsPA.close();
-
-            if (usu.getId() != 0) {
-                return usu;
-            } else {
-                return null;
-            }
-
-        } catch (SQLException e) {
-            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
-                    e.getMessage(), e.getErrorCode());
-        } catch (Exception e) {
-            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
-                    e.getMessage());
-        } finally {
-
-        }
-
-    }
+              
+          } catch (SQLException e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage(), e.getErrorCode());
+          }catch (Exception e) {
+              throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION, 
+                                      e.getMessage());
+          } finally {
+              
+          }
+         
+          return num;
+      }
 
     /*Ingresa contraseña por primera vez*/
-    public void IngresarContrasenna(Usuario usu) throws SNMPExceptions, SQLException {
+    public void IngresarContrasenna(int idUsuario, String contrasenna) throws SNMPExceptions, SQLException {
         String strSQL = "";
 
         try {
-            Usuario usuario = new Usuario();
-            usuario = usu;
-
-            strSQL = "UPDATE Usuario SET Contrasenna = PWDENCRYPT('" + usu.getContrasenna() + "') WHERE Id_Usuario = " + usu.getId();
+            strSQL = "UPDATE Usuario SET "
+                    + "Contrasenna = '" + contrasenna 
+                    + "', PrimeraVez = '" + 0
+                    + "' WHERE Id_Usuario = '" + idUsuario +"';";
+            
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,

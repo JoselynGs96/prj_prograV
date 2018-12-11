@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
     <h:head>
         <meta charset="utf-8"/>
@@ -25,6 +26,7 @@
         <!--[if lt IE 9]>
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        
       
     </h:head>
     <h:body>
@@ -72,7 +74,9 @@
                     </ul>			
                 </div>
             </div><!-- Top Navbar end -->
-
+            
+            
+            
             <!-- Navbar -->
             <nav class="navbar bootsnav">
                 <!-- Top Search -->
@@ -101,15 +105,35 @@
                         <a class="navbar-brand" href=""><img class="logo" src="../Recursos/images/logo.png" alt=""/></a>
                     </div>
                     <!-- Navigation -->
-                    <div class="collapse navbar-collapse" id="navbar-menu">
-                        <ul class="nav navbar-nav menu">
-                            <li><p:link href="index.xhtml">Inicio</p:link></li>                    
-                            <li><p:link href="#about">Acerca de</p:link></li>
-                            <li><p:link href="#services" >Servicios</p:link></li>
-                            <li><p:link href="Registro.xhtml">Registro</p:link></li>
-                            <li><p:link href="InicioSesion.xhtml">Iniciar Sesión</p:link></li>
-                        </ul>
-                    </div>
+                    <c:choose>
+                        <c:when test="${indexBean.valor == '0'}">
+                                     <div class="collapse navbar-collapse" id="navbar-menu sinUsuario">
+                                        <ul class="nav navbar-nav menu">
+                                            <li><p:link href="index.xhtml">Inicio</p:link></li>                    
+                                            <li><p:link href="#about">Acerca de</p:link></li>
+                                            <li><p:link href="#services" >Servicios</p:link></li>
+                                            <li><p:link href="Registro.xhtml">Registro</p:link></li>
+                                            <li><p:link href="InicioSesion.xhtml">Iniciar Sesión</p:link></li>
+
+                                        </ul>
+                                    </div>
+                             </c:when>
+                             <c:otherwise>
+                                       <div class="collapse navbar-collapse" id="navbar-menu sinUsuario conUsuario">
+                                            <ul class="nav navbar-nav menu">
+                                                <li><p:link href="index.xhtml">Inicio</p:link></li>                    
+                                                <li><p:link href="#about">Acerca de</p:link></li>
+                                                <li><p:link href="#services" >Servicios</p:link></li>
+                                                <li><p:link href="InicioSesion.xhtml"><h:outputLabel value="#{indexBean.nombre}"></h:outputLabel></p:link></li>
+
+                                            </ul>
+                                        </div>
+                             </c:otherwise>
+                    </c:choose>
+                   
+                    
+                    
+                   
                 </div>    
             </nav><!-- Navbar end -->
         </header><!-- Header end -->

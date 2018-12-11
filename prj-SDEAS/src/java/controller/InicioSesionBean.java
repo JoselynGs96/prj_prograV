@@ -26,17 +26,19 @@ import model.UsuarioDB;
 @Named(value = "inicioSesionBean")
 @SessionScoped
 public class InicioSesionBean implements Serializable {
-
     
     UsuarioDB uDB = new UsuarioDB();
     ProgramaUsuarioDB puDB = new ProgramaUsuarioDB();
     
     String cedula = "";
     String contrasenna = "";
-    String codigoSeguridad = "";
     RolUsuario rolUsuario = null;
     int id_rol = 0;
+    String codigoSeguridad = "";
+    String nuevaContrasenna = "";
+    String verificarContrasenna = "";
     String msjError = "";
+    String msjError2 = "";
     LinkedList<RolUsuario> listaRolUsuario = new LinkedList<RolUsuario>();
     /**
      * Creates a new instance of InicioSesionBean
@@ -48,7 +50,6 @@ public class InicioSesionBean implements Serializable {
             id_rol = rol.SeleccionarTodos().element().getId_RolUsuario();
         }
     }
-    
     
     
     public boolean validarCampos(){
@@ -75,7 +76,7 @@ public class InicioSesionBean implements Serializable {
             setMsjError("");
         }
         
-        if(id_rol == 0){
+        if(id_rol == 1){
             setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Debe seleccionar el rol con que quiere ingresar</div>");
             return false;
         }else{
@@ -87,10 +88,11 @@ public class InicioSesionBean implements Serializable {
     
     
     public boolean validaUsuario() throws SNMPExceptions, SQLException, IOException{
-         boolean respuesta = false;
+        boolean respuesta = false;
+        rolUsuario = new RolUsuarioDB().SeleccionarPorId(id_rol);
         if(validarCampos()){
         if(uDB.UsuarioExistente(Integer.parseInt(cedula))==null){
-            setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Código de usuario no pertenece a ningún usuario registrado</div>");
+            setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>El código de usuario no pertenece a ningún usuario registrado</div>");
             return false;
         }else{
             if(uDB.UsuarioExistente(Integer.parseInt(cedula)).getEstadoAcceso().getId()==2){
@@ -101,27 +103,29 @@ public class InicioSesionBean implements Serializable {
                      setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, pero su solicitud de acceso al Sistema aún se encuentra en Espera</div>");
                      return false;
                 }else{
-                   if(UsuarioDB.InicioSeccion(Integer.parseInt(cedula), getContrasenna())!=null){
+                   if(uDB.InicioSesion(Integer.parseInt(cedula), getContrasenna())!=0){
                         if(puDB.VerificarRol(Integer.parseInt(cedula), rolUsuario.getId_RolUsuario()) != null){
                             
                             if(uDB.UsuarioExistente(Integer.parseInt(cedula)).getPrimeraVez() == 1){
-                                 FacesContext.getCurrentInstance().getExternalContext().redirect("CodigoVerificacion.xhtml");
+                                 FacesContext.getCurrentInstance().getExternalContext().redirect("faces/CodigoVerificacion.xhtml");
                             }else{
                                 if(uDB.UsuarioExistente(Integer.parseInt(cedula)).getLog_Activo().equals("Activo")){
-                                    if(rolUsuario.getId_RolUsuario()==1){
+                                    if(rolUsuario.getId_RolUsuario()== 2){
                                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", cedula);
                                         FacesContext.getCurrentInstance().getExternalContext().redirect("faces/Mantenimiento.xhtml");
                                     } else{
-                                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", cedula);
-                                        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/index.xhtml");
+                                        if(rolUsuario.getId_RolUsuario() == 3){
+                                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", cedula);
+                                            FacesContext.getCurrentInstance().getExternalContext().redirect("faces/index.xhtml");
+                                        }
                                     }
                                 }else{
-                                    setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, pero esta Inactivo en el sistema. Contacta al Coordinador a cargo</div>");
+                                    setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, pero usted se encuentra Inactivo en el sistema. Contacte al Coordinador a cargo</div>");
                                     return false;
                                 }
                             }
                         }else{
-                             setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, pero no eres parte de DEAS como el rol indicado </div>");
+                             setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, pero no eres parte de DEAS con el rol indicado </div>");
                              return false;
                         }
                    }else{
@@ -137,6 +141,122 @@ public class InicioSesionBean implements Serializable {
         return respuesta;
     }
 
+    
+    /*Página Codigo Verificación*/
+    
+    public boolean validaCamposCodigoVer(){
+        boolean respuesta = true;
+        if (this.getCodigoSeguridad().equals("")) {
+            setMsjError2("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Código de seguridad requerido</div>");
+            return false;
+        } else {
+            setMsjError2("");
+        }
+        
+        try{
+            Integer.parseInt(getCodigoSeguridad());
+            respuesta = true;
+        }catch(Exception e){
+            setMsjError2("<div class='alert alert-danger alert-dismissible fade in' > <strong>Error!&nbsp;</strong>El valor en el campo Código de seguridad no es un dato válido</div>");
+            return false;
+        }
+        
+        if (this.getNuevaContrasenna().equals("")) {
+            setMsjError2("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Nueva contraseña requerida</div>");
+            return false;
+        } else {
+            setMsjError2("");
+        }
+        
+        if (this.getVerificarContrasenna().equals("")) {
+            setMsjError2("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Verificación de Nueva contraseña requerida</div>");
+            return false;
+        } else {
+            setMsjError2("");
+        }
+        
+        return respuesta;
+    }
+   
+    public boolean validaCodigoSeguridad() throws SNMPExceptions, SQLException{
+        String cod = uDB.UsuarioExistente(Integer.parseInt(getCedula())).getCodAcceso();
+        if(!cod.equals(getCodigoSeguridad())){
+            setMsjError2("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Código de seguridad incorrecto</div>");
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean validarContrasennaNueva(){
+        int cantNum = 0;
+        int cantLetMay = 0;
+        int cantLetMin = 0;
+        int cantEspec = 0;
+        
+        boolean indi = true;
+        if(getNuevaContrasenna().length()<8||getNuevaContrasenna().length()>12){
+            setMsjError2("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Contraseña no válida. Debe tener un largo mínimo de 8 caracteres y un máximo de 12</div>");
+            return false;
+        }else{
+            setMsjError2("");
+        }
+        
+        for (int i = 0; i < getNuevaContrasenna().length(); i++) {
+            char caracter = getNuevaContrasenna().charAt(i);
+            if(String.valueOf(caracter).matches("[0-9]")){
+                cantNum++;
+            }else{
+                if(!String.valueOf(caracter).matches("^[A-Za-z\\u00C0-\\u017F]*$")){
+                    cantEspec++;
+                }else{
+                    if(String.valueOf(caracter).matches("[a-z]")){
+                        cantLetMin++;
+                    }else{
+                        if(String.valueOf(caracter).matches("[A-Z]")){
+                            cantLetMay++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(cantEspec == 0 && cantNum != 0 && cantLetMay != 0 && cantLetMin != 0){
+             setMsjError2("");
+        }else{
+            setMsjError2("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Contraseña no válida. </div>");
+            return false;
+        }
+        
+        return indi;
+    }
+     
+    
+    public boolean validaAmbasContrasennas(){
+        if(getNuevaContrasenna().equals(getVerificarContrasenna())){
+            setMsjError2("");
+        }else{
+            setMsjError2("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Las contraseñas no coinciden</div>");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
+    public void ingresar() throws SNMPExceptions, SQLException{
+        
+        if(validaCamposCodigoVer() && validaCodigoSeguridad() && validarContrasennaNueva() && validaAmbasContrasennas()){
+            try{
+                uDB.IngresarContrasenna(Integer.parseInt(cedula), getNuevaContrasenna());
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", cedula);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/index.xhtml");
+            }catch(Exception e){
+                  setMsjError2("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, Hubo un error al ingresar... Vuelva a Intentarlo</div>");
+           
+            }
+        }
+    }
+    
     
     public UsuarioDB getuDB() {
         return uDB;
@@ -209,6 +329,32 @@ public class InicioSesionBean implements Serializable {
     public void setListaRolUsuario(LinkedList<RolUsuario> listaRolUsuario) {
         this.listaRolUsuario = listaRolUsuario;
     }
+
+    public String getMsjError2() {
+        return msjError2;
+    }
+
+    public void setMsjError2(String msjError2) {
+        this.msjError2 = msjError2;
+    }
+
+    public String getNuevaContrasenna() {
+        return nuevaContrasenna;
+    }
+
+    public void setNuevaContrasenna(String nuevaContrasenna) {
+        this.nuevaContrasenna = nuevaContrasenna;
+    }
+
+    public String getVerificarContrasenna() {
+        return verificarContrasenna;
+    }
+
+    public void setVerificarContrasenna(String verificarContrasenna) {
+        this.verificarContrasenna = verificarContrasenna;
+    }
+    
+    
     
     
     
