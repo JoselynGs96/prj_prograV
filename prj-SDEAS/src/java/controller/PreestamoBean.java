@@ -405,21 +405,25 @@ try{
                         EncabezadoSolicitud encabezado = new EncabezadoSolicitud();
                         encabezado.setFuncionario(usuarioDB.SeleccionarPorId(207750517));
                         encabezadoDB.registrar(encabezado);
-                        /*Ingreso el detalle*/
-                        LinkedList<Recurso> listaAgregados = listaRecursoAgregardos;
-                        for (Recurso re : listaAgregados) {
-                            Detalle detalle = new Detalle();
-                            int enca= encabezadoDB.SeleccionarUltimo();
-                            detalle.setEncabezado(encabezadoDB.SeleccionarporId(enca));
-                            detalle.setRecurso(re);
-                            detalleDB.registrar(detalle);
-                        }
-                        /*Ingeso la agenda*/
+                       
+                         /*Ingeso la agenda*/
+                          LinkedList<Agenda> listaAgenda= new LinkedList<Agenda>();
                         for (Recurso re : listaRecursoAgregardos) {
                             Agenda agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), re, 1, this.getObservaciones());
                             agendaNueva.setId_Registra(207750517);
                             agendaDB.registrar(agendaNueva);
+                            listaAgenda.add(agendaNueva);
                         }
+                         /*Ingreso el detalle*/
+                        LinkedList<Agenda> listAgendasAgregadas = listaAgenda;
+                        for (Agenda age : listAgendasAgregadas) {
+                            Detalle detalle = new Detalle();
+                            int enca= encabezadoDB.SeleccionarUltimo();
+                            detalle.setEncabezado(encabezadoDB.SeleccionarporId(enca));
+                            detalle.setAgenda(age);
+                            detalleDB.registrar(detalle);
+                        }
+                       
                         limpiar();
                         setMensajeError("");
                
