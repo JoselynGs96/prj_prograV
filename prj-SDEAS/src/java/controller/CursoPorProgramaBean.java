@@ -88,9 +88,6 @@ public class CursoPorProgramaBean implements Serializable {
                 }
             }
             
-            if(listaTablaCurso.isEmpty()){
-                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No hay registros</div>");
-            }
         }else{
             setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No hay registros porque no hay programas existentes</div>");
         }

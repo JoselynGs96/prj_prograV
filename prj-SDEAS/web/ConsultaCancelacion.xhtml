@@ -102,40 +102,71 @@
                         <!-- Navigation -->
                         <div class="collapse navbar-collapse" id="navbar-menu">
                             <ul class="nav navbar-nav menu">
-                                <li><a href="Registro.xhtml">Registrar</a></li>
-                                <li><a href="InicioSesion.xhtml">Iniciar Sesión</a></li>
+                                 <li><a href="faces/index.xhtml" >Inicio</a></li> 
+                                                <li><a href="faces/Prestamo.xhtml" >Proceso de Préstamo </a></li> 
+                                                <li><a href="faces/ConsultaCancelacion.xhtml" >Consulta y Cancelación </a></li> 
+                                                <li><a href="faces/ActualizarUsuario.xhtml" >Ajustes </a></li> 
+                                                <li><h:commandLink actionListener="#{indexBean.cerrarSesion()}" value="Cerrar Sesión"></h:commandLink></li> 
+                                                <li><a href="faces/index.xhtml" ><h:outputLabel value="#{indexBean.nombre}"></h:outputLabel></a></li> 
                             </ul>
                         </div>
                     </div>    
                 </nav><!-- Navbar end -->
             </header><!-- Header end -->
             <secion class="contact_form container" >
-            <div class="col-lg-1"></div>
-            <div style="background:white" class="col-lg-offset-3 col-lg-4">      
+            <div style="background:white" class="col-lg-offset-3 col-lg-6">      
 
                 <center>
                       <div class="panel-heading" >
-                          <h1>Iniciar Sesión  </h1>
+                          <h1>Consulta y Cancelación de Solicitudes</h1>
                           <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px;" ><img align="right" style="width:20px; height:20px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda.png" alt=""/></a>
                     </div>
-                    <div class="form-group">Usuario:
-                        <h:inputText  value="#{inicioSesionBean.cedula}" class="form-control text-center" ></h:inputText>
-                    </div> 
-                    <div class="form-group">Contraseña:
-                        <h:inputSecret value="#{inicioSesionBean.contrasenna}" class="form-control text-center  " ></h:inputSecret>
-                    </div>    
-                    <div  class="form-group">Tipo de Perfil:<br></br>
-                        <h:selectOneMenu  class="form-control" value="#{inicioSesionBean.id_rol}" style="width:150px">
-                            <f:selectItems var="tipusu" value="#{inicioSesionBean.listaRolUsuario}" itemLabel="#{tipusu.dsc_RolUsuario}" itemValue="#{tipusu.id_RolUsuario}"></f:selectItems>
-                        </h:selectOneMenu>                   
-                    </div>
+                    <h:dataTable  id="datausu" class="table table-striped table-advance table-hover" value="#{consultaCancelacionBean.listaSolicitud}" var="list" >
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Id Solicitud"/>
+                                </f:facet>
+                                <h:outputText value="#{list.id_Encabezado}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha de la Solicitud"/>
+                                </f:facet>
+                                <h:outputText value="#{list.fechaInicio}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha de Respuesta"/>
+                                </f:facet>
+                                <h:outputText value="#{list.fechaFinal == null?'Solicitud aún no procesada':list.fechaFinal}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Coordinador a Cargo"/>
+                                </f:facet>
+                                <h:outputText value="#{list.coordinador.nombreCompleto == ''? '':list.coordinador.nombreCompleto}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estado Solicitud"/>
+                                </f:facet>
+                                <h:outputText value="#{list.estado.nombre}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <div id="btnEstAc">
+                                    <h:commandButton actionListener="#{consultaCancelacionBean.cancelar(list.id_Encabezado)}" class="btn btn-danger" value="Cancelar"></h:commandButton>
+                                       
+                                   
+                                </div>
+                            </h:column>
+                        </h:dataTable> 
                     <br></br>
-                    <h:commandButton actionListener="#{inicioSesionBean.validaUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c" 
-                                     class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
                     <br></br> <br></br>
-                    <h:outputLabel value="#{inicioSesionBean.msjError}" escape="false"></h:outputLabel>
+                    <h:outputLabel value="#{consultaCancelacionBean.msj}" escape="false"></h:outputLabel>
                     <br></br> <br></br>
-                    <span>No tienes cuenta? Registrate </span><a href="Registro.xhtml" style="color: blue;" class="link">aquí</a>
                 </center>
 
             </div>

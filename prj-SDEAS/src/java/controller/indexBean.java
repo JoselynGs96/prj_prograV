@@ -33,7 +33,7 @@ public class indexBean implements Serializable {
      * Creates a new instance of indexBean
      */
     public indexBean() throws SNMPExceptions, SQLException {
-         datos = new ObtenerDatosSesion();
+        datos = new ObtenerDatosSesion();
        
         datos.consultarSesion();
         if(!datos.getId_Usuario().equals("")){

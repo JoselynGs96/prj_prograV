@@ -284,5 +284,36 @@ public class AgendaDB {
 
         return agen;
     }
+    
+    public void CancelarSolicitud(int id){
+        /*String strSQL = "";   
+        int estado = 0;
+        try {  
+            Programa programa = new Programa(); 
+            programa = pro;             
+            
+            if(programa.estado.equals("Activo")){
+                estado = 1;
+            }
+             strSQL = "UPDATE Programa SET "
+                     +"Nombre='" +programa.getNombre() 
+                     +"', Dsc_Programa= '" + programa.getDescripcion()
+                     +"', Id_Edita= '" + programa.getId_Edita()
+                     +"', FechaEdita= '" + new java.sql.Date(programa.getFechaEdita().getTime())
+                     +"', Log_Activo='" + estado
+                     +"' WHERE Id_Programa='" + programa.getId()+"';";
+                    
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/
+       /* );
+        } catch (SQLException e) { 
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
+                                    e.getMessage(), e.getErrorCode());         
+        }catch (Exception e) { 
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,  
+                                    e.getMessage()); 
+        } finally { 
+         
+        }*/
+    }
 
 }
