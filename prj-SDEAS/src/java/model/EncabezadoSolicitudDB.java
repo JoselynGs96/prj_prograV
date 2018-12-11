@@ -214,7 +214,7 @@ public class EncabezadoSolicitudDB {
         try {
             EncabezadoSolicitud encabezadoSolicitud = encabe;
 
-            strSQL = "INSERT INTO [dbo].[EncSolicitud]([FechaSolicitud],[Id_Funcionario],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo])VALUES(  GETDATE()  " +"," + encabezadoSolicitud.getFuncionario().Id + "," + 1001 + "," + 4 + "," + 1 + ")";
+            strSQL = "INSERT INTO [dbo].[EncSolicitud]([FechaSolicitud],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo])VALUES(  GETDATE()  " +"," + encabezadoSolicitud.getFuncionario().Id +"," + encabezadoSolicitud.getCoordinador().Id+ "," + 1001 + "," + 4 + "," + 1 + ")";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,

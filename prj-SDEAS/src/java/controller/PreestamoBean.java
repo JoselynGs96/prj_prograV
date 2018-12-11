@@ -24,6 +24,8 @@ import model.DetalleDB;
 import model.Direccion;
 import model.EncabezadoSolicitud;
 import model.EncabezadoSolicitudDB;
+import model.ProgramaUsuario;
+import model.ProgramaUsuarioDB;
 import model.Provincia;
 import model.Recurso;
 import model.RecursoDB;
@@ -398,6 +400,7 @@ try{
         EncabezadoSolicitudDB encabezadoDB = new EncabezadoSolicitudDB();
         DetalleDB detalleDB = new DetalleDB();
         AgendaDB agendaDB = new AgendaDB();
+        ProgramaUsuarioDB prousuDB = new ProgramaUsuarioDB();
         if (validaciones()) {
              if (validaFechaActual()) {
             if (prueba()) {            
@@ -406,6 +409,8 @@ try{
                         /*INGRESO EL ENCABEZADO*/
                         EncabezadoSolicitud encabezado = new EncabezadoSolicitud();
                         encabezado.setFuncionario(usuario);
+                       ProgramaUsuario pro = prousuDB.VerificarRol(usuario.getId(), 3);
+                        encabezado.setCoordinador(prousuDB.SeleccionarTodosCoordinadorPorPrograma((pro.getPrograma().getId())));
                         encabezadoDB.registrar(encabezado);
                        
                          /*Ingeso la agenda*/

@@ -12,6 +12,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import model.AgendaDB;
 import model.DetalleDB;
 import model.EncabezadoSolicitud;
 import model.EncabezadoSolicitudDB;
@@ -29,6 +30,7 @@ public class ConsultaCancelacionBean implements Serializable {
     ObtenerDatosSesion datos = null;
     EncabezadoSolicitudDB encDB = new EncabezadoSolicitudDB();
     DetalleDB detDB = new DetalleDB();
+    AgendaDB agenDB = new AgendaDB();
     LinkedList<EncabezadoSolicitud> listaSolicitud = new LinkedList<EncabezadoSolicitud>();
     LinkedList<Recurso> listaRecurso = new LinkedList<Recurso>();
     /**
@@ -57,6 +59,7 @@ public class ConsultaCancelacionBean implements Serializable {
     public void cancelar(int id) throws SNMPExceptions{
         listaRecurso = detDB.buscarRecursos(id);
         try{
+            
             
         }catch(Exception e){
             
