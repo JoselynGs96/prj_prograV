@@ -7,14 +7,15 @@ package controller;
 
 import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
+import javax.faces.context.FacesContext;
 import model.Usuario;
 import model.UsuarioMante;
 import model.UsuarioManteDB;
-import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -26,21 +27,26 @@ public class indexBean implements Serializable {
     UsuarioMante usuario =  null;
     String nombre = null;
     int valor;
+    ObtenerDatosSesion datos = null;
+    UsuarioManteDB usuDB = new UsuarioManteDB();
     /**
      * Creates a new instance of indexBean
      */
     public indexBean() throws SNMPExceptions, SQLException {
-        ObtenerDatosSesion datos = new ObtenerDatosSesion();
+         datos = new ObtenerDatosSesion();
        
-        UsuarioManteDB usuDB = new UsuarioManteDB();
         datos.consultarSesion();
         if(!datos.getId_Usuario().equals("")){
             usuario = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
             setNombre(usuario.getNombreCompleto());
-            valor = 1;
-        }else{
-            valor = 0;
         }
+    }
+    
+    
+    public void cerrarSesion() throws IOException{
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+         FacesContext fc=FacesContext.getCurrentInstance();
+           fc.getExternalContext().redirect("faces/InicioSesion.xhtml");
     }
 
     public String getNombre() {

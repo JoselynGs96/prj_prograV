@@ -34,8 +34,6 @@ public class Usuario {
     Date FechaEdita;
     int PrimeraVez;
     
-  
-    
     
     public Usuario( int cedula,TipoIdentificacion TipoIden,String nombre,String apellido1, String apellido2,Date fechaNacimiento,String correo,EstadoAcceso estAcc,String Log_Act){
         this.setId(cedula);
@@ -168,7 +166,7 @@ public class Usuario {
     }
 
     public String getNombreCompleto() {
-        return nombreCompleto;
+        return getNombre() +" "+ getApellido1() +" "+ getApellido2();
     }
 
     public void setNombreCompleto(String nombreCompleto) {

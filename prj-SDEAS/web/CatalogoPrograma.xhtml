@@ -44,8 +44,7 @@
                 <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText value="#{programaBean.usuario.nombreCompleto}"></h:outputText>
                 <span class="caret"></span></a>
             	<ul class="nav dropdown-menu">
-                    <li><a href="faces/ActualizarUsuario.xhtml">Actualizar Datos</a></li>
-                    <li><a href="faces/InicioSesion.xhtml">Cerrar Sesión</a></li>
+                    <li><h:commandLink actionListener="#{indexBean.cerrarSesion()}" value="Cerrar Sesión"></h:commandLink></li>
             	</ul>
             </div>
       </header>

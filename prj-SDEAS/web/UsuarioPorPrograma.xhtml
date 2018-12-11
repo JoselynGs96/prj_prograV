@@ -84,8 +84,7 @@
                 <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText value="#{usuariosPorProgranaBean.usuario4.nombreCompleto}"></h:outputText>
                 <span class="caret"></span></a>
             	<ul class="nav dropdown-menu">
-                    <li><a href="faces/ActualizarUsuario.xhtml">Actualizar Datos</a></li>
-                    <li><a href="faces/InicioSesion.xhtml">Cerrar Sesión</a></li>
+                    <li><h:commandLink actionListener="#{indexBean.cerrarSesion()}" value="Cerrar Sesión"></h:commandLink></li>
             	</ul>
             </div>
       </header>
@@ -693,10 +692,9 @@
                                     <h:outputText value="Estado: Pendiente"/>
                                 </f:facet>
                                 <div id="btnEstAc">
-                                    <c:if test="${usu.estadoAcceso == 3}">
                                         <h:commandButton  disabled="#{usu.estadoAcceso.id != 3}"  actionListener="#{usuariosPorProgranaBean.recibeDenegado(usu.id)}" class="btn btn-danger" value="Denegar"></h:commandButton>
                                         <h:commandButton  disabled="#{usu.estadoAcceso.id != 3}" actionListener="#{usuariosPorProgranaBean.botonAceptar(usu.id)}" style="margin-left: 5px" class="btn btn-success" value="Aceptar"></h:commandButton>
-                                    </c:if>
+                                   
                                 </div>
                             </h:column>
                         </h:dataTable> 

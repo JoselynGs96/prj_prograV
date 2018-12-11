@@ -105,7 +105,7 @@ public class ActualizarUsuarioBean implements Serializable {
         
         UsuarioDB usuDB = new UsuarioDB();
         datos.consultarSesion();
-        UsuarioMantenimiento = usuDB.SeleccionarPorId(115690028);
+        UsuarioMantenimiento = usuDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
        
         DireccionDB direc = new DireccionDB();
         TelefonoDB teldb = new TelefonoDB();

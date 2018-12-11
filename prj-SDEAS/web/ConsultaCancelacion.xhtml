@@ -7,7 +7,7 @@
 
     <h:head>
         <meta charset="utf-8"/>
-        <title>SDEAS - Nueva Contraseña</title>
+        <title>Consulta y Cancelación</title>
         <!-- Mobile Specific Meta -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <!-- Custom Fonts -->       
@@ -26,25 +26,27 @@
                 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         
-
     </h:head>
     <h:body>
 
-
-
-        <h:form  prependId="false">
+        <h:form prependId="false">
             <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
                 <p:scrollPanel mode="native" style="width:100%;height:100%; border:0px; margin-bottom: 50px" > 
                     <h1 style="font-weight:normal">Ayuda</h1>          
                     <br></br>
-                    <strong>¿Desea Activar su cuenta? </strong>
+                    <strong>¿Desea Iniciar Sesión? </strong>
                     <br></br>
-                    Llene el datos de codigo de verificación previamente enviado a su correo.
+                    Llene los datos Usuario que corresponde a la cédula, contraseña del usuario y el Tipo de Perfil.
                     Luego, clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images//btnVerifica.JPG" style="width:80px ;height:60px" alt=""/>
+                    <img src="Recursos/images//botonInicio.JPG" style="width:80px ;height:60px" alt=""/>
                     <br></br>
                     <br></br>
-                    
+                    <strong>¿Desea Registrarse? </strong>
+                    <br></br>      
+                    Clic sobre el  <br></br> botón &#8594;
+                    No tienes cuenta? Registrate aquí
+                    <br></br>
+                    <br></br>
 
                     <div style="margin-bottom: 30px; height: 50px"></div>
                 </p:scrollPanel>
@@ -112,33 +114,34 @@
             <div style="background:white" class="col-lg-offset-3 col-lg-4">      
 
                 <center>
-                       <div class="panel-heading" >
-                            <h1>Activar Cuenta  </h1>
-                            <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px;" ><img align="right" style="width:20px; height:20px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda.png" alt=""/></a>
-                            <p>Por su seguridad debes cambiar la contraseña <br></br>Los campos con un (*) son requeridos</p>
-                            <hr style="color:#787774; "></hr>
-                       </div>
-                        <div class="form-group">Código de Acceso *
-                            <h:inputText value="#{inicioSesionBean.codigoSeguridad}" class="form-control text-center  "></h:inputText>
-                        </div>  
-                         <div class="form-group">Nueva contraseña *
-                             <h:inputSecret value="#{inicioSesionBean.nuevaContrasenna}" class="form-control text-center  "></h:inputSecret>
-                        </div>   
-                         <div class="form-group">Verificar contraseña *
-                             <h:inputSecret value="#{inicioSesionBean.verificarContrasenna}" class="form-control text-center  "></h:inputSecret>
-                        </div>   
-                        <br></br>
-                        <h:commandButton actionListener="#{inicioSesionBean.ingresar()}" style="background-color:#fccc0c;border-color: #fccc0c" 
-                                         class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
-                        <br></br> <br></br>
-                        <h:outputLabel escape="false" value="#{inicioSesionBean.msjError2}"></h:outputLabel>
-                        <br></br> <br></br>
+                      <div class="panel-heading" >
+                          <h1>Iniciar Sesión  </h1>
+                          <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px;" ><img align="right" style="width:20px; height:20px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda.png" alt=""/></a>
+                    </div>
+                    <div class="form-group">Usuario:
+                        <h:inputText  value="#{inicioSesionBean.cedula}" class="form-control text-center" ></h:inputText>
+                    </div> 
+                    <div class="form-group">Contraseña:
+                        <h:inputSecret value="#{inicioSesionBean.contrasenna}" class="form-control text-center  " ></h:inputSecret>
+                    </div>    
+                    <div  class="form-group">Tipo de Perfil:<br></br>
+                        <h:selectOneMenu  class="form-control" value="#{inicioSesionBean.id_rol}" style="width:150px">
+                            <f:selectItems var="tipusu" value="#{inicioSesionBean.listaRolUsuario}" itemLabel="#{tipusu.dsc_RolUsuario}" itemValue="#{tipusu.id_RolUsuario}"></f:selectItems>
+                        </h:selectOneMenu>                   
+                    </div>
+                    <br></br>
+                    <h:commandButton actionListener="#{inicioSesionBean.validaUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c" 
+                                     class="btn btn-primary btn-lg" value="Ingresar"></h:commandButton>
+                    <br></br> <br></br>
+                    <h:outputLabel value="#{inicioSesionBean.msjError}" escape="false"></h:outputLabel>
+                    <br></br> <br></br>
+                    <span>No tienes cuenta? Registrate </span><a href="Registro.xhtml" style="color: blue;" class="link">aquí</a>
                 </center>
 
-                 </div>
-                </secion>
+            </div>
+            </secion>
           
-                 <!-- Footer -->
+        <!-- Footer -->
         <footer>
             <!-- Footer top -->
             <div class="container footer_top">
@@ -179,8 +182,8 @@
             </div><!-- Footer bottom end -->
         </footer>
         <!-- Footer end -->
+            
         </h:form>
+
     </h:body>
-
-
 </html>

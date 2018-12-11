@@ -36,7 +36,7 @@ public class MantenimientoBean implements Serializable {
     private ScheduleModel eventModel;
      
     public MantenimientoBean() throws SNMPExceptions, SQLException {
-    ObtenerDatosSesion datos = new ObtenerDatosSesion();
+        ObtenerDatosSesion datos = new ObtenerDatosSesion();
         UsuarioManteDB usuDB = new UsuarioManteDB();
         datos.consultarSesion();
         

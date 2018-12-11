@@ -63,12 +63,21 @@ public class PreestamoBean implements Serializable {
     int Contador = 0;
     Usuario usuario = null;
     String MensajeBueno;
-
+    ObtenerDatosSesion datos = null;
     LinkedList<Recurso> listaRecurso = new LinkedList<Recurso>();
     LinkedList<Recurso> listaRecursoAgregardos = new LinkedList<Recurso>();
-
-    public PreestamoBean() throws SNMPExceptions, SQLException {
+    String nombre  = "";
+            
+            
+            
+        public PreestamoBean() throws SNMPExceptions, SQLException {
+        datos = new ObtenerDatosSesion();
        
+        datos.consultarSesion();
+        if(!datos.getId_Usuario().equals("")){
+            usuario = usuarioDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
+            setNombre(usuario.getNombreCompleto());
+        }
         if (!recursoDB.seleccionarTodos().isEmpty()) {
             listaRecurso = recursoDB.seleccionarTodos();          
         } else {
@@ -645,4 +654,22 @@ try{
     public void setMensajeBueno(String MensajeBueno) {
         this.MensajeBueno = MensajeBueno;
     }
+
+    public ObtenerDatosSesion getDatos() {
+        return datos;
+    }
+
+    public void setDatos(ObtenerDatosSesion datos) {
+        this.datos = datos;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    
 }

@@ -114,10 +114,8 @@ public class InicioSesionBean implements Serializable {
                                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", cedula);
                                         FacesContext.getCurrentInstance().getExternalContext().redirect("faces/Mantenimiento.xhtml");
                                     } else{
-                                        if(rolUsuario.getId_RolUsuario() == 3){
                                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", cedula);
                                             FacesContext.getCurrentInstance().getExternalContext().redirect("faces/index.xhtml");
-                                        }
                                     }
                                 }else{
                                     setMsjError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Lo sentimos, pero usted se encuentra Inactivo en el sistema. Contacte al Coordinador a cargo</div>");
