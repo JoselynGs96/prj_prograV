@@ -40,9 +40,9 @@ public class DetalleDB {
 
             strSQL = "INSERT INTO [dbo].[DetSolicitud]\n"
                     + "           ([Id_EncSolicitud]\n"
-                    + "           ,[Id_Recurso]\n"
+                    + "           ,[Id_AgendaRecurso]\n"
                     + "           ,[Log_Activo])\n"
-                    + "     VALUES("+detalle.getEncabezado().id_Encabezado+","+detalle.getRecurso().id+","
+                    + "     VALUES("+detalle.getEncabezado().id_Encabezado+","+detalle.getAgenda().id_Agenda+","
                    + 1 + ")";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {

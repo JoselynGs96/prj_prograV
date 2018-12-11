@@ -11,20 +11,20 @@ package model;
  */
 public class Detalle {
 
-    int Id_Detalle = 0;
-    EncabezadoSolicitud encabezado = null;
-    JornadaAcademica jornadaAcademica = null;
-    int activo = 0;
-    Recurso recurso = null; 
+    int Id_Detalle;
+    EncabezadoSolicitud encabezado;
+    JornadaAcademica jornadaAcademica;
+    int activo;
+    Agenda agenda; 
 
     
     
-    public Detalle(int Id_Detalle, EncabezadoSolicitud encabezado, JornadaAcademica jornadaAcademica, int activo,Recurso recurso) {
+    public Detalle(int Id_Detalle, EncabezadoSolicitud encabezado, JornadaAcademica jornadaAcademica, int activo,Agenda agenda) {
         this.Id_Detalle = Id_Detalle;
         this.encabezado = encabezado;
         this.jornadaAcademica = jornadaAcademica;
         this.activo = activo;
-        this.recurso = recurso;
+        this.agenda = agenda;
     }
 
     public Detalle() {
@@ -61,12 +61,11 @@ public class Detalle {
     public void setActivo(int activo) {
         this.activo = activo;
     }
-    
-    public Recurso getRecurso() {
-        return recurso;
+public Agenda getAgenda() {
+        return agenda;
     }
 
-    public void setRecurso(Recurso recurso) {
-        this.recurso = recurso;
+    public void setAgenda(Agenda recurso) {
+        this.agenda = recurso;
     }
 }
