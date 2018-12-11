@@ -146,24 +146,18 @@ public class registrarBean implements Serializable {
 
     /*Ajax canton*/
     public LinkedList cargarCantonProv(AjaxBehavior evento) throws SNMPExceptions, SQLException {
-        this.setId_Canton(0);
-        this.setId_Distrito(0);
-        this.setId_Barrio(0);
         CantonDB can = new CantonDB();       
         return can.SeleccionarTodos(this.getId_Provincia());
     }
 
     /*Ajax distrito*/
     public LinkedList cargarDisCan(AjaxBehavior evento) throws SNMPExceptions, SQLException {
-         this.setId_Distrito(0);
-        this.setId_Barrio(0);
         DistritoDB dis = new DistritoDB();
         return dis.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton());
     }
 
     /*Ajax barrio*/
     public LinkedList cargarBarDis(AjaxBehavior evento) throws SNMPExceptions, SQLException {
-         this.setId_Barrio(0);
         BarrioDB barr = new BarrioDB();
         return barr.SeleccionarTodos(this.getId_Provincia(), this.getId_Canton(), this.getId_Distrito());
     }
