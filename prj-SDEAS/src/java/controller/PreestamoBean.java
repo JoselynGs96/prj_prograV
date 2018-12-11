@@ -78,8 +78,8 @@ public class PreestamoBean implements Serializable {
             usuario = usuarioDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
             setNombre(usuario.getNombreCompleto());
         }
-        if (!recursoDB.seleccionarTodos().isEmpty()) {
-            listaRecurso = recursoDB.seleccionarTodos();          
+        if (!recursoDB.seleccionarTodosPorProgra(usuario.getId()).isEmpty()) {
+            listaRecurso = recursoDB.seleccionarTodosPorProgra(usuario.getId());          
         } else {
             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen recurso</div>");
         }
