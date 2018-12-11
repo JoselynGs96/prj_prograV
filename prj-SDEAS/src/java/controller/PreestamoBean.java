@@ -293,6 +293,7 @@ public class PreestamoBean implements Serializable {
 
     /*Este metodo cuenta cuantos dias selecciono el usuario*/
     public void contadorActivos() {
+        this.setContador(0);
         if (this.isLunes()) {
             this.setContador(this.getContador() + 1);
         }
@@ -374,8 +375,8 @@ public class PreestamoBean implements Serializable {
         for (Recurso re : listaRecursoAgregardos) {
             contadorfor++;
             Agenda agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), re, 1, this.getObservaciones());
-            int AgendaBD = agendaDB.SeleccionarExistente(agendaNueva);
-            if (AgendaBD == 0) {
+            int Detalle = agendaDB.SeleccionarExistente(agendaNueva);
+            if (Detalle == 0) {
                 contadorRespuestas++;
 
             }
@@ -393,6 +394,7 @@ public class PreestamoBean implements Serializable {
 
     public void ingresarAgendas() throws ParseException, SNMPExceptions, SQLException {
 try{
+    this.setMensajeBueno("");
         EncabezadoSolicitudDB encabezadoDB = new EncabezadoSolicitudDB();
         DetalleDB detalleDB = new DetalleDB();
         AgendaDB agendaDB = new AgendaDB();
@@ -403,15 +405,16 @@ try{
                     if (validaExistente()) {
                         /*INGRESO EL ENCABEZADO*/
                         EncabezadoSolicitud encabezado = new EncabezadoSolicitud();
-                        encabezado.setFuncionario(usuarioDB.SeleccionarPorId(207750517));
+                        encabezado.setFuncionario(usuario);
                         encabezadoDB.registrar(encabezado);
                        
                          /*Ingeso la agenda*/
                           LinkedList<Agenda> listaAgenda= new LinkedList<Agenda>();
                         for (Recurso re : listaRecursoAgregardos) {
                             Agenda agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), re, 1, this.getObservaciones());
-                            agendaNueva.setId_Registra(207750517);
+                            agendaNueva.setId_Registra(usuario.getId());
                             agendaDB.registrar(agendaNueva);
+                            agendaNueva.setId_Agenda(agendaDB.SeleccionarUltimo());
                             listaAgenda.add(agendaNueva);
                         }
                          /*Ingreso el detalle*/
@@ -434,11 +437,13 @@ try{
             } else {
                 this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Los días seleccionados no concuerdan con el rango de fechas...¡Intentelo de nuevo!</div>");
             }
-        }
+        }else{
+                  this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Las fechas no pueden ser menor a la actual...¡Intentelo de nuevo!</div>");
+             }
         }
          
          }catch(Exception e){
-            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al buscar el curso...¡Intentelo de nuevo!</div>");
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al enviar el prestamo...¡Intentelo de nuevo!</div>");
         }
 
     }
@@ -448,8 +453,8 @@ try{
         this.setHoraInicio(null);
         this.setHoraFinal(null);
         
-          if (!recursoDB.seleccionarTodos().isEmpty()) {
-            listaRecurso = recursoDB.seleccionarTodos();          
+         if (!recursoDB.seleccionarTodosPorProgra(usuario.getId()).isEmpty()) {
+            listaRecurso = recursoDB.seleccionarTodosPorProgra(usuario.getId());          
         } else {
             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen recurso</div>");
         }

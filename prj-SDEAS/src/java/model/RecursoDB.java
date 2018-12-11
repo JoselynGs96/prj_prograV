@@ -278,8 +278,8 @@ public class RecursoDB {
                     + "      ,r.[Id_Programa]\n"
                     + "      ,r.[Log_Activo]\n"
                     + "from Recurso r , Usuario u inner join Programa_Usuario p\n"
-                    + "on u.Id_Usuario=" + id + " and p.Id_Usuario=" + id
-                    + "where r.Id_Programa = 1001 AND R.Id_Programa= P.Id_Programa and r.Log_Activo=1";
+                    + "on u.Id_Usuario="+id+" and p.Id_Usuario="+id
+                    + " where  R.Id_Programa= P.Id_Programa and r.Log_Activo=1";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -293,12 +293,9 @@ public class RecursoDB {
                 TipoRecurso tipoRecurso = tdb.SeleccionarPorId(rsPA.getInt("Id_TipoRecurso"));
                 EnumTipoInfraestructura TipoInfraestructura = EnumTipoInfraestructura.valueOf(rsPA.getString("TipoInfraestructura"));
                 Programa programa = new ProgramaDB().SeleccionarPorId(rsPA.getInt("Id_Programa"));
-                int idEdita = rsPA.getInt("Id_Edita");
-                Date fechaEdita = rsPA.getDate("FechaEdita");
                 int Log_Activo = rsPA.getInt("Log_Activo");
                 Recurso rec = new Recurso(Id_Recurso, Nombre, Dsc_Recurso, Cantidad, Capacidad, tipoRecurso, Log_Activo == 0 ? "Inactivo" : "Activo");
-                rec.setId_Edita(idEdita);
-                rec.setFechaEdita(fechaEdita);
+
                 rec.setTipoInfraestructura(TipoInfraestructura);
                 rec.setPrograma(programa);
                 listaRecurso.add(rec);
