@@ -24,6 +24,7 @@ import model.Detalle;
 import model.DetalleDB;
 import model.EncabezadoSolicitud;
 import model.EncabezadoSolicitudDB;
+import model.EstadoSolicitudDB;
 import model.JornadaAcademica;
 import model.Programa;
 import model.ProgramaDB;
@@ -34,6 +35,7 @@ import model.RecursoDB;
 import model.Usuario;
 import model.UsuarioDB;
 import model.UsuarioMante;
+import model.UsuarioManteDB;
 
 /**
  *
@@ -74,6 +76,9 @@ public class JornadaAcademicaBean implements Serializable {
     int curso = 0;
     String estado = "Activo";
     String nombre;
+    LinkedList<EncabezadoSolicitud> listaSolicitud = new LinkedList<EncabezadoSolicitud>();
+
+   
 
     /**
      * Creates a new instance of JornadaAcademicaBean
@@ -101,6 +106,33 @@ public class JornadaAcademicaBean implements Serializable {
             listaCurso = cursoDB.SeleccionarTodosPorId(programa);
         } else {
             setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen Cursos para ese programa</div>");
+        }
+          if (!encabezadoDB.SeleccionarTodosPorId(usuario.getId()).isEmpty()) {
+            listaSolicitud = encabezadoDB.SeleccionarTodosPorId(usuario.getId());
+        } else {
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Usted no ha realizado ninguna solicitud</div>");
+        }
+    }
+     public void cancelar(int id) throws SNMPExceptions, SQLException {
+      
+        EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB();
+         AgendaDB ageDB = new AgendaDB();
+        EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
+        UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
+        LinkedList<Agenda> listaAgenda = new LinkedList<Agenda>();
+         listaAgenda = ageDB.SeleccionarTodosPorEncabezado(id);
+        try {
+            EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
+            enca.setLog(0);            
+            ddd.ActualizarEstadoSolicitud(enca);
+            
+              for (Agenda re : listaAgenda) {
+                 ageDB.ActualizarEstadoSolicitud(re.getId_Agenda());
+              }
+              setMensajeBueno("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Ha cancelado su Solicitud correctamente!</div>");
+
+        } catch (Exception e) {
+
         }
     }
 
@@ -694,6 +726,13 @@ public void limpiar()throws SNMPExceptions,SQLException{
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+     public LinkedList<EncabezadoSolicitud> getListaSolicitud() {
+        return listaSolicitud;
+    }
+
+    public void setListaSolicitud(LinkedList<EncabezadoSolicitud> listaSolicitud) {
+        this.listaSolicitud = listaSolicitud;
     }
 
 }

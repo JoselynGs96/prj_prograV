@@ -71,7 +71,7 @@ public class ConsultaCancelacionBean implements Serializable {
         EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
         UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
         LinkedList<Agenda> listaAgenda = new LinkedList<Agenda>();
-         listaAgenda = agenDB.SeleccionarTodosPorEncabezado(id);
+         listaAgenda = ageDB.SeleccionarTodosPorEncabezado(id);
         try {
             EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
             enca.setLog(0);            

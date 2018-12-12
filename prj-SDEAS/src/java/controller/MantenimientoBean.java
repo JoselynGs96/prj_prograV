@@ -59,25 +59,22 @@ public class MantenimientoBean implements Serializable {
     EncabezadoSolicitud enca;
     Agenda agenda;
     Detalle detalle;
- LinkedList<EncabezadoSolicitud> listaEnca = new LinkedList<EncabezadoSolicitud>();
-String mensajeFiltro;
+    LinkedList<EncabezadoSolicitud> listaEnca = new LinkedList<EncabezadoSolicitud>();
+    String mensajeFiltro;
 
-   
     /*Para el modal*/
     String id;
     String nombrefuncionario;
     String Tipo;
     String Estado;
     String log;
-      String buscarFiltro = "";
-         LinkedList<EncabezadoSolicitud> listaEncabe = new LinkedList<EncabezadoSolicitud>();
-        String MsjRechazo="";
+    String buscarFiltro = "";
+    LinkedList<EncabezadoSolicitud> listaEncabe = new LinkedList<EncabezadoSolicitud>();
+    String MsjRechazo = "";
 
-  
     /*Ajendas*/
     LinkedList<Agenda> listaAgenda = new LinkedList<Agenda>();
     String Agendas = "";
-   
 
     public MantenimientoBean() throws SNMPExceptions, SQLException {
         ObtenerDatosSesion datos = new ObtenerDatosSesion();
@@ -98,79 +95,125 @@ String mensajeFiltro;
         seleccionarTodos();
 
     }
-      public void verMas(int i) throws SNMPExceptions, SQLException{
+
+    public void verMas2(int i) throws SNMPExceptions, SQLException {
         id = "";
         nombrefuncionario = "";
         Tipo = "";
         listaAgenda.clear();
-        Estado="";
-        log="";
-        Agendas="";    
+        Estado = "";
+        log = "";
+        Agendas = "";
         EncabezadoSolicitudDB encDB = new EncabezadoSolicitudDB();
         AgendaDB agenDB = new AgendaDB();
-        
-        EncabezadoSolicitud encaSeleccionado = encDB.SeleccionarporId(i);   
-        
-        id= encaSeleccionado.getId_Encabezado()+"";
-        nombrefuncionario= encaSeleccionado.getFuncionario().getNombreCompleto();
-        Tipo= encaSeleccionado.getTipo_solicitud().getNombre();
-        Estado= encaSeleccionado.getEstado().getNombre();
-        
-          listaAgenda = agenDB.SeleccionarTodosPorEncabezado(i);
-          int contador=1;
-         for (Agenda re : listaAgenda) {           
-             Agendas += "Agenda #"+(contador++)+": \n"+
-             "Identificador: "+ re.getId_Agenda()+"\n"+
-             "Dias selecconados: ";
-             if(re.isLunes()){
-                 Agendas+= "Lunes, ";
-             }
-             if(re.isMartes()){
-                 Agendas+= "Martes ";
-             }
-             if(re.isMiercoles()){
-                 Agendas+= "Miércoles ";
-             }
-             if(re.isJueves()){
-                 Agendas+= "Jueves ";
-             }
-             if(re.isViernes()){
-                 Agendas+= "Viernes ";
-             }
-             if(re.isSabado()){
-                 Agendas+= "Sabado ";
-             }
-             if(re.isDomingo()){
-                 Agendas+= "Domingo. ";
-             }
-             Agendas+="\n Fecha Inicio: "+re.getFechaInicio()+" Hora Inicio: "+re.getHoraInicio()+"\n"+
-                "Fecha Final: "+re.getFechaFinal()+" Hora Final: "+re.getHoraFinal()+"\n Recurso: "+ re.getRecurso().getNombre()+
-                     "\n Observaciones: "+re.getObseraciones()+"\n\n\n";
-             
-         }
-        
-        
-       
-       
-        
-        
-        
-        
+
+        EncabezadoSolicitud encaSeleccionado = encDB.SeleccionarporId(i);
+
+        id = encaSeleccionado.getId_Encabezado() + "";
+        nombrefuncionario = encaSeleccionado.getFuncionario().getNombreCompleto();
+        Tipo = encaSeleccionado.getTipo_solicitud().getNombre();
+        Estado = encaSeleccionado.getEstado().getNombre();
+
+        listaAgenda = agenDB.SeleccionarTodosPorEncabezado(i);
+        int contador = 1;
+        for (Agenda re : listaAgenda) {
+            Agendas += "Agenda #" + (contador++) + ": \n"
+                    + "Identificador: " + re.getId_Agenda() + "\n"
+                    + "Dias selecconados: ";
+            if (re.isLunes()) {
+                Agendas += "Lunes, ";
+            }
+            if (re.isMartes()) {
+                Agendas += "Martes ";
+            }
+            if (re.isMiercoles()) {
+                Agendas += "Miércoles ";
+            }
+            if (re.isJueves()) {
+                Agendas += "Jueves ";
+            }
+            if (re.isViernes()) {
+                Agendas += "Viernes ";
+            }
+            if (re.isSabado()) {
+                Agendas += "Sabado ";
+            }
+            if (re.isDomingo()) {
+                Agendas += "Domingo. ";
+            }
+            Agendas += "\n Fecha Inicio: " + re.getFechaInicio() + " Hora Inicio: " + re.getHoraInicio() + "\n"
+                    + "Fecha Final: " + re.getFechaFinal() + " Hora Final: " + re.getHoraFinal() + "\n Recurso: " + re.getRecurso().getNombre()
+                    + "\n Observaciones: " + re.getObseraciones() + "\n\n\n";
+
+        }
+
         PrimeFaces.current().executeScript("abrirModal();");
-     }
-      
-      public void botonAceptar( int id) throws SNMPExceptions, SQLException{
-       verMas(id);
-         EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB(); 
-             EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
-         setMensajeFiltro("");
+    }
+
+    public void verMas(int i) throws SNMPExceptions, SQLException {
+        id = "";
+        nombrefuncionario = "";
+        Tipo = "";
+        listaAgenda.clear();
+        Estado = "";
+        log = "";
+        Agendas = "";
+        EncabezadoSolicitudDB encDB = new EncabezadoSolicitudDB();
+        AgendaDB agenDB = new AgendaDB();
+
+        EncabezadoSolicitud encaSeleccionado = encDB.SeleccionarporId(i);
+
+        id = encaSeleccionado.getId_Encabezado() + "";
+        nombrefuncionario = encaSeleccionado.getFuncionario().getNombreCompleto();
+        Tipo = encaSeleccionado.getTipo_solicitud().getNombre();
+        Estado = encaSeleccionado.getEstado().getNombre();
+
+        listaAgenda = agenDB.SeleccionarTodosPorEncabezado(i);
+        int contador = 1;
+        for (Agenda re : listaAgenda) {
+            Agendas += "Agenda #" + (contador++) + ": \n"
+                    + "Identificador: " + re.getId_Agenda() + "\n"
+                    + "Dias selecconados: ";
+            if (re.isLunes()) {
+                Agendas += "Lunes, ";
+            }
+            if (re.isMartes()) {
+                Agendas += "Martes ";
+            }
+            if (re.isMiercoles()) {
+                Agendas += "Miércoles ";
+            }
+            if (re.isJueves()) {
+                Agendas += "Jueves ";
+            }
+            if (re.isViernes()) {
+                Agendas += "Viernes ";
+            }
+            if (re.isSabado()) {
+                Agendas += "Sabado ";
+            }
+            if (re.isDomingo()) {
+                Agendas += "Domingo. ";
+            }
+            Agendas += "\n Fecha Inicio: " + re.getFechaInicio() + " Hora Inicio: " + re.getHoraInicio() + "\n"
+                    + "Fecha Final: " + re.getFechaFinal() + " Hora Final: " + re.getHoraFinal() + "\n Recurso: " + re.getRecurso().getNombre()
+                    + "\n Observaciones: " + re.getObseraciones() + "\n\n\n";
+
+        }
+
+    }
+
+    public void botonAceptar(int id) throws SNMPExceptions, SQLException {
+        verMas2(id);
+        EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB();
+        EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
+        setMensajeFiltro("");
         UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
         String remitente = "joselyn.grana2@gmail.com";  //Para la dirección nomcuenta@gmail.com
-        String destinatario =  usu.getCorreo(); //A quien le quieres escribir.
+        String destinatario = usu.getCorreo(); //A quien le quieres escribir.
         String asunto = "Aceptación de SDEAS";
-        String cuerpo = "Estimado(a): "+ usu.getNombreCompleto() +",Se le notifica que su solicitud de Evento a SDEAS fue Aceptada. \n Agendas Aceptadas: \n"+this.getAgendas();
-           
-        
+        String cuerpo = "Estimado(a): " + usu.getNombreCompleto() + ",Se le notifica que su solicitud de Evento a SDEAS fue Aceptada. \n Agendas Aceptadas: \n" + this.getAgendas();
+
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
         props.put("mail.smtp.user", remitente);
@@ -182,16 +225,13 @@ String mensajeFiltro;
         Session session = Session.getDefaultInstance(props);
         MimeMessage message = new MimeMessage(session);
 
-        
         try {
             /*Aqui Actualizo el mae*/
-           
-          
-             EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
-            enca.setEstado(estadodb.SeleccionarPorId(2));            
+
+            EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
+            enca.setEstado(estadodb.SeleccionarPorId(2));
             ddd.ActualizarEstadoSolicitud(enca);
-            
-            
+
             message.setFrom(new InternetAddress(remitente));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));   //Se podrían añadir varios de la misma manera
             message.setSubject(asunto);
@@ -201,26 +241,24 @@ String mensajeFiltro;
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
             setMensajeFiltro("<div class='alert alert-success alert-dismissible fade in' >  <strong>Exito!&nbsp;</strong>Solicitud Aceptada correctamente, correo enviado!</div>");
-        }
-        catch (MessagingException me) {
+        } catch (MessagingException me) {
             setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Error!&nbsp;</strong>El correo no se pudo enviar</div>");  //Si se produce un error  //Si se produce un error
         }
         seleccionarTodos();
     }
-      
-       public void botonDenegar(int id) throws SNMPExceptions, SQLException{
-             verMas(id);
+
+    public void botonDenegar(int id) throws SNMPExceptions, SQLException {
+        verMas2(id);
         setMensajeFiltro("");
-         EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB(); 
-             EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
-           UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
+        EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB();
+        EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
+        UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
         String remitente = "joselyn.grana2@gmail.com";  //Para la dirección nomcuenta@gmail.com
-        String destinatario =  usu.getCorreo(); //A quien le quieres escribir.
+        String destinatario = usu.getCorreo(); //A quien le quieres escribir.
         String asunto = "Plataforma SDEAS";
-        String cuerpo = "Estimado(a): "+ usu.getNombreCompleto() +", Se le notifica que su solicitud de evento en SDEAS fue Denegada, de las siguientes agendas: \n"+Agendas
+        String cuerpo = "Estimado(a): " + usu.getNombreCompleto() + ", Se le notifica que su solicitud de evento en SDEAS fue Denegada, de las siguientes agendas: \n" + Agendas
                 + "\nDenegadas por el siguiente motivo:\n" + getMsjRechazo();
-        
-        
+
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
         props.put("mail.smtp.user", remitente);
@@ -232,7 +270,6 @@ String mensajeFiltro;
         Session session = Session.getDefaultInstance(props);
         MimeMessage message = new MimeMessage(session);
 
-        
         try {
             message.setFrom(new InternetAddress(remitente));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));   //Se podrían añadir varios de la misma manera
@@ -242,79 +279,75 @@ String mensajeFiltro;
             transport.connect("smtp.gmail.com", remitente, "Abril1210jgs");
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-           
-            
-             EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
-            enca.setEstado(estadodb.SeleccionarPorId(3));            
+
+            EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
+            enca.setEstado(estadodb.SeleccionarPorId(3));
             ddd.ActualizarEstadoSolicitud(enca);
-            
-            
-            
+
             setMensajeFiltro("<div class='alert alert-success alert-dismissible fade in' >  <strong>Exito!&nbsp;</strong>Correo enviado satisfactoriamente</div>");
-        }
-        catch (MessagingException me) {
+        } catch (MessagingException me) {
             setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' >  <strong>Error!&nbsp;</strong>El correo no se pudo enviar</div>");  //Si se produce un error
         }
-        
+
         seleccionarTodos();
     }
-      
-      
-       public void buscar() throws SNMPExceptions, SQLException{
+
+    public void buscar() throws SNMPExceptions, SQLException {
         LinkedList<EncabezadoSolicitud> uu = new LinkedList<>();
-        
+
         EncabezadoSolicitudDB encaDB = new EncabezadoSolicitudDB();
-        try{
-        if(!getBuscarFiltro().equals("")){
-            if(!encaDB.FiltrarEncabezado(buscarFiltro).isEmpty()){
-                listaEnca= encaDB.SeleccionarTodosporCoordinador(usuario.getId());                
-                uu = encaDB.FiltrarEncabezado(buscarFiltro);
-                LinkedList<EncabezadoSolicitud> listafiltro = new LinkedList<>();
-                listafiltro=uu; 
-                
+        try {
+            if (!getBuscarFiltro().equals("")) {
+                if (!encaDB.FiltrarEncabezado(buscarFiltro).isEmpty()) {
+                    listaEnca = encaDB.SeleccionarTodosporCoordinador(usuario.getId());
+                    uu = encaDB.FiltrarEncabezado(buscarFiltro);
+                    LinkedList<EncabezadoSolicitud> listafiltro = new LinkedList<>();
+                    listafiltro = uu;
+
                     for (EncabezadoSolicitud lu : listafiltro) {
                         boolean ind = false;
                         for (EncabezadoSolicitud encabe : listaEnca) {
-                            if(encabe.getId_Encabezado()== lu.getId_Encabezado()){
+                            if (encabe.getId_Encabezado() == lu.getId_Encabezado()) {
                                 ind = true;
                             }
                         }
-                        
-                        if(ind == false){
+
+                        if (ind == false) {
                             uu.remove(lu);
                         }
                     }
-                    
-                    if(!uu.isEmpty()){
+
+                    if (!uu.isEmpty()) {
                         listaEnca = uu;
-                    }else{
+                    } else {
                         seleccionarTodos();
                         setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
                     }
-                
-                 setMensajeFiltro("");
-            }else{
+
+                    setMensajeFiltro("");
+                } else {
+                    seleccionarTodos();
+                    setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+                }
+            } else {
                 seleccionarTodos();
-                setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>No se encontraron registros con el dato proporcionado</div>");
+                setMensajeFiltro("");
             }
-        }else{
-            seleccionarTodos();
-            setMensajeFiltro("");
-        }
-        }catch(Exception e){
+        } catch (Exception e) {
             setMensajeFiltro("<div class='alert alert-danger alert-dismissible fade in' > <strong>Ups!&nbsp;</strong>Hubo un error al buscar la Solicitud...¡Intentelo de nuevo!</div>");
         }
-     }
+    }
 
     public void llenarCalendario() {
         eventModel = new DefaultScheduleModel();
         eventModel.addEvent(new DefaultScheduleEvent("Evento: despedida", fecha, fecha));
     }
-     public void seleccionarTodos() throws SNMPExceptions, SQLException{
+
+    public void seleccionarTodos() throws SNMPExceptions, SQLException {
         EncabezadoSolicitudDB enca = new EncabezadoSolicitudDB();
-        if(!enca.SeleccionarTodosporCoordinador(usuario.getId()).isEmpty()){
-            listaEnca = enca.SeleccionarTodosporCoordinador(usuario.getId());         
-           
+        if (!enca.SeleccionarTodosporCoordinador(usuario.getId()).isEmpty()) {
+            listaEnca = enca.SeleccionarTodosporCoordinador(usuario.getId());
+
         }
     }
 
@@ -421,7 +454,8 @@ String mensajeFiltro;
     public void setLog(String log) {
         this.log = log;
     }
-      public LinkedList<Agenda> getListaAgenda() {
+
+    public LinkedList<Agenda> getListaAgenda() {
         return listaAgenda;
     }
 
@@ -436,13 +470,15 @@ String mensajeFiltro;
     public void setAgendas(String Agendas) {
         this.Agendas = Agendas;
     }
-  public LinkedList<EncabezadoSolicitud> getListaEnca() {
+
+    public LinkedList<EncabezadoSolicitud> getListaEnca() {
         return listaEnca;
     }
 
     public void setListaEnca(LinkedList<EncabezadoSolicitud> listaEnca) {
         this.listaEnca = listaEnca;
     }
+
     public String getMensajeFiltro() {
         return mensajeFiltro;
     }
@@ -450,7 +486,7 @@ String mensajeFiltro;
     public void setMensajeFiltro(String mensajeFiltro) {
         this.mensajeFiltro = mensajeFiltro;
     }
-  
+
     public String getBuscarFiltro() {
         return buscarFiltro;
     }
@@ -466,7 +502,8 @@ String mensajeFiltro;
     public void setListaEncabe(LinkedList<EncabezadoSolicitud> listaEncabe) {
         this.listaEncabe = listaEncabe;
     }
-     public String getMsjRechazo() {
+
+    public String getMsjRechazo() {
         return MsjRechazo;
     }
 
