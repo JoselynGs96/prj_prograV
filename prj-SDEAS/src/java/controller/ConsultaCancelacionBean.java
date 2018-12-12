@@ -76,7 +76,7 @@ public class ConsultaCancelacionBean implements Serializable {
             ddd.ActualizarEstadoSolicitud(enca);
             
               for (Agenda re : listaAgenda) {
-                 ageDB.ActualizarEstadoSolicitud(re.id);
+                 ageDB.ActualizarEstadoSolicitud(re.getId_Agenda());
               }
 
         } catch (Exception e) {

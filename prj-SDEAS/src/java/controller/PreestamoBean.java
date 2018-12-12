@@ -409,8 +409,10 @@ try{
                         /*INGRESO EL ENCABEZADO*/
                         EncabezadoSolicitud encabezado = new EncabezadoSolicitud();
                         encabezado.setFuncionario(usuario);
-                       ProgramaUsuario pro = prousuDB.VerificarRol(usuario.getId(), 3);
-                        encabezado.setCoordinador(prousuDB.SeleccionarTodosCoordinadorPorPrograma((pro.getPrograma().getId())));
+                        ProgramaUsuario pro = prousuDB.VerificarRol(usuario.getId(), 3);
+                        UsuarioMante uuu = new UsuarioMante();
+                        uuu = (prousuDB.SeleccionarTodosCoordinadorPorPrograma(pro.getPrograma().getId()));
+                        encabezado.setCoordinador(new UsuarioDB().SeleccionarPorId(uuu.getId()));
                         encabezadoDB.registrar(encabezado);
                        
                          /*Ingeso la agenda*/
