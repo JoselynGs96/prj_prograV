@@ -20,7 +20,7 @@ import java.util.LinkedList;
 public class ReporteDB {
     
     
-     public LinkedList<Reporte> Reporte() throws SNMPExceptions,
+     public LinkedList<Reporte> Reporte(int idCoord) throws SNMPExceptions,
             SQLException {
         String select = "";
         EncabezadoSolicitudDB enDB = new EncabezadoSolicitudDB();
@@ -29,15 +29,13 @@ public class ReporteDB {
         EstadoSolicitudDB eDB = new EstadoSolicitudDB();
         ResultSet rsPA = null;
         LinkedList<Reporte> lista = new LinkedList<Reporte>();
-        SimpleDateFormat formatFecha = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat formatHora = new SimpleDateFormat("HH:mm a");
         Agenda agen = null;
 
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "Select DetSolicitud.Id_EncSolicitud, Id_TipoSolicitud, Id_Funcionario, Id_EstadoSolicitud, FechaInicio, FechaFinal, HoraInicio, HoraFinal from DetSolicitud INNER JOIN  EncSolicitud ON EncSolicitud.Id_EncSolicitud = DetSolicitud.Id_EncSolicitud INNER JOIN AgendaRecurso ON AgendaRecurso.Id_AgendaRecurso  = DetSolicitud.Id_AgendaRecurso";
+                    = "Select DetSolicitud.Id_EncSolicitud, Id_TipoSolicitud, Id_Funcionario, Id_EstadoSolicitud, FechaInicio, FechaFinal, HoraInicio, HoraFinal from DetSolicitud INNER JOIN  EncSolicitud ON EncSolicitud.Id_EncSolicitud = DetSolicitud.Id_EncSolicitud INNER JOIN AgendaRecurso ON AgendaRecurso.Id_AgendaRecurso  = DetSolicitud.Id_AgendaRecurso INNER JOIN Recurso ON Recurso.Id_Recurso = AgendaRecurso.Id_Recurso INNER JOIN Programa_Usuario ON Programa_Usuario.Id_Programa = Recurso.Id_Programa Where Programa_Usuario.Id_Usuario = "+idCoord ;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 

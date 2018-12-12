@@ -136,7 +136,7 @@
                       </a>
                   </li>
                   <li class="sub-menu">
-                      <a href="">
+                      <a href="ReportePorFuncionario.xlsx"  target="_blank">
                           <i class=" fa fa-bar-chart-o"></i>
                           <span>Reportes por Funci.</span>
                       </a>
@@ -160,14 +160,9 @@
                   <p:ajax event="eventSelect" listener="#{reporteOutlookBean.seleccionado}" update="eventDetail" oncomplete="PF('modalCalen').show();"></p:ajax>
               </p:schedule>
           
-              <p:dialog widgetVar="modalCalen" header="Detalle" width="400px" resizable="false" modal="true" showEffect="clip" >
+              <p:dialog widgetVar="modalCalen" header="Detalle de la Solicitud" width="400px" resizable="false" modal="true" showEffect="clip" >
                   <p:outputPanel id="eventDetail" style="width: 400px">
-                          <h:outputLabel value="Titulo:&nbsp;"></h:outputLabel>
-                          <h:outputLabel value="#{reporteOutlookBean.evento.title}"></h:outputLabel>
-                          <hr></hr>
-                          <h:outputLabel value="Descripcion: "></h:outputLabel>
-                          <br></br>
-                          <h:inputTextarea style="border: 0px; width: 100%; height: 100px" value="#{reporteOutlookBean.evento.description}"></h:inputTextarea>
+                      <h:inputTextarea style="border: 0px; width: 100%; height: 100px" value="#{reporteOutlookBean.evento.description}"></h:inputTextarea>
                              
                   </p:outputPanel>
               </p:dialog>

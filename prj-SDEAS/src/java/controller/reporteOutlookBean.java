@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.ObtenerDatosSesion;
 import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -45,6 +46,7 @@ public class reporteOutlookBean implements Serializable {
     DefaultScheduleEvent evento;
     String msj = "";
     SimpleDateFormat  formato = new SimpleDateFormat("dd-MM-yyyy");
+    int idCoord = 0;
     
     public reporteOutlookBean() throws SNMPExceptions {
         inicializar();
@@ -53,11 +55,14 @@ public class reporteOutlookBean implements Serializable {
     
     @PostConstruct
     public void inicializar(){
+        ObtenerDatosSesion datos = new ObtenerDatosSesion();
+        datos.consultarSesion();
+        idCoord = Integer.parseInt(datos.getId_Usuario());
         reporteDB = new ReporteDB();
         eventModel = new DefaultScheduleModel();
         evento = new DefaultScheduleEvent();
         try{
-            listaSolicitudes = reporteDB.Reporte();
+            listaSolicitudes = reporteDB.Reporte(idCoord);
              for (Reporte listaSolicitude : listaSolicitudes) {
                 DefaultScheduleEvent evento = new DefaultScheduleEvent();
                 evento.setStartDate(listaSolicitude.getFechaInicio());
@@ -144,6 +149,14 @@ public class reporteOutlookBean implements Serializable {
 
     public void setEvento(DefaultScheduleEvent evento) {
         this.evento = evento;
+    }
+
+    public int getIdCoord() {
+        return idCoord;
+    }
+
+    public void setIdCoord(int idCoord) {
+        this.idCoord = idCoord;
     }
 
 
