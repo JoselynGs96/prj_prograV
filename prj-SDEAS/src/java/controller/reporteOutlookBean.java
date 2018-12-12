@@ -9,15 +9,23 @@ import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
-import static javafx.scene.text.Font.font;
-import static javafx.scene.text.Font.font;
-import static javafx.scene.text.Font.font;
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import model.Detalle;
 import model.DetalleDB;
+import model.Reporte;
+import model.ReporteDB;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
 /**
@@ -31,41 +39,88 @@ public class reporteOutlookBean implements Serializable {
     /**
      * Creates a new instance of reporteOutlookBean
      */
-    LinkedList<Detalle> listaSolicitudes = new LinkedList<>();
-    ScheduleModel eventModel = new DefaultScheduleModel();
-    Date fecha = new Date();
-    DetalleDB ddb = new DetalleDB();
+    LinkedList<Reporte> listaSolicitudes = new LinkedList<>();
+    ScheduleModel eventModel;
+    ReporteDB reporteDB = null;
+    DefaultScheduleEvent evento;
     String msj = "";
+    SimpleDateFormat  formato = new SimpleDateFormat("dd-MM-yyyy");
     
     public reporteOutlookBean() throws SNMPExceptions {
-        llenarLista();
+        inicializar();
     }
     
-    public void llenarLista() throws SNMPExceptions{
-        if(ddb.SeleccionarTodos().isEmpty()){
+    
+    @PostConstruct
+    public void inicializar(){
+        reporteDB = new ReporteDB();
+        eventModel = new DefaultScheduleModel();
+        evento = new DefaultScheduleEvent();
+        try{
+            listaSolicitudes = reporteDB.Reporte();
+             for (Reporte listaSolicitude : listaSolicitudes) {
+                DefaultScheduleEvent evento = new DefaultScheduleEvent();
+                evento.setStartDate(listaSolicitude.getFechaInicio());
+                evento.setEndDate(listaSolicitude.getFechaFinal());
+                evento.setId(listaSolicitude.getEncabezado().getId_Encabezado()+"");
+                evento.setTitle("#"+listaSolicitude.getEncabezado().getId_Encabezado()+", "+listaSolicitude.getEncabezado().getTipo_solicitud().getNombre());
+                evento.setDescription("Id Solicitud:"+listaSolicitude.getEncabezado().getId_Encabezado()+"\nTipo Solicitud:"+listaSolicitude.getEncabezado().getTipo_solicitud().getNombre() +"\nFuncionario: "+listaSolicitude.getUsuario().getNombreCompleto()+"\n Fecha y Hora de Inicio: "+listaSolicitude.getFechaInicio()+" "+listaSolicitude.getHoraInicio() +"\nFecha y hora Final:"+listaSolicitude.getFechaFinal() +" "+listaSolicitude.getHoraFinal() +"\n Estado: "+listaSolicitude.getEncabezado().getEstado().getNombre());
+                evento.setData(listaSolicitude.getEncabezado().getId_Encabezado());
+                evento.setEditable(false);
+                
+                eventModel.addEvent(evento);
+             }
+             
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error","Error en ejecutar"));
             setMsj("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Aún no hay eventos</div>");
-        }else{
-            for (Detalle listaSolicitude : listaSolicitudes) {
-                eventModel.addEvent(new DefaultScheduleEvent("Champions League Match",fecha,fecha ));
+        }
+                
+    }
+    
+    public void seleccionado(SelectEvent sel) throws ParseException{
+        ScheduleEvent event = (ScheduleEvent)sel.getObject();
+        for (Reporte listaSolicitude : listaSolicitudes) {
+            if(listaSolicitude.getEncabezado().getId_Encabezado() == (Integer)event.getData()){
+                evento.setId(listaSolicitude.getEncabezado().getId_Encabezado()+"");
+                evento.setTitle("#"+listaSolicitude.getEncabezado().getId_Encabezado()+", "+listaSolicitude.getEncabezado().getTipo_solicitud().getNombre());
+                evento.setDescription("Id Solicitud:"+listaSolicitude.getEncabezado().getId_Encabezado()+"\nTipo Solicitud:"+listaSolicitude.getEncabezado().getTipo_solicitud().getNombre() +"\nFuncionario: "+listaSolicitude.getUsuario().getNombreCompleto()+"\n Fecha y Hora de Inicio: "+listaSolicitude.getFechaInicio()+" "+listaSolicitude.getHoraInicio() +"\nFecha y hora Final:"+listaSolicitude.getFechaFinal() +" "+listaSolicitude.getHoraFinal() +"\n Estado: "+listaSolicitude.getEncabezado().getEstado().getNombre());
+                evento.setData(listaSolicitude.getEncabezado().getId_Encabezado());
+                evento.setEditable(false);
+                break;
             }
         }
     }
 
-    public LinkedList<Detalle> getListaSolicitudes() {
+    public LinkedList<Reporte> getListaSolicitudes() {
         return listaSolicitudes;
     }
 
-    public void setListaSolicitudes(LinkedList<Detalle> listaSolicitudes) {
+    public void setListaSolicitudes(LinkedList<Reporte> listaSolicitudes) {
         this.listaSolicitudes = listaSolicitudes;
     }
 
-    public DetalleDB getDdb() {
-        return ddb;
+    public SimpleDateFormat getFormato() {
+        return formato;
     }
 
-    public void setDdb(DetalleDB ddb) {
-        this.ddb = ddb;
+    public void setFormato(SimpleDateFormat formato) {
+        this.formato = formato;
     }
+
+    
+  
+    public ReporteDB getReporteDB() {
+        return reporteDB;
+    }
+
+    public void setReporteDB(ReporteDB reporteDB) {
+        this.reporteDB = reporteDB;
+    }
+
+    
 
     public String getMsj() {
         return msj;
@@ -83,13 +138,17 @@ public class reporteOutlookBean implements Serializable {
         this.eventModel = eventModel;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public DefaultScheduleEvent getEvento() {
+        return evento;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setEvento(DefaultScheduleEvent evento) {
+        this.evento = evento;
     }
+
+
+ 
+    
     
     
 }

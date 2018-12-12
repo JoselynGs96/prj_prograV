@@ -27,17 +27,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script>
-          function abrirModal(){
-              $('#modalVer').modal('show');
-          }
-           function abrirModalDenegar(){
-              $('#modalDenegar').modal('show');
-          }
-          
-           
-          
-    </script>
+   
     <script>
            PrimeFaces.locales['es'] = {
                 closeText: 'Cerrar',
@@ -151,6 +141,7 @@
                           <span>Reportes por Funci.</span>
                       </a>
                   </li>
+
               </ul>
               <!-- sidebar menu end-->
           </div>
@@ -160,16 +151,28 @@
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
-  
-    
+     
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-              <h3><i class="fa fa-angle-right"></i> Solicitudes de Eventos</h3>
-              <h:outputLabel value="#{reporteOutlookBean.msj}" style="width: 100%" escape="false"></h:outputLabel>
-              <p:schedule id="schedule" value="#{reporteOutlookBean.eventModel}" widgetVar="myschedule" locale="es"></p:schedule>
-          </section>
+              <h3><i class="fa fa-angle-right"></i> Reporte de Solicitudes de Eventos</h3>
+              <p:schedule widgetVar="" value="#{reporteOutlookBean.eventModel}" locale="es">
+                  <p:ajax event="eventSelect" listener="#{reporteOutlookBean.seleccionado}" update="eventDetail" oncomplete="PF('modalCalen').show();"></p:ajax>
+              </p:schedule>
           
+              <p:dialog widgetVar="modalCalen" header="Detalle" width="400px" resizable="false" modal="true" showEffect="clip" >
+                  <p:outputPanel id="eventDetail" style="width: 400px">
+                          <h:outputLabel value="Titulo:&nbsp;"></h:outputLabel>
+                          <h:outputLabel value="#{reporteOutlookBean.evento.title}"></h:outputLabel>
+                          <hr></hr>
+                          <h:outputLabel value="Descripcion: "></h:outputLabel>
+                          <br></br>
+                          <h:inputTextarea style="border: 0px; width: 100%; height: 100px" value="#{reporteOutlookBean.evento.description}"></h:inputTextarea>
+                             
+                  </p:outputPanel>
+              </p:dialog>
+          
+          </section>
       </section>
                         
      
@@ -205,4 +208,5 @@
     <script src="RecursoMante/js/zabuto_calendar.js"></script>
     </h:body>
 </html>
+
 

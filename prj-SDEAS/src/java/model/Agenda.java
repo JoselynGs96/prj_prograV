@@ -33,6 +33,7 @@ public class Agenda {
     int Id_Edita;
     Date FechaEdita;
     String Obseraciones;
+    
 
     public Agenda(int id_Agenda, boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Date HoraInicio, Date HoraFinal, Recurso recurso, int activo, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita, String Obseraciones) {
         this.id_Agenda = id_Agenda;
@@ -228,4 +229,5 @@ public class Agenda {
         this.Obseraciones = Obseraciones;
     }
 
+ 
 }
