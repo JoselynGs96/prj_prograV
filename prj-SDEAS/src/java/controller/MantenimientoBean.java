@@ -56,7 +56,7 @@ public class MantenimientoBean implements Serializable {
     int IdRegistra = 0;
     int IdEdita = 0;
     private ScheduleModel eventModel;
-    EncabezadoSolicitud enca;
+    EncabezadoSolicitud enca=null;
     Agenda agenda;
     Detalle detalle;
     LinkedList<EncabezadoSolicitud> listaEnca = new LinkedList<EncabezadoSolicitud>();
@@ -71,6 +71,8 @@ public class MantenimientoBean implements Serializable {
     String buscarFiltro = "";
     LinkedList<EncabezadoSolicitud> listaEncabe = new LinkedList<EncabezadoSolicitud>();
     String MsjRechazo = "";
+        UsuarioMante denegado = null;
+     
 
     /*Ajendas*/
     LinkedList<Agenda> listaAgenda = new LinkedList<Agenda>();
@@ -147,7 +149,7 @@ public class MantenimientoBean implements Serializable {
 
         }
 
-        PrimeFaces.current().executeScript("abrirModal();");
+      
     }
 
     public void verMas(int i) throws SNMPExceptions, SQLException {
@@ -200,6 +202,7 @@ public class MantenimientoBean implements Serializable {
                     + "\n Observaciones: " + re.getObseraciones() + "\n\n\n";
 
         }
+          PrimeFaces.current().executeScript("abrirModal();");
 
     }
 
@@ -229,7 +232,7 @@ public class MantenimientoBean implements Serializable {
             /*Aqui Actualizo el mae*/
 
             EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
-            enca.setEstado(estadodb.SeleccionarPorId(2));
+            enca.setEstado(estadodb.SeleccionarPorId(2));          
             ddd.ActualizarEstadoSolicitud(enca);
 
             message.setFrom(new InternetAddress(remitente));
@@ -247,11 +250,13 @@ public class MantenimientoBean implements Serializable {
         seleccionarTodos();
     }
 
-    public void botonDenegar(int id) throws SNMPExceptions, SQLException {
-        verMas2(id);
+    public void botonDenegar() throws SNMPExceptions, SQLException {
+        
+    
         setMensajeFiltro("");
         EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB();
-        EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
+        EncabezadoSolicitud enca1 = ddd.SeleccionarporId(this.enca.getId_Encabezado());
+            verMas2(enca1.getId_Encabezado());
         UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
         String remitente = "joselyn.grana2@gmail.com";  //Para la dirección nomcuenta@gmail.com
         String destinatario = usu.getCorreo(); //A quien le quieres escribir.
@@ -281,8 +286,8 @@ public class MantenimientoBean implements Serializable {
             transport.close();
 
             EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
-            enca.setEstado(estadodb.SeleccionarPorId(3));
-            ddd.ActualizarEstadoSolicitud(enca);
+            enca1.setEstado(estadodb.SeleccionarPorId(3));
+            ddd.ActualizarEstadoSolicitud(enca1);
 
             setMensajeFiltro("<div class='alert alert-success alert-dismissible fade in' >  <strong>Exito!&nbsp;</strong>Correo enviado satisfactoriamente</div>");
         } catch (MessagingException me) {
@@ -350,6 +355,11 @@ public class MantenimientoBean implements Serializable {
 
         }
     }
+    public void recibeDenegado(int idEnca) throws SNMPExceptions, SQLException{        
+        enca = new  EncabezadoSolicitudDB().SeleccionarporId(idEnca);
+        PrimeFaces.current().executeScript("abrirModalDenegar();");
+    }
+    
 
     public ScheduleModel getEventModel() {
         return eventModel;
@@ -509,5 +519,12 @@ public class MantenimientoBean implements Serializable {
 
     public void setMsjRechazo(String MsjRechazo) {
         this.MsjRechazo = MsjRechazo;
+    }
+     public UsuarioMante getDenegado() {
+        return denegado;
+    }
+
+    public void setDenegado(UsuarioMante denegado) {
+        this.denegado = denegado;
     }
 }
