@@ -33,6 +33,7 @@ import model.Usuario;
 import model.UsuarioDB;
 import model.UsuarioMante;
 import model.UsuarioManteDB;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -69,7 +70,8 @@ public class PreestamoBean implements Serializable {
     LinkedList<Recurso> listaRecurso = new LinkedList<Recurso>();
     LinkedList<Recurso> listaRecursoAgregardos = new LinkedList<Recurso>();
     String nombre  = "";
-            
+  
+
             
             
         public PreestamoBean() throws SNMPExceptions, SQLException {
@@ -149,6 +151,7 @@ public class PreestamoBean implements Serializable {
         }
         return respuesta;
     }
+      
 
     public boolean validarDiasSeleccionados() {
         boolean respuesta = false;
@@ -686,6 +689,7 @@ public class PreestamoBean implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
     
     
 }

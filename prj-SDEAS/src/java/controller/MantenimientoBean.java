@@ -71,6 +71,7 @@ public class MantenimientoBean implements Serializable {
     String buscarFiltro = "";
     LinkedList<EncabezadoSolicitud> listaEncabe = new LinkedList<EncabezadoSolicitud>();
     String MsjRechazo = "";
+        UsuarioMante denegado = null;
 
     /*Ajendas*/
     LinkedList<Agenda> listaAgenda = new LinkedList<Agenda>();
@@ -229,7 +230,7 @@ public class MantenimientoBean implements Serializable {
             /*Aqui Actualizo el mae*/
 
             EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
-            enca.setEstado(estadodb.SeleccionarPorId(2));
+            enca.setEstado(estadodb.SeleccionarPorId(2));          
             ddd.ActualizarEstadoSolicitud(enca);
 
             message.setFrom(new InternetAddress(remitente));
@@ -247,11 +248,12 @@ public class MantenimientoBean implements Serializable {
         seleccionarTodos();
     }
 
-    public void botonDenegar(int id) throws SNMPExceptions, SQLException {
-        verMas2(id);
+    public void botonDenegar() throws SNMPExceptions, SQLException {
+        
+        verMas2(denegado.getId());
         setMensajeFiltro("");
         EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB();
-        EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
+        EncabezadoSolicitud enca = ddd.SeleccionarporId(denegado.getId());
         UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
         String remitente = "joselyn.grana2@gmail.com";  //Para la dirección nomcuenta@gmail.com
         String destinatario = usu.getCorreo(); //A quien le quieres escribir.
@@ -350,6 +352,11 @@ public class MantenimientoBean implements Serializable {
 
         }
     }
+    public void recibeDenegado(int id) throws SNMPExceptions, SQLException{
+        denegado = new UsuarioManteDB().SeleccionarPorId(id);
+        PrimeFaces.current().executeScript("abrirModalDenegar();");
+    }
+    
 
     public ScheduleModel getEventModel() {
         return eventModel;
@@ -509,5 +516,12 @@ public class MantenimientoBean implements Serializable {
 
     public void setMsjRechazo(String MsjRechazo) {
         this.MsjRechazo = MsjRechazo;
+    }
+     public UsuarioMante getDenegado() {
+        return denegado;
+    }
+
+    public void setDenegado(UsuarioMante denegado) {
+        this.denegado = denegado;
     }
 }
