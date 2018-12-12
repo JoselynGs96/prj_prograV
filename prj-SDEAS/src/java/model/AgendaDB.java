@@ -204,13 +204,13 @@ public class AgendaDB {
             while (rsPA.next()) {
 
                 int id_Agenda = rsPA.getInt("Id_AgendaRecurso");
-                boolean Lunes = (rsPA.getInt("Lunes") == 0 ? true : false);
-                boolean Martes = (rsPA.getInt("Martes") == 0 ? true : false);
-                boolean Miercoles = (rsPA.getInt("Miercoles") == 0 ? true : false);
-                boolean Jueves = (rsPA.getInt("Jueves") == 0 ? true : false);
-                boolean Viernes = (rsPA.getInt("Viernes") == 0 ? true : false);
-                boolean Sabado = (rsPA.getInt("Sabado") == 0 ? true : false);
-                boolean Domingo = (rsPA.getInt("Domingo") == 0 ? true : false);
+                 boolean Lunes = ((rsPA.getInt("Lunes"))== 1 ? true : false);
+                boolean Martes = (rsPA.getInt("Martes") == 1 ? true : false);
+                boolean Miercoles = (rsPA.getInt("Miercoles") == 1 ? true : false);
+                boolean Jueves = (rsPA.getInt("Jueves") == 1 ? true : false);
+                boolean Viernes = (rsPA.getInt("Viernes") == 1 ? true : false);
+                boolean Sabado = (rsPA.getInt("Sabado") == 1 ? true : false);
+                boolean Domingo = (rsPA.getInt("Domingo") == 1 ? true : false);
                 Date FechaInicio = rsPA.getDate("FechaInicio");
                 Date FechaFinal = rsPA.getDate("FechaFinal");
                 Time HoraInicio = rsPA.getTime("HoraInicio");
@@ -274,13 +274,13 @@ public class AgendaDB {
             while (rsPA.next()) {
 
                 int id_Agenda = rsPA.getInt("Id_AgendaRecurso");
-                boolean Lunes = (rsPA.getInt("Lunes") == 0 ? true : false);
-                boolean Martes = (rsPA.getInt("Martes") == 0 ? true : false);
-                boolean Miercoles = (rsPA.getInt("Miercoles") == 0 ? true : false);
-                boolean Jueves = (rsPA.getInt("Jueves") == 0 ? true : false);
-                boolean Viernes = (rsPA.getInt("Viernes") == 0 ? true : false);
-                boolean Sabado = (rsPA.getInt("Sabado") == 0 ? true : false);
-                boolean Domingo = (rsPA.getInt("Domingo") == 0 ? true : false);
+                boolean Lunes = ((rsPA.getInt("Lunes"))== 1 ? true : false);
+                boolean Martes = (rsPA.getInt("Martes") == 1 ? true : false);
+                boolean Miercoles = (rsPA.getInt("Miercoles") == 1 ? true : false);
+                boolean Jueves = (rsPA.getInt("Jueves") == 1 ? true : false);
+                boolean Viernes = (rsPA.getInt("Viernes") == 1 ? true : false);
+                boolean Sabado = (rsPA.getInt("Sabado") == 1 ? true : false);
+                boolean Domingo = (rsPA.getInt("Domingo") == 1 ? true : false);
                 Date FechaInicio = rsPA.getDate("FechaInicio");
                 Date FechaFinal = rsPA.getDate("FechaFinal");
                 Time HoraInicio = rsPA.getTime("HoraInicio");
