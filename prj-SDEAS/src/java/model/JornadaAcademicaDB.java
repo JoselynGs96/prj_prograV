@@ -119,11 +119,11 @@ public class JornadaAcademicaDB {
                         String Dsc_JornadaAcademica = rsPA.getString("Dsc_JornadaAcademica");
                         Date FechaInicio = rsPA.getDate("FechaInicio");
                         Date FechaFinal = rsPA.getDate("FechaFinal");
-                        Time HoraInicio = rsPA.getTime("HoraInicio");
-                        Time HoraFinal = rsPA.getTime("HoraFinal");
+                        Date HoraInicio = rsPA.getDate("HoraInicio");
+                        Date HoraFinal = rsPA.getDate("HoraFinal");
                         Curso Id_Curso = cr.SeleccionarPorId(rsPA.getInt("Id_Curso"));
-                        int Log_Activo = rsPA.getInt("Log_Activo");
-                        jor = new JornadaAcademica(Id_JornadaAcademica, Nombre, Dsc_JornadaAcademica, FechaInicio, FechaFinal, HoraInicio, HoraFinal, Id_Curso, Log_Activo==0? "Inactivo":"Activo");
+                      String Log_Activo = rsPA.getInt("Log_Activo")==0? "Inactivo":"Activo";
+                        jor = new JornadaAcademica(Nombre, Dsc_JornadaAcademica, FechaInicio, FechaFinal, HoraInicio, HoraFinal, Id_Curso, Log_Activo);
                       }
               
             rsPA.close();
@@ -164,11 +164,11 @@ public class JornadaAcademicaDB {
                         String Dsc_JornadaAcademica = rsPA.getString("Dsc_JornadaAcademica");
                         Date FechaInicio = rsPA.getDate("FechaInicio");
                         Date FechaFinal = rsPA.getDate("FechaFinal");
-                        Time HoraInicio = rsPA.getTime("HoraInicio");
-                        Time HoraFinal = rsPA.getTime("HoraFinal");
+                        Date HoraInicio = rsPA.getDate("HoraInicio");
+                        Date HoraFinal = rsPA.getDate("HoraFinal");
                         Curso Id_Curso = cr.SeleccionarPorId(rsPA.getInt("Id_Curso"));
-                        int Log_Activo = rsPA.getInt("Log_Activo");
-                        JornadaAcademica jor = new JornadaAcademica(Id_JornadaAcademica, Nombre, Dsc_JornadaAcademica, FechaInicio, FechaFinal, HoraInicio, HoraFinal, Id_Curso, Log_Activo==0? "Inactivo":"Activo");
+                         String Log_Activo = rsPA.getInt("Log_Activo")==0? "Inactivo":"Activo";
+                        JornadaAcademica jor = new JornadaAcademica(Nombre, Dsc_JornadaAcademica, FechaInicio, FechaFinal, HoraInicio, HoraFinal, Id_Curso, Log_Activo);
                         listaJornadaAcademica.add(jor);
                       }
               
@@ -227,11 +227,11 @@ public class JornadaAcademicaDB {
                         String Dsc_JornadaAcademica = rsPA.getString("Dsc_JornadaAcademica");
                         Date FechaInicio = rsPA.getDate("FechaInicio");
                         Date FechaFinal = rsPA.getDate("FechaFinal");
-                        Time HoraInicio = rsPA.getTime("HoraInicio");
-                        Time HoraFinal = rsPA.getTime("HoraFinal");
+                        Date HoraInicio = rsPA.getDate("HoraInicio");
+                        Date HoraFinal = rsPA.getDate("HoraFinal");
                         Curso Id_Curso = cr.SeleccionarPorId(rsPA.getInt("Id_Curso"));
-                        int Log_Activo = rsPA.getInt("Log_Activo");
-                        JornadaAcademica jor = new JornadaAcademica(Id_JornadaAcademica, Nombre, Dsc_JornadaAcademica, FechaInicio, FechaFinal, HoraInicio, HoraFinal, Id_Curso, Log_Activo==0? "Inactivo":"Activo");
+                        String Log_Activo = rsPA.getInt("Log_Activo")==0? "Inactivo":"Activo";
+                        JornadaAcademica jor = new JornadaAcademica(Nombre, Dsc_JornadaAcademica, FechaInicio, FechaFinal, HoraInicio, HoraFinal, Id_Curso, Log_Activo);
                         listaJornadaAcademica.add(jor);
                       }
               

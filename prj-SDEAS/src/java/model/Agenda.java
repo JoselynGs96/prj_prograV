@@ -33,6 +33,7 @@ public class Agenda {
     int Id_Edita;
     Date FechaEdita;
     String Obseraciones;
+    JornadaAcademica Jornada;
 
     public Agenda(int id_Agenda, boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Date HoraInicio, Date HoraFinal, Recurso recurso, int activo, int Id_Registra, Date FechaRegistra, int Id_Edita, Date FechaEdita, String Obseraciones) {
         this.id_Agenda = id_Agenda;
@@ -72,6 +73,24 @@ public class Agenda {
         this.activo = activo;
         this.Obseraciones = Obseraciones;
     }
+      public Agenda( boolean Lunes, boolean Martes, boolean Miercoles, boolean Jueves, boolean Viernes, boolean Sabado, boolean Domingo, Date FechaInicio, Date FechaFinal, Date HoraInicio, Date HoraFinal, JornadaAcademica jornada, int activo, String Obseraciones) {
+        this.Lunes = Lunes;
+        this.Martes = Martes;
+        this.Miercoles = Miercoles;
+        this.Jueves = Jueves;
+        this.Viernes = Viernes;
+        this.Sabado = Sabado;
+        this.Domingo = Domingo;
+        this.FechaInicio = FechaInicio;
+        this.FechaFinal = FechaFinal;
+        this.HoraInicio = HoraInicio;
+        this.HoraFinal = HoraFinal;
+        this.Jornada = jornada;
+        this.activo = activo;
+        this.Obseraciones = Obseraciones;
+    }
+    
+  
 
     public Agenda() {
     }

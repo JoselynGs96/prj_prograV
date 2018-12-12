@@ -18,8 +18,8 @@ public class JornadaAcademica {
     String Dsc_JornadaAcademica;
     Date FechaInicio;
     Date FechaFinal;
-    Time HoraInicio;
-    Time HoraFinal;
+    Date HoraInicio;
+    Date HoraFinal;
     Curso Curso;
     String Log_Activo;
 
@@ -28,8 +28,7 @@ public class JornadaAcademica {
     public JornadaAcademica() {
     }
 
-    public JornadaAcademica(int Id_JornadaAcademica, String Nombre, String Dsc_JornadaAcademica, Date FechaInicio, Date FechaFinal, Time HoraInicio, Time HoraFinal, Curso Curso, String Log_Activo) {
-        this.setId_JornadaAcademica(Id_JornadaAcademica);
+    public JornadaAcademica(String Nombre, String Dsc_JornadaAcademica, Date FechaInicio, Date FechaFinal, Date HoraInicio, Date HoraFinal, Curso Curso, String Log_Activo) {
         this.setNombre(Nombre);
         this.setDsc_JornadaAcademica(Dsc_JornadaAcademica);
         this.setFechaInicio(FechaInicio);
@@ -80,19 +79,19 @@ public class JornadaAcademica {
         this.FechaFinal = FechaFinal;
     }
 
-    public Time getHoraInicio() {
+    public Date getHoraInicio() {
         return HoraInicio;
     }
 
-    public void setHoraInicio(Time HoraInicio) {
+    public void setHoraInicio(Date HoraInicio) {
         this.HoraInicio = HoraInicio;
     }
 
-    public Time getHoraFinal() {
+    public Date getHoraFinal() {
         return HoraFinal;
     }
 
-    public void setHoraFinal(Time HoraFinal) {
+    public void setHoraFinal(Date HoraFinal) {
         this.HoraFinal = HoraFinal;
     }
 
