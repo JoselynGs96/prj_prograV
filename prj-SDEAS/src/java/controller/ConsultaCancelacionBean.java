@@ -111,7 +111,12 @@ public class ConsultaCancelacionBean implements Serializable {
         this.encDB = encDB;
     }
 
-    public LinkedList<EncabezadoSolicitud> getListaSolicitud() {
+    public LinkedList<EncabezadoSolicitud> getListaSolicitud() throws SNMPExceptions,SQLException{
+        if (!encDB.SeleccionarTodosPorId(IdUsuario).isEmpty()) {
+            listaSolicitud = encDB.SeleccionarTodosPorId(IdUsuario);
+        } else {
+            setMsj("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Usted no ha realizado ninguna solicitud</div>");
+        }
         return listaSolicitud;
     }
 

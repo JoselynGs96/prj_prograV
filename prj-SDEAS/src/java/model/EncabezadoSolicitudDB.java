@@ -53,7 +53,7 @@ public class EncabezadoSolicitudDB {
 
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
-                Date FechaFinal = rsPA.getDate("FechaSolicitud");
+                Date FechaFinal = rsPA.getDate("FechaRespuesta");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
@@ -102,7 +102,7 @@ public class EncabezadoSolicitudDB {
 
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
-                Date FechaFinal = rsPA.getDate("FechaSolicitud");
+                Date FechaFinal = rsPA.getDate("FechaRespuesta");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
@@ -188,7 +188,7 @@ public class EncabezadoSolicitudDB {
 
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
-                Date FechaFinal = rsPA.getDate("FechaSolicitud");
+                Date FechaFinal = rsPA.getDate("FechaRespuesta");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
@@ -264,7 +264,7 @@ public class EncabezadoSolicitudDB {
 
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
-                Date FechaFinal = rsPA.getDate("FechaSolicitud");
+                Date FechaFinal = rsPA.getDate("FechaRespuesta");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
@@ -313,7 +313,7 @@ public class EncabezadoSolicitudDB {
 
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
-                Date FechaFinal = rsPA.getDate("FechaSolicitud");
+                Date FechaFinal = rsPA.getDate("FechaRespuesta");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
