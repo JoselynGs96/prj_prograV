@@ -12,11 +12,15 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import model.Agenda;
 import model.AgendaDB;
 import model.DetalleDB;
 import model.EncabezadoSolicitud;
 import model.EncabezadoSolicitudDB;
+import model.EstadoSolicitudDB;
 import model.Recurso;
+import model.UsuarioMante;
+import model.UsuarioManteDB;
 
 /**
  *
@@ -25,6 +29,7 @@ import model.Recurso;
 @Named(value = "consultaCancelacionBean")
 @SessionScoped
 public class ConsultaCancelacionBean implements Serializable {
+
     int IdUsuario = 0;
     String msj = "";
     ObtenerDatosSesion datos = null;
@@ -33,36 +38,49 @@ public class ConsultaCancelacionBean implements Serializable {
     AgendaDB agenDB = new AgendaDB();
     LinkedList<EncabezadoSolicitud> listaSolicitud = new LinkedList<EncabezadoSolicitud>();
     LinkedList<Recurso> listaRecurso = new LinkedList<Recurso>();
+
     /**
      * Creates a new instance of ConsultaCancelacionBean
      */
     public ConsultaCancelacionBean() throws SNMPExceptions, SQLException {
         datos = new ObtenerDatosSesion();
-       
+
         datos.consultarSesion();
-        if(!datos.getId_Usuario().equals("")){
+        if (!datos.getId_Usuario().equals("")) {
             IdUsuario = Integer.parseInt(datos.getId_Usuario());
         }
-        
+
         llenarTabla();
     }
-    
-    public void llenarTabla() throws SNMPExceptions, SQLException{
-        if(!encDB.SeleccionarTodosPorId(IdUsuario).isEmpty()){
-              listaSolicitud = encDB.SeleccionarTodosPorId(IdUsuario);
-        }else{
+
+    public void llenarTabla() throws SNMPExceptions, SQLException {
+        if (!encDB.SeleccionarTodosPorId(IdUsuario).isEmpty()) {
+            listaSolicitud = encDB.SeleccionarTodosPorId(IdUsuario);
+        } else {
             setMsj("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Usted no ha realizado ninguna solicitud</div>");
         }
-        
+
     }
-    
-    public void cancelar(int id) throws SNMPExceptions{
+
+    public void cancelar(int id) throws SNMPExceptions, SQLException {
         listaRecurso = detDB.buscarRecursos(id);
-        try{
+        EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB();
+         AgendaDB ageDB = new AgendaDB();
+        EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
+        UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
+        LinkedList<Agenda> listaAgenda = new LinkedList<Agenda>();
+         listaAgenda = agenDB.SeleccionarTodosPorEncabezado(id);
+        try {
+            EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
+            enca.setLog(0);            
+            ddd.ActualizarEstadoSolicitud(enca);
             
-            
-        }catch(Exception e){
-            
+              for (Agenda re : listaAgenda) {
+                 ageDB.ActualizarEstadoSolicitud(re.id);
+              }
+
+        } catch (Exception e) {
+
         }
     }
 
@@ -97,7 +115,5 @@ public class ConsultaCancelacionBean implements Serializable {
     public void setListaSolicitud(LinkedList<EncabezadoSolicitud> listaSolicitud) {
         this.listaSolicitud = listaSolicitud;
     }
-    
-    
-    
+
 }

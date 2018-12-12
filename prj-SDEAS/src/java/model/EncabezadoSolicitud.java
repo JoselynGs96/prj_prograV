@@ -19,6 +19,8 @@ public class EncabezadoSolicitud {
     Usuario Coordinador;
     TipoSolicitud Tipo_solicitud;
     EstadoSolicitud estado;
+    int log;
+
 
     public EncabezadoSolicitud(int id_Encabezado, Date FechaInicio, Date FechaFinal, Usuario Funcionario, TipoSolicitud Tipo_solicitud, EstadoSolicitud estado) {
         this.id_Encabezado = id_Encabezado;
@@ -90,5 +92,12 @@ public class EncabezadoSolicitud {
     }
     
     
+    public int getLog() {
+        return log;
+    }
+
+    public void setLog(int log) {
+        this.log = log;
+    }
     
 }
