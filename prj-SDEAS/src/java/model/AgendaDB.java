@@ -399,7 +399,7 @@ public class AgendaDB {
         try {  
              
              strSQL = "UPDATE AgendaRecurso SET "                 
-                     +"', Log_Activo=0"
+                     +"Log_Activo=0"
                      +"where Id_AgendaRecurso="+id;
                    
                     

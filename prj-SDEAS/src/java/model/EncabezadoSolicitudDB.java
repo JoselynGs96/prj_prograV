@@ -19,19 +19,19 @@ import java.util.LinkedList;
  * @author Fabi
  */
 public class EncabezadoSolicitudDB {
-
+    
     private AccesoDatos accesoDatos = new AccesoDatos();
     private Connection conn;
-
+    
     public EncabezadoSolicitudDB(Connection conn) {
         accesoDatos = new AccesoDatos();
         accesoDatos.setDbConn(conn);
     }
-
+    
     public EncabezadoSolicitudDB() {
         super();
     }
-
+    
     public EncabezadoSolicitud SeleccionarporId(int id) throws SNMPExceptions,
             SQLException {
         UsuarioDB usuDB = new UsuarioDB();
@@ -40,29 +40,31 @@ public class EncabezadoSolicitudDB {
         String select = "";
         ResultSet rsPA = null;
         EncabezadoSolicitud enca = null;
-
+        
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
-
+            
             select
                     = "SELECT [Id_EncSolicitud],[FechaSolicitud] ,[FechaRespuesta],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo]FROM [dbo].[EncSolicitud] where Id_EncSolicitud=" + id;
-
+            
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
-
+            
             while (rsPA.next()) {
-
+                
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
+                int log = rsPA.getInt("Log_Activo");
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
                 enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
+                
             }
-
+            
             rsPA.close();
-
+            
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage(), e.getErrorCode());
@@ -70,12 +72,12 @@ public class EncabezadoSolicitudDB {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage());
         } finally {
-
+            
         }
-
+        
         return enca;
     }
-
+    
     public LinkedList<EncabezadoSolicitud> SeleccionarTodosporCoordinador(int id) throws SNMPExceptions,
             SQLException {
         UsuarioDB usuDB = new UsuarioDB();
@@ -83,32 +85,33 @@ public class EncabezadoSolicitudDB {
         TipoSolicitudDB tipoSolDB = new TipoSolicitudDB();
         String select = "";
         ResultSet rsPA = null;
-
+        
         LinkedList<EncabezadoSolicitud> listaEncabezadoSolicituds = new LinkedList<EncabezadoSolicitud>();
-
+        
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
-
+            
             select
-                    = "SELECT [Id_EncSolicitud],[FechaSolicitud] ,[FechaRespuesta],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo]FROM [dbo].[EncSolicitud]where Id_Coordinador=" + id+" and Log_Activo=1";
-
+                    = "SELECT [Id_EncSolicitud],[FechaSolicitud] ,[FechaRespuesta],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo]FROM [dbo].[EncSolicitud]where Id_Coordinador=" + id + " and Log_Activo=1";
+            
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
-
+            
             while (rsPA.next()) {
-
+                
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
+                 int log = rsPA.getInt("Log_Activo");
                 EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
                 listaEncabezadoSolicituds.add(enca);
             }
-
+            
             rsPA.close();
-
+            
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage(), e.getErrorCode());
@@ -116,36 +119,36 @@ public class EncabezadoSolicitudDB {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage());
         } finally {
-
+            
         }
-
+        
         return listaEncabezadoSolicituds;
     }
-
+    
     public int SeleccionarUltimo() throws SNMPExceptions,
             SQLException {
         int max = 0;
         String select = "";
         ResultSet rsPA = null;
-
+        
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
-
+            
             select
                     = "SELECT  MAX(Id_EncSolicitud ) as Maximo\n"
                     + "FROM EncSolicitud";
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
-
+            
             while (rsPA.next()) {
-
+                
                 max = rsPA.getInt("Maximo");
                 if (max == 0) {
                     max = 1000;
                 }
             }
-
+            
             rsPA.close();
-
+            
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage(), e.getErrorCode());
@@ -153,12 +156,12 @@ public class EncabezadoSolicitudDB {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage());
         } finally {
-
+            
         }
-
+        
         return max;
     }
-
+    
     public LinkedList<EncabezadoSolicitud> SeleccionarTodos() throws SNMPExceptions,
             SQLException {
         UsuarioDB usuDB = new UsuarioDB();
@@ -166,32 +169,33 @@ public class EncabezadoSolicitudDB {
         TipoSolicitudDB tipoSolDB = new TipoSolicitudDB();
         String select = "";
         ResultSet rsPA = null;
-
+        
         LinkedList<EncabezadoSolicitud> listaEncabezadoSolicituds = new LinkedList<EncabezadoSolicitud>();
-
+        
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
-
+            
             select
                     = "SELECT [Id_EncSolicitud],[FechaSolicitud] ,[FechaRespuesta],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo]FROM [dbo].[EncSolicitud]";
-
+            
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
-
+            
             while (rsPA.next()) {
-
+                
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
+                int log = rsPA.getInt("Log_Activo");
                 EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
                 listaEncabezadoSolicituds.add(enca);
             }
-
+            
             rsPA.close();
-
+            
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage(), e.getErrorCode());
@@ -199,12 +203,12 @@ public class EncabezadoSolicitudDB {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage());
         } finally {
-
+            
         }
-
+        
         return listaEncabezadoSolicituds;
     }
-
+    
     public LinkedList<EncabezadoSolicitud> FiltrarEncabezado(String fil) throws SNMPExceptions,
             SQLException {
         String select = "";
@@ -216,7 +220,7 @@ public class EncabezadoSolicitudDB {
         EstadoSolicitudDB estadoDB = new EstadoSolicitudDB();
         UsuarioDB usuDB = new UsuarioDB();
         TipoSolicitudDB tipoSolDB = new TipoSolicitudDB();
-
+        
         if (filtro.equalsIgnoreCase("Pendiente") || filtro.equalsIgnoreCase("Pen") || filtro.equalsIgnoreCase("Pend") || filtro.equalsIgnoreCase("Pendi") || filtro.equalsIgnoreCase("Pendie") || filtro.equalsIgnoreCase("Pendien") || filtro.equalsIgnoreCase("Pendient")) {
             valorEstado = "4";
         } else {
@@ -235,12 +239,12 @@ public class EncabezadoSolicitudDB {
                 }
             }
         }
-
+        
         LinkedList<EncabezadoSolicitud> listaEncabezadoSolicituds = new LinkedList<EncabezadoSolicitud>();
-
+        
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
-
+            
             select
                     = "SELECT [Id_EncSolicitud],[FechaSolicitud] ,[FechaRespuesta],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo] from EncSolicitud\n"
                     + " WHERE ( Cast(Id_EncSolicitud as nvarchar(20)) LIKE '%' + '" + filtro + "' + '%') AND Id_EstadoSolicitud != 3\n"
@@ -249,22 +253,23 @@ public class EncabezadoSolicitudDB {
                     + "OR ( Id_TipoSolicitud LIKE '%' + '" + valorTipoSo + "' + '%') AND [Id_EstadoSolicitud] !=3\n"
                     + "OR ( [Id_EstadoSolicitud]  LIKE '%' + '" + valorEstado + "' + '%')AND [Id_EstadoSolicitud] !=3\n";
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
-
+            
             while (rsPA.next()) {
-
+                
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
+                 int log = rsPA.getInt("Log_Activo");
                 EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
                 listaEncabezadoSolicituds.add(enca);
             }
-
+            
             rsPA.close();
-
+            
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage(), e.getErrorCode());
@@ -272,12 +277,12 @@ public class EncabezadoSolicitudDB {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage());
         } finally {
-
+            
         }
-
+        
         return listaEncabezadoSolicituds;
     }
-
+    
     public LinkedList<EncabezadoSolicitud> SeleccionarTodosPorId(int id) throws SNMPExceptions,
             SQLException {
         UsuarioDB usuDB = new UsuarioDB();
@@ -285,32 +290,33 @@ public class EncabezadoSolicitudDB {
         TipoSolicitudDB tipoSolDB = new TipoSolicitudDB();
         String select = "";
         ResultSet rsPA = null;
-
+        
         LinkedList<EncabezadoSolicitud> listaEncabezadoSolicituds = new LinkedList<EncabezadoSolicitud>();
-
+        
         try {
             AccesoDatos accesoDatos = new AccesoDatos();
-
+            
             select
                     = "SELECT [Id_EncSolicitud],[FechaSolicitud] ,[FechaRespuesta],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo]FROM [dbo].[EncSolicitud] WHERE Id_Funcionario = " + id;
-
+            
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
-
+            
             while (rsPA.next()) {
-
+                
                 int id_Encabezado = rsPA.getInt("Id_EncSolicitud");
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
+                 int log = rsPA.getInt("Log_Activo");
                 EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
                 listaEncabezadoSolicituds.add(enca);
             }
-
+            
             rsPA.close();
-
+            
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage(), e.getErrorCode());
@@ -318,19 +324,19 @@ public class EncabezadoSolicitudDB {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage());
         } finally {
-
+            
         }
-
+        
         return listaEncabezadoSolicituds;
     }
-
+    
     public void registrar(EncabezadoSolicitud encabe) throws SNMPExceptions, SQLException {
-
+        
         String strSQL = "";
-
+        
         try {
             EncabezadoSolicitud encabezadoSolicitud = encabe;
-
+            
             strSQL = "INSERT INTO [dbo].[EncSolicitud]([FechaSolicitud],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo])VALUES(  GETDATE()  " + "," + encabezadoSolicitud.getFuncionario().Id + "," + encabezadoSolicitud.getCoordinador().Id + "," + 1001 + "," + 4 + "," + 1 + ")";
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
@@ -340,23 +346,23 @@ public class EncabezadoSolicitudDB {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage());
         } finally {
-
+            
         }
-
+        
     }
-
+    
     public void ActualizarEstadoSolicitud(EncabezadoSolicitud encabe) throws SNMPExceptions, SQLException {
-
+        
         String strSQL = "";
-
+        
         try {
             EncabezadoSolicitud encabezadoSolicitud = encabe;
-
+            
             strSQL = "UPDATE [dbo].[EncSolicitud]\n"
                     + "   SET [FechaRespuesta] = GETDATE() "
-                    + "      ,[Id_EstadoSolicitud] = "+ encabe.estado.id
-                    +",       [Log_Activo]="+ encabe.log
-                    + " WHERE Id_EncSolicitud="+encabe.id_Encabezado;
+                    + "      ,[Id_EstadoSolicitud] = " + encabe.estado.id
+                    + ",       [Log_Activo]=" + encabe.log
+                    + " WHERE Id_EncSolicitud=" + encabe.id_Encabezado;
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
@@ -365,8 +371,8 @@ public class EncabezadoSolicitudDB {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
                     e.getMessage());
         } finally {
-
+            
         }
-
+        
     }
 }
