@@ -38,6 +38,8 @@ public class ConsultaCancelacionBean implements Serializable {
     AgendaDB agenDB = new AgendaDB();
     LinkedList<EncabezadoSolicitud> listaSolicitud = new LinkedList<EncabezadoSolicitud>();
     LinkedList<Recurso> listaRecurso = new LinkedList<Recurso>();
+    String MensajeBueno;
+
 
     /**
      * Creates a new instance of ConsultaCancelacionBean
@@ -63,13 +65,13 @@ public class ConsultaCancelacionBean implements Serializable {
     }
 
     public void cancelar(int id) throws SNMPExceptions, SQLException {
-        listaRecurso = detDB.buscarRecursos(id);
+      
         EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB();
          AgendaDB ageDB = new AgendaDB();
         EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
         UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
         LinkedList<Agenda> listaAgenda = new LinkedList<Agenda>();
-         listaAgenda = agenDB.SeleccionarTodosPorEncabezado(id);
+         listaAgenda = ageDB.SeleccionarTodosPorEncabezado(id);
         try {
             EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
             enca.setLog(0);            
@@ -78,6 +80,7 @@ public class ConsultaCancelacionBean implements Serializable {
               for (Agenda re : listaAgenda) {
                  ageDB.ActualizarEstadoSolicitud(re.getId_Agenda());
               }
+              setMensajeBueno("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Ha cancelado su Solicitud correctamente!</div>");
 
         } catch (Exception e) {
 
@@ -116,4 +119,43 @@ public class ConsultaCancelacionBean implements Serializable {
         this.listaSolicitud = listaSolicitud;
     }
 
+    public ObtenerDatosSesion getDatos() {
+        return datos;
+    }
+
+    public void setDatos(ObtenerDatosSesion datos) {
+        this.datos = datos;
+    }
+
+    public DetalleDB getDetDB() {
+        return detDB;
+    }
+
+    public void setDetDB(DetalleDB detDB) {
+        this.detDB = detDB;
+    }
+
+    public AgendaDB getAgenDB() {
+        return agenDB;
+    }
+
+    public void setAgenDB(AgendaDB agenDB) {
+        this.agenDB = agenDB;
+    }
+
+    public LinkedList<Recurso> getListaRecurso() {
+        return listaRecurso;
+    }
+
+    public void setListaRecurso(LinkedList<Recurso> listaRecurso) {
+        this.listaRecurso = listaRecurso;
+    }
+
+    public String getMensajeBueno() {
+        return MensajeBueno;
+    }
+
+    public void setMensajeBueno(String MensajeBueno) {
+        this.MensajeBueno = MensajeBueno;
+    }
 }

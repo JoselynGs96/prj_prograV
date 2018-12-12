@@ -55,9 +55,13 @@ public class EncabezadoSolicitudDB {
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
+                Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
+                int log = rsPA.getInt("Log_Activo");
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
                 enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
+                enca.setLog(log);
+                enca.setCoordinador(Coordinador);
 
             }
 
@@ -90,7 +94,7 @@ public class EncabezadoSolicitudDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT [Id_EncSolicitud],[FechaSolicitud] ,[FechaRespuesta],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo]FROM [dbo].[EncSolicitud]where Id_Coordinador=" + id+" and Log_Activo=1";
+                    = "SELECT [Id_EncSolicitud],[FechaSolicitud] ,[FechaRespuesta],[Id_Funcionario],[Id_Coordinador],[Id_TipoSolicitud],[Id_EstadoSolicitud],[Log_Activo]FROM [dbo].[EncSolicitud]where Id_Coordinador=" + id + " and Log_Activo=1";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -100,10 +104,13 @@ public class EncabezadoSolicitudDB {
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
+                Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
+                int log = rsPA.getInt("Log_Activo");
                 EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
+                enca.setCoordinador(Coordinador);
                 listaEncabezadoSolicituds.add(enca);
             }
 
@@ -183,10 +190,13 @@ public class EncabezadoSolicitudDB {
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
+                Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
+                int log = rsPA.getInt("Log_Activo");
                 EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
+                enca.setCoordinador(Coordinador);
                 listaEncabezadoSolicituds.add(enca);
             }
 
@@ -256,10 +266,13 @@ public class EncabezadoSolicitudDB {
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
+                Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
+                int log = rsPA.getInt("Log_Activo");
                 EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
+                enca.setCoordinador(Coordinador);
                 listaEncabezadoSolicituds.add(enca);
             }
 
@@ -302,10 +315,13 @@ public class EncabezadoSolicitudDB {
                 Date FechaInicio = rsPA.getDate("FechaSolicitud");
                 Date FechaFinal = rsPA.getDate("FechaSolicitud");
                 Usuario Funcionario = usuDB.SeleccionarPorId(rsPA.getInt("Id_Funcionario"));
+                Usuario Coordinador = usuDB.SeleccionarPorId(rsPA.getInt("Id_Coordinador"));
                 TipoSolicitud Tipo_solicitud = tipoSolDB.SeleccionarPorId(rsPA.getInt("Id_TipoSolicitud"));
                 EstadoSolicitud estado = estadoDB.SeleccionarPorId(rsPA.getInt("Id_EstadoSolicitud"));
+                int log = rsPA.getInt("Log_Activo");
                 EncabezadoSolicitud enca = new EncabezadoSolicitud(id_Encabezado, FechaInicio, FechaFinal, Funcionario, Tipo_solicitud, estado);
-
+                enca.setLog(log);
+                enca.setCoordinador(Coordinador);
                 listaEncabezadoSolicituds.add(enca);
             }
 
@@ -354,9 +370,9 @@ public class EncabezadoSolicitudDB {
 
             strSQL = "UPDATE [dbo].[EncSolicitud]\n"
                     + "   SET [FechaRespuesta] = GETDATE() "
-                    + "      ,[Id_EstadoSolicitud] = "+ encabe.estado.id
-                    +",       [Log_Activo]="+ encabe.log
-                    + " WHERE Id_EncSolicitud="+encabe.id_Encabezado;
+                    + "      ,[Id_EstadoSolicitud] = " + encabe.estado.id
+                    + ",       [Log_Activo]=" + encabe.log
+                    + " WHERE Id_EncSolicitud=" + encabe.id_Encabezado;
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,

@@ -157,7 +157,7 @@
                                     <h:outputText value=""/>
                                 </f:facet>
                                 <div id="btnEstAc">
-                                    <h:commandButton actionListener="#{consultaCancelacionBean.cancelar(list.id_Encabezado)}" class="btn btn-danger" value="Cancelar"></h:commandButton>
+                                    <h:commandButton disabled="#{list.log != 1}"  actionListener="#{consultaCancelacionBean.cancelar(list.id_Encabezado)}" class="btn btn-danger" value="Cancelar"></h:commandButton>
                                        
                                    
                                 </div>
@@ -165,7 +165,7 @@
                         </h:dataTable> 
                     <br></br>
                     <br></br> <br></br>
-                    <h:outputLabel value="#{consultaCancelacionBean.msj}" escape="false"></h:outputLabel>
+                    <h:outputLabel value="#{consultaCancelacionBean.mensajeBueno}" escape="false"></h:outputLabel>
                     <br></br> <br></br>
                 </center>
 

@@ -395,7 +395,7 @@ public class PreestamoBean implements Serializable {
     }
 
     public void ingresarAgendas() throws ParseException, SNMPExceptions, SQLException {
-try{
+    try{
     this.setMensajeBueno("");
         EncabezadoSolicitudDB encabezadoDB = new EncabezadoSolicitudDB();
         DetalleDB detalleDB = new DetalleDB();
@@ -467,13 +467,13 @@ try{
         }
           this.listaRecursoAgregardos.remove();
           this.setObservaciones("");
-          this.setLunes(false);
+           this.setLunes(false);
           this.setMartes(false);
-          this.setMiercoles(false);
-          this.setJueves(false);
+          this.setMiercoles(false);         
           this.setViernes(false);
           this.setJueves(false);
-          this.setDomingo(false);         
+          this.setDomingo(false);
+           this.setSabado(false);        
         
     }
 

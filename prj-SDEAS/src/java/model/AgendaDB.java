@@ -101,6 +101,74 @@ public class AgendaDB {
 
         }
     }
+    
+     public void registrarJornada(Agenda agen) throws SNMPExceptions, SQLException {
+        String strSQL = "";
+        int Lunes = 0;
+        int Martes = 0;
+        int Miercoles = 0;
+        int Jueves = 0;
+        int Viernes = 0;
+        int Sabado = 0;
+        int Domingo = 0;
+        try {
+            Agenda agenda = new Agenda();
+            agenda = agen;
+
+            if (agenda.isLunes()) {
+                Lunes = 1;
+            }
+            if (agenda.isMartes()) {
+                Martes = 1;
+            }
+            if (agenda.isMiercoles()) {
+                Miercoles = 1;
+            }
+            if (agenda.isJueves()) {
+                Jueves = 1;
+            }
+            if (agenda.isViernes()) {
+                Viernes = 1;
+            }
+            if (agenda.isSabado()) {
+                Sabado = 1;
+            }
+            if (agenda.isDomingo()) {
+                Domingo = 1;
+            }
+
+            strSQL = "INSERT INTO [dbo].[AgendaRecurso]\n"
+                    + "           ([Lunes]\n"
+                    + "           ,[Martes]\n"
+                    + "           ,[Miercoles]\n"
+                    + "           ,[Jueves]\n"
+                    + "           ,[Viernes]\n"
+                    + "           ,[Sabado]\n"
+                    + "           ,[Domingo]\n"
+                    + "           ,[FechaInicio]\n"
+                    + "           ,[FechaFinal]\n"
+                    + "           ,[HoraInicio]\n"
+                    + "           ,[HoraFinal]\n"
+                    + "           ,[Id_JornadaAcademica]\n"
+                    + "           ,[Id_Registra]\n"
+                    + "           ,[FechaRegistra]\n"
+                    + "            ,[Observaciones]\n"
+                    + "           ,[Log_Activo])\n"
+                    + "     VALUES\n"
+                    + " (" + Lunes + "," + Martes + "," + Miercoles + "," + Jueves + "," + Viernes + "," + Sabado + "," + Domingo + ",'" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "','" + new java.sql.Date(agenda.getFechaFinal().getTime()) + "','" + new java.sql.Time(agenda.getHoraInicio().getTime()) + "','" + new java.sql.Time(agenda.getHoraFinal().getTime()) + "'," + agenda.Jornada.Id_JornadaAcademica
+                    + "," + agenda.Id_Registra + ", GETDATE() ,'" + agenda.Obseraciones + "'," + 1 + ")";
+
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+    }
 
     public LinkedList<Agenda> SeleccionarTodos() throws SNMPExceptions,
             SQLException {
@@ -127,7 +195,7 @@ public class AgendaDB {
                     + "      ,[HoraInicio]\n"
                     + "      ,[HoraFinal]\n"
                     + "      ,[Id_Recurso]  \n"
-                    +"       ,[Observaciones]\n"
+                    + "       ,[Observaciones]\n"
                     + "      ,[Log_Activo]\n"
                     + "  FROM [dbo].[AgendaRecurso]";
 
@@ -148,10 +216,10 @@ public class AgendaDB {
                 Time HoraInicio = rsPA.getTime("HoraInicio");
                 Time HoraFinal = rsPA.getTime("HoraFinal");
                 Recurso recurso = recursoDB.SeleccionarPorId(rsPA.getInt("Id_Recurso"));
-                       String Observaciones = rsPA.getString("Observaciones");
+                String Observaciones = rsPA.getString("Observaciones");
                 int activo = rsPA.getInt("Log_Activo");
-                 
-                 agen = new Agenda(id_Agenda, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, FechaInicio, FechaFinal, HoraInicio, HoraFinal, recurso, activo, id_Agenda, FechaFinal, id_Agenda, FechaFinal, Observaciones);
+
+                agen = new Agenda(id_Agenda, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, FechaInicio, FechaFinal, HoraInicio, HoraFinal, recurso, activo, id_Agenda, FechaFinal, id_Agenda, FechaFinal, Observaciones);
                 listaAgenda.add(agen);
             }
 
@@ -195,11 +263,11 @@ public class AgendaDB {
                     + ",AgendaRecurso.HoraInicio\n"
                     + ",AgendaRecurso.HoraFinal\n"
                     + ",AgendaRecurso.Id_Recurso\n"
-                    +",AgendaRecurso.Observaciones\n"
+                    + ",AgendaRecurso.Observaciones\n"
                     + ",AgendaRecurso.Log_Activo\n"
                     + "from DetSolicitud INNER JOIN EncSolicitud ON EncSolicitud.Id_EncSolicitud = DetSolicitud.Id_EncSolicitud\n"
                     + "INNER JOIN AgendaRecurso  ON AgendaRecurso.Id_AgendaRecurso  = DetSolicitud.Id_AgendaRecurso \n"
-                    + "where EncSolicitud.Id_EncSolicitud="+id;
+                    + "where EncSolicitud.Id_EncSolicitud=" + id;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -220,8 +288,8 @@ public class AgendaDB {
                 Recurso recurso = recursoDB.SeleccionarPorId(rsPA.getInt("Id_Recurso"));
                 String Observaciones = rsPA.getString("Observaciones");
                 int activo = rsPA.getInt("Log_Activo");
-                 
-                 agen = new Agenda(id_Agenda, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, FechaInicio, FechaFinal, HoraInicio, HoraFinal, recurso, activo, id_Agenda, FechaFinal, id_Agenda, FechaFinal, Observaciones);
+
+                agen = new Agenda(id_Agenda, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, FechaInicio, FechaFinal, HoraInicio, HoraFinal, recurso, activo, id_Agenda, FechaFinal, id_Agenda, FechaFinal, Observaciones);
 
                 listaAgenda.add(agen);
             }
@@ -343,6 +411,55 @@ public class AgendaDB {
         return agen;
     }
 
+    public int SeleccionarExistenteJornada(Agenda agenda) throws SNMPExceptions,
+            SQLException {
+        int Lunes = agenda.isLunes() ? 1 : 2;
+        int Martes = agenda.isMartes() ? 1 : 2;
+        int Miercoles = agenda.isMiercoles() ? 1 : 2;
+        int Jueves = agenda.isJueves() ? 1 : 2;
+        int Viernes = agenda.isViernes() ? 1 : 2;
+        int Sabado = agenda.isSabado() ? 1 : 2;
+        int Domingo = agenda.isDomingo() ? 1 : 2;
+
+        String select = "";
+        ResultSet rsPA = null;
+        int agen = 0;
+        AgendaDB agendaDB = new AgendaDB();
+        try {
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            select = "Select Id_DetSolicitud\n"
+                    + "From DetSolicitud inner join AgendaRecurso\n"
+                    + "On DetSolicitud.Id_AgendaRecurso = AgendaRecurso.Id_AgendaRecurso"
+                    + " Where (('" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "' between AgendaRecurso.FechaInicio and AgendaRecurso.FechaFinal) OR ('" + new java.sql.Date(agenda.getFechaFinal().getTime()) + "' between AgendaRecurso.FechaInicio and AgendaRecurso.FechaFinal)\n"
+                    + "Or (AgendaRecurso.FechaInicio between '" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "' and '" + new java.sql.Date(agenda.getFechaFinal().getTime()) + "' or AgendaRecurso.FechaFinal between '" + new java.sql.Date(agenda.getFechaInicio().getTime()) + "' and '" + new java.sql.Date(agenda.getFechaFinal().getTime()) + "'))\n"
+                    + "and (('" + new java.sql.Time(agenda.getHoraInicio().getTime()) + "' between AgendaRecurso.HoraInicio and AgendaRecurso.HoraFinal Or '" + new java.sql.Time(agenda.getHoraFinal().getTime()) + "' between AgendaRecurso.HoraInicio and AgendaRecurso.HoraFinal)\n"
+                    + "or (AgendaRecurso.HoraInicio between '" + new java.sql.Time(agenda.getHoraInicio().getTime()) + "' and '" + new java.sql.Time(agenda.getHoraFinal().getTime()) + "' or AgendaRecurso.HoraFinal between '" + new java.sql.Time(agenda.getHoraInicio().getTime()) + "' and '" + new java.sql.Time(agenda.getHoraFinal().getTime()) + "'))\n"
+                    + "And (Lunes =" + Lunes + " or Martes = " + Martes + "or Miercoles = " + Miercoles + " or Jueves = " + Jueves + " or Viernes = " + Viernes + " or Sabado = " + Sabado + " or Domingo = " + Domingo + " )\n"
+                    + "and DetSolicitud.Log_Activo = 1\n";
+
+            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+
+            while (rsPA.next()) {
+
+                agen = rsPA.getInt("Id_DetSolicitud");
+            }
+
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return agen;
+    }
+
     public int SeleccionarUltimo() throws SNMPExceptions,
             SQLException {
         int max = 0;
@@ -380,16 +497,15 @@ public class AgendaDB {
         return max;
     }
 
-     public void ActualizarEstadoSolicitud(int id) throws SNMPExceptions{
-        String strSQL = "";   
+    public void ActualizarEstadoSolicitud(int id) throws SNMPExceptions {
+        String strSQL = "";
         int estado = 0;
-        try {  
-             
-             strSQL = "UPDATE AgendaRecurso SET "                 
-                     +"', Log_Activo=0"
-                     +"where Id_AgendaRecurso="+id;
-                   
-                    
+        try {
+
+            strSQL = "UPDATE AgendaRecurso SET "
+                    + "Log_Activo=0"
+                    + "where Id_AgendaRecurso=" + id;
+
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
@@ -401,25 +517,24 @@ public class AgendaDB {
 
         }
     }
-    
-    
-    public void CancelarSolicitud(int id) throws SNMPExceptions{
-        String strSQL = "";   
+
+    public void CancelarSolicitud(int id) throws SNMPExceptions {
+        String strSQL = "";
         int estado = 0;
-        try {  
-            Programa programa = new Programa(); 
-            
-            if(programa.estado.equals("Activo")){
+        try {
+            Programa programa = new Programa();
+
+            if (programa.estado.equals("Activo")) {
                 estado = 1;
             }
-             strSQL = "UPDATE Programa SET "
-                     +"Nombre='" +programa.getNombre() 
-                     +"', Dsc_Programa= '" + programa.getDescripcion()
-                     +"', Id_Edita= '" + programa.getId_Edita()
-                     +"', FechaEdita= '" + new java.sql.Date(programa.getFechaEdita().getTime())
-                     +"', Log_Activo='" + estado
-                     +"' WHERE Id_Programa='" + programa.getId()+"';";
-                    
+            strSQL = "UPDATE Programa SET "
+                    + "Nombre='" + programa.getNombre()
+                    + "', Dsc_Programa= '" + programa.getDescripcion()
+                    + "', Id_Edita= '" + programa.getId_Edita()
+                    + "', FechaEdita= '" + new java.sql.Date(programa.getFechaEdita().getTime())
+                    + "', Log_Activo='" + estado
+                    + "' WHERE Id_Programa='" + programa.getId() + "';";
+
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
         } catch (SQLException e) {
             throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,

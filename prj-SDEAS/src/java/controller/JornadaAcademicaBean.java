@@ -5,9 +5,37 @@
  */
 package controller;
 
+import dao.ObtenerDatosSesion;
+import dao.SNMPExceptions;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import model.Agenda;
+import model.AgendaDB;
+import model.Curso;
+import model.CursoDB;
+import model.Detalle;
+import model.DetalleDB;
+import model.EncabezadoSolicitud;
+import model.EncabezadoSolicitudDB;
+import model.EstadoSolicitudDB;
+import model.JornadaAcademica;
+import model.Programa;
+import model.ProgramaDB;
+import model.ProgramaUsuario;
+import model.ProgramaUsuarioDB;
+import model.Recurso;
+import model.RecursoDB;
+import model.Usuario;
+import model.UsuarioDB;
+import model.UsuarioMante;
+import model.UsuarioManteDB;
 
 /**
  *
@@ -17,10 +45,694 @@ import java.io.Serializable;
 @SessionScoped
 public class JornadaAcademicaBean implements Serializable {
 
+    AgendaDB agendaDB = new AgendaDB();
+    EncabezadoSolicitudDB encabezadoDB = new EncabezadoSolicitudDB();
+    ProgramaDB programaDB = new ProgramaDB();
+    CursoDB cursoDB = new CursoDB();
+    DetalleDB detalleDB = new DetalleDB();
+    UsuarioDB usuarioDB = new UsuarioDB();
+
+    boolean Lunes;
+    boolean Martes;
+    boolean Miercoles;
+    boolean Jueves;
+    boolean Viernes;
+    boolean Sabado;
+    boolean Domingo;
+    Date FechaInicio = new Date();
+    Date FechaFinal = new Date();
+    Date HoraInicio = new Date();
+    Date HoraFinal = new Date();
+    String nombreJornada;
+    String Descripcion;
+    String mensajeError;
+    int Contador = 0;
+    Usuario usuario = null;
+    String MensajeBueno;
+    ObtenerDatosSesion datos = null;
+    LinkedList<Curso> listaCurso = new LinkedList<Curso>();
+    LinkedList<Programa> listaPrograma = new LinkedList<Programa>();
+    int programa = 0;
+    int curso = 0;
+    String estado = "Activo";
+    String nombre;
+    LinkedList<EncabezadoSolicitud> listaSolicitud = new LinkedList<EncabezadoSolicitud>();
+
+   
+
     /**
      * Creates a new instance of JornadaAcademicaBean
      */
-    public JornadaAcademicaBean() {
+    public JornadaAcademicaBean() throws SNMPExceptions, SQLException {
+        datos = new ObtenerDatosSesion();
+
+        datos.consultarSesion();
+        if (!datos.getId_Usuario().equals("")) {
+            usuario = usuarioDB.SeleccionarPorId(Integer.parseInt(datos.getId_Usuario()));
+            setNombre(usuario.getNombreCompleto());
+        }
+        llenarTodo();
+
     }
+
+    public void llenarTodo() throws SNMPExceptions, SQLException {
+        if (!programaDB.SeleccionarTodosCoordinador(usuario.getId()).isEmpty()) {
+            listaPrograma = programaDB.SeleccionarTodosCoordinador(usuario.getId());
+            programa = listaPrograma.element().getId();
+        } else {
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen Progrmas</div>");
+        }
+        if (!cursoDB.SeleccionarTodosPorId(programa).isEmpty()) {
+            listaCurso = cursoDB.SeleccionarTodosPorId(programa);
+        } else {
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen Cursos para ese programa</div>");
+        }
+          if (!encabezadoDB.SeleccionarTodosPorId(usuario.getId()).isEmpty()) {
+            listaSolicitud = encabezadoDB.SeleccionarTodosPorId(usuario.getId());
+        } else {
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' ><strong>Ups!&nbsp;</strong>Usted no ha realizado ninguna solicitud</div>");
+        }
+    }
+     public void cancelar(int id) throws SNMPExceptions, SQLException {
+      
+        EncabezadoSolicitudDB ddd = new EncabezadoSolicitudDB();
+         AgendaDB ageDB = new AgendaDB();
+        EncabezadoSolicitud enca = ddd.SeleccionarporId(id);
+        UsuarioMante usu = new UsuarioManteDB().SeleccionarPorId(enca.getFuncionario().getId());
+        LinkedList<Agenda> listaAgenda = new LinkedList<Agenda>();
+         listaAgenda = ageDB.SeleccionarTodosPorEncabezado(id);
+        try {
+            EstadoSolicitudDB estadodb = new EstadoSolicitudDB();
+            enca.setLog(0);            
+            ddd.ActualizarEstadoSolicitud(enca);
+            
+              for (Agenda re : listaAgenda) {
+                 ageDB.ActualizarEstadoSolicitud(re.getId_Agenda());
+              }
+              setMensajeBueno("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Ha cancelado su Solicitud correctamente!</div>");
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    public boolean validaciones() {
+        boolean respuesta;
+        if (this.getFechaInicio() == null) {
+            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la fecha de inicio</div>");
+            respuesta = false;
+        } else {
+            if (this.getHoraInicio() == null) {
+                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la hora de inicio</div>");
+                respuesta = false;
+            } else {
+                if (this.getFechaFinal() == null) {
+                    this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la fecha de final</div>");
+                    respuesta = false;
+                } else {
+                    if (this.getHoraFinal() == null) {
+                        this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe colocar la hora de final</div>*");
+                        respuesta = false;
+                    } else {
+                        if (this.getHoraFinal() == null) {
+                            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>*Debe colocar la hora de final</div>");
+                            respuesta = false;
+                        } else {
+                            if (!validarDiasSeleccionados()) {
+                                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe seleccionar al menos un día</div>");
+                                respuesta = false;
+                            } else {
+                                if (this.getNombre().equals("")) {
+                                    this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe colocar el nombre de la jornada</div>");
+                                    respuesta = false;
+                                } else {
+                                    if (this.getDescripcion().equals("")) {
+                                        this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Debe colocar la descripcion de la jornada</div>");
+                                        respuesta = false;
+                                    } else {
+                                        respuesta = true;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+        return respuesta;
+    }
+
+    public boolean validarDiasSeleccionados() {
+        boolean respuesta = false;
+        if (Lunes) {
+            respuesta = true;
+        } else {
+            if (Martes) {
+                respuesta = true;
+            } else {
+                if (Miercoles) {
+                    respuesta = true;
+                } else {
+                    if (Jueves) {
+                        respuesta = true;
+                    } else {
+                        if (Viernes) {
+                            respuesta = true;
+                        } else {
+                            if (Sabado) {
+                                respuesta = true;
+                            } else {
+                                if (Domingo) {
+                                    respuesta = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return respuesta;
+    }
+
+    /*Este metodo cuenta cuantos dias selecciono el usuario*/
+    public void contadorActivos() {
+        this.setContador(0);
+        if (this.isLunes()) {
+            this.setContador(this.getContador() + 1);
+        }
+        if (this.isMartes()) {
+            this.setContador(this.getContador() + 1);
+        }
+        if (this.isMiercoles()) {
+            this.setContador(this.getContador() + 1);
+        }
+        if (this.isJueves()) {
+            this.setContador(this.getContador() + 1);
+        }
+        if (this.isViernes()) {
+            this.setContador(this.getContador() + 1);
+        }
+        if (this.isSabado()) {
+            this.setContador(this.getContador() + 1);
+        }
+        if (this.isDomingo()) {
+            this.setContador(this.getContador() + 1);
+        }
+
+    }
+
+    /*Este metodo valida que los dias seleccionados esten estre el rango*/
+    public boolean prueba() throws ParseException {
+        /*Tengocontadores x dia para no contar dos dias iguales y que el contador me quede igual a los activos*/
+        contadorActivos();
+        int contadorMartes = 0;
+        int contadorMiercoles = 0;
+        int contadorJueves = 0;
+        int contadorViernes = 0;
+        int contadorLunes = 0;
+        int contadorSabado = 0;
+        int contadorDomingo = 0;
+        int contador2 = 0;
+        /*Formato Fecha*/
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+        /*Pone formao a la fecha de inicio*/
+        String fecha = formato.format(this.getFechaInicio());
+        String fechaFinal = formato.format(this.getFechaFinal());
+        /*Combierte el string en fecha para convertirlo en calendar*/
+        Date fechaInicio1 = formato.parse(fecha);
+        Date fechaFinal1 = formato.parse(fechaFinal);
+        /*Calendario para sacar el dia de la semana*/
+        Calendar can = Calendar.getInstance();
+        can.setTime(fechaInicio1);
+        /*Calendario final*/
+        Calendar canFinal = Calendar.getInstance();
+        canFinal.setTime(fechaFinal1);
+        /*Dia de la semana de la fecha inicio*/
+        int diaSemana = can.get(Calendar.DAY_OF_WEEK);
+        /*Dias que hay entre las dos fechas*/
+        int diasEntreFechas = (int) ((fechaFinal1.getTime() - fechaInicio1.getTime()) / 86400000) + 1;
+
+        for (int i = 1; i <= diasEntreFechas; i++) {
+            if (diaSemana == 2) {
+                if (this.isLunes()) {
+                    contadorLunes++;
+                    /*Este contador lunes esta hecho para no contar dos veces el lunes y que el contador2 sea igual al contador de activos*/
+                    if (contadorLunes == 1) {
+                        contador2++;
+                    }
+                }
+            } else {
+                if (diaSemana == 3) {
+                    contadorMartes++;
+                    if (this.isMartes()) {
+                        if (contadorMartes == 1) {
+                            contador2++;
+                        }
+                    }
+                } else {
+                    if (diaSemana == 4) {
+                        contadorMiercoles++;
+                        if (this.isMiercoles()) {
+                            if (contadorMiercoles == 1) {
+                                contador2++;
+                            }
+                        }
+                    } else {
+                        if (diaSemana == 5) {
+                            contadorJueves++;
+                            if (this.isJueves()) {
+                                if (contadorJueves == 1) {
+                                    contador2++;
+                                }
+                            }
+                        }
+                        if (diaSemana == 6) {
+                            contadorViernes++;
+                            if (this.isViernes()) {
+                                if (contadorViernes == 1) {
+                                    contador2++;
+                                }
+                            }
+                        } else {
+                            if (diaSemana == 7) {
+                                contadorSabado++;
+                                if (this.isSabado()) {
+                                    if (contadorSabado == 1) {
+                                        contador2++;
+                                    }
+                                }
+                            } else {
+                                if (diaSemana == 1) {
+                                    if (this.isDomingo()) {
+                                        contadorDomingo++;
+                                        if (contadorDomingo == 1) {
+                                            contador2++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            /*Cambia los dias de la semana*/
+            if (diaSemana == 7) {
+                diaSemana = 1;
+            } else {
+                diaSemana++;
+            }
+        }
+        /*Valida que los dias de la semana que se contaron sean iguales que los activos*/
+        if (contador2 == this.getContador()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /*Este metodo valida que las fechas ingresadas sean mayores a la fecha actual*/
+    public boolean validaFechaActual() throws ParseException {
+        int contador = 0;
+        /*Formato Fecha*/
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+        /*Pone formao a la fecha de inicio*/
+        String fecha = formato.format(this.getFechaInicio());
+        String fechaFinal = formato.format(this.getFechaFinal());
+        /*Combierte el string en fecha para convertirlo en calendar*/
+        Date fechaInicio1 = formato.parse(fecha);
+        Date fechaFinal1 = formato.parse(fechaFinal);
+        Date ahora = new Date();
+        /*Valida  fecha Inicio y fecha actual*/
+        int diasEntreFechas = (int) ((this.getFechaInicio().getTime() - ahora.getTime()) / 86400000);
+        /*Valida  fecha final y fecha actual*/
+        int diasEntreFechas1 = (int) ((fechaFinal1.getTime() - ahora.getTime()) / 86400000);
+
+        /*si el numero es negativo quire decir que la fecha es menor si es mayor quiere decir que esta bien*/
+        if (diasEntreFechas > 1) {
+            contador++;
+        } else {
+            if (diasEntreFechas1 > 0) {
+                contador++;
+            }
+        }
+        if (contador == 0) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public boolean validaExistente() throws SNMPExceptions, SQLException {
+        boolean respuesta = false;
+
+        int contadorRespuestas = 0;
+        Curso curso1 = cursoDB.SeleccionarPorId(this.curso);
+        JornadaAcademica jornada = new JornadaAcademica(nombre, nombreJornada, FechaInicio, FechaFinal, HoraInicio, HoraFinal, curso1, estado);
+        Agenda agendaNueva;
+        agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), jornada, 1, this.getDescripcion());
+
+        int Detalle = agendaDB.SeleccionarExistenteJornada(agendaNueva);
+        if (Detalle == 0) {
+            respuesta = true;
+        } else {
+            this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>No puede agregar la solicitud, Ya existe una solicitud con esos datos</div>");
+            respuesta = false;
+        }
+
+        return respuesta;
+    }
+
+    public void ingresarAgendas() throws ParseException, SNMPExceptions, SQLException {
+        try {
+            this.setMensajeBueno("");
+            EncabezadoSolicitudDB encabezadoDB = new EncabezadoSolicitudDB();
+            DetalleDB detalleDB = new DetalleDB();
+            AgendaDB agendaDB = new AgendaDB();
+            ProgramaUsuarioDB prousuDB = new ProgramaUsuarioDB();
+            if (validaciones()) {
+                if (validaFechaActual()) {
+                    if (prueba()) {                        
+                            if (validaExistente()) {
+                                /*INGRESO EL ENCABEZADO*/
+                                EncabezadoSolicitud encabezado = new EncabezadoSolicitud();
+                                encabezado.setFuncionario(usuario);
+                                ProgramaUsuario pro = prousuDB.VerificarRol(usuario.getId(), 3);
+                                encabezado.setCoordinador(usuario);
+                                encabezadoDB.registrar(encabezado);
+
+                                /*Ingeso la agenda*/
+                                Curso curso1 = cursoDB.SeleccionarPorId(this.curso);                                                            
+                                JornadaAcademica jornada = new JornadaAcademica(nombre, nombreJornada, FechaInicio, FechaFinal, HoraInicio, HoraFinal, curso1, estado);
+                                Agenda agendaNueva;
+                                agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), jornada, 1, this.getDescripcion());
+
+                                agendaNueva.setId_Registra(usuario.getId());                              
+                                agendaNueva.setId_Agenda(agendaDB.SeleccionarUltimo());
+                               
+                            
+                            /*Ingreso el detalle*/
+                                Detalle detalle = new Detalle();
+                                int enca = encabezadoDB.SeleccionarUltimo();
+                                detalle.setEncabezado(encabezadoDB.SeleccionarporId(enca));
+                                detalle.setAgenda(agendaNueva);
+                                detalleDB.registrar(detalle);
+                            
+
+                            limpiar();
+                            setMensajeError("");
+
+                            setMensajeBueno("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Su solicitud ha sido enviada correctamente!</div>");
+                        }                   
+                } else {
+                    this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Los días seleccionados no concuerdan con el rango de fechas...¡Intentelo de nuevo!</div>");
+                }
+            } else {
+                this.setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Las fechas no pueden ser menor a la actual...¡Intentelo de nuevo!</div>");
+            }
+        }
+
+    }
+    catch(Exception e
+
     
+        ){
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Hubo un error al enviar el prestamo...¡Intentelo de nuevo!</div>");
+    }
+
+}
+public void limpiar()throws SNMPExceptions,SQLException{
+        this.setFechaInicio(null);
+        this.setFechaFinal(null);
+        this.setHoraInicio(null);
+        this.setHoraFinal(null);
+        this.setEstado("Activo");
+        llenarTodo();
+        this.setNombreJornada("");
+          this.setDescripcion("");
+          this.setLunes(false);
+          this.setMartes(false);
+          this.setMiercoles(false);         
+          this.setViernes(false);
+          this.setJueves(false);
+          this.setDomingo(false);
+           this.setSabado(false);
+          
+    }
+
+    public AgendaDB getAgendaDB() {
+        return agendaDB;
+    }
+
+    public void setAgendaDB(AgendaDB agendaDB) {
+        this.agendaDB = agendaDB;
+    }
+
+    public EncabezadoSolicitudDB getEncabezadoDB() {
+        return encabezadoDB;
+    }
+
+    public void setEncabezadoDB(EncabezadoSolicitudDB encabezadoDB) {
+        this.encabezadoDB = encabezadoDB;
+    }
+
+    public ProgramaDB getProgramaDB() {
+        return programaDB;
+    }
+
+    public void setProgramaDB(ProgramaDB programaDB) {
+        this.programaDB = programaDB;
+    }
+
+    public CursoDB getCursoDB() {
+        return cursoDB;
+    }
+
+    public void setCursoDB(CursoDB cursoDB) {
+        this.cursoDB = cursoDB;
+    }
+
+    public DetalleDB getDetalleDB() {
+        return detalleDB;
+    }
+
+    public void setDetalleDB(DetalleDB detalleDB) {
+        this.detalleDB = detalleDB;
+    }
+
+    public UsuarioDB getUsuarioDB() {
+        return usuarioDB;
+    }
+
+    public void setUsuarioDB(UsuarioDB usuarioDB) {
+        this.usuarioDB = usuarioDB;
+    }
+
+    public boolean isLunes() {
+        return Lunes;
+    }
+
+    public void setLunes(boolean Lunes) {
+        this.Lunes = Lunes;
+    }
+
+    public boolean isMartes() {
+        return Martes;
+    }
+
+    public void setMartes(boolean Martes) {
+        this.Martes = Martes;
+    }
+
+    public boolean isMiercoles() {
+        return Miercoles;
+    }
+
+    public void setMiercoles(boolean Miercoles) {
+        this.Miercoles = Miercoles;
+    }
+
+    public boolean isJueves() {
+        return Jueves;
+    }
+
+    public void setJueves(boolean Jueves) {
+        this.Jueves = Jueves;
+    }
+
+    public boolean isViernes() {
+        return Viernes;
+    }
+
+    public void setViernes(boolean Viernes) {
+        this.Viernes = Viernes;
+    }
+
+    public boolean isSabado() {
+        return Sabado;
+    }
+
+    public void setSabado(boolean Sabado) {
+        this.Sabado = Sabado;
+    }
+
+    public boolean isDomingo() {
+        return Domingo;
+    }
+
+    public void setDomingo(boolean Domingo) {
+        this.Domingo = Domingo;
+    }
+
+    public Date getFechaInicio() {
+        return FechaInicio;
+    }
+
+    public void setFechaInicio(Date FechaInicio) {
+        this.FechaInicio = FechaInicio;
+    }
+
+    public Date getFechaFinal() {
+        return FechaFinal;
+    }
+
+    public void setFechaFinal(Date FechaFinal) {
+        this.FechaFinal = FechaFinal;
+    }
+
+    public Date getHoraInicio() {
+        return HoraInicio;
+    }
+
+    public void setHoraInicio(Date HoraInicio) {
+        this.HoraInicio = HoraInicio;
+    }
+
+    public Date getHoraFinal() {
+        return HoraFinal;
+    }
+
+    public void setHoraFinal(Date HoraFinal) {
+        this.HoraFinal = HoraFinal;
+    }
+
+    public String getNombreJornada() {
+        return nombreJornada;
+    }
+
+    public void setNombreJornada(String nombreJornada) {
+        this.nombreJornada = nombreJornada;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return Descripcion;
+    }
+
+    public void setDescripcion(String Descripcion) {
+        this.Descripcion = Descripcion;
+    }
+
+    public String getMensajeError() {
+        return mensajeError;
+    }
+
+    public void setMensajeError(String mensajeError) {
+        this.mensajeError = mensajeError;
+    }
+
+    public int getContador() {
+        return Contador;
+    }
+
+    public void setContador(int Contador) {
+        this.Contador = Contador;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getMensajeBueno() {
+        return MensajeBueno;
+    }
+
+    public void setMensajeBueno(String MensajeBueno) {
+        this.MensajeBueno = MensajeBueno;
+    }
+
+    public ObtenerDatosSesion getDatos() {
+        return datos;
+    }
+
+    public void setDatos(ObtenerDatosSesion datos) {
+        this.datos = datos;
+    }
+
+    public LinkedList<Curso> getListaCurso() throws SNMPExceptions, SQLException {
+        if (!cursoDB.SeleccionarTodosPorId(programa).isEmpty()) {
+            listaCurso = cursoDB.SeleccionarTodosPorId(programa);
+        } else {
+            setMensajeError("<div class='alert alert-danger alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Error!&nbsp;</strong>Aún NO existen Cursos para ese programa</div>");
+        }
+        return listaCurso;
+    }
+
+    public void setListaCurso(LinkedList<Curso> listaCurso) {
+        this.listaCurso = listaCurso;
+    }
+
+    public LinkedList<Programa> getListaPrograma() {
+        return listaPrograma;
+    }
+
+    public void setListaPrograma(LinkedList<Programa> listaPrograma) {
+        this.listaPrograma = listaPrograma;
+    }
+
+    public int getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(int programa) {
+        this.programa = programa;
+    }
+
+    public int getCurso() {
+        return curso;
+    }
+
+    public void setCurso(int curso) {
+        this.curso = curso;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+     public LinkedList<EncabezadoSolicitud> getListaSolicitud() {
+        return listaSolicitud;
+    }
+
+    public void setListaSolicitud(LinkedList<EncabezadoSolicitud> listaSolicitud) {
+        this.listaSolicitud = listaSolicitud;
+    }
+
 }
