@@ -60,7 +60,7 @@ public class DetalleDB {
     public LinkedList<Detalle> SeleccionarTodos() throws SNMPExceptions{
         String select = "";
       ResultSet rsPA = null;
-      RecursoDB rDB = new RecursoDB();
+      AgendaDB aDB = new AgendaDB();
       JornadaAcademicaDB jDB = new JornadaAcademicaDB();
       EncabezadoSolicitudDB eDB = new EncabezadoSolicitudDB();
       LinkedList<Detalle> listaDetalle= new LinkedList<Detalle>();
@@ -69,16 +69,20 @@ public class DetalleDB {
               AccesoDatos accesoDatos = new AccesoDatos();  
               
                    select = 
-                      "SELECT Id_DetSolicitud, Id_EncSolicitud, Id_Recurso, Id_JornadaAcademica from DetSolicitud ";
+                      "SELECT Id_DetSolicitud, Id_EncSolicitud, Id_AgendaRecurso, Id_JornadaAcademica from DetSolicitud ";
               
                       rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
              
                       while (rsPA.next()) {
                         int Id_det = rsPA.getInt("Id_DetSolicitud");
                         EncabezadoSolicitud encabezado = eDB.SeleccionarporId(rsPA.getInt("Id_EncSolicitud"));
-                        Recurso recurso = rDB.SeleccionarPorId(rsPA.getInt("Id_Recurso"));
-                        JornadaAcademica jornada = !rsPA.getString("Id_JornadaAcademica").equals("")? jDB.SeleccionarPorId(rsPA.getInt("Id_JornadaAcademica")) : null;
+                        Agenda agenda = aDB.SeleccionarId(rsPA.getInt("Id_AgendaRecurso"));
+                        JornadaAcademica jornada = rsPA.getString("Id_JornadaAcademica") != null? jDB.SeleccionarPorId(rsPA.getInt("Id_JornadaAcademica")) : null;
                         Detalle det = new Detalle();
+                        det.setId_Detalle(Id_det);
+                        det.setEncabezado(encabezado);
+                        det.setAgenda(agenda);
+                        det.setJornadaAcademica(jornada);
                         listaDetalle.add(det);
                        
                       }

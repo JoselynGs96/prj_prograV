@@ -16,7 +16,6 @@ public class Detalle {
     JornadaAcademica jornadaAcademica;
     int activo;
     Agenda agenda; 
-
     
     
     public Detalle(int Id_Detalle, EncabezadoSolicitud encabezado, JornadaAcademica jornadaAcademica, int activo,Agenda agenda) {
@@ -61,11 +60,15 @@ public class Detalle {
     public void setActivo(int activo) {
         this.activo = activo;
     }
-public Agenda getAgenda() {
+    
+    public Agenda getAgenda() {
         return agenda;
     }
 
     public void setAgenda(Agenda recurso) {
         this.agenda = recurso;
     }
+
+  
+    
 }

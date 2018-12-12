@@ -308,6 +308,8 @@ public class AgendaDB {
 
         return listaAgenda;
     }
+    
+    
 
     public Agenda SeleccionarId(int id) throws SNMPExceptions,
             SQLException {
@@ -320,22 +322,7 @@ public class AgendaDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT [Id_AgendaRecurso]\n"
-                    + "      ,[Lunes]\n"
-                    + "      ,[Martes]\n"
-                    + "      ,[Miercoles]\n"
-                    + "      ,[Jueves]\n"
-                    + "      ,[Viernes]\n"
-                    + "      ,[Sabado]\n"
-                    + "      ,[Domingo]\n"
-                    + "      ,[FechaInicio]\n"
-                    + "      ,[FechaFinal]\n"
-                    + "      ,[HoraInicio]\n"
-                    + "      ,[HoraFinal]\n"
-                    + "      ,[Id_Recurso]\n"
-                    + "      ,[Log_Activo]\n"
-                    + "      ,[Obseraciones]\n"
-                    + "  FROM [dbo].[AgendaRecurso] where Id_AgendaRecurso=" + id;
+                    = "SELECT [Id_AgendaRecurso], [Lunes], [Martes] ,[Miercoles] ,[Jueves] ,[Viernes] ,[Sabado] ,[Domingo] ,[FechaInicio],[FechaFinal] ,[HoraInicio] ,[HoraFinal], [Id_Recurso], [Log_Activo], [Observaciones] FROM [dbo].[AgendaRecurso] where Id_AgendaRecurso= " + id;
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
@@ -349,12 +336,12 @@ public class AgendaDB {
                 boolean Sabado = (rsPA.getInt("Sabado")) == 1 ? true : false;
                 boolean Domingo = (rsPA.getInt("Domingo")) == 1 ? true : false;
                 Date FechaInicio = rsPA.getDate("FechaInicio");
-                Date FechaFinal = rsPA.getDate("FechaFinal");;
-                Date HoraInicio = rsPA.getDate("HoraInicio");
-                Date HoraFinal = rsPA.getDate("HoraFinal");
+                Date FechaFinal = rsPA.getDate("FechaFinal");
+                Date HoraInicio = rsPA.getTime("HoraInicio");
+                Date HoraFinal = rsPA.getTime("HoraFinal");
                 Recurso recurso = recursoDB.SeleccionarPorId(rsPA.getInt("Id_Recurso"));
                 int activo = rsPA.getInt("Log_Activo");
-                String Obseraciones = rsPA.getString("Obseraciones");
+                String Obseraciones = rsPA.getString("Observaciones");
                 agen = new Agenda(id_Agenda, Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo, FechaInicio, FechaFinal, HoraInicio, HoraFinal, recurso, activo, id_Agenda, FechaFinal, id_Agenda, FechaFinal, Obseraciones);
 
             }
