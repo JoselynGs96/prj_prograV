@@ -332,7 +332,7 @@ public class ProgramaUsuarioDB {
     }
 
     /*Este metodo me trae el coordinador del progrma del usuario*/
-    public UsuarioMante SeleccionarTodosCoordinadorPorPrograma(Programa id) throws SNMPExceptions,
+    public UsuarioMante SeleccionarTodosCoordinadorPorPrograma(int id) throws SNMPExceptions,
             SQLException {
         String select = "";
         ResultSet rsPA = null;
@@ -344,7 +344,7 @@ public class ProgramaUsuarioDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "SELECT Id_Usuario from Programa_Usuario WHERE Id_Programa = " + id + " and TipoFuncionario=''";
+                    = "SELECT Id_Usuario from Programa_Usuario WHERE Id_Programa = " + id + " and Id_RolUsuario=2";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
