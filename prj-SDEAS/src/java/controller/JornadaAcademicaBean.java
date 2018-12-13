@@ -26,6 +26,7 @@ import model.EncabezadoSolicitud;
 import model.EncabezadoSolicitudDB;
 import model.EstadoSolicitudDB;
 import model.JornadaAcademica;
+import model.JornadaAcademicaDB;
 import model.Programa;
 import model.ProgramaDB;
 import model.ProgramaUsuario;
@@ -419,6 +420,7 @@ public class JornadaAcademicaBean implements Serializable {
                             if (validaExistente()) {
                                 /*INGRESO EL ENCABEZADO*/
                                 EncabezadoSolicitud encabezado = new EncabezadoSolicitud();
+                                JornadaAcademicaDB JorDB = new JornadaAcademicaDB();
                                 encabezado.setFuncionario(usuario);
                                 ProgramaUsuario pro = prousuDB.VerificarRol(usuario.getId(), 3);
                                 encabezado.setCoordinador(usuario);
@@ -427,11 +429,18 @@ public class JornadaAcademicaBean implements Serializable {
                                 /*Ingeso la agenda*/
                                 Curso curso1 = cursoDB.SeleccionarPorId(this.curso);                                                            
                                 JornadaAcademica jornada = new JornadaAcademica(nombre, nombreJornada, FechaInicio, FechaFinal, HoraInicio, HoraFinal, curso1, estado);
+                                JorDB.registrar(jornada);
+                                jornada.setId_JornadaAcademica(JorDB.SeleccionarUltimo());
+                             
                                 Agenda agendaNueva;
+                                
                                 agendaNueva = new Agenda(this.isLunes(), this.isMartes(), this.isMiercoles(), this.isJueves(), this.isViernes(), this.isSabado(), this.isDomingo(), this.getFechaInicio(), this.getFechaFinal(), this.getHoraInicio(), this.getHoraFinal(), jornada, 1, this.getDescripcion());
-
-                                agendaNueva.setId_Registra(usuario.getId());                              
                                 agendaNueva.setId_Agenda(agendaDB.SeleccionarUltimo());
+                                
+                                                       
+                                
+                                agendaDB.registrarJornada(agendaNueva);
+                                
                                
                             
                             /*Ingreso el detalle*/

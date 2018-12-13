@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import model.EnumFuncionario;
 import model.Programa;
 import model.ProgramaDB;
 import model.ProgramaUsuario;
@@ -109,8 +108,9 @@ public class ProgramaBean implements Serializable {
                      pr.setFechaRegistra(fecha);
                      pr.setId_Edita(IdEdita);
                      pr.setFechaEdita(fecha);
+                     pr.setFuncionario(null);
                      pr.setEstado("Activo");
-                     prodb.registrar(pr);
+                     prodb.registrar2(pr);
                      setMensajeGuardar("<div class='alert alert-success alert-dismissible fade in' > <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> <strong>Exitoso!&nbsp;</strong>¡Programa registrado con éxito!</div>" );
                 }
                 seleccionarTodos();

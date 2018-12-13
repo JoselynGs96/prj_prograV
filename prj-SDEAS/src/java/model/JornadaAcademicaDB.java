@@ -48,8 +48,7 @@ public class JornadaAcademicaDB {
              strSQL = "INSERT INTO JornadaAcademica (Nombre, Dsc_JornadaAcademica, FechaInicio, FechaFinal, HoraInicio,"
                      + "HoraFinal, Id_Curso, Log_Activo) "
                     + "VALUES ('" 	+	jornada.getNombre()	+"', '" 
-            + jornada.getDsc_JornadaAcademica() + "', '" +  jornada.FechaInicio + "', '" + jornada.FechaFinal + "', '" + jornada.HoraInicio
-            + "', '" + jornada.HoraFinal + "', '" + jornada.getCurso().id + "', '" + estado +"')"; 
+            + jornada.getDsc_JornadaAcademica() + "', '"+ new java.sql.Date(jornada.getFechaInicio().getTime()) + "','" + new java.sql.Date(jornada.getFechaFinal().getTime()) + "','" + new java.sql.Time(jornada.getHoraInicio().getTime()) + "','" + new java.sql.Time(jornada.getHoraFinal().getTime())+ "', '" + jornada.getCurso().id + "', '" + estado +"')"; 
             
             accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);  
         } catch (SQLException e) { 
@@ -96,6 +95,42 @@ public class JornadaAcademicaDB {
          
         } 
     } 
+     public int SeleccionarUltimo() throws SNMPExceptions,
+            SQLException {
+        int max = 0;
+        String select = "";
+        ResultSet rsPA = null;
+
+        try {
+            AccesoDatos accesoDatos = new AccesoDatos();
+
+            select
+                    = "SELECT  MAX(Id_JornadaAcademica) as Maximo\n"
+                    + "FROM JornadaAcademica";
+            rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
+
+            while (rsPA.next()) {
+
+                max = rsPA.getInt("Maximo");
+                if (max == 0) {
+                    max = 1000;
+                }
+            }
+
+            rsPA.close();
+
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+
+        return max;
+    }
     
     
     public  JornadaAcademica SeleccionarPorId(int idJornada) throws SNMPExceptions, 

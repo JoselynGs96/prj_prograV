@@ -27,7 +27,7 @@ public class Usuario {
     RolUsuario rolUsuario;
     Programa Programa;  
     String nombreCompleto = "";
-    EnumFuncionario Funcionario;
+    EnumFuncionario Funcionario = null;
     int Id_Registra;
     Date FechaRegistra;
     int Id_Edita;

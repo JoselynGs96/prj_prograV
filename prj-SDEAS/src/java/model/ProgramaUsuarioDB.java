@@ -46,7 +46,40 @@ public class ProgramaUsuarioDB {
                     + pu.getPrograma().getId()
                     + "', '" + pu.getUsuario().getId()
                     + "', '" + pu.getRolUsuario().getId_RolUsuario()
-                    + "', '" + pu.Funcionario.toString()
+                    + "', '" + pu.Funcionario.toString() 
+                    + "', '" + pu.getId_Registra()
+                    + "', '" + new java.sql.Date(pu.getFechaRegistra().getTime())
+                    + "', '" + pu.getId_Edita()
+                    + "', '" + new java.sql.Date(pu.getFechaEdita().getTime())
+                    + "', '" + estado + "')";
+
+            accesoDatos.ejecutaSQL(strSQL/*, sqlBitacora*/);
+        } catch (SQLException e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            throw new SNMPExceptions(SNMPExceptions.SQL_EXCEPTION,
+                    e.getMessage());
+        } finally {
+
+        }
+    }
+    
+    public void registrar2(ProgramaUsuario prousu) throws SNMPExceptions, SQLException {
+        String strSQL = "";
+        int estado = 0;
+        try {
+            ProgramaUsuario pu = new ProgramaUsuario();
+            pu = prousu;
+
+            if (pu.estado.equals("Activo")) {
+                estado = 1;
+            }
+            strSQL = "INSERT INTO Programa_Usuario (Id_Programa, Id_Usuario, Id_RolUsuario, Id_Registra, FechaRegistra, Id_Edita, FechaEdita, Log_Activo) "
+                    + "VALUES ('"
+                    + pu.getPrograma().getId()
+                    + "', '" + pu.getUsuario().getId()
+                    + "', '" + pu.getRolUsuario().getId_RolUsuario()
                     + "', '" + pu.getId_Registra()
                     + "', '" + new java.sql.Date(pu.getFechaRegistra().getTime())
                     + "', '" + pu.getId_Edita()
@@ -65,6 +98,7 @@ public class ProgramaUsuarioDB {
         }
     }
 
+    
     public void actulizar(ProgramaUsuario prousu) throws SNMPExceptions, SQLException {
         String strSQL = "";
         int estado = 0;
