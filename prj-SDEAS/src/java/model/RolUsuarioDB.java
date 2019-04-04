@@ -43,7 +43,7 @@ public class RolUsuarioDB {
             AccesoDatos accesoDatos = new AccesoDatos();
 
             select
-                    = "  SELECT  Id_RolUsuario, Dsc_RolUsuario, Log_Activo from RolUsuario ";
+                    = "SELECT  Id_RolUsuario, Dsc_RolUsuario, Log_Activo from RolUsuario ";
 
             rsPA = accesoDatos.ejecutaSQLRetornaRS(select);
 
