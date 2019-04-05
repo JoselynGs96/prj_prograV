@@ -52,74 +52,47 @@
                     <div style="margin-bottom: 30px; height: 50px"></div>
                 </p:scrollPanel>
             </p:sidebar>
-            <!-- Header -->
+          
             <header>
-                <!-- Top Navbar -->
                 <div class="top_nav">
                     <div class="container">
                         <ul class="list-inline info">
                             <li><a href="#"><span class="fa fa-phone"></span> (506) 2435-5000</a></li>
                             <li><a href="#"><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
                             <li><a href="#"><span class="fa fa-clock-o"></span> Lunes - Sabado 9:00am - 5:00pm</a></li>
-                        </ul>
-                        <ul class="list-inline social_icon">
-                            <li><a href=""><span class="fa fa-facebook"></span></a></li>
-                            <li><a href=""><span class="fa fa-twitter"></span></a></li>
-                            <li><a href=""><span class="fa fa-behance"></span></a></li>
-                            <li><a href=""><span class="fa fa-dribbble"></span></a></li>
-                            <li><a href=""><span class="fa fa-linkedin"></span></a></li>
-                            <li><a href=""><span class="fa fa-youtube"></span></a></li>
-                        </ul>			
+                        </ul>	
                     </div>
-                </div><!-- Top Navbar end -->
-
-                <!-- Navbar -->
-                <nav class="navbar bootsnav">
-                    <!-- Top Search -->
-                    <div class="top-search">
-                        <div class="container">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Search"/>
-                                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-                            </div>
-                        </div>
-                    </div>
-
+                </div>
+                <nav class="navbar bootsnav" style="background-color:#0d2d6d; ">
                     <div class="container">
-                        <!-- Atribute Navigation -->
-                        <div class="attr-nav">
-                            <ul>
-                                <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
-                            </ul>
-                        </div>
                         <!-- Header Navigation -->
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
                                 <i class="fa fa-bars"></i>
                             </button>
-                            <a class="navbar-brand" href=""><img class="logo" src="../Recursos/images/logo.png" alt=""/></a>
+                            <a  href=""><img class="logo" src="../Recursos/images/logo.PNG" alt=""/></a>
                         </div>
                         <!-- Navigation -->
                         <div class="collapse navbar-collapse" id="navbar-menu">
                             <ul class="nav navbar-nav menu">
-                                 <li><a href="faces/index.xhtml" >Inicio</a></li> 
-                                                <li><a href="faces/Prestamo.xhtml" >Proceso de Préstamo </a></li> 
-                                                <li><a href="faces/ConsultaCancelacion.xhtml" >Consulta y Cancelación </a></li> 
-                                                
-                                                <li><h:commandLink actionListener="#{indexBean.cerrarSesion()}" value="Cerrar Sesión"></h:commandLink></li> 
-                                                <li><a href="faces/index.xhtml" ><h:outputLabel value="#{indexBean.nombre}"></h:outputLabel></a></li> 
+                                <li><a href="faces/Prestamo.xhtml" >Proceso de Préstamo </a></li> 
+                                <li><a href="faces/ConsultaCancelacion.xhtml" >Consulta y Cancelación </a></li> 
+
+                                <li><h:commandLink actionListener="#{indexBean.cerrarSesion()}" value="Cerrar Sesión"></h:commandLink></li> 
+                                <li><a href="faces/index.xhtml" ><h:outputLabel value="#{indexBean.nombre}"></h:outputLabel></a></li> 
                             </ul>
                         </div>
                     </div>    
-                </nav><!-- Navbar end -->
-            </header><!-- Header end -->
+                </nav>
+            </header>
+            
+            
             <secion class="contact_form container" >
             <div style="background:white" class="col-lg-offset-3 col-lg-6">      
 
                 <center>
-                      <div class="panel-heading" >
-                          <h1>Consulta y Cancelación de Solicitudes</h1>
+                    <div>
+                          <p class="h1">Consulta y Cancelación de Solicitudes</p>
                           <a onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 5px;" ><img align="right" style="width:20px; height:20px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ayuda.png" alt=""/></a>
                     </div>
                     <h:dataTable  id="datausu" class="table table-striped table-advance table-hover" value="#{consultaCancelacionBean.listaSolicitud}" var="list" >
@@ -165,9 +138,11 @@
                             </h:column>
                         </h:dataTable> 
                     <br></br>
-                    <br></br> <br></br>
+                    <br></br> 
+                    <br></br>
                     <h:outputLabel value="#{consultaCancelacionBean.mensajeBueno}" escape="false"></h:outputLabel>
-                    <br></br> <br></br>
+                    <br></br> 
+                    <br></br>
                 </center>
 
             </div>
@@ -175,43 +150,13 @@
           
         <!-- Footer -->
         <footer>
-            <!-- Footer top -->
-            <div class="container footer_top">
-                <div class="row">
-                    <div class="col-lg-6 col-sm-6">
-                        <div class="footer_item">
-                            <h4>Acerca de:</h4>
-                            <img class="logo" src="../Recursos/images/logo.png" alt="Construction" />
-                            <p>Sistema de información, para automatizar el proceso de planificación y uso de la infraestructura de la Dirección de Extensión y Acción Social (DEAS) Universidad Técnica Nacional</p>
-
-                            <ul class="list-inline footer_social_icon">
-                                <li><a href=""><span class="fa fa-facebook"></span></a></li>
-                                <li><a href=""><span class="fa fa-twitter"></span></a></li>
-                                <li><a href=""><span class="fa fa-youtube"></span></a></li>
-                                <li><a href=""><span class="fa fa-google-plus"></span></a></li>
-                                <li><a href=""><span class="fa fa-linkedin"></span></a></li>
-                            </ul>
-                        </div>
-                    </div>                                 
-                    <div class="col-lg-6 col-sm-6">
-                        <div class="footer_item">
-                            <h4>Contáctenos</h4>
-                            <ul class="list-unstyled footer_contact">
-                                <li><a href=""><span class="fa fa-map-marker"></span> Sede Central: Villa Bonita de Alajuela, 300 mts suroeste de Perimercados y 300 sur (carretera a Villa Bonita).</a></li>
-                                <li><a href=""><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
-                                <li><a href=""><span class="fa fa-mobile"></span><p>(506) 2435-5000 <br /></p></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- Footer top end -->
-
             <!-- Footer bottom -->
             <div class="footer_bottom text-center">
                 <p class="wow fadeInRight">                   
-                    <li> &copy;2018 UTN Todos los Derechos Reservados.</li> <li>Fabiola Alfaro y Joselyn Granados</li>
+                    <li> &copy;2019 UTN Todos los Derechos Reservados.</li>
                 </p>
-            </div><!-- Footer bottom end -->
+            </div>
+            <!-- Footer bottom end -->
         </footer>
         <!-- Footer end -->
             

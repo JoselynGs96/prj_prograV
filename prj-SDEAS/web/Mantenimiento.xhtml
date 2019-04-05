@@ -75,12 +75,12 @@
       TOP BAR CONTENT & NOTIFICATIONS
       *********************************************************************************************************************************************************** -->
       <!--header start-->
-      <header class="header black-bg">
+      <header class="header black-bg ">
             <div class="sidebar-toggle-box">
-                <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Menú"></div>
+                <div class="fa fa-bars tooltips" style="color:white"  data-placement="right" data-original-title="Menú"></div>
             </div>
-            <div class="dropdown pull-right logout" style="margin-top: 20px">
-                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText value="#{mantenimientoBean.usuario.nombreCompleto}"></h:outputText>
+            <div class="dropdown pull-right logout" style="color: white; margin-top: 20px; " >
+                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText style="color: white" value="#{mantenimientoBean.usuario.nombreCompleto}"></h:outputText>
                 <span class="caret"></span></a>
             	<ul class="nav dropdown-menu">
                     <li><h:commandLink actionListener="#{indexBean.cerrarSesion()}" value="Cerrar Sesión"></h:commandLink></li>
@@ -94,12 +94,12 @@
       *********************************************************************************************************************************************************** -->
       <!--sidebar start-->
       <aside>
-          <div id="sidebar"  class="nav-collapse ">
+          <div id="sidebar"  class="nav-collapse " style="background:#e7e8e7;">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">
               
-                  <p class="centered"><a href="faces/Mantenimiento.xhtml"><img src="Recursos/images/logo.png" alt=""/></a></p>
-              	  <h5 class="centered">Panel de Administración</h5>
+                  <p class="centered"><a href="faces/Mantenimiento.xhtml"><img width="100px"  src="Recursos/images/logo2.PNG" alt=""/></a></p>
+                  <h5 class="centered" style="color:black">Panel de Administración</h5>
               	  	
                   <li class="mt">
                       <a class="active" href="faces/Mantenimiento.xhtml">
@@ -199,7 +199,7 @@
       <div id="modalDenegar" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width: 500px">
            <div class="modal-content">
-               <div class="modal-header" style="background: #222533">
+               <div class="modal-header" style="background: #0d2d6d;">
                    <button type="button" class="close" style="color: white" data-dismiss="modal">&times;</button>
                <h4 class="modal-title">Denegar Solicitud</h4>
               </div>
@@ -212,8 +212,8 @@
                  </h:inputTextarea>
                  </center>
              </div>
-               <div class="modal-footer" style="border-top-color:#ffcb0f; ">
-                 <button type="button"   class="btn c" style="background-color: #222533; color: white" data-dismiss="modal">Cerrar</button>
+               <div class="modal-footer" style="border-top-color:#e7e8e7;">
+                 <button type="button"   class="btn c" style="background-color: #0d2d6d; color: white" data-dismiss="modal">Cerrar</button>
                  <h:commandButton class="btn btn-success" value="Confirmar" actionListener="#{mantenimientoBean.botonDenegar()}"></h:commandButton>
                </div>
            </div>
@@ -224,13 +224,13 @@
       <div id="modalVer" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width: 500px">
            <div class="modal-content">
-               <div class="modal-header" style="background: #222533">
+               <div class="modal-header" style="background: #0d2d6d;">
                    <button type="button" class="close" style="color: white" data-dismiss="modal">&times;</button>
                <h4 class="modal-title">Detalles de la Solicitud</h4>
              </div>
              <div class="modal-body">
                      <table width="100%">
-                        <tr bgcolor="#F3EC88">
+                        <tr bgcolor="" style="background: #e7e8e7;">
                             <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black">Información General</th>
                         </tr>
                         <tr>
@@ -266,7 +266,7 @@
                             </td>
                         </tr>         
                        
-                        <tr bgcolor="#F3EC88">
+                        <tr bgcolor="#e7e8e7;" style="background: #e7e8e7;">
                             <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >Agendas Solicitadas</th>
                         </tr>
                         <tr>
@@ -277,8 +277,8 @@
                         
                     </table>
              </div>
-               <div class="modal-footer" style="border-top-color:#ffcb0f; ">
-                 <button type="button"   class="btn c" style="background-color: #222533; color: white" data-dismiss="modal">Cerrar</button>
+               <div class="modal-footer" style="border-top-color:#e7e8e7; ">
+                 <button type="button"   class="btn c" style="background-color: #0d2d6d; color: white" data-dismiss="modal">Cerrar</button>
              </div>
            </div>
 
@@ -286,7 +286,7 @@
      </div>
       
       <!--main content start-->
-      <section id="main-content">
+      <section id="main-content" style="min-height: 500px">
           <section class="wrapper">
               <h3><i class="fa fa-angle-right"></i> Solicitudes de Eventos</h3>
               <div class="row mtbox" style="margin-top: 0px">

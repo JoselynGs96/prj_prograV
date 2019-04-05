@@ -56,30 +56,30 @@ public class LoginControlador implements Serializable {
         }
     }
 
-    /*public void autenticar() {
-        try {
-            Usuario1 = UsuarioDB.InicioSeccion( Integer.parseInt(this.getId_Usuario()), this.getContrasenna());
-
-            if (Usuario1 != null) {
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", Id_Usuario);
-                if (Usuario1.getLog_Activo().equals("Inactivo")) {
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("CodigoVerificacion.xhtml");
-                } else {
-                    if (Usuario1.getRolUsuario().getId_RolUsuario() == 1) {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("Mantenimiento.xhtml");
-                    } else {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-                    }
-                }
-            } else {
-                this.setMensaje("Usuario o Contraseña o Tipo Funcionario incorrectos");
-
-            }
-        } catch (Exception e) {
-
-        }
-
-    }*/
+//    public  void autenticar() {
+//        try {
+//            Usuario1 = UsuarioDB.InicioSesion( Integer.parseInt(this.getId_Usuario()), this.getContrasenna());
+//
+//            if (Usuario1 != null) {
+//                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Id_Usuario", Id_Usuario);
+//                if (Usuario1.getLog_Activo().equals("Inactivo")) {
+//                    FacesContext.getCurrentInstance().getExternalContext().redirect("CodigoVerificacion.xhtml");
+//                } else {
+//                    if (Usuario1.getRolUsuario().getId_RolUsuario() == 1) {
+//                        FacesContext.getCurrentInstance().getExternalContext().redirect("Mantenimiento.xhtml");
+//                    } else {
+//                        FacesContext.getCurrentInstance().getExternalContext().redirect("Prestamo.xhtml");
+//                    }
+//                }
+//            } else {
+//                this.setMensaje("Usuario o Contraseña o Tipo Funcionario incorrectos");
+//
+//            }
+//        } catch (Exception e) {
+//
+//        }
+//
+//    }
 
     public String getMensaje() {
         return Mensaje;

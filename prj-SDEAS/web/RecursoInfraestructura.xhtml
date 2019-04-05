@@ -62,10 +62,10 @@
       <!--header start-->
       <header class="header black-bg">
             <div class="sidebar-toggle-box">
-                <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Menú"></div>
+                <div class="fa fa-bars tooltips" style="color:white" data-placement="right" data-original-title="Menú"></div>
             </div>
             <div class="dropdown pull-right logout" style="margin-top: 20px">
-                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText value="#{recursoInfraestructuraBean.usuario.nombreCompleto}"></h:outputText>
+                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText style="color:white" value="#{recursoInfraestructuraBean.usuario.nombreCompleto}"></h:outputText>
                 <span class="caret"></span></a>
             	<ul class="nav dropdown-menu">
                     <li><h:commandLink actionListener="#{indexBean.cerrarSesion()}" value="Cerrar Sesión"></h:commandLink></li>
@@ -79,12 +79,12 @@
       *********************************************************************************************************************************************************** -->
       <!--sidebar start-->
       <aside>
-          <div id="sidebar"  class="nav-collapse ">
+          <div id="sidebar"  class="nav-collapse " style="background:#e7e8e7;">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">
               
-                  <p class="centered"><a href="faces/Mantenimiento.xhtml"><img src="Recursos/images/logo.png" alt=""/></a></p>
-              	  <h5 class="centered">Panel de Administración</h5>
+                  <p class="centered"><a href="faces/Mantenimiento.xhtml"><img width="100px"  src="Recursos/images/logo2.PNG" alt=""/></a></p>
+              	  <h5 class="centered" style="color:black">Panel de Administración</h5>
               	  	
                   <li class="mt">
                       <a class="active" href="faces/Mantenimiento.xhtml">
@@ -193,7 +193,7 @@
       <div id="modalVer" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width: 400px">
            <div class="modal-content">
-               <div class="modal-header" style="background: #222533">
+               <div class="modal-header" style="background: #0d2d6d;">
                    <button type="button" class="close" style="color: white" data-dismiss="modal">&times;</button>
                <h4 class="modal-title">Detalles del Recurso</h4>
              </div>
@@ -221,8 +221,8 @@
                  <h:outputLabel style="margin-left: 10px" value="#{recursoInfraestructuraBean.recurso.descripcion}"></h:outputLabel>
                  </center>
              </div>
-               <div class="modal-footer" style="border-top-color:#ffcb0f; ">
-                 <button type="button"   class="btn c" style="background-color: #222533; color: white" data-dismiss="modal">Cerrar</button>
+               <div class="modal-footer" style="border-top-color:#e7e8e7;">
+                 <button type="button"   class="btn c" style="background-color: #0d2d6d; color: white" data-dismiss="modal">Cerrar</button>
              </div>
            </div>
 

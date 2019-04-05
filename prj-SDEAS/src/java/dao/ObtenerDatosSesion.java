@@ -22,7 +22,7 @@ public class ObtenerDatosSesion implements Serializable {
     
     Usuario UsuarioLogin = null;
     String datos = "";
-    String Id_Usuario = "";
+    String Id_Usuario = "207750517";
 
     public String getId_Usuario() {
         return Id_Usuario;

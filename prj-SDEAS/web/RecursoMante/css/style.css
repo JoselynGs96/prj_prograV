@@ -295,7 +295,7 @@ ul.sidebar-menu {
 }
 
 ul.sidebar-menu li ul.sub li{
-    background: #424a5d;
+    background: #e7e8e7;
     margin-bottom: 0;
     margin-left: 0;
     margin-right: 0;
@@ -325,7 +325,7 @@ ul.sidebar-menu li ul.sub li a:hover {
 }
 
 ul.sidebar-menu li ul.sub li.active a {
-    color: #68dff0;
+    color: #0d2d6d;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -350,7 +350,7 @@ ul.sidebar-menu li a span{
 }
 
 ul.sidebar-menu li a{
-    color: #aeb2b7;
+    color: black;
     text-decoration: none;
     display: block;
     padding: 15px 0 15px 10px;
@@ -413,7 +413,7 @@ ul.sidebar-menu li a.active i {
 }
 
 .black-bg {
-    background: #ffcb0f;
+    background: #0d2d6d;
     border-bottom: 1px solid #c9aa5f;
 }
 
@@ -2216,7 +2216,7 @@ label {
 
 /*footer*/
 .site-footer {
-    background: #1a1c27;
+    background: #0d2d6d;
     color: #fff;
     padding: 10px 0;
     bottom: 0px;

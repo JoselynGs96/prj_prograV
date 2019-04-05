@@ -78,10 +78,10 @@
       <!--header start-->
       <header class="header black-bg">
             <div class="sidebar-toggle-box">
-                <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Menú"></div>
+                <div class="fa fa-bars tooltips" style="color:white" data-placement="right" data-original-title="Menú"></div>
             </div>
             <div class="dropdown pull-right logout" style="margin-top: 20px">
-                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText value="#{usuariosPorProgranaBean.usuario4.nombreCompleto}"></h:outputText>
+                <a class="dropdown-toggle top-menu" data-toggle="dropdown" href="#"><h:outputText style="color:white" value="#{usuariosPorProgranaBean.usuario4.nombreCompleto}"></h:outputText>
                 <span class="caret"></span></a>
             	<ul class="nav dropdown-menu">
                     <li><h:commandLink actionListener="#{indexBean.cerrarSesion()}" value="Cerrar Sesión"></h:commandLink></li>
@@ -95,12 +95,12 @@
       *********************************************************************************************************************************************************** -->
       <!--sidebar start-->
       <aside>
-          <div id="sidebar"  class="nav-collapse ">
+          <div id="sidebar"  class="nav-collapse " style="background:#e7e8e7;">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">
               
-                  <p class="centered"><a href="faces/Mantenimiento.xhtml"><img src="Recursos/images/logo.png" alt=""/></a></p>
-              	  <h5 class="centered">Panel de Administración</h5>
+                  <p class="centered"><a href="faces/Mantenimiento.xhtml"><img width="100px"  src="Recursos/images/logo2.PNG" alt=""/></a></p>
+              	  <h5 class="centered" style="color:black">Panel de Administración</h5>
               	  	
                   <li class="mt">
                       <a class="active" href="faces/Mantenimiento.xhtml">
@@ -213,7 +213,7 @@
       <div id="modalDenegar" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width: 500px">
            <div class="modal-content">
-               <div class="modal-header" style="background: #222533">
+               <div class="modal-header" style="background: #0d2d6d;">
                    <button type="button" class="close" style="color: white" data-dismiss="modal">&times;</button>
                <h4 class="modal-title">Denegar Acceso</h4>
               </div>
@@ -226,8 +226,8 @@
                  </h:inputTextarea>
                  </center>
              </div>
-               <div class="modal-footer" style="border-top-color:#ffcb0f; ">
-                 <button type="button"   class="btn c" style="background-color: #222533; color: white" data-dismiss="modal">Cerrar</button>
+               <div class="modal-footer" style="border-top-color:#e7e8e7; ">
+                 <button type="button"   class="btn c" style="background-color: #0d2d6d; color: white" data-dismiss="modal">Cerrar</button>
                  <h:commandButton class="btn btn-success" value="Confirmar" actionListener="#{usuariosPorProgranaBean.botonDenegar()}"></h:commandButton>
                </div>
            </div>
@@ -238,13 +238,13 @@
       <div id="modalVer" class="modal fade" role="dialog">
           <div class="modal-dialog" style="width: 500px">
            <div class="modal-content">
-               <div class="modal-header" style="background: #222533">
+               <div class="modal-header" style="background: #0d2d6d;">
                    <button type="button" class="close" style="color: white" data-dismiss="modal">&times;</button>
                <h4 class="modal-title">Detalles del Usuario</h4>
              </div>
              <div class="modal-body">
                      <table width="100%">
-                        <tr bgcolor="#F3EC88">
+                        <tr style="background:#e7e8e7;">
                             <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black">INFORMACIÓN PERSONAL</th>
                         </tr>
                         <tr>
@@ -303,7 +303,7 @@
                                 <p:outputLabel style=" margin-top: 3px; width:200px " value="#{usuariosPorProgranaBean.usuarioModal.log_Activo}"></p:outputLabel>
                             </td>
                         </tr>
-                        <tr bgcolor="#F3EC88">
+                        <tr style="background:#e7e8e7;">
                             <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >DIRECCIONES</th>
                         </tr>
                         <tr>
@@ -311,7 +311,7 @@
                                 <h:inputTextarea style=" margin-top: 3px; width: 450px; border: 0px; " value="#{usuariosPorProgranaBean.direcciones}"></h:inputTextarea>
                             </td>
                         </tr>
-                        <tr bgcolor="#F3EC88">
+                        <tr style="background:#e7e8e7;">
                             <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >CONTACTO</th>
                         </tr>
                         <tr>
@@ -330,7 +330,7 @@
                                 <h:inputTextarea readonly="true" style="margin-top: 3px; width:250px; border: 0px; "  value="#{usuariosPorProgranaBean.telefonos}"></h:inputTextarea>
                             </td>
                         </tr>
-                        <tr bgcolor="#F3EC88">
+                        <tr style="background:#e7e8e7;">
                             <th colspan="2" style="font-weight: bold; margin-top: 3px; text-align: center; color:black" >PROGRAMA DEAS</th>
                         </tr>
                         <tr>
@@ -342,8 +342,8 @@
                         </tr>
                     </table>
              </div>
-               <div class="modal-footer" style="border-top-color:#ffcb0f; ">
-                 <button type="button"   class="btn c" style="background-color: #222533; color: white" data-dismiss="modal">Cerrar</button>
+               <div class="modal-footer" style="border-top-color:#e7e8e7; ">
+                 <button type="button"   class="btn c" style="background-color: #0d2d6d; color: white" data-dismiss="modal">Cerrar</button>
              </div>
            </div>
 

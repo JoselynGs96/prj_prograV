@@ -87,40 +87,6 @@
 
             </div>
             
-            
-            <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000" style="width: 300px" >
-                <p:scrollPanel mode="native" style="width:90%;height:100%; border:0px; margin-bottom: 50px" > 
-                    <div style="margin-left: 10px; padding-left: 5px">
-                    <h1 style="font-weight:normal">Ayuda</h1>          
-                    <br></br>
-                    <strong>¿Desea Registar sus datos? </strong>
-                    <br></br>  
-                    Llene todos los datos del formulario.
-                    Luego,Clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images/botonregistarrse.JPG" style="width:80px ;height:60px" alt=""/>
-                    <br></br>
-                    <strong>¿Desea agregar direcciones? </strong>
-                    <br></br>
-                    Llene los datos Provincia,Distrito,Cantón, Barrio y otras señas.
-                    Luego, clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images/btnAgregaDir.PNG" style="width:80px ;height:60px" alt=""/>
-                    <br></br>
-                    <br></br>
-                    <strong>¿Desea agregar Telefonos? </strong>
-                    <br></br>  
-                    Llene los datos Tipo Telefono y el número.
-                    Luego,Clic sobre el  <br></br> botón &#8594;
-                    <img src="Recursos/images/btnAgregaTel.PNG" style="width:80px ;height:60px" alt=""/>
-                    <br></br>
-                    <br></br>
-                    
-                    <br></br>
-                    </div> 
-                    <div style="margin-bottom: 30px; height: 50px"></div>
-                </p:scrollPanel>
-            </p:sidebar>
-           
-            
             <!-- Header -->
             <header>
                 <!-- Top Navbar -->
@@ -130,44 +96,19 @@
                             <li><a href="#"><span class="fa fa-phone"></span> (506) 2435-5000</a></li>
                             <li><a href="#"><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
                             <li><a href="#"><span class="fa fa-clock-o"></span> Lunes - Sabado 9:00am - 5:00pm</a></li>
-                        </ul>
-                        <ul class="list-inline social_icon">
-                            <li><a href=""><span class="fa fa-facebook"></span></a></li>
-                            <li><a href=""><span class="fa fa-twitter"></span></a></li>
-                            <li><a href=""><span class="fa fa-behance"></span></a></li>
-                            <li><a href=""><span class="fa fa-dribbble"></span></a></li>
-                            <li><a href=""><span class="fa fa-linkedin"></span></a></li>
-                            <li><a href=""><span class="fa fa-youtube"></span></a></li>
-                        </ul>			
+                        </ul>		
                     </div>
                 </div><!-- Top Navbar end -->
 
                 <!-- Navbar -->
-                <nav class="navbar bootsnav">
-                    <!-- Top Search -->
-                    <div class="top-search">
-                        <div class="container">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Search"/>
-                                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-                            </div>
-                        </div>
-                    </div>
-
+                <nav class="navbar bootsnav" style="background-color:#0d2d6d; ">
                     <div class="container">
-                        <!-- Atribute Navigation -->
-                        <div class="attr-nav">
-                            <ul>
-                                <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
-                            </ul>
-                        </div>
                         <!-- Header Navigation -->
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
                                 <i class="fa fa-bars"></i>
                             </button>
-                            <a class="navbar-brand" href=""><img class="logo" src="../Recursos/images/logo.png" alt=""/></a>
+                            <a  href=""><img class="logo" src="../Recursos/images/logo.PNG"  alt=""/></a>
                         </div>
                         <!-- Navigation -->
                         <div class="collapse navbar-collapse" id="navbar-menu">
@@ -177,22 +118,16 @@
                             </ul>
                         </div>
                     </div>    
-                </nav><!-- Navbar end -->
+                </nav>
             </header>
             <!-- Header end -->
             
-            <div class="social">
-                <ul>
-                    <li><a class="icon-ayuda" onclick="PF('sidebar2').show()" href="#" title="Ayuda" style="margin-top: 0px; margin-bottom: 0px; margin-right: 5px" ><img align="right" style="width:40px; height:40px;margin-top: 0px;" src="RecursoMante/img/ayuda2.png" alt=""/></a></li>
-
-                </ul>
-            </div>
             
             <div class="container-fluid" style="margin-bottom: 100px">
                 <div class="col-lg-2"></div>
-                <div class="col-lg-8" style="background:white; align-content: center">
+                <div class="col-lg-8 mt-3" style="background:white; align-content: center">
 
-                    <h1  id="per" style="margin-top: 20px; color: #222533" >AutoRegistro</h1>
+                    <p  id="per" class="h1 mt-3" style="margin-top: 20px; color: #222533" >AutoRegistro</p>
                     <p>Por favor, rellene este formulario para solicitar una cuenta para el acceso al sistema <br></br>Los campos con un (*) son requeridos</p>
                     <hr style="color:#787774; "></hr>
                     <!--    Info Personal   -->
@@ -200,10 +135,11 @@
                     <h:outputLabel value="#{registrarBean.mensaje2}" escape="false" style="width: 100%"></h:outputLabel>
                     
                     <div class="panel panel-default" style="margin-top: 20px">
-                        <div class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
-                            <center>  <h2>Personal 
+                        <div class="panel-heading" style="background:#e7e8e7; width: 100%;align-content: center">
+                            <center>  
+                                <p class="h2">Personal 
                                     <a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px"><img align="right" style="width:30px; margin-right: 5px; height:30px; margin-top: 0px; margin-bottom: 10px;" src="RecursoMante/img/ir.png" alt=""/></a>
-                                </h2>
+                                </p>
                             </center>
                         </div>
 
@@ -265,14 +201,14 @@
                         </div>
                     </div>
                     <div class="panel panel-default" style="margin-top: 40px">
-                        <div id="dir" class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
-                            <center>  <h2>Direcciones<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></h2></center>
+                        <div id="dir" class="panel-heading" style="background:#e7e8e7; width: 100%;align-content: center">
+                            <center>  <p class="h2">Direcciones<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></p></center>
                         </div>
 
                         <div class="panel-body">
                             <center>
                                <table style="width: 90%; margin-right: 5%; margin-left: 5%">
- <tr>
+                                <tr>
                                         <td>
                                             <h:outputText value="Provincia*" style="margin-top: 5px" />  </td>
                                         <td>
@@ -319,7 +255,7 @@
                                         <center>
                                             <h:outputLabel value="#{registrarBean.msjDireccion}" escape="false" style="width: 100%"></h:outputLabel>
                                             <br></br>
-                                            <td colspan="2">  <h:commandButton action="#{registrarBean.agregarDireccones()}" style="background-color:#C0BFB5;border-color: #C0BFB5; margin-top: 20px;" 
+                                            <td colspan="2">  <h:commandButton action="#{registrarBean.agregarDireccones()}" style="background-color:#787774;border-color:#787774; margin-top: 20px;" 
                                                                                class="btn btn-primary btn-lg" value="Agregar Dirección"></h:commandButton>
                                             </td> 
                                             <br></br>
@@ -364,7 +300,7 @@
                                                     <f:facet name="header">
                                                         <h:outputText value=""/>
                                                     </f:facet>
-                                                    <h:commandButton  actionListener="#{registrarBean.eliminarDirecciones(direc.otras_sennas)}" class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="RecursoMante/img/eliminar.png"> </h:commandButton>
+                                                    <h:commandButton  actionListener="#{registrarBean.eliminarDirecciones(direc.otras_sennas)}" class="btn btn-default btn-xs" style="width: 40px; height: 30px" image="Recursos/images/eliminar.png"> </h:commandButton>
                                                 </h:column>
                                             </h:dataTable>                             
                                         </td>
@@ -374,8 +310,8 @@
                         </div>
                     </div>
                     <div class="panel panel-default" style="margin-top: 40px">
-                        <div id="con" class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
-                            <center><h2>Contacto<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></h2></center>
+                        <div id="con" class="panel-heading" style="background:#e7e8e7; width: 100%;align-content: center">
+                            <center><p class="h2">Contacto<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></p></center>
                         </div>
 
                         <div class="panel-body">
@@ -401,7 +337,7 @@
                                         <td colspan="2">
                                             <h:outputLabel value="#{registrarBean.msjTelefono}" escape="false" style="width: 100%"></h:outputLabel>
                                             <br></br>
-                                            <h:commandButton action="#{registrarBean.agregarTelefonos()}" style="background-color:#C0BFB5;;border-color:#C0BFB5;; margin-top: 20px;" 
+                                            <h:commandButton action="#{registrarBean.agregarTelefonos()}" style="background-color:#787774;border-color:#787774; margin-top: 20px;" 
                                                              class="btn btn-primary btn-lg" value="Agregar Telefono"></h:commandButton>
 
                                         </td>
@@ -437,8 +373,8 @@
                         </div>
                     </div>
                     <div  class="panel panel-default" style="margin-top: 40px">
-                        <div id="prog" class="panel-heading" style="background:#fccc0c;width: 100%;align-content: center">
-                            <center><h2>Programa DEAS<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></h2></center>
+                        <div id="prog" class="panel-heading" style="background: #e7e8e7; width: 100%;align-content: center">
+                            <center><p class="h2">Programa DEAS<a onclick="openNav()" href="#" title="Ir a" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5px" ><img align="right" style="width:35px; height:35px;margin-top: 0px; margin-bottom: 5px;" src="RecursoMante/img/ir.png" alt=""/></a></p></center>
                         </div>
 
                         <div class="panel-body">
@@ -464,12 +400,12 @@
                     <br></br>
                     <div style="margin-left: 300px">
                         <div style="float: left">
-                            <h:commandButton action="#{registrarBean.limpiar()}" style="background-color:#C0BFB5;;border-color:#C0BFB5;" 
+                        <h:commandButton action="#{registrarBean.limpiar()}" style="background-color:#787774;border-color:#787774;" 
                                                              class="btn btn-primary btn-lg" value="Cancelar"></h:commandButton>
 
                         </div>    
                         <div style="display: inline-block; margin-left: 10px;">
-                        <h:commandButton actionListener="#{registrarBean.ingresarUsuario()}" style="background-color:#fccc0c;border-color: #fccc0c;" 
+                        <h:commandButton actionListener="#{registrarBean.ingresarUsuario()}" style="background-color:#0d2d6d; border-color: #0d2d6d;" 
                                          class="btn btn-primary btn-lg" value="Registrar" ></h:commandButton>
                         </div> 
                     </div>
@@ -477,41 +413,9 @@
             </div>
             <!-- Footer -->
             <footer>
-                <!-- Footer top -->
-                <div class="container footer_top">
-                    <div class="row">
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="footer_item">
-                                <h4>Acerca de:</h4>
-                                <img class="logo" src="../Recursos/images/logo.png" alt="Construction" />
-                                <p>Sistema de información, para automatizar el proceso de planificación y uso de la infraestructura de la Dirección de Extensión y Acción Social (DEAS) Universidad Técnica Nacional</p>
-
-                                <ul class="list-inline footer_social_icon">
-                                    <li><a href=""><span class="fa fa-facebook"></span></a></li>
-                                    <li><a href=""><span class="fa fa-twitter"></span></a></li>
-                                    <li><a href=""><span class="fa fa-youtube"></span></a></li>
-                                    <li><a href=""><span class="fa fa-google-plus"></span></a></li>
-                                    <li><a href=""><span class="fa fa-linkedin"></span></a></li>
-                                </ul>
-                            </div>
-                        </div>                                 
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="footer_item">
-                                <h4>Contáctenos</h4>
-                                <ul class="list-unstyled footer_contact">
-                                    <li><a href=""><span class="fa fa-map-marker"></span> Sede Central: Villa Bonita de Alajuela, 300 mts suroeste de Perimercados y 300 sur (carretera a Villa Bonita).</a></li>
-                                    <li><a href=""><span class="fa fa-envelope"></span> infosedecentral@utn.ac.cr</a></li>
-                                    <li><a href=""><span class="fa fa-mobile"></span><p>(506) 2435-5000 <br /></p></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- Footer top end -->
-
-                <!-- Footer bottom -->
                 <div class="footer_bottom text-center">
                     <p class="wow fadeInRight">                   
-                        <li> &copy;2018 UTN Todos los Derechos Reservados.</li> <li>Fabiola Alfaro y Joselyn Granados</li>
+                        <li> &copy;2018 UTN Todos los Derechos Reservados.</li>
                     </p>
                 </div><!-- Footer bottom end -->
             </footer>

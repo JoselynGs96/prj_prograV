@@ -134,7 +134,7 @@ a:hover,a:focus{ text-decoration: none}
 
 /* Top Nav */
 .top_nav {
-    background: #ffcb0f none repeat scroll 0 0;
+    background: #e7e8e7 none repeat scroll 0 0;
     overflow: hidden;
     padding: 10px 0;
 }
@@ -581,13 +581,13 @@ nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:fo
 
 /* Footer */
 footer {
-    background: url(../images/footer_bg.jpg)no-repeat;
+  
     background-size:cover;
     position:relative;
     padding-top:45px;
 }
 footer::before {
-    background: rgba(255, 255, 255, 0.33) none repeat scroll 0 0;
+   
     content: "";
     height: 45px;
     left: 0;
@@ -597,7 +597,7 @@ footer::before {
     z-index: 1;
 }
 footer::after {
-    background: rgba(34, 37, 51, 0.9) none repeat scroll 0 0;
+    
     content: "";
     height: 100%;
     left: 0;
@@ -689,7 +689,7 @@ footer::after {
     overflow: hidden;
 }
 .footer_bottom {
-    background: #1a1c27 none repeat scroll 0 0;
+    background: #0d2d6d none repeat scroll 0 0;
     padding: 28px 0 18px;
     margin-top:55px;
 }
